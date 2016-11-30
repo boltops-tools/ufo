@@ -1,0 +1,47 @@
+# Some of variables are from the Dockerfile and some are from other places.
+#
+# * helper.full_image_name - Docker image name to be used when a the docker image is build. This is defined in ufo/settings.yml.
+# * helper.dockerfile_port - Expose port in the Dockerfile.  Only supports one exposed port, the first one that is encountered.
+
+# Simply aggregates a bunch of variables that is useful for the task_definition.
+module Ufo
+  class DSL
+    # provides some helperally context variables
+    class Helper
+      def initialize(options={})
+        @options = options
+        @project_root = options[:project_root] || '.'
+      end
+
+      ##############
+      # helper variables
+      def dockerfile_port
+        dockerfile_path = "#{@project_root}/Dockerfile"
+        if File.exist?(dockerfile_path)
+          parse_for_dockerfile_port(dockerfile_path)
+        end
+      end
+
+      def full_image_name
+        DockerBuilder.new(@options).full_image_name
+      end
+
+      #############
+      # helper methods
+      def settings
+        @settings ||= Settings.new(@project_root)
+      end
+
+      def parse_for_dockerfile_port(dockerfile_path)
+        lines = IO.read(dockerfile_path).split("\n")
+        expose_line = lines.find { |l| l =~ /^EXPOSE / }
+        if expose_line
+          md = expose_line.match(/EXPOSE (\d+)/)
+          port = md[1] if md
+        end
+        port.to_i if port
+      end
+
+    end
+  end
+end

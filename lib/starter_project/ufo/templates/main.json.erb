@@ -1,0 +1,39 @@
+{
+    "family": "<%= @family %>",
+    "containerDefinitions": [
+        {
+            "name": "<%= @name %>",
+            "image": "<%= @image %>",
+            "cpu": <%= @cpu %>,
+            <% if @memory %>
+            "memory": <%= @memory %>,
+            <% end %>
+            <% if @memory_reservation %>
+            "memoryReservation": <%= @memory_reservation %>,
+            <% end %>
+            <% if @container_port %>
+            "portMappings": [
+                {
+                    "containerPort": "<%= @container_port %>",
+                    "protocol": "tcp"
+                }
+            ],
+            <% end %>
+            "command": <%= @command.to_json %>,
+            <% if @environment %>
+            "environment": <%= @environment.to_json %>,
+            <% end %>
+            <% if @awslogs_group %>
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "<%= @awslogs_group %>",
+                    "awslogs-region": "<%= @awslogs_region || 'us-east-1' %>",
+                    "awslogs-stream-prefix": "<%= @awslogs_stream_prefix %>"
+                }
+            },
+            <% end %>
+            "essential": true
+        }
+    ]
+}
