@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ufo (0.0.6)
+    ufo (0.1.0)
       aws-sdk
       byebug
       colorize
