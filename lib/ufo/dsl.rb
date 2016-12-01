@@ -50,7 +50,7 @@ module Ufo
       end
     end
 
-    # methods available in task_definitionintions
+    # methods available in task_definitions
     def task_definition(name, &block)
       @task_definitions << TaskDefinition.new(self, name, @options, &block)
     end

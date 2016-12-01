@@ -10,7 +10,7 @@ module Ufo
     def build
       puts "Building Task Definitions...".green unless @options[:mute]
       check_templates_definitions_path
-      dsl = DSL.new(template_definitions_path, @options.merge(quiet: true, mute: true))
+      dsl = DSL.new(template_definitions_path, @options.merge(quiet: false, mute: true))
       dsl.run
       puts "Task Definitions built in ufo/output." unless @options[:mute]
     end

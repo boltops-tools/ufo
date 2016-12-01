@@ -9,4 +9,4 @@ ufo ship <%= @app %>-clock --cluster <%= @cluster %> --no-wait
 ufo ship <%= @app %>-worker --cluster <%= @cluster %> --no-wait --no-docker
 # The final service will wait for the deploy to finish.  Please specify an
 # Application Load Balancer if creating the service for the first time.
-ufo ship <%= @app %>-web --cluster <%= @cluster %> --no-docker --target-group ''
+ufo ship <%= @app %>-web --cluster <%= @cluster %> --no-docker

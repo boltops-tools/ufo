@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ufo (0.0.2)
+    ufo (0.0.6)
       aws-sdk
       byebug
       colorize
@@ -22,12 +22,14 @@ GEM
       multi_json (~> 1.3)
       thread_safe (~> 0.1)
       tzinfo (~> 0.3.37)
-    aws-sdk (2.6.9)
-      aws-sdk-resources (= 2.6.9)
-    aws-sdk-core (2.6.9)
+    aws-sdk (2.6.29)
+      aws-sdk-resources (= 2.6.29)
+    aws-sdk-core (2.6.29)
+      aws-sigv4 (~> 1.0)
       jmespath (~> 1.0)
-    aws-sdk-resources (2.6.9)
-      aws-sdk-core (= 2.6.9)
+    aws-sdk-resources (2.6.29)
+      aws-sdk-core (= 2.6.29)
+    aws-sigv4 (1.0.0)
     builder (3.1.4)
     byebug (9.0.6)
     codeclimate-test-reporter (0.6.0)
@@ -110,7 +112,7 @@ GEM
       i18n
     thor (0.19.1)
     thread_safe (0.3.5)
-    tzinfo (0.3.51)
+    tzinfo (0.3.52)
 
 PLATFORMS
   ruby
@@ -125,4 +127,4 @@ DEPENDENCIES
   ufo!
 
 BUNDLED WITH
-   1.13.2
+   1.13.6

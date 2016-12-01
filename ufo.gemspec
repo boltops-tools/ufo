@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Ufo::VERSION
   spec.authors       = ["Tung Nguyen"]
   spec.email         = ["tongueroo@gmail.com"]
-  spec.description   = %q{Build docker containers and ship them to AWS ECS}
-  spec.summary       = %q{Build docker containers and ship them to AWS ECS}
+  spec.description   = %q{Build Docker Containers and Ship Them to AWS ECS}
+  spec.summary       = %q{Build Docker Containers and Ship Them to AWS ECS}
   spec.homepage      = "https://github.com/tongueroo/ufo"
   spec.license       = "MIT"
 
