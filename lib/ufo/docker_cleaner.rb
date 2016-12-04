@@ -37,7 +37,6 @@ module Ufo
       tags = tags.sort.reverse  # ordered by most recent images first
       delete_tags = tags[@keep..-1]
       if delete_tags.nil?
-        say "No images found that matched #{@docker_image_name}:#{tag_string}"
         @delete_list = []
       else
         @delete_list = delete_tags.map { |t| "#{@docker_image_name}:#{t}" }.join(' ')

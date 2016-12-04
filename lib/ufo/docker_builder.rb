@@ -69,6 +69,10 @@ module Ufo
 
     # full_image - includes the tag
     def full_image_name
+      if @options[:generate]
+        return generate_name # name already has a newline
+      end
+
       unless File.exist?(docker_name_path)
         puts "Unable to find #{docker_name_path} which contains the last docker image name that was used as a part of `ufo docker build`.  Please run `ufo docker build` first."
         exit 1
@@ -83,9 +87,13 @@ module Ufo
     def store_full_image_name
       dirname = File.dirname(docker_name_path)
       FileUtils.mkdir_p(dirname) unless File.exist?(dirname)
-      full_image_name = "#{image_name}:#{@image_namespace}-#{timestamp}-#{git_sha}"
+      full_image_name = generate_name
       IO.write(docker_name_path, full_image_name)
       IO.write("#{@project_root}/ufo/version", full_image_name)
+    end
+
+    def generate_name
+      "#{image_name}:#{@image_namespace}-#{timestamp}-#{git_sha}"
     end
 
     def docker_name_path

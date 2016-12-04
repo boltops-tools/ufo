@@ -3,7 +3,6 @@
 require 'rubygems'
 
 $:.unshift(File.expand_path('../../lib', __FILE__))
-puts File.expand_path('../../lib', __FILE__)
 require 'ufo'
 require 'ufo/cli'
 

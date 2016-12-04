@@ -27,11 +27,12 @@ module Ufo
       EcrCleaner.new(builder.image_name, options.merge(tag_prefix: "base")).cleanup
     end
 
-    desc "full_image_name", "displays the full docker image with tag that will be generated"
+    desc "image_name", "displays the full docker image with tag that will be generated"
+    option :generate, type: :boolean, default: false, desc: "Generate a name without storing it"
     long_desc CLI::Help.docker_full_image_name
-    def full_image_name
+    def image_name
       full_image_name = DockerBuilder.new(options).full_image_name
-      puts "Docker image name that will be used: #{full_image_name}"
+      puts full_image_name
     end
 
     desc "cleanup IMAGE_NAME", "Cleans up old images.  Keeps a specified amount."
