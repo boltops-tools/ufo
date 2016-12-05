@@ -21,12 +21,12 @@ Gem::Specification.new do |spec|
   spec.add_dependency "thor"
   spec.add_dependency "hashie"
   spec.add_dependency "colorize"
-  spec.add_dependency "byebug"
   spec.add_dependency "deep_merge"
   spec.add_dependency "aws-sdk"
   spec.add_dependency "plissken"
 
   spec.add_development_dependency "bundler", "~> 1.3"
+  spec.add_development_dependency "byebug"
   spec.add_development_dependency "rake"
   spec.add_development_dependency "guard"
   spec.add_development_dependency "guard-bundler"

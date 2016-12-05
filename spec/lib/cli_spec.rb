@@ -20,7 +20,7 @@ describe Ufo::CLI do
       end
 
       it "tag shows the tag" do
-        out = execute("bin/ufo docker full_image_name #{@args}")
+        out = execute("bin/ufo docker image_name #{@args}")
         expect(out).to match(%r{tongueroo/hi:ufo-.{7}})
       end
     end
@@ -28,7 +28,7 @@ describe Ufo::CLI do
     context "tasks" do
       it "build builds task definition" do
         out = execute("bin/ufo tasks build #{@args}")
-        expect(out).to include("Task Definitions built.")
+        expect(out).to include("Task Definitions built")
       end
 
       it "register it registers all the output task definitions" do

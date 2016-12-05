@@ -1,9 +1,8 @@
 PATH
   remote: .
   specs:
-    ufo (0.1.0)
+    ufo (0.1.1)
       aws-sdk
-      byebug
       colorize
       deep_merge
       hashie
@@ -22,13 +21,13 @@ GEM
       multi_json (~> 1.3)
       thread_safe (~> 0.1)
       tzinfo (~> 0.3.37)
-    aws-sdk (2.6.29)
-      aws-sdk-resources (= 2.6.29)
-    aws-sdk-core (2.6.29)
+    aws-sdk (2.6.32)
+      aws-sdk-resources (= 2.6.32)
+    aws-sdk-core (2.6.32)
       aws-sigv4 (~> 1.0)
       jmespath (~> 1.0)
-    aws-sdk-resources (2.6.29)
-      aws-sdk-core (= 2.6.29)
+    aws-sdk-resources (2.6.32)
+      aws-sdk-core (= 2.6.32)
     aws-sigv4 (1.0.0)
     builder (3.1.4)
     byebug (9.0.6)
@@ -119,6 +118,7 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 1.3)
+  byebug
   codeclimate-test-reporter
   guard
   guard-bundler

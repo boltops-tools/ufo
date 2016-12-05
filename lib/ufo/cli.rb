@@ -55,7 +55,7 @@ module Ufo
     desc "register", "register all built task definitions in ufo/output"
     long_desc CLI::Help.tasks_register
     def register
-      TasksRegister.register_all(options)
+      TasksRegister.register(:all, options)
     end
   end
 
