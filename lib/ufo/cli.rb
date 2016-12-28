@@ -107,8 +107,8 @@ module Ufo
       # and the elb target group gets set in the Ship class.
       # So we always call these together.
       TasksBuilder.new(options).build
-      TasksRegister.register(service, options)
       task_definition = options[:task] || service # convention
+      TasksRegister.register(task_definition, options)
       ship = Ship.new(service, task_definition, options)
 
       return if ENV['TEST'] # to allow me to quickly test most of the ship CLI portion only
