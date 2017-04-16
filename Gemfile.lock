@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ufo (0.1.2)
+    ufo (0.1.3)
       aws-sdk
       colorize
       deep_merge
@@ -12,24 +12,23 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    activemodel (4.0.13)
-      activesupport (= 4.0.13)
-      builder (~> 3.1.0)
-    activesupport (4.0.13)
-      i18n (~> 0.6, >= 0.6.9)
-      minitest (~> 4.2)
-      multi_json (~> 1.3)
-      thread_safe (~> 0.1)
-      tzinfo (~> 0.3.37)
-    aws-sdk (2.6.32)
-      aws-sdk-resources (= 2.6.32)
-    aws-sdk-core (2.6.32)
+    activemodel (4.2.8)
+      activesupport (= 4.2.8)
+      builder (~> 3.1)
+    activesupport (4.2.8)
+      i18n (~> 0.7)
+      minitest (~> 5.1)
+      thread_safe (~> 0.3, >= 0.3.4)
+      tzinfo (~> 1.1)
+    aws-sdk (2.9.7)
+      aws-sdk-resources (= 2.9.7)
+    aws-sdk-core (2.9.7)
       aws-sigv4 (~> 1.0)
       jmespath (~> 1.0)
-    aws-sdk-resources (2.6.32)
-      aws-sdk-core (= 2.6.32)
+    aws-sdk-resources (2.9.7)
+      aws-sdk-core (= 2.9.7)
     aws-sigv4 (1.0.0)
-    builder (3.1.4)
+    builder (3.2.3)
     byebug (9.0.6)
     codeclimate-test-reporter (0.6.0)
       simplecov (>= 0.7.1, < 1.0.0)
@@ -58,8 +57,8 @@ GEM
       guard (~> 2.1)
       guard-compat (~> 1.1)
       rspec (>= 2.99.0, < 4.0)
-    hashie (3.4.6)
-    i18n (0.7.0)
+    hashie (3.5.5)
+    i18n (0.8.1)
     jmespath (1.3.1)
     json (2.0.2)
     listen (3.1.5)
@@ -68,13 +67,12 @@ GEM
       ruby_dep (~> 1.2)
     lumberjack (1.0.10)
     method_source (0.8.2)
-    minitest (4.7.5)
-    multi_json (1.12.1)
+    minitest (5.10.1)
     nenv (0.3.0)
     notiffany (0.1.1)
       nenv (~> 0.1)
       shellany (~> 0.0)
-    plissken (0.2.0)
+    plissken (0.3.0)
       symbolize (~> 4.2)
     pry (0.10.4)
       coderay (~> 1.1.0)
@@ -110,8 +108,9 @@ GEM
       activesupport (>= 3.2, < 5)
       i18n
     thor (0.19.1)
-    thread_safe (0.3.5)
-    tzinfo (0.3.52)
+    thread_safe (0.3.6)
+    tzinfo (1.2.3)
+      thread_safe (~> 0.1)
 
 PLATFORMS
   ruby
@@ -127,4 +126,4 @@ DEPENDENCIES
   ufo!
 
 BUNDLED WITH
-   1.13.6
+   1.14.6
