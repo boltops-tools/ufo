@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [0.1.5]
+
+* helper.env_file instead of env_vars method
+
 ## [0.1.2]
 
 * remove byebug dependency and fix task register task
