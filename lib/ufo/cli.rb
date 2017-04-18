@@ -12,7 +12,7 @@ module Ufo
       builder.push if options[:push]
     end
 
-    desc "base", "builds docker image from Dockerfile.base"
+    desc "base", "builds docker image from Dockerfile.base and update current Dockerfile"
     long_desc CLI::Help.docker_base
     option :push, type: :boolean, default: true
     def base

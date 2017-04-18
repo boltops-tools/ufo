@@ -28,6 +28,37 @@ module Ufo
 
       #############
       # helper methods
+      def env_vars(text)
+        lines = filtered_lines(text)
+        lines.map do |line|
+          key,value = line.strip.split("=").map {|x| x.strip}
+          {
+            name: key,
+            value: value,
+          }
+        end
+      end
+
+      def filtered_lines(text)
+        lines = text.split("\n")
+        # remove comment at the end of the line
+        lines.map! { |l| l.sub(/#.*/,'').strip }
+        # filter out commented lines
+        lines = lines.reject { |l| l =~ /(^|\s)#/i }
+        # filter out empty lines
+        lines = lines.reject { |l| l.strip.empty? }
+      end
+
+      def env_file(path)
+        full_path = "#{@project_root}/#{path}"
+        unless File.exist?(full_path)
+          puts "The #{full_path} env file could not be found.  Are you sure it exists?"
+          exit 1
+        end
+        text = IO.read(full_path)
+        env_vars(text)
+      end
+
       def settings
         @settings ||= Settings.new(@project_root)
       end
