@@ -89,7 +89,7 @@ module Ufo
     option :elb, desc: "ELB Name associated with the target_group.  Assumes first "
     option :elb_prompt, type: :boolean, desc: "Enable ELB prompt", default: true
     option :docker, type: :boolean, desc: "Enable docker build and push", default: true
-    option :wait, type: :boolean, desc: "Wait for deployment to complete", default: true
+    option :wait, type: :boolean, desc: "Wait for deployment to complete", default: false
     option :pretty, type: :boolean, default: true, desc: "Pretty format the json for the task definitions"
     option :stop_old_tasks, type: :boolean, default: false, desc: "Stop old tasks after waiting for deploying to complete"
     option :ecr_keep, type: :numeric, desc: "ECR specific cleanup of old images.  Specifies how many images to keep.  Only runs if the images are ECR images. Defaults to keeping all the images."
