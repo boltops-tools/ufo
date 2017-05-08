@@ -24,8 +24,7 @@ module Ufo
   private
     # only using the overrides to override the container command
     def overrides
-      command = @options[:command]
-      command = eval(command) if command.include?('[') # command is in Array form
+      command = @options[:command] # Thor parser ensure this is always an array
       container_definition = get_original_container_definition
       {
         container_overrides: [

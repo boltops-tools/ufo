@@ -112,7 +112,7 @@ module Ufo
     desc "task [TASK_DEFINITION]", "runs a one time task"
     long_desc Help.task
     option :docker, type: :boolean, desc: "Enable docker build and push", default: true
-    option :command, desc: "Override the command used for the container"
+    option :command, type: :array, desc: "Override the command used for the container"
     def task(task_definition)
       build_docker(options)
       register_task(task_definition, options)

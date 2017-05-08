@@ -253,16 +253,14 @@ Sometimes you do not want to run a long running `service` but a one time task. R
 ufo task hi-migrate-prod
 ```
 
-You will need to define a task definition for the migrate command also in `ufo/task_definitions.rb`.  If you only need to override the Docker command and can re-use an existing task definition like `hi-web-prod`.  You can use the `--override-command` option:
+You will need to define a task definition for the migrate command also in `ufo/task_definitions.rb`.  If you only need to override the Docker command and can re-use an existing task definition like `hi-web-prod`.  You can use the `--command` option:
 
 ```
-ufo task hi-web-prod --override-command '["bin/migrate"]'
-ufo task hi-web-prod --override-command bin/migrate
-ufo task hi-web-prod --override-command "bin/with_env bundle exec rake db:migrate:redo VERSION=xxx"
-ufo task hi-web-prod --override-command '["bin/with_env", "bundle", "exec", "rake", "db:migrate:redo", "VERSION=xxx"]''
+ufo task hi-web-prod --command bin/migrate
+ufo task hi-web-prod --command bin/with_env bundle exec rake db:migrate:redo VERSION=xxx
 ```
 
-The `--override-command` option takes a string. If the string has brackets in it then it will be evaluated as an Array but the option must be a string.
+The `--command` option takes a string. If the string has brackets in it then it will be evaluated as an Array but the option must be a string.
 
 ## Scale
 
