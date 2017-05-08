@@ -1,4 +1,4 @@
-# Ufo - Build Docker Containers and Ship Them to AWS ECS
+# Ufo - A Easy Way to Build and Ship Docker Images AWS ECS
 
 [![CircleCI](https://circleci.com/gh/tongueroo/ufo.svg?style=svg)](https://circleci.com/gh/tongueroo/ufo)
 
