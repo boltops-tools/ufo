@@ -1,5 +1,7 @@
 # Ufo - Build Docker Containers and Ship Them to AWS ECS
 
+[![CircleCI](https://circleci.com/gh/tongueroo/ufo.svg?style=svg)](https://circleci.com/gh/tongueroo/ufo)
+
 ## Quick Introduction
 
 Ufo is a simple tool that makes building and shipping Docker containers to [AWS ECS](https://aws.amazon.com/ecs/) super easy.
@@ -7,11 +9,11 @@ Ufo is a simple tool that makes building and shipping Docker containers to [AWS 
 * This blog post provides an introduction to the tool: [Ufo - Build Docker Containers and Ship Them to AWS ECS](https://medium.com/@tongueroo/ufo-easily-build-docker-containers-and-ship-them-to-aws-ecs-15556a2b39f#.qqu8o4wal).
 * This presentation covers ufo also: [Ufo Ship on AWS ECS](http://www.slideshare.net/tongueroo/ufo-ship-for-aws-ecs-70885296)
 
-A summary of steps `ufo ship` takes:
+A summary of what `ufo ship` does:
 
-1. builds a docker image. 
-2. generates and registers the ECS template definition. 
-3. deploys the ECS template definition to the specified service.
+1. Builds a docker image. 
+2. Generates and registers the ECS template definition. 
+3. Deploys the ECS template definition to the specified service.
 
 Ufo deploys a task definition that is created via a template generator which is fully controllable.
 
@@ -20,13 +22,13 @@ Ufo deploys a task definition that is created via a template generator which is 
 
     $ gem install ufo
 
-You will need a working version of docker installed as ufo calls the docker command.
+Dependencies: You will need a working version of docker installed as ufo shells out and calls the `docker` command.
 
 ## Usage
 
-When using ufo if the ECS service does not yet exist, it will automatically be created for you.  If you are relying on this tool to create the cluster, you still need to associate ECS Container Instances to the cluster yourself.
+When using ufo if the ECS service does not yet exist, it will automatically be created for you.  Ufo will also automatically create the ECS cluster. If you are relying on this tool to create the cluster, you still need to associate ECS Container Instances to the cluster yourself. 
 
-First initialize ufo files within your project.  Let's say you have an `hi` app.
+First initialize ufo files within your project.  Let's say you have an example `hi` app.
 
 ```
 $ git clone https://github.com/tongueroo/hi
@@ -43,7 +45,7 @@ Starter ufo files created.
 $
 ```
 
-Take a look at the `ufo/settings.yml` file to see that it holds some default configuration settings so you don't have to type out these options every single time.
+Take a look at the `ufo/settings.yml` file and notice that it contains some default configuration settings so you do not have to type out these options repeatedly for some of the ufo commands.
 
 ```yaml
 image: tongueroo/hi
@@ -56,17 +58,17 @@ service_cluster:
 
 The `image` value is the name that ufo will use for the Docker image name.
 
-The `service_cluster` mapping provides a way to set default service to cluster mappings so that you do not have to specify the `--cluster` repeatedly.  Example:
+The `service_cluster` mapping provides a way to set default service-to-cluster mappings so that you do not have to specify the `--cluster` repeatedly.  This is very helpful. For example:
 
 ```
 ufo ship hi-web --cluster hi-cluster
 ufo ship hi-web # same as above because it is configured in ufo/settings.yml
-ufo ship hi-web --cluster special-cluster # overrides any setting default fallback.
+ufo ship hi-web --cluster special-cluster # overrides the default setting in `ufo/settings.yml`.
 ```
 
 ## Task Definition ERB Template and DSL Generator
 
-Ufo task definitions are is written in a template generator DSL to provide full control of the task definition that gets uploaded for each service.  We'll go over a simple example.  Here is the ERB template for `ufo/templates/main.json.erb`:
+Ufo task definitions are written as an ERB template that makes it every easily accessible and configurable to your requirements.  Here is is an example of an ERB template `ufo/templates/main.json.erb` that shows how easy it is to modfied the task definition you want to be uploaded by ufo:
 
 ```json
 {
@@ -110,7 +112,7 @@ Ufo task definitions are is written in a template generator DSL to provide full 
 }
 ```
 
-The instance variable values are specified in `ufo/task_definitions.rb`.  Here's the 
+The instance variable values are specified in `ufo/task_definitions.rb` via a DSL.  Here's the 
 
 
 ```ruby
@@ -128,11 +130,12 @@ task_definition "hi-web" do
 end
 ```
 
-As you can see above, the task\_definitions.rb file has some special variables and helper methods available. These helper methods provide useful contextual information about the project. For example, one of the variable provides the exposed port in the Dockerfile of the project. Here is a list of the important ones:
+The task\_definitions.rb file has some special variables and helper methods available. These helper methods provide useful contextual information about the project. For example, one of the variable provides the exposed port in the Dockerfile of the project. This why if someone changes the exported port in the Dockerfile, he will not "forgot" to also update the ufo variable as it is automatically referenced. Here is a list of the important helpers:
 
-* **helper.full\_image\_name** — The full docker image name that ufo builds. The “base” portion of the docker image name is defined in ufo/settings.yml. For example, the base portion is "tongueroo/hi" and the full image name is tongueroo/hi:ufo-[timestamp]-[sha]. So the base does not include the Docker tag and the full image name does include the tag.
+* **helper.full\_image\_name** — The full docker image name that ufo builds. The “base” portion of the docker image name is defined in ufo/settings.yml. For example, the base portion is `tongueroo/hi` and the full image name is `tongueroo/hi:ufo-[timestamp]-[sha]`. The base name does not include the generated Docker tag, which contains a timestamp and git sha of the Dockerfile that is used.
 * **helper.dockerfile\_port** — Exposed port extracted from the Dockerfile of the project. 
-* **env_file** — This method takes an .env file which contains a simple key value list of environment variables and converts the list to the proper task definition json format.
+* **env_vars(text)** — This method takes a block of text that contains the env values in key=value format and converts that block of text to the proper task definition json format.
+* **env_file(path)** — This method takes an `.env` file which contains a simple key value list of environment variables and converts the list to the proper task definition json format.
 
 The 2 classes which provide these special helper methods are in [ufo/dsl.rb](https://github.com/tongueroo/ufo/blob/master/lib/ufo/dsl.rb) and [ufo/dsl/helper.rb](https://github.com/tongueroo/ufo/blob/master/lib/ufo/dsl/helper.rb). Refer to these classes for the full list of the special variables and methods.
 
@@ -166,7 +169,7 @@ When you run `ufo ship hi-web`:
 
 If the ECS service hi-web does not yet exist, ufo will create the service for you.
 
-If the service has a container name web, you'll get prompted to create an ELB and specify a target group arn.  The ELB and target group must already exist.
+By convention, if the service has a container name web, you'll get prompted to create an ELB and specify a target group arn.  The ELB and target group must already exist.
 
 You can bypass the prompt and specify the target group arn as part of the command.  The elb target group can only be associated when the service gets created for the first time.  If the service already exists then the `--target-group` parameter just gets ignored and the ECS task simply gets updated.  Example:
 

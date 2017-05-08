@@ -13,6 +13,11 @@ common = {
   cpu: 128,
   memory_reservation: 256,
   environment: helper.env_file(".env")
+  # another example
+  # environment: helper.env_vars(%Q{
+  #   RAILS_ENV=production
+  #   SECRET_KEY_BASE=secret
+  # })
 }
 
 task_definition "<%= @app %>-web" do
