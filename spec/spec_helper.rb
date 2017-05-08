@@ -25,4 +25,9 @@ end
 
 RSpec.configure do |c|
   c.include Helpers
+
+  c.before(:each) do
+    # ensures we never called real aws api since the fixture home folder does not have ~/.aws/credentails setup
+    ENV['HOME'] = "spec/fixtures/home"
+  end
 end
