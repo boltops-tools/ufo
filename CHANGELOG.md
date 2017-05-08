@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.0.0]
+
+* add `ufo task` command
+* been using in production for a while, ready for 1.0.0 release
+
 ## [0.1.6]
 
 * default wait for deployment to false
