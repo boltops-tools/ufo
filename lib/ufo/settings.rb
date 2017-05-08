@@ -15,7 +15,7 @@ module Ufo
         @data = YAML.load_file(settings_path)
         @data = user_settings.merge(@data)
       else
-        puts "ERROR: No settings file file at #{settings_path}"
+        puts "ERROR: No settings file at #{settings_path}"
         puts "Please create a settings file via: ufo init"
         exit 1
       end
