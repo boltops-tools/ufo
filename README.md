@@ -24,9 +24,42 @@ Ufo deploys a task definition that is created via a template generator which is 
 
 Dependencies: You will need a working version of docker installed as ufo shells out and calls the `docker` command.
 
-## Usage
+## Quick Usage
 
-When using ufo if the ECS service does not yet exist, it will automatically be created for you.  Ufo will also automatically create the ECS cluster. If you are relying on this tool to create the cluster, you still need to associate ECS Container Instances to the cluster yourself. 
+### ufo ship
+
+To execute the ship process run:
+
+```bash
+ufo ship hi-web-prod--cluster mycluster
+```
+
+Note, if you have configured `ufo/settings.yml` to map hi-web-prod to the `mycluster` cluster using the service_cluster option the command becomes simply:
+
+```bash
+ufo ship hi-web-prod
+```
+
+When you run `ufo ship hi-web-prod`:
+
+1. It builds the docker image.
+2. Generates a task definition and registers it.
+3. Updates the ECS service to use it.
+
+If the ECS service hi-web-prod does not yet exist, ufo will create the service for you.
+
+By convention, if the service has a container name web, you'll get prompted to create an ELB and specify a target group arn.  The ELB and target group must already exist.
+
+You can bypass the prompt and specify the target group arn as part of the command.  The elb target group can only be associated when the service gets created for the first time.  If the service already exists then the `--target-group` parameter just gets ignored and the ECS task simply gets updated.  Example:
+
+
+```bash
+ufo ship hi-web-prod --target-group=arn:aws:elasticloadbalancing:us-east-1:12345689:targetgroup/hi-web-prod/12345
+```
+
+When using ufo if the ECS service does not yet exist, it will automatically be created for you.  Ufo will also automatically create the ECS cluster. If you are relying on this tool to create the cluster, you still need to associate ECS Container Instances to the cluster yourself.
+
+## Detailed Usage
 
 First initialize ufo files within your project.  Let's say you have an example `hi` app.
 
@@ -50,10 +83,10 @@ Take a look at the `ufo/settings.yml` file and notice that it contains some defa
 ```yaml
 image: tongueroo/hi
 service_cluster:
-  default: stag # default cluster
-  hi-web: stag
-  hi-clock: stag
-  hi-worker: stag
+  default: prod # default cluster
+  hi-web-prod: blue
+  hi-clock-prod: blue
+  hi-worker-prod: blue
 ```
 
 The `image` value is the name that ufo will use for the Docker image name.
@@ -61,12 +94,12 @@ The `image` value is the name that ufo will use for the Docker image name.
 The `service_cluster` mapping provides a way to set default service-to-cluster mappings so that you do not have to specify the `--cluster` repeatedly.  This is very helpful. For example:
 
 ```
-ufo ship hi-web --cluster hi-cluster
-ufo ship hi-web # same as above because it is configured in ufo/settings.yml
-ufo ship hi-web --cluster special-cluster # overrides the default setting in `ufo/settings.yml`.
+ufo ship hi-web-prod --cluster hi-cluster
+ufo ship hi-web-prod # same as above because it is configured in ufo/settings.yml
+ufo ship hi-web-prod --cluster special-cluster # overrides the default setting in `ufo/settings.yml`.
 ```
 
-## Task Definition ERB Template and DSL Generator
+### Task Definition ERB Template and DSL Generator
 
 Ufo task definitions are written as an ERB template that makes it every easily accessible and configurable to your requirements.  Here is is an example of an ERB template `ufo/templates/main.json.erb` that shows how easy it is to modfied the task definition you want to be uploaded by ufo:
 
@@ -112,16 +145,16 @@ Ufo task definitions are written as an ERB template that makes it every easily a
 }
 ```
 
-The instance variable values are specified in `ufo/task_definitions.rb` via a DSL.  Here's the 
+The instance variable values are specified in `ufo/task_definitions.rb` via a DSL.  Here's the
 
 
 ```ruby
-task_definition "hi-web" do
+task_definition "hi-web-prod" do
   source "main" # will use ufo/templates/main.json.erb
   variables(
     family: task_definition_name,
     # image: tongueroo/hi:ufo-[timestamp]=[sha]
-    image: helper.full_image_name, 
+    image: helper.full_image_name,
     environment: env_file('.env.prod')
     name: "web",
     container_port: helper.dockerfile_port,
@@ -139,45 +172,6 @@ The task\_definitions.rb file has some special variables and helper methods avai
 
 The 2 classes which provide these special helper methods are in [ufo/dsl.rb](https://github.com/tongueroo/ufo/blob/master/lib/ufo/dsl.rb) and [ufo/dsl/helper.rb](https://github.com/tongueroo/ufo/blob/master/lib/ufo/dsl/helper.rb). Refer to these classes for the full list of the special variables and methods.
 
-### Customizing Templates
-
-If you want to change the template then you can follow the example in the generated ufo files. For example, if you want to create a template for the worker service.
-
-1. Create a new template under ufo/templates/worker.json.erb.
-2. Change the source in the `task_definition` using "worker" as the source.
-3. Add variables.
-
-### ufo ship
-
-Ufo uses the aforementioned files to build task definitions and then ship to them to AWS ECS.  To execute the ship process run:
-
-```bash
-ufo ship hi-web --cluster stag
-```
-
-Note, if you have configured `ufo/settings.yml` to map hi-web to the stag cluster using the service_cluster option the command becomes simply:
-
-```bash
-ufo ship hi-web
-```
-
-When you run `ufo ship hi-web`:
-
-1. It builds the docker image.
-2. Generates a task definition and registers it.
-3. Updates the ECS service to use it.
-
-If the ECS service hi-web does not yet exist, ufo will create the service for you.
-
-By convention, if the service has a container name web, you'll get prompted to create an ELB and specify a target group arn.  The ELB and target group must already exist.
-
-You can bypass the prompt and specify the target group arn as part of the command.  The elb target group can only be associated when the service gets created for the first time.  If the service already exists then the `--target-group` parameter just gets ignored and the ECS task simply gets updated.  Example:
-
-
-```bash
-ufo ship hi-web --target-group=arn:aws:elasticloadbalancing:us-east-1:12345689:targetgroup/hi-web/jdisljflsdkjl
-```
-
 ### Shipping Multiple Services with bin/deploy
 
 A common pattern is to have 3 processes: web, worker, and clock.  This is very common in rails applcations. The web process handles web traffic, the worker process handles background job processing that would be too slow and potentially block web requests, and a clock process is typically used to schedule recurring jobs. These processes use the same codebase, or same docker image, but have slightly different run time settings.  For example, the docker run command for a web process could be [puma](http://puma.io/) and the command for a worker process could be [sidekiq](http://sidekiq.org/).  Environment variables are sometimes different also.  The important key is that the same docker image is used for all 3 services but the task definition for each service is different.
@@ -189,7 +183,7 @@ This is easily accomplished with the `bin/deploy` wrapper script that the `ufo i
 
 ufo ship hi-worker --cluster stag --no-wait
 ufo ship hi-clock --cluster stag --no-wait --no-docker
-ufo ship hi-web --cluster stag --no-docker
+ufo ship hi-web-prod--cluster stag --no-docker
 ```
 
 The first `ufo ship hi-worker` command build and ships docker image to ECS, but the following two `ufo ship` commands use the `--no-docker` flag to skip the `docker build` step.  `ufo ship` will use the last built docker image as the image to be shipped.  For those curious, this is stored in `ufo/docker_image_name_ufo.txt`.
@@ -199,7 +193,7 @@ The first `ufo ship hi-worker` command build and ships docker image to ECS, but 
 Ufo assumes a convention that service\_name and the task\_name are the same.  If you would like to override this convention then you can specify the task name.
 
 ```
-ufo ship hi-web --task my-task
+ufo ship hi-web-prod--task my-task
 ```
 
 This means that in the task_definition.rb you will also defined it with `my-task`.  For example:
@@ -236,20 +230,39 @@ ufo tasks register # will register all genreated task definitinos in the ufo/out
 Skips all the build docker phases of a deploy sequence and only update the service with the task definitions.
 
 ```bash
-ufo ship hi-web --no-docker
+ufo ship hi-web-prod--no-docker
 ```
 Note if you use the `--no-docker` option you should ensure that you have already push a docker image to your docker register.  Or else the task will not be able to spin up because the docker image does not exist.  I recommend that you normally use `ufo ship` most of the time.
 
 
-## Automated Docker Images Clean Up
+### Automated Docker Images Clean Up
 
 Ufo can be configured to automatically clean old images from the ECR registry after the deploy completes.  I normally set `~/.ufo/settings.yml` like so:
 
 ```yaml
-ecr_keep: 3
+ecr_keep: 30
 ```
 
 Automated Docker images clean up only works if you are using ECR registry.
+
+## Running a single task
+
+Sometimes you do not want to run a long running `service` but a one time task. Running Rails migrations are a good example of a one off task.  Here is an example of how you would run a one time task.
+
+```
+ufo task hi-migrate-prod
+```
+
+You will need to define a task definition for the migrate command also in `ufo/task_definitions.rb`.  If you only need to override the Docker command and can re-use an existing task definition like `hi-web-prod`.  You can use the `--override-command` option:
+
+```
+ufo task hi-web-prod --override-command '["bin/migrate"]'
+ufo task hi-web-prod --override-command bin/migrate
+ufo task hi-web-prod --override-command "bin/with_env bundle exec rake db:migrate:redo VERSION=xxx"
+ufo task hi-web-prod --override-command '["bin/with_env", "bundle", "exec", "rake", "db:migrate:redo", "VERSION=xxx"]''
+```
+
+The `--override-command` option takes a string. If the string has brackets in it then it will be evaluated as an Array but the option must be a string.
 
 ## Scale
 

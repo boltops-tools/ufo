@@ -17,6 +17,7 @@ module Ufo
   autoload :TasksBuilder, 'ufo/tasks_builder'
   autoload :TasksRegister, 'ufo/tasks_register'
   autoload :Ship, 'ufo/ship'
+  autoload :Task, 'ufo/task'
   autoload :EcrCleaner, 'ufo/ecr_cleaner'
   autoload :Destroy, 'ufo/destroy'
   autoload :Scale, 'ufo/scale'
