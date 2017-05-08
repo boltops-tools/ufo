@@ -95,29 +95,28 @@ module Ufo
     option :ecr_keep, type: :numeric, desc: "ECR specific cleanup of old images.  Specifies how many images to keep.  Only runs if the images are ECR images. Defaults to keeping all the images."
     long_desc Help.ship
     def ship(service)
-      builder = DockerBuilder.new(options) # outside if because it need docker.full_image_name
-      if options[:docker]
-        builder.build
-        builder.push
-      end
-
-      # task definition and deploy logic are coupled in the Ship class.
-      # Example: We need to know if the task defintion is a web service to see if we need to
-      # add the elb target group.  The web service information is in the TasksBuilder
-      # and the elb target group gets set in the Ship class.
-      # So we always call these together.
-      TasksBuilder.new(options).build
+      builder = build_docker(options)
       task_definition = options[:task] || service # convention
-      TasksRegister.register(task_definition, options)
-      ship = Ship.new(service, task_definition, options)
+      register_task(task_definition, options)
+      return if ENV['TEST'] # allows quick testing of the ship CLI portion only
 
-      return if ENV['TEST'] # to allow me to quickly test most of the ship CLI portion only
+      ship = Ship.new(service, task_definition, options)
       ship.deploy
       if options[:docker]
         DockerCleaner.new(builder.image_name, options).cleanup
         EcrCleaner.new(builder.image_name, options).cleanup
       end
       puts "Docker image shipped: #{builder.full_image_name.green}"
+    end
+
+    desc "task [TASK_DEFINITION]", "runs a one time task"
+    long_desc Help.task
+    option :docker, type: :boolean, desc: "Enable docker build and push", default: true
+    option :command, desc: "Override the command used for the container"
+    def task(task_definition)
+      build_docker(options)
+      register_task(task_definition, options)
+      Task.new(task_definition, options).run
     end
 
     desc "destroy [SERVICE]", "destroys the ECS service"
@@ -132,6 +131,32 @@ module Ufo
     long_desc Help.scale
     def scale(service, count)
       Scale.new(service, count, options).update
+    end
+
+    desc "version", "Prints version number of installed ufo"
+    def version
+      puts Ufo::VERSION
+    end
+
+    no_tasks do
+      def build_docker(options)
+        builder = DockerBuilder.new(options) # outside if because it need docker.full_image_name
+        if options[:docker]
+          builder.build
+          builder.push
+        end
+        builder
+      end
+
+      def register_task(task_definition, options)
+        # task definition and deploy logic are coupled in the Ship class.
+        # Example: We need to know if the task defintion is a web service to see if we need to
+        # add the elb target group.  The web service information is in the TasksBuilder
+        # and the elb target group gets set in the Ship class.
+        # So we always call these together.
+        TasksBuilder.new(options).build
+        TasksRegister.register(task_definition, options)
+      end
     end
   end
 end

@@ -137,6 +137,28 @@ $ ufo ship hi-web-prod --no-elb-prompt
 EOL
         end
 
+        def task
+<<-EOL
+Examples:
+
+To run a one time task with ECS:
+
+$ ufo task hi-migrate-prod
+
+You can also override the command used by the Docker container in the task definitions via override-command.
+
+ufo task hi-web-prod --override-command bin/migrate
+
+ufo task hi-web-prod --override-command '["bin/migrate"]'
+
+ufo task hi-web-prod --override-command "bin/with_env bundle exec rake db:migrate:redo VERSION=xxx"
+
+ufo task hi-web-prod --override-command '["bin/with_env","bundle","exec","rake","db:migrate:redo","VERSION=xxx"]''
+
+The `--override-command` option takes a string. If the string has brackets in it then it will be evaluated as an Array but the optoin must be a string.  Also there can be no spaces in the string.
+EOL
+        end
+
         def destroy
 <<-EOL
 Examples:
