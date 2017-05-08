@@ -31,7 +31,7 @@ Dependencies: You will need a working version of docker installed as ufo shells 
 To execute the ship process run:
 
 ```bash
-ufo ship hi-web-prod--cluster mycluster
+ufo ship hi-web-prod --cluster mycluster
 ```
 
 Note, if you have configured `ufo/settings.yml` to map hi-web-prod to the `mycluster` cluster using the service_cluster option the command becomes simply:
@@ -181,12 +181,12 @@ This is easily accomplished with the `bin/deploy` wrapper script that the `ufo i
 ```bash
 #!/bin/bash -xe
 
-ufo ship hi-worker --cluster stag --no-wait
-ufo ship hi-clock --cluster stag --no-wait --no-docker
-ufo ship hi-web-prod--cluster stag --no-docker
+ufo ship hi-worker-prod --cluster stag --no-wait
+ufo ship hi-clock-prod --cluster stag --no-wait --no-docker
+ufo ship hi-web-prod --cluster stag --no-docker
 ```
 
-The first `ufo ship hi-worker` command build and ships docker image to ECS, but the following two `ufo ship` commands use the `--no-docker` flag to skip the `docker build` step.  `ufo ship` will use the last built docker image as the image to be shipped.  For those curious, this is stored in `ufo/docker_image_name_ufo.txt`.
+The first `ufo ship hi-worker-prod` command build and ships docker image to ECS, but the following two `ufo ship` commands use the `--no-docker` flag to skip the `docker build` step.  `ufo ship` will use the last built docker image as the image to be shipped.  For those curious, this is stored in `ufo/docker_image_name_ufo.txt`.
 
 ### Service and Task Names Convention
 
