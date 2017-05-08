@@ -24,7 +24,7 @@ Ufo deploys a task definition that is created via a template generator which is 
 
 ### Dependencies
 
-* Docker: You will need a working version of docker installed as ufo shells out and calls the `docker` command.
+* Docker: You will need a working version of [Docker](https://docs.docker.com/engine/installation/) installed as ufo shells out and calls the `docker` command.
 * AWS: Set up your AWS credentials at `~/.aws/credentials` and `~/.aws/config`.  This is the [AWS standard way of setting up credentials](https://aws.amazon.com/blogs/security/a-new-and-standardized-way-to-manage-credentials-in-the-aws-sdks/).
 
 ## Quick Usage
