@@ -75,23 +75,6 @@ module Ufo
       stop_old_task(deployed_service) if @stop_old_tasks
     end
 
-    def process_multiple_services
-      puts "Multi services mode" unless @options[:mute]
-      services_to_deploy = []
-      find_all_ecs_services do |ecs_service|
-        if service_pattern_match?(ecs_service.service_name)
-          services_to_deploy << ecs_service
-        end
-      end
-
-      deployed_services = services_to_deploy.map do |ecs_service|
-        update_service(ecs_service)
-      end
-
-      wait_for_all_deployments(deployed_services) if @wait_for_deployment && !@options[:noop]
-      stop_old_tasks(deployed_services) if @stop_old_tasks
-    end
-
     def service_tasks(cluster, service)
       all_task_arns = ecs.list_tasks(cluster: cluster, service_name: service).task_arns
       return [] if all_task_arns.empty?
@@ -365,19 +348,6 @@ module Ufo
         name: container_def["name"],
         port: port
       }
-    end
-
-    def service_exact_match?(service_name)
-      service_name == @service
-    end
-
-    # @service is changed to a pattern to be search with.
-    #
-    # Examples:
-    #   @service == "hi-.*-prod"
-    def service_pattern_match?(service_name)
-      service_patttern = Regexp.new(@service)
-      service_name =~ service_patttern
     end
 
     def find_ecs_service
