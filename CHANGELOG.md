@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.1.0]
+
+* print out useful error for ERB template errors
+
 ## [1.0.1]
 
 * simplify `ufo task` command option
