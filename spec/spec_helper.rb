@@ -3,6 +3,9 @@ ENV['TEST'] = '1'
 require "codeclimate-test-reporter"
 CodeClimate::TestReporter.start
 
+# Ensures aws api never called. Fixture home folder does not contain ~/.aws/credentails
+ENV['HOME'] = "spec/fixtures/home"
+
 require "pp"
 require "byebug"
 
@@ -27,7 +30,5 @@ RSpec.configure do |c|
   c.include Helpers
 
   c.before(:each) do
-    # ensures we never called real aws api since the fixture home folder does not have ~/.aws/credentails setup
-    ENV['HOME'] = "spec/fixtures/home"
   end
 end
