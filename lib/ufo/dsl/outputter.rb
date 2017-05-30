@@ -13,8 +13,8 @@ module Ufo
         FileUtils.rm_rf(output_path) if @options[:clean]
         FileUtils.mkdir(output_path) unless File.exist?(output_path)
 
-        path = "#{output_path}/#{@name}.json"
-        puts "Generated task definition at: #{path}" unless @options[:quiet]
+        path = "#{output_path}/#{@name}.json".sub(/^\.\//,'')
+        puts "  #{path}" unless @options[:quiet]
         validate(@erb_result, path)
         json = @pretty ?
           JSON.pretty_generate(JSON.parse(@erb_result)) :
