@@ -1,8 +1,9 @@
 require 'thor'
+require 'ufo/command'
 require 'ufo/cli/help'
 
 module Ufo
-  class Docker < Thor
+  class Docker < Command
     desc "build", "builds docker image"
     long_desc CLI::Help.docker_build
     option :push, type: :boolean, default: false
@@ -44,7 +45,7 @@ module Ufo
     end
   end
 
-  class Tasks < Thor
+  class Tasks < Command
     desc "build", "builds task definitions"
     long_desc CLI::Help.tasks_build
     option :pretty, type: :boolean, default: true, desc: "Pretty format the json for the task definitions"
@@ -59,7 +60,7 @@ module Ufo
     end
   end
 
-  class CLI < Thor
+  class CLI < Command
     class_option :verbose, type: :boolean
     class_option :mute, type: :boolean
     class_option :noop, type: :boolean
