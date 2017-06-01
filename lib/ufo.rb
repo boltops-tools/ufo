@@ -5,6 +5,7 @@ require 'deep_merge'
 require "colorize"
 
 module Ufo
+  autoload :Command, 'ufo/command'
   autoload :Settings, 'ufo/settings'
   autoload :PrettyTime, 'ufo/pretty_time'
   autoload :Execute, 'ufo/execute'

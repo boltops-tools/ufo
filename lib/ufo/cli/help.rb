@@ -1,5 +1,5 @@
 module Ufo
-  class CLI < Thor
+  class CLI < Command
     class Help
       class << self
         def init
