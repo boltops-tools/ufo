@@ -184,9 +184,9 @@ This is easily accomplished with the `bin/deploy` wrapper script that the `ufo i
 ```bash
 #!/bin/bash -xe
 
-ufo ship hi-worker-prod --cluster stag --no-wait
-ufo ship hi-clock-prod --cluster stag --no-wait --no-docker
-ufo ship hi-web-prod --cluster stag --no-docker
+ufo ship hi-worker-prod --cluster prod --no-wait
+ufo ship hi-clock-prod --cluster prod --no-wait --no-docker
+ufo ship hi-web-prod --cluster prod --no-docker
 ```
 
 The first `ufo ship hi-worker-prod` command build and ships docker image to ECS, but the following two `ufo ship` commands use the `--no-docker` flag to skip the `docker build` step.  `ufo ship` will use the last built docker image as the image to be shipped.  For those curious, this is stored in `ufo/docker_image_name_ufo.txt`.
@@ -233,7 +233,7 @@ ufo tasks register # will register all genreated task definitinos in the ufo/out
 Skips all the build docker phases of a deploy sequence and only update the service with the task definitions.
 
 ```bash
-ufo ship hi-web-prod--no-docker
+ufo ship hi-web-prod --no-docker
 ```
 Note if you use the `--no-docker` option you should ensure that you have already push a docker image to your docker register.  Or else the task will not be able to spin up because the docker image does not exist.  I recommend that you normally use `ufo ship` most of the time.
 
