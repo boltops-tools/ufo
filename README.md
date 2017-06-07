@@ -196,7 +196,7 @@ The first `ufo ship hi-worker-prod` command build and ships docker image to ECS,
 Ufo assumes a convention that service\_name and the task\_name are the same.  If you would like to override this convention then you can specify the task name.
 
 ```
-ufo ship hi-web-prod--task my-task
+ufo ship hi-web-prod --task my-task
 ```
 
 This means that in the task_definition.rb you will also defined it with `my-task`.  For example:
