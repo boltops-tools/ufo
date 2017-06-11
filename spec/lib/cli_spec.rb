@@ -47,6 +47,16 @@ describe Ufo::CLI do
       end
     end
 
+    context "ships" do
+      it "deploys software to multiple services" do
+        out = execute("bin/ufo ships hi-web-prod hi-worker-prod #{@args} --no-wait")
+        # cannot look for Software shipped! because
+        #   ship.deploy unless ENV['TEST'] # to allow me to quickly test CLI portion only
+        # just testing the CLI portion.  The ship class itself is tested via ship_spec.rb
+        expect(out).to include("Task Definitions built")
+      end
+    end
+
     context "task" do
       it "runs one time task" do
         out = execute("bin/ufo task hi-migrate-prod #{@args}")

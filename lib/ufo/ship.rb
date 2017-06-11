@@ -26,7 +26,6 @@ module Ufo
     include AwsServices
     include PrettyTime
 
-    # service can be a pattern
     def initialize(service, task_definition, options={})
       @service = service
       @task_definition = task_definition

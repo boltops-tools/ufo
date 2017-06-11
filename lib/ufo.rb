@@ -25,4 +25,7 @@ module Ufo
   # modules
   autoload :Defaults, 'ufo/defaults'
   autoload :AwsServices, 'ufo/aws_services'
+
+  autoload :Docker, 'ufo/docker'
+  autoload :Tasks, 'ufo/tasks'
 end
