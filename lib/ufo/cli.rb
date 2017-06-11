@@ -83,7 +83,7 @@ module Ufo
 
     desc "destroy [SERVICE]", "destroys the ECS service"
     long_desc Help.destroy
-    option :force, type: :boolean, desc: "By pass are you sure prompt."
+    option :sure, type: :boolean, desc: "By pass are you sure prompt."
     def destroy(service)
       task_definition = options[:task] || service # convention
       Destroy.new(service, options).bye

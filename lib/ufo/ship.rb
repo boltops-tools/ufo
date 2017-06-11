@@ -340,8 +340,8 @@ module Ufo
       task_definition_path = "ufo/output/#{task_definition}.json"
       task_definition_full_path = "#{@project_root}/#{task_definition_path}"
       unless File.exist?(task_definition_full_path)
-        puts "ERROR: Unable to find the task definition at #{task_definition_path}."
-        puts "Are you sure you have defined it in ufo/template_definitions.rb?"
+        puts "ERROR: Unable to find the task definition at #{task_definition_path}.".colorize(:red)
+        puts "Are you sure you have defined it in ufo/template_definitions.rb?".colorize(:red)
         exit
       end
       task_definition = JSON.load(IO.read(task_definition_full_path))
