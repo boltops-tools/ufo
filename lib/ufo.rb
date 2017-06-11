@@ -1,7 +1,8 @@
-$:.unshift(File.expand_path("../", __FILE__))
-require "ufo/version"
+$:.unshift(File.expand_path('../', __FILE__))
+require 'ufo/version'
 require 'deep_merge'
-require "colorize"
+require 'colorize'
+require 'fileutils'
 
 module Ufo
   autoload :Defaults, 'ufo/defaults'
