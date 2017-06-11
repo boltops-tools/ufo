@@ -1,5 +1,12 @@
 #!/usr/bin/env ruby
 
+# Trap ^C
+Signal.trap("INT") {
+  puts "\nCtrl-C detected. Exiting..."
+  sleep 1
+  exit
+}
+
 require 'rubygems'
 
 $:.unshift(File.expand_path('../../lib', __FILE__))
