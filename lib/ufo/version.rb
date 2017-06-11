@@ -1,3 +1,3 @@
 module Ufo
-  VERSION = "1.2.0"
+  VERSION = "1.5.0"
 end

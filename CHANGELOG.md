@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.5.0]
+* add ufo ships command
+* refactor code into modules: ecr, docker, tasks
+* improve error message when task_definitions.rb evaluation errors
+* rename --force option to --sure
+
 ## [1.2.0]
 
 * allow -h, --help, help options at the end of the command
