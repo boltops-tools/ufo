@@ -50,7 +50,15 @@ module Ufo
     # Example:
     #   No way to map: hi-.*-prod -> hi-web-prod hi-worker-prod hi-clock-prod
     def deploy
-      puts "Shipping #{@service}...".green unless @options[:mute]
+      message = "Shipping #{@service}..."
+      unless @options[:mute]
+        if @options[:noop]
+          puts "NOOP: #{message}"
+          return
+        else
+          puts message.green
+        end
+      end
 
       ensure_cluster_exist
       process_single_service

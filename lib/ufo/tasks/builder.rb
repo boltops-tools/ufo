@@ -1,5 +1,16 @@
 module Ufo
   class Tasks::Builder
+    # build and registers together
+    def self.register(task_definition, options)
+      # task definition and deploy logic are coupled in the Ship class.
+      # Example: We need to know if the task defintion is a web service to see if we need to
+      # add the elb target group.  The web service information is in the Tasks::Builder
+      # and the elb target group gets set in the Ship class.
+      # So we always call these together.
+      Tasks::Builder.new(options).build
+      Tasks::Register.register(task_definition, options)
+    end
+
     def initialize(options={})
       @options = options
       @project_root = options[:project_root] || '.'

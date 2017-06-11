@@ -64,9 +64,11 @@ Examples:
 
 $ ufo ships hi-web-prod hi-clock-prod hi-worker-prod
 
-By convention the task and service names match for each of the services you ship. If you need override to this convention then you can specific the tasks.  In doing so you must specify all the the task names explicitly. Example:
+By convention the task and service names match for each of the services you ship. If you need override to this convention then you can specific the tasks with a special syntax.  In the special syntax the service and task definition is separate by a colon.  Example:
 
-$ ufo ships hi-web-prod-1 hi-clock-prod-1 hi-worker-prod-1 --tasks hi-web-prod hi-clock-prod hi-worker-prod
+$ ufo ships hi-web-prod-1:hi-web-prod hi-clock-prod-1 hi-worker-prod-1
+
+Here ufo will ship to the hi-web-prod-1 ECS Service and use the hi-web-prod task definition, but use the convention for the rest of the service.
 
 For each service being deployed to, ufo will create the ECS service if the service does not yet exist on the cluster.  The deploy process will prompt you for the ELB `--target-group` if you are deploying to a 'web' service that does not yet exist.  Ufo determines that it is a web service by the name of the service. If the service has 'web' in the name then it is considered a web service. If it is not a web service then the `--target-group` option gets ignored.
 

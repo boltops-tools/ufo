@@ -2,6 +2,15 @@ module Ufo
   class Docker::Builder
     include Util
 
+    def self.build(options)
+      builder = Docker::Builder.new(options) # outside if because it need builder.full_image_name
+      if options[:docker]
+        builder.build
+        builder.push
+      end
+      builder
+    end
+
     def initialize(options={})
       @options = options
       @project_root = options[:project_root] || '.'

@@ -44,25 +44,31 @@ module Ufo
     long_desc Help.ship
     ship_options.call
     def ship(service)
-      builder = build_docker(options)
-      task_definition = options[:task] || service # convention
-      register_task(task_definition, options)
-      return if ENV['TEST'] # allows quick testing of the ship CLI portion only
+      builder = build_docker
 
+      task_definition = options[:task] || service # convention
+      Tasks::Builder.register(task_definition, options)
       ship = Ship.new(service, task_definition, options)
       ship.deploy
-      if options[:docker]
-        Docker::Cleaner.new(builder.image_name, options).cleanup
-        Ecr::Cleaner.new(builder.image_name, options).cleanup
-      end
-      puts "Docker image shipped: #{builder.full_image_name.green}"
+
+      cleanup(builder.image_name)
     end
 
     desc "ships [LIST-OF-SERVICES]", "builds and ships same container image to multiple ECS services"
     long_desc Help.ships
     ship_options.call
     def ships(*services)
-      puts "services #{services.inspect}"
+      builder = build_docker
+
+      services.each_with_index do |service|
+        service_name, task_defintion_name = service.split(':')
+        task_definition = task_defintion_name || service_name # convention
+        Tasks::Builder.register(task_definition, options)
+        ship = Ship.new(service, task_definition, options)
+        ship.deploy
+      end
+
+      cleanup(builder.image_name)
     end
 
     desc "task [TASK_DEFINITION]", "runs a one time task"
@@ -70,8 +76,8 @@ module Ufo
     option :docker, type: :boolean, desc: "Enable docker build and push", default: true
     option :command, type: :array, desc: "Override the command used for the container"
     def task(task_definition)
-      build_docker(options)
-      register_task(task_definition, options)
+      Docker::Builder.build(options)
+      Tasks::Builder.register(task_definition, options)
       Task.new(task_definition, options).run
     end
 
@@ -95,8 +101,8 @@ module Ufo
     end
 
     no_tasks do
-      def build_docker(options)
-        builder = Docker::Builder.new(options) # outside if because it need docker.full_image_name
+      def build_docker
+        builder = Docker::Builder.new(options)
         if options[:docker]
           builder.build
           builder.push
@@ -104,14 +110,11 @@ module Ufo
         builder
       end
 
-      def register_task(task_definition, options)
-        # task definition and deploy logic are coupled in the Ship class.
-        # Example: We need to know if the task defintion is a web service to see if we need to
-        # add the elb target group.  The web service information is in the Tasks::Builder
-        # and the elb target group gets set in the Ship class.
-        # So we always call these together.
-        Tasks::Builder.new(options).build
-        Tasks::Register.register(task_definition, options)
+      def cleanup(image_name)
+        return unless options[:docker]
+
+        Docker::Cleaner.new(image_name, options).cleanup
+        Ecr::Cleaner.new(image_name, options).cleanup
       end
     end
   end
