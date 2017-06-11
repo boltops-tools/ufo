@@ -2,14 +2,14 @@ require 'plissken' # Hash#to_snake_keys
 require 'json'
 
 module Ufo
-  class TasksRegister
+  class Tasks::Register
     include AwsServices
 
     def self.register(task_name, options={})
       project_root = options[:project_root] || '.'
       Dir.glob("#{project_root}/ufo/output/*").each do |path|
         if task_name == :all or path.include?(task_name)
-          task_register = TasksRegister.new(path, options)
+          task_register = Tasks::Register.new(path, options)
           task_register.register
         end
       end

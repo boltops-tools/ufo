@@ -24,7 +24,7 @@ module Ufo
   class Ship
     include Defaults
     include AwsServices
-    include PrettyTime
+    include Util
 
     def initialize(service, task_definition, options={})
       @service = service

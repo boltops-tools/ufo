@@ -1,6 +1,6 @@
 module Ufo
-  class DockerCleaner
-    include Execute
+  class Docker::Cleaner
+    include Util
 
     def initialize(docker_image_name, options)
       # docker_image_name does not containg the tag

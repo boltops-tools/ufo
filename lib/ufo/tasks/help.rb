@@ -1,5 +1,6 @@
-module Ufo::Tasks::Help
-  def build
+module Ufo
+  module Tasks::Help
+    def build
 <<-EOL
 Examples:
 
@@ -9,16 +10,17 @@ Builds all the task defintiions.
 
 Note all the existing ufo/output generated task defintions are wiped out.
 EOL
-  end
+    end
 
-  def register
+    def register
 <<-EOL
 Examples:
 
 $ ufo tasks register
 All the task defintiions in ufo/output registered.
 EOL
-  end
+    end
 
-  extend self
+    extend self
+  end
 end

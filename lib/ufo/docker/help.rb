@@ -1,5 +1,6 @@
-module Ufo::Docker::Help
-  def base
+module Ufo
+  module Docker::Help
+    def base
 <<-EOL
 
 The docker cache task builds a docker image using the Dockerfile.base file and
@@ -13,9 +14,9 @@ $ ufo docker base --no-push # do not push the image to the registry
 
 Docker image tongueroo/hi:base-2016-10-21T15-50-57-88071f5 built.
 EOL
-  end
+    end
 
-  def build
+    def build
 <<-EOL
 Examples:
 
@@ -25,9 +26,9 @@ $ ufo docker build --push # also pushes the image to the docker registry
 
 Docker image tongueroo/hi:ufo-2016-10-21T15-50-57-88071f5 built.
 EOL
-  end
+    end
 
-  def full_image_name
+    def full_image_name
 <<-EOL
 Examples:
 
@@ -35,9 +36,9 @@ $ ufo docker full_image_name
 
 Docker image name that will be used: tongueroo/hi:ufo-2016-10-15T19-29-06-88071f5
 EOL
-  end
+    end
 
-  def cleanup
+    def cleanup
 <<-EOL
 Examples:
 
@@ -57,8 +58,8 @@ $ ufo docker cleanup tongueroo/hi
 
 This will remove tongueroo/hi:ufo-2016-10-15T19-29-06-88071f5.
 EOL
+    end
+
+    extend self
   end
-
-  extend self
 end
-

@@ -1,7 +1,5 @@
 module Ufo
-  autoload :DSL, 'ufo/dsl'
-
-  class TasksBuilder
+  class Tasks::Builder
     def initialize(options={})
       @options = options
       @project_root = options[:project_root] || '.'

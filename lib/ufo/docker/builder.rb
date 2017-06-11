@@ -1,7 +1,6 @@
 module Ufo
-  class DockerBuilder
-    include PrettyTime
-    include Execute
+  class Docker::Builder
+    include Util
 
     def initialize(options={})
       @options = options
@@ -54,7 +53,7 @@ module Ufo
     def update_auth_token
       return unless ecr_image?
       repo_domain = "https://#{image_name.split('/').first}"
-      auth = EcrAuth.new(repo_domain)
+      auth = Ecr::Auth.new(repo_domain)
       auth.update
     end
 
@@ -117,8 +116,8 @@ module Ufo
     end
 
     def update_dockerfile
-      updater = DockerfileUpdater.new(full_image_name, @options)
-      updater.update
+      dockerfile = Docker::Dockerfile.new(full_image_name, @options)
+      dockerfile.update
     end
 
     def say(msg)

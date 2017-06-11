@@ -52,8 +52,8 @@ module Ufo
       ship = Ship.new(service, task_definition, options)
       ship.deploy
       if options[:docker]
-        DockerCleaner.new(builder.image_name, options).cleanup
-        EcrCleaner.new(builder.image_name, options).cleanup
+        Docker::Cleaner.new(builder.image_name, options).cleanup
+        Ecr::Cleaner.new(builder.image_name, options).cleanup
       end
       puts "Docker image shipped: #{builder.full_image_name.green}"
     end
@@ -96,7 +96,7 @@ module Ufo
 
     no_tasks do
       def build_docker(options)
-        builder = DockerBuilder.new(options) # outside if because it need docker.full_image_name
+        builder = Docker::Builder.new(options) # outside if because it need docker.full_image_name
         if options[:docker]
           builder.build
           builder.push
@@ -107,11 +107,11 @@ module Ufo
       def register_task(task_definition, options)
         # task definition and deploy logic are coupled in the Ship class.
         # Example: We need to know if the task defintion is a web service to see if we need to
-        # add the elb target group.  The web service information is in the TasksBuilder
+        # add the elb target group.  The web service information is in the Tasks::Builder
         # and the elb target group gets set in the Ship class.
         # So we always call these together.
-        TasksBuilder.new(options).build
-        TasksRegister.register(task_definition, options)
+        Tasks::Builder.new(options).build
+        Tasks::Register.register(task_definition, options)
       end
     end
   end
