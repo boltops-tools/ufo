@@ -21,7 +21,7 @@ module Ufo
         dest = src.gsub(%r{.*starter_project/},'')
         dest = "#{@project_root}/#{dest}"
 
-        if File.exist?(dest) and !@options[:force]
+        if File.exist?(dest) and !@options[:sure]
           puts "exists: #{dest}".yellow unless @options[:quiet]
         else
           dirname = File.dirname(dest)

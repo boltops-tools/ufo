@@ -1,28 +1,24 @@
-$:.unshift(File.expand_path("../", __FILE__))
-require "ufo/version"
-require "pp"
+$:.unshift(File.expand_path('../', __FILE__))
+require 'ufo/version'
 require 'deep_merge'
-require "colorize"
+require 'colorize'
+require 'fileutils'
 
 module Ufo
-  autoload :Command, 'ufo/command'
-  autoload :Settings, 'ufo/settings'
-  autoload :PrettyTime, 'ufo/pretty_time'
-  autoload :Execute, 'ufo/execute'
-  autoload :Init, 'ufo/init'
-  autoload :EcrAuth, 'ufo/ecr_auth'
-  autoload :CLI, 'ufo/cli'
-  autoload :DockerBuilder, 'ufo/docker_builder'
-  autoload :DockerfileUpdater, 'ufo/dockerfile_updater'
-  autoload :DockerCleaner, 'ufo/docker_cleaner'
-  autoload :TasksBuilder, 'ufo/tasks_builder'
-  autoload :TasksRegister, 'ufo/tasks_register'
-  autoload :Ship, 'ufo/ship'
-  autoload :Task, 'ufo/task'
-  autoload :EcrCleaner, 'ufo/ecr_cleaner'
-  autoload :Destroy, 'ufo/destroy'
-  autoload :Scale, 'ufo/scale'
-  # modules
   autoload :Defaults, 'ufo/defaults'
   autoload :AwsServices, 'ufo/aws_services'
+  autoload :Command, 'ufo/command'
+  autoload :Settings, 'ufo/settings'
+  autoload :Util, 'ufo/util'
+  autoload :Init, 'ufo/init'
+  autoload :CLI, 'ufo/cli'
+  autoload :Ship, 'ufo/ship'
+  autoload :Task, 'ufo/task'
+  autoload :Destroy, 'ufo/destroy'
+  autoload :DSL, 'ufo/dsl'
+  autoload :Scale, 'ufo/scale'
+
+  autoload :Docker, 'ufo/docker'
+  autoload :Ecr, 'ufo/ecr'
+  autoload :Tasks, 'ufo/tasks'
 end

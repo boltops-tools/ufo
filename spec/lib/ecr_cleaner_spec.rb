@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe Ufo::EcrCleaner do
+describe Ufo::Ecr::Cleaner do
   let(:docker_image_name) { "123456789.dkr.ecr.us-east-1.amazonaws.com/my-name" }
   let(:repo_domain) { "https://123456789.dkr.ecr.us-east-1.amazonaws.com" }
   let(:cleaner) do
-    Ufo::EcrCleaner.new(docker_image_name,
+    Ufo::Ecr::Cleaner.new(docker_image_name,
       project_root: "spec/fixtures/hi",
       ecr_keep: 3, # using 3 to test, default is 30
       mute: true

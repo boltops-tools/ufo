@@ -22,66 +22,6 @@ $ ufo docker tag
 EOL
         end
 
-        def docker_base
-<<-EOL
-
-The docker cache task builds a docker image using the Dockerfile.base file and
-updates the FROM Dockerfile image with the generated image from Dockerfile.base.
-
-Examples:
-
-$ ufo docker base
-
-$ ufo docker base --no-push # do not push the image to the registry
-
-Docker image tongueroo/hi:base-2016-10-21T15-50-57-88071f5 built.
-EOL
-        end
-
-        def docker_build
-<<-EOL
-Examples:
-
-$ ufo docker build
-
-$ ufo docker build --push # also pushes the image to the docker registry
-
-Docker image tongueroo/hi:ufo-2016-10-21T15-50-57-88071f5 built.
-EOL
-        end
-
-        def docker_full_image_name
-<<-EOL
-Examples:
-
-$ ufo docker full_image_name
-
-Docker image name that will be used: tongueroo/hi:ufo-2016-10-15T19-29-06-88071f5
-EOL
-        end
-
-        def docker_cleanup
-<<-EOL
-Examples:
-
-Say you currently have these images:
-
-* tongueroo/hi:ufo-2016-10-15T19-29-06-88071f5
-
-* tongueroo/hi:ufo-2016-10-16T19-29-06-88071f5
-
-* tongueroo/hi:ufo-2016-10-17T19-29-06-88071f5
-
-* tongueroo/hi:ufo-2016-10-18T19-29-06-88071f5
-
-To clean them up and keep the 3 more recent:
-
-$ ufo docker cleanup tongueroo/hi
-
-This will remove tongueroo/hi:ufo-2016-10-15T19-29-06-88071f5.
-EOL
-        end
-
         def tasks
 <<-EOL
 Examples:
@@ -91,27 +31,6 @@ $ ufo tasks build
 Builds all the task defintiions.
 
 Note all the existing ufo/output generated task defintions are wiped out.
-EOL
-        end
-
-        def tasks_build
-<<-EOL
-Examples:
-
-$ ufo tasks build
-
-Builds all the task defintiions.
-
-Note all the existing ufo/output generated task defintions are wiped out.
-EOL
-        end
-
-        def tasks_register
-<<-EOL
-Examples:
-
-$ ufo tasks register
-All the task defintiions in ufo/output registered.
 EOL
         end
 
@@ -134,6 +53,30 @@ The prommpt can be bypassed by specifying a valid `--target-group` option or spe
 $ ufo ship hi-web-prod --target-group arn:aws:elasticloadbalancing:us-east-1:123456789:targetgroup/hi-web-prod/jsdlfjsdkd
 
 $ ufo ship hi-web-prod --no-elb-prompt
+EOL
+        end
+
+        def ships
+<<-EOL
+Builds docker image, registers it and ships it to multiple services.  This deploys the same docker image to multiple ECS services.
+
+Examples:
+
+$ ufo ships hi-web-prod hi-clock-prod hi-worker-prod
+
+By convention the task definition and service names match for each of the services you ship. If you need to override to this convention then you can specify the task definition for each service with a special syntax.  In the special syntax the service and task definition is separated by a colon.  Example:
+
+$ ufo ships hi-web-prod-1:hi-web-prod hi-clock-prod-1 hi-worker-prod-1
+
+Here ufo will deploy to the hi-web-prod-1 ECS Service using the hi-web-prod task definition, but use the convention for the rest of the service.
+
+For each service being deployed to, ufo will create the ECS service if the service does not yet exist on the cluster.  The deploy process will prompt you for the ELB `--target-group` if you are deploying to a 'web' service that does not yet exist.  Ufo determines that it is a web service by the name of the service. If the service has 'web' in the name then it is considered a web service. If it is not a web service then the `--target-group` option gets ignored.
+
+The prommpt can be bypassed by specifying a valid `--target-group` option or specifying the `---no-elb-prompt` option.  Examples:
+
+$ ufo ships hi-web-prod hi-clock-prod hi-worker-prod --target-group arn:aws:elasticloadbalancing:us-east-1:123456789:targetgroup/hi-web-prod/jsdlfjsdkd
+
+$ ufo ships hi-web-prod hi-clock-prod hi-worker-prod --no-elb-prompt
 EOL
         end
 

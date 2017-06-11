@@ -23,7 +23,7 @@ module Ufo
       end
 
       def full_image_name
-        DockerBuilder.new(@options).full_image_name
+        Docker::Builder.new(@options).full_image_name
       end
 
       #############

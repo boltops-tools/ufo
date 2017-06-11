@@ -1,5 +1,5 @@
 module Ufo
-  class DockerfileUpdater
+  class Docker::Dockerfile
     def initialize(full_image_name, options={})
       @full_image_name = full_image_name
       @options = options

@@ -3,63 +3,6 @@ require 'ufo/command'
 require 'ufo/cli/help'
 
 module Ufo
-  class Docker < Command
-    desc "build", "builds docker image"
-    long_desc CLI::Help.docker_build
-    option :push, type: :boolean, default: false
-    def build
-      builder = DockerBuilder.new(options)
-      builder.build
-      builder.push if options[:push]
-    end
-
-    desc "base", "builds docker image from Dockerfile.base and update current Dockerfile"
-    long_desc CLI::Help.docker_base
-    option :push, type: :boolean, default: true
-    def base
-      builder = DockerBuilder.new(options.dup.merge(
-        image_namespace: "base",
-        dockerfile: "Dockerfile.base"
-      ))
-      builder.build
-      builder.push if options[:push]
-      builder.update_dockerfile
-      DockerCleaner.new(builder.image_name, options.merge(tag_prefix: "base")).cleanup
-      EcrCleaner.new(builder.image_name, options.merge(tag_prefix: "base")).cleanup
-    end
-
-    desc "image_name", "displays the full docker image with tag that will be generated"
-    option :generate, type: :boolean, default: false, desc: "Generate a name without storing it"
-    long_desc CLI::Help.docker_full_image_name
-    def image_name
-      full_image_name = DockerBuilder.new(options).full_image_name
-      puts full_image_name
-    end
-
-    desc "cleanup IMAGE_NAME", "Cleans up old images.  Keeps a specified amount."
-    option :keep, type: :numeric, default: 3
-    option :tag_prefix, default: "ufo"
-    long_desc CLI::Help.docker_cleanup
-    def cleanup(image_name)
-      DockerCleaner.new(image_name, options).cleanup
-    end
-  end
-
-  class Tasks < Command
-    desc "build", "builds task definitions"
-    long_desc CLI::Help.tasks_build
-    option :pretty, type: :boolean, default: true, desc: "Pretty format the json for the task definitions"
-    def build
-      TasksBuilder.new(options).build
-    end
-
-    desc "register", "register all built task definitions in ufo/output"
-    long_desc CLI::Help.tasks_register
-    def register
-      TasksRegister.register(:all, options)
-    end
-  end
-
   class CLI < Command
     class_option :verbose, type: :boolean
     class_option :mute, type: :boolean
@@ -67,11 +10,11 @@ module Ufo
     class_option :project_root, type: :string, default: '.'
     class_option :cluster, desc: "Cluster.  Overrides ufo/settings.yml."
 
-    desc "docker ACTION", "docker related tasks"
+    desc "docker [ACTION]", "docker related tasks"
     long_desc Help.docker
     subcommand "docker", Docker
 
-    desc "tasks ACTION", "task definition related tasks"
+    desc "tasks [ACTION]", "task definition related tasks"
     long_desc Help.tasks
     subcommand "tasks", Tasks
 
@@ -84,30 +27,48 @@ module Ufo
       Init.new(options).setup
     end
 
-    desc "ship [SERVICE]", "ships container to the ECS service"
-    option :task, desc: "ECS task name, to override the task name convention."
-    option :target_group, desc: "ELB Target Group ARN."
-    option :elb, desc: "ELB Name associated with the target_group.  Assumes first "
-    option :elb_prompt, type: :boolean, desc: "Enable ELB prompt", default: true
-    option :docker, type: :boolean, desc: "Enable docker build and push", default: true
-    option :wait, type: :boolean, desc: "Wait for deployment to complete", default: false
-    option :pretty, type: :boolean, default: true, desc: "Pretty format the json for the task definitions"
-    option :stop_old_tasks, type: :boolean, default: false, desc: "Stop old tasks after waiting for deploying to complete"
-    option :ecr_keep, type: :numeric, desc: "ECR specific cleanup of old images.  Specifies how many images to keep.  Only runs if the images are ECR images. Defaults to keeping all the images."
-    long_desc Help.ship
-    def ship(service)
-      builder = build_docker(options)
-      task_definition = options[:task] || service # convention
-      register_task(task_definition, options)
-      return if ENV['TEST'] # allows quick testing of the ship CLI portion only
+    # common options to ship and ships command
+    ship_options = Proc.new do
+      option :task, desc: "ECS task name, to override the task name convention."
+      option :target_group, desc: "ELB Target Group ARN."
+      option :elb, desc: "ELB Name associated with the target_group.  Assumes first "
+      option :elb_prompt, type: :boolean, desc: "Enable ELB prompt", default: true
+      option :docker, type: :boolean, desc: "Enable docker build and push", default: true
+      option :wait, type: :boolean, desc: "Wait for deployment to complete", default: false
+      option :pretty, type: :boolean, default: true, desc: "Pretty format the json for the task definitions"
+      option :stop_old_tasks, type: :boolean, default: false, desc: "Stop old tasks after waiting for deploying to complete"
+      option :ecr_keep, type: :numeric, desc: "ECR specific cleanup of old images.  Specifies how many images to keep.  Only runs if the images are ECR images. Defaults to keeping all the images."
+    end
 
+    desc "ship [SERVICE]", "builds and ships container image to the ECS service"
+    long_desc Help.ship
+    ship_options.call
+    def ship(service)
+      builder = build_docker
+
+      task_definition = options[:task] || service # convention
+      Tasks::Builder.register(task_definition, options)
       ship = Ship.new(service, task_definition, options)
       ship.deploy
-      if options[:docker]
-        DockerCleaner.new(builder.image_name, options).cleanup
-        EcrCleaner.new(builder.image_name, options).cleanup
+
+      cleanup(builder.image_name)
+    end
+
+    desc "ships [LIST-OF-SERVICES]", "builds and ships same container image to multiple ECS services"
+    long_desc Help.ships
+    ship_options.call
+    def ships(*services)
+      builder = build_docker
+
+      services.each_with_index do |service|
+        service_name, task_defintion_name = service.split(':')
+        task_definition = task_defintion_name || service_name # convention
+        Tasks::Builder.register(task_definition, options)
+        ship = Ship.new(service, task_definition, options)
+        ship.deploy
       end
-      puts "Docker image shipped: #{builder.full_image_name.green}"
+
+      cleanup(builder.image_name)
     end
 
     desc "task [TASK_DEFINITION]", "runs a one time task"
@@ -115,14 +76,14 @@ module Ufo
     option :docker, type: :boolean, desc: "Enable docker build and push", default: true
     option :command, type: :array, desc: "Override the command used for the container"
     def task(task_definition)
-      build_docker(options)
-      register_task(task_definition, options)
+      Docker::Builder.build(options)
+      Tasks::Builder.register(task_definition, options)
       Task.new(task_definition, options).run
     end
 
     desc "destroy [SERVICE]", "destroys the ECS service"
     long_desc Help.destroy
-    option :force, type: :boolean, desc: "By pass are you sure prompt."
+    option :sure, type: :boolean, desc: "By pass are you sure prompt."
     def destroy(service)
       task_definition = options[:task] || service # convention
       Destroy.new(service, options).bye
@@ -140,8 +101,8 @@ module Ufo
     end
 
     no_tasks do
-      def build_docker(options)
-        builder = DockerBuilder.new(options) # outside if because it need docker.full_image_name
+      def build_docker
+        builder = Docker::Builder.new(options)
         if options[:docker]
           builder.build
           builder.push
@@ -149,14 +110,11 @@ module Ufo
         builder
       end
 
-      def register_task(task_definition, options)
-        # task definition and deploy logic are coupled in the Ship class.
-        # Example: We need to know if the task defintion is a web service to see if we need to
-        # add the elb target group.  The web service information is in the TasksBuilder
-        # and the elb target group gets set in the Ship class.
-        # So we always call these together.
-        TasksBuilder.new(options).build
-        TasksRegister.register(task_definition, options)
+      def cleanup(image_name)
+        return unless options[:docker]
+
+        Docker::Cleaner.new(image_name, options).cleanup
+        Ecr::Cleaner.new(image_name, options).cleanup
       end
     end
   end

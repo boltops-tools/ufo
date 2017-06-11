@@ -158,7 +158,7 @@ task_definition "hi-web-prod" do
     family: task_definition_name,
     # image: tongueroo/hi:ufo-[timestamp]=[sha]
     image: helper.full_image_name,
-    environment: env_file('.env.prod')
+    environment: helper.env_file('.env.prod')
     name: "web",
     container_port: helper.dockerfile_port,
     command: ["bin/web"]
@@ -170,8 +170,8 @@ The task\_definitions.rb file has some special variables and helper methods avai
 
 * **helper.full\_image\_name** — The full docker image name that ufo builds. The “base” portion of the docker image name is defined in ufo/settings.yml. For example, the base portion is `tongueroo/hi` and the full image name is `tongueroo/hi:ufo-[timestamp]-[sha]`. The base name does not include the generated Docker tag, which contains a timestamp and git sha of the Dockerfile that is used.
 * **helper.dockerfile\_port** — Exposed port extracted from the Dockerfile of the project. 
-* **env_vars(text)** — This method takes a block of text that contains the env values in key=value format and converts that block of text to the proper task definition json format.
-* **env_file(path)** — This method takes an `.env` file which contains a simple key value list of environment variables and converts the list to the proper task definition json format.
+* **helper.env_vars(text)** — This method takes a block of text that contains the env values in key=value format and converts that block of text to the proper task definition json format.
+* **helper.env_file(path)** — This method takes an `.env` file which contains a simple key value list of environment variables and converts the list to the proper task definition json format.
 
 The 2 classes which provide these special helper methods are in [ufo/dsl.rb](https://github.com/tongueroo/ufo/blob/master/lib/ufo/dsl.rb) and [ufo/dsl/helper.rb](https://github.com/tongueroo/ufo/blob/master/lib/ufo/dsl/helper.rb). Refer to these classes for the full list of the special variables and methods.
 

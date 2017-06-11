@@ -50,7 +50,7 @@ module Ufo
     end
 
     def are_you_sure?
-      return true if @options[:force]
+      return true if @options[:sure]
       puts "You are about to destroy #{@service} service on #{@cluster} cluster."
       print "Are you sure you want to do this? (y/n) "
       answer = $stdin.gets.strip

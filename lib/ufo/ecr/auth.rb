@@ -1,5 +1,5 @@
 module Ufo
-  class EcrAuth
+  class Ecr::Auth
     include AwsServices
 
     def initialize(repo_domain)

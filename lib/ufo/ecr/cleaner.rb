@@ -4,7 +4,7 @@ require "json"
 #
 #   ufo ship app-web --cluster prod --noop
 module Ufo
-  class EcrCleaner
+  class Ecr::Cleaner
     include AwsServices
     include Defaults
 
@@ -50,7 +50,7 @@ module Ufo
 
     def update_auth_token
       repo_domain = "https://#{@docker_image_name.split('/').first}"
-      auth = EcrAuth.new(repo_domain)
+      auth = Ecr::Auth.new(repo_domain)
       auth.update
     end
 
