@@ -20,7 +20,7 @@ describe Ufo::CLI do
       end
 
       it "tag shows the tag" do
-        out = execute("bin/ufo docker image_name #{@args}")
+        out = execute("bin/ufo docker name #{@args}")
         expect(out).to match(%r{tongueroo/hi:ufo-.{7}})
       end
     end

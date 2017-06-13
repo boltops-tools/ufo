@@ -20,7 +20,7 @@ common = {
   # })
 }
 
-task_definition "<%= @app %>-web" do
+task_definition "<%= @app %>-web-<%= @env %>" do
   source "main" # will use ufo/templates/main.json.erb
   variables(common.dup.deep_merge(
     family: task_definition_name,
@@ -30,7 +30,7 @@ task_definition "<%= @app %>-web" do
   ))
 end
 
-task_definition "<%= @app %>-worker" do
+task_definition "<%= @app %>-worker-<%= @env %>" do
   source "main" # will use ufo/templates/main.json.erb
   variables(common.dup.deep_merge(
     family: task_definition_name,
@@ -39,7 +39,7 @@ task_definition "<%= @app %>-worker" do
   ))
 end
 
-task_definition "<%= @app %>-clock" do
+task_definition "<%= @app %>-clock-<%= @env %>" do
   source "main" # will use ufo/templates/main.json.erb
   variables(common.dup.deep_merge(
     family: task_definition_name,

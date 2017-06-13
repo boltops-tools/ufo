@@ -28,17 +28,17 @@ Docker image tongueroo/hi:ufo-2016-10-21T15-50-57-88071f5 built.
 EOL
     end
 
-    def full_image_name
+    def name
 <<-EOL
 Examples:
 
-$ ufo docker full_image_name
+$ ufo docker name
 
 Docker image name that will be used: tongueroo/hi:ufo-2016-10-15T19-29-06-88071f5
 EOL
     end
 
-    def cleanup
+    def clean
 <<-EOL
 Examples:
 
@@ -54,7 +54,7 @@ Say you currently have these images:
 
 To clean them up and keep the 3 more recent:
 
-$ ufo docker cleanup tongueroo/hi
+$ ufo docker clean tongueroo/hi
 
 This will remove tongueroo/hi:ufo-2016-10-15T19-29-06-88071f5.
 EOL

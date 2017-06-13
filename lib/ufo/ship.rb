@@ -31,7 +31,7 @@ module Ufo
       @task_definition = task_definition
       @options = options
       @project_root = options[:project_root] || '.'
-      @elb_prompt = @options[:elb_prompt].nil? ? true : @options[:elb_prompt]
+      @target_group_prompt = @options[:target_group_prompt].nil? ? true : @options[:target_group_prompt]
       @cluster = @options[:cluster] || default_cluster
       @wait_for_deployment = @options[:wait].nil? ? true : @options[:wait]
       @stop_old_tasks = @options[:stop_old_tasks].nil? ? false : @options[:stop_old_tasks]
@@ -303,7 +303,7 @@ module Ufo
     # if the container name is "web".
     def create_service_prompt(container)
       return if @options[:noop]
-      return unless @elb_prompt
+      return unless @target_group_prompt
       if container[:name] != "web" and @options[:target_group]
         puts "WARNING: A --target-group #{@options[:target_group]} was provided but it will not be used because this not a web container.  Container name: #{container[:name].inspect}."
       end

@@ -22,6 +22,7 @@ module Ufo
     option :cluster, type: :string, required: true, desc: "ECS cluster name. Example: default"
     option :image, type: :string, required: true, desc: "Docker image name without the tag. Example: tongueroo/hi"
     option :app, type: :string, required: true, desc: "App name. Preferably one word. Used in the generated ufo/task_definitions.rb."
+    option :env, type: :string, required: true, desc: "Environment name. Preferably one word. Used in the generated ufo/task_definitions.rb."
     long_desc Help.init
     def init
       Init.new(options).setup
@@ -31,9 +32,9 @@ module Ufo
     ship_options = Proc.new do
       option :task, desc: "ECS task name, to override the task name convention."
       option :target_group, desc: "ELB Target Group ARN."
-      option :elb, desc: "ELB Name associated with the target_group.  Assumes first "
-      option :elb_prompt, type: :boolean, desc: "Enable ELB prompt", default: true
+      option :target_group_prompt, type: :boolean, desc: "Enable Target Group ARN prompt", default: true
       option :docker, type: :boolean, desc: "Enable docker build and push", default: true
+      option :tasks, type: :boolean, desc: "Enable tasks build and register", default: true
       option :wait, type: :boolean, desc: "Wait for deployment to complete", default: false
       option :pretty, type: :boolean, default: true, desc: "Pretty format the json for the task definitions"
       option :stop_old_tasks, type: :boolean, default: false, desc: "Stop old tasks after waiting for deploying to complete"
@@ -47,7 +48,7 @@ module Ufo
       builder = build_docker
 
       task_definition = options[:task] || service # convention
-      Tasks::Builder.register(task_definition, options)
+      Tasks::Builder.register(task_definition, options) if options[:tasks]
       ship = Ship.new(service, task_definition, options)
       ship.deploy
 
@@ -63,7 +64,7 @@ module Ufo
       services.each_with_index do |service|
         service_name, task_defintion_name = service.split(':')
         task_definition = task_defintion_name || service_name # convention
-        Tasks::Builder.register(task_definition, options)
+        Tasks::Builder.register(task_definition, options) if options[:tasks]
         ship = Ship.new(service, task_definition, options)
         ship.deploy
       end
