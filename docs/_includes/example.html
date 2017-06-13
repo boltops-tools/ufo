@@ -1,0 +1,80 @@
+<section id="screenshot">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <h2>Example: ufo ship hi-web</h2>
+        <hr class="star-primary">
+      </div>
+    </div>
+    <div class='row'>
+      <div class='col-md-offset-1 col-md-10'>
+{% highlight sh %}
+$ ufo ship hi-web
+Building docker image with:
+  docker build -t tongueroo/hi:ufo-2017-06-11T19-43-19-bc80e84 -f Dockerfile .
+Sending build context to Docker daemon 719.4 kB
+Step 1 : FROM ruby:2.3.3
+ ---> 0e1db669d557
+Step 2 : RUN apt-get update && apt-get install -y build-essential nodejs
+ ---> Using cache
+ ---> 931ace833716
+Step 3 : WORKDIR /app
+ ---> Using cache
+ ---> cbb5c15ad1b1
+Step 4 : ADD Gemfile /app/Gemfile
+ ---> Using cache
+ ---> f1e152250b3e
+Step 5 : ADD Gemfile.lock /app/Gemfile.lock
+ ---> Using cache
+ ---> 779ebef7e4e2
+Step 6 : RUN bundle install --system
+ ---> Using cache
+ ---> 82fa66ab7513
+Step 7 : ADD . /app
+ ---> 7c19cea5f89b
+Removing intermediate container 54f2f54b6d8a
+Step 8 : RUN bundle install --system
+ ---> Running in 1deb79965099
+Bundle complete! 12 Gemfile dependencies, 56 gems now installed.
+Bundled gems are installed into /usr/local/bundle.
+ ---> 43a24c8073cb
+Removing intermediate container 1deb79965099
+Step 9 : RUN chmod a+x bin/*
+ ---> Running in 1c4be40ec03c
+ ---> 167ed122d8ae
+Removing intermediate container 1c4be40ec03c
+Step 10 : EXPOSE 3000
+ ---> Running in 38b7a02a584e
+ ---> 12e511582f93
+Removing intermediate container 38b7a02a584e
+Step 11 : CMD bin/web
+ ---> Running in f56d659a2c9e
+ ---> 1689ba53ca03
+Removing intermediate container f56d659a2c9e
+Successfully built 1689ba53ca03
+Docker image tongueroo/hi:ufo-2017-06-11T19-43-19-bc80e84 built.  Took 34s.
+The push refers to a repository [docker.io/tongueroo/hi]
+0826214f2b9a: Pushed
+ee30634e4a5d: Pushed
+277ff31e79b4: Layer already exists
+a361a4de05df: Layer already exists
+ufo-2017-06-11T19-43-19-bc80e84: digest: sha256:6381ff8d4413edf0c13926def1d55d0f805d169d686f59cdee3abb960b52eb9a size: 3464
+Pushed tongueroo/hi:ufo-2017-06-11T19-43-19-bc80e84 docker image. Took 10s.
+Building Task Definitions...
+Generating Task Definitions:
+  ufo/output/hi-web.json
+  ufo/output/hi-worker.json
+  ufo/output/hi-clock.json
+Task Definitions built in ufo/output.
+hi-web task definition registered.
+Shipping hi-web...
+hi-web service updated on stag cluster with task hi-web
+Software shipped!
+Cleaning up docker images...
+Running: docker rmi tongueroo/hi:ufo-2017-06-11T11-37-00-bc80e84
+$
+{% endhighlight %}
+      </div>
+    </div>
+  </div>
+</section>
