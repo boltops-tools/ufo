@@ -30,7 +30,7 @@ module Ufo
       command = "cd #{@project_root} && #{command}"
       success = execute(command, use_system: true)
       unless success
-        puts "The docker image fail to build.  Are you sure the docker daemon is available?  Try running: docker version"
+        puts "ERROR: The docker image fail to build.  Are you sure the docker daemon is available?  Try running: docker version".colorize(:red)
         exit 1
       end
 
@@ -45,7 +45,13 @@ module Ufo
       if @options[:noop]
         message = "NOOP #{message}"
       else
-        execute("docker push #{full_image_name}", use_system: true)
+        command = "docker push #{full_image_name}"
+        puts "=> #{command}".colorize(:green)
+        success = execute(command, use_system: true)
+        unless success
+          puts "ERROR: The docker image fail to push.".colorize(:red)
+          exit 1
+        end
       end
       took = Time.now - start_time
       message << " Took #{pretty_time(took)}.".green
