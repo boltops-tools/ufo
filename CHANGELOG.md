@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.6.1]
+* exit if docker push fails
+
 ## [1.6.0]
 * rename ufo docker cleanup -> ufo docker clean
 * rename ufo docker image_name -> ufo docker name
