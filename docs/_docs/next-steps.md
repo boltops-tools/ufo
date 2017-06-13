@@ -1,0 +1,18 @@
+---
+title: Next Steps
+---
+
+This concludes the tutorial guide for ufo. Hopefully you are now more comfortable with ufo's basic usage, concepts, and have a feel for the workflow.
+
+From here, there are a few resources that can help you continue along:
+
+* Check out the [ufo](https://github.com/tongueroo/ufo) repo on GitHub
+* Submit an issue
+* Write a blog post describing how you are using ufo, or an interesting problem ufo has allowed you to solve
+
+Everyone can contribute to make ufo better, including the documentation. These docs are of the same ufo repo in the [docs folder](https://github.com/tongueroo/ufo/tree/master/docs). Please fork the project and open a pull request!  We love your pull requests. Contributions are encouraged and welcomed!
+
+<a id="prev" class="btn btn-basic" href="{% link _docs/conventions.md %}">Back</a>
+<a id="next" class="btn btn-primary" href="{% link articles.md %}">Next Step</a>
+<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+

@@ -1,0 +1,78 @@
+ <!-- About Section -->
+    <section id="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2>Commands</h2>
+                    <hr class="star-primary">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2">
+                    <div class="commands">
+{% highlight sh %}
+ufo ship
+
+ufo docker build
+
+ufo tasks build
+
+ufo scale
+
+ufo destroy
+{% endhighlight %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <h3>ufo/templates/main.json.erb</h3>
+                    <div class="commands">
+{% highlight json %}
+{
+    "family": "<%= @family %>",
+    "containerDefinitions": [
+        {
+            "name": "<%= @name %>",
+            "image": "<%= @image %>",
+            "cpu": <%= @cpu %>,
+            <% end %>
+            "command": <%= @command.to_json %>,
+            <% if @environment %>
+            "environment": <%= @environment.to_json %>,
+            <% end %>
+            "essential": true
+        }
+    ]
+}
+{% endhighlight %}
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <h3>ufo/template_definitions.rb</h3>
+                    <div class="commands">
+{% highlight ruby %}
+common = {
+  image: helper.full_image_name,
+  cpu: 128,
+  memory_reservation: 256,
+  environment: helper.env_vars("RAILS_ENV=production"),
+  container_port: helper.dockerfile_port,
+}
+
+task_definition "example-web" do
+  source "main"
+  variables(common.dup.deep_merge(
+    family: task_definition_name,
+    name: "web",
+    awslogs_group: "example-web",
+    awslogs_stream_prefix: "example",
+    command: ["bin/web"]
+  ))
+end
+{% endhighlight %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>

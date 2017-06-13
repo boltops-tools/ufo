@@ -29,19 +29,19 @@ module Ufo
       Ecr::Cleaner.new(builder.image_name, options.merge(tag_prefix: "base")).cleanup
     end
 
-    desc "image_name", "displays the full docker image with tag that will be generated"
+    desc "name", "displays the full docker image with tag that will be generated"
     option :generate, type: :boolean, default: false, desc: "Generate a name without storing it"
-    long_desc Help.full_image_name
-    def image_name
+    long_desc Help.name
+    def name
       full_image_name = Docker::Builder.new(options).full_image_name
       puts full_image_name
     end
 
-    desc "cleanup IMAGE_NAME", "Cleans up old images.  Keeps a specified amount."
+    desc "clean IMAGE_NAME", "Cleans up old images.  Keeps a specified amount."
     option :keep, type: :numeric, default: 3
     option :tag_prefix, default: "ufo"
-    long_desc Help.cleanup
-    def cleanup(image_name)
+    long_desc Help.clean
+    def clean(image_name)
       Docker::Cleaner.new(image_name, options).cleanup
     end
   end

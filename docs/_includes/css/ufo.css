@@ -1,0 +1,166 @@
+ol.overview-stages li {
+    font-size: 1.1em;
+    padding: 10px 0;
+}
+
+section#main {
+    text-align: center;
+    color: #fff;
+    background: #{{ site.color.primary }};
+}
+
+section#main .container {
+    padding-top: 60px;
+    padding-bottom: 50px;
+}
+
+section#main img {
+    display: block;
+    margin: 0 auto 20px;
+}
+
+section#main .intro-text .name {
+    display: block;
+    text-transform: uppercase;
+    font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 2em;
+    font-weight: 700;
+}
+
+section#main .intro-text .skills {
+    font-size: 1.25em;
+    font-weight: 300;
+}
+
+@media(min-width:768px) {
+    section#main {
+        text-align: left;
+    }
+
+    section#main .container {
+        padding-top: 60px;
+        padding-bottom: 40px;
+    }
+
+    section#main .intro-text .name {
+        font-size: 4.75em;
+    }
+
+    section#main .intro-text .skills {
+        font-size: 1.75em;
+    }
+}
+
+.content-body {
+    text-align: left;
+}
+
+.content-body h2 {
+    text-align: center;
+}
+
+.content-body ul,
+.content-body ol {
+    margin-top: 0;
+}
+.content-body ul li,
+.content-body ol li {
+    font-size: 1.2em;
+}
+
+.content-nav {
+    /*background-color: green;*/
+    margin-top: 40px;
+    font-size: 1.25em;
+}
+
+.content-nav ul, .content-nav ol {
+    list-style-type: none;
+    margin-left: 0;
+    padding-left: 10px;
+}
+
+.content-nav a {
+    color: #9acfe0;
+}
+
+.content-nav a.active {
+    color: #e2ddef;
+    font-weight: bold;
+}
+
+/* override for syntax.css */
+code {
+    color: #443e40;
+    background-color: #cdcbd4;
+}
+
+footer h3 {
+    margin-bottom: 25px;
+}
+
+footer img.footer-logo {
+    width: 240px;
+}
+
+img.doc-photo {
+    width: 100%;
+}
+
+/*footer*/
+ul.tools {
+    margin-top: 0;
+}
+ul.tools li {
+    font-size: 1.3em;
+}
+
+
+
+.btn-xl {
+    padding: 20px 40px;
+    border-color: #{{ site.data.template.color.primary }};
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-family: {{ site.data.template.font.primary }};
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    background-color: #{{ site.data.template.color.primary }};
+}
+
+.edit-on-github {
+    font-size: 0.9em;
+    border-top: thin solid white;
+    border-bottom: thin solid white;
+    padding: 20px 0;
+    margin-top: 80px;
+}
+
+.edit-on-github h2,
+.edit-on-github p,
+.edit-on-github li {
+    font-size: 1.5em;
+}
+
+.use-cases {
+    font-size: 1.25em;
+}
+
+.use-cases li {
+    margin-bottom: 15px;
+}
+
+table.ship-options td:first-child {
+    white-space: nowrap;
+}
+
+.keyboard-tip {
+    display: none;
+}
+@media(min-width:992px) {
+    .keyboard-tip {
+        display: block;
+        font-size: 0.9em;
+    }
+}

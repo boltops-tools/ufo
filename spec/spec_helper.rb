@@ -18,7 +18,7 @@ module Helpers
 
   def create_starter_project_fixture
     FileUtils.rm_rf("spec/fixtures/hi")
-    execute("bin/ufo init --cluster prod --image tongueroo/hi --project-root spec/fixtures/hi --app hi")
+    execute("bin/ufo init --cluster prod --env prod --image tongueroo/hi --project-root spec/fixtures/hi --app hi")
   end
 end
 
