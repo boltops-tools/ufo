@@ -5,7 +5,7 @@ title: ufo tasks register
 The `ufo tasks register` command registers all the generated task definitions in `output/` to AWS ECS. Let's run it:
 
 ```sh
-ufo ecs register
+ufo tasks register
 ```
 
 You should see something similiar to this:

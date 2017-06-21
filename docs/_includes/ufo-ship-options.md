@@ -10,4 +10,4 @@ Option  | Description
 `--pretty`  | This boolean option determines ufo generates the task definitions in output in a pretty human readable format.
 `--stop-old-tasks`  | This boolean option determines if ufo will call ecs stop-task on the old tasks after deployment. Sometimes old tasks hang around for a little bit with ECS this forces them along a little quicker.
 `--ecr-keep`  | This integer option determines how many old docker images to keep around.  Ufo will automatically delete and clean up docker images at the end of this process. The default is reasonable large at 30.
-`--cluster`  | This decides what cluster to use.  This can also be set in ufo/settings.yml covered in [Settings]({% link _docs/ufo-settings.md %}).  The cli option takes highest precedence.
+`--cluster`  | This decides what cluster to use.  This can also be set in ufo/settings.yml covered in [Settings]({% link _docs/settings.md %}).  The cli option takes highest precedence.

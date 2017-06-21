@@ -5,6 +5,6 @@ image: <%= @image %>
 service_cluster:
   default: <%= @cluster %> # default cluster
   # can override the default cluster for each service.  CLI overrides all of these settings.
-  <%= @app %>-web-prod:
-  <%= @app %>-clock-prod:
-  <%= @app %>-worker-prod:
+  <%= @app %>-web-<%= @env %>:
+  <%= @app %>-clock-<%= @env %>:
+  <%= @app %>-worker-<%= @env %>:

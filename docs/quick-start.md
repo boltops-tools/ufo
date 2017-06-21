@@ -9,7 +9,7 @@ brew cask install boltopslabs/software/bolts
 git clone https:///github.com/tongueroo/hi.git
 cd hi
 ufo init --app=hi --env stag --cluster=stag --image=tongueroo/hi
-ufo ship
+ufo ship hi-web-stag
 ```
 
 You should see something similar to this:

@@ -3,10 +3,5 @@
 # Generated started bin/deploy script.  Meant to be example only and should probably
 # be overridden.
 
-# Only build docker image on with the first command.
-ufo ship <%= @app %>-clock --cluster <%= @cluster %> --no-wait
-# Skipping the docker build phase for the rest of the ship commands
-ufo ship <%= @app %>-worker --cluster <%= @cluster %> --no-wait --no-docker
-# The final service will wait for the deploy to finish.  Please specify an
-# Application Load Balancer if creating the service for the first time.
-ufo ship <%= @app %>-web --cluster <%= @cluster %> --no-docker
+# Only build one docker image and deploys it to multiple ECS services
+ufo ships <%= @app %>-{web,clock,worker}-<%= @env %> --cluster <%= @cluster %>
