@@ -1,4 +1,6 @@
-![Ufo Logo](http://ufoships.com/img/logos/ufo-logo.png "Ufo Shipping Docker")
+<div align="center">
+  <img src="http://ufoships.com/img/logos/ufo-logo.png" />
+</div>
 
 # Ufo - Easy Way to Build and Ship Docker to AWS ECS
 
