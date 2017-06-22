@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.6.2]
+* update bin/deploy starter project script
+* update help menu
+* update docs
+
 ## [1.6.1]
 * exit if docker push fails
 
