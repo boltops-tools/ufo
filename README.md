@@ -1,3 +1,5 @@
+![Ufo Logo](http://ufoships.com/img/logos/ufo-logo.png "Ufo Shipping Docker")
+
 # Ufo - Easy Way to Build and Ship Docker to AWS ECS
 
 [![CircleCI](https://circleci.com/gh/tongueroo/ufo.svg?style=svg)](https://circleci.com/gh/tongueroo/ufo)
