@@ -1,10 +1,37 @@
 ---
-title: ufo ship
+title: Deploy One App
 ---
 
 ### Step 3 - Ship the Code to ECS
 
 In this guide we have walked through what ufo does step by step.  First ufo builds the Docker image with `ufo docker build`.  Then it will build and register the ECS task definitions with the `ufo tasks` commands. Now we'll deploy the code to ECS.
+
+```sh
+ufo ship hi-web-stag --cluster stag
+```
+
+Note, when we ran `ufo init` earlier, it configured `ufo/settings.yml` to map hi-web-stag to the `stag` cluster with the service_cluster option.  This nicely simplifies the command to
+
+```bash
+ufo ship hi-web-stag
+```
+
+When you run `ufo ship hi-web-stag`:
+
+1. It builds the docker image.
+2. Generates a task definition and registers it.
+3. Updates the ECS service to use it.
+
+If the ECS service hi-web-stag does not yet exist, ufo will create the service for you. Ufo will also automatically create the ECS cluster. If you are relying on this tool to create the cluster, you still need to associate ECS Container Instances to the cluster yourself.
+
+By convention, if the service has a container name web, you'll get prompted to create an ELB and specify a target group arn.  The ELB and target group must already exist. You can bypass the prompt and specify the target group ARN as part of the ship command or with the `--no-target-group-prompt` option.  The elb target group only gets associated with the ECS service if the service is being created for the first time.  If the service already exists then the `--target-group` parameter just gets ignored and the ECS task simply gets updated.  Example:
+
+
+```bash
+ufo ship hi-web-stag --target-group=arn:aws:elasticloadbalancing:us-east-1:12345689:targetgroup/hi-web-stag/12345
+```
+
+Let's go back to the original command and take a look at the output:
 
 ```sh
 ufo ship hi-web-stag
@@ -35,6 +62,8 @@ Running: docker rmi tongueroo/hi:ufo-2017-06-11T20-32-16-a18aa30 tongueroo/hi:uf
 Checking the ECS console you should see something like this:
 
 <img src="/img/tutorials/ecs-console-ufo-ship.png" class="doc-photo" />
+
+You have successfully shipped a docker image to ECS! 🍾🥂
 
 ### Skipping Previous Steps
 

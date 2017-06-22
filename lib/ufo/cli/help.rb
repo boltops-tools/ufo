@@ -6,7 +6,7 @@ module Ufo
 <<-EOL
 Examples:
 
-$ ufo init --cluster prod --image tongueroo/hi --app hi
+$ ufo init --app=hi --env stag --cluster=stag --image=tongueroo/hi
 
 The image should not include the tag since the tag is generated upon a `ufo ship`.
 EOL

@@ -20,3 +20,4 @@ While scaling via this method is quick and convenient the [ECS Service AutoScali
 <a id="next" class="btn btn-primary" href="{% link _docs/ufo-destroy.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
 
+

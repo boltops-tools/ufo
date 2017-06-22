@@ -1,8 +1,8 @@
 ---
-title: ufo docker build
+title: Build Docker
 ---
 
-### Step 1 - Build the Docker Image
+### Build the Docker Image
 
 Let's use the `ufo docker build` command to build the docker image. The command uses the `Dockerfile` in the current project to build the docker image.  You use your own Dockerfile so you have fully control over how you would like the image to be built.  For this tutorial we will continue to use the [tongueroo/hi](https://github.com/tongueroo/hi) app and it's Dockerfile. Let's run the command:
 

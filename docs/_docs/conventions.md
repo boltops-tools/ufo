@@ -6,7 +6,7 @@ Ufo uses a set of naming conventions.  This helps enforce some best practices an
 
 ### Service and Task Names Convention
 
-The main convention is that the ECS service and task definition name are the same by default.   If you would like to override this convention then you can specify the task name.
+Ufo assumes a convention that service\_name and the task\_name are the same. If you would like to override this convention then you can specify the task name.
 
 ```
 ufo ship hi-web-prod --task my-task
@@ -39,7 +39,6 @@ You can also bypass the prompt by specifying the target group arn as part of the
 ufo ship hi-web-prod --target-group=arn:aws:elasticloadbalancing:us-east-1:12345689:targetgroup/hi-web-prod/12345
 ```
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/ufo-settings.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/migrations.md %}">Next Step</a>
+<a id="prev" class="btn btn-basic" href="{% link _docs/helpers.md %}">Back</a>
+<a id="next" class="btn btn-primary" href="{% link _docs/run-in-pieces.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
-
