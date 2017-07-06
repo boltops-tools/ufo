@@ -18,7 +18,7 @@ The table below covers the purpose of each folder and file.
 File / Directory  | Description
 ------------- | -------------
 <code>output/</code>  | The folder where the generated task definitions are written to.  The way the task definitions are generated are covered in [ufo tasks build]({% link _docs/tutorial-ufo-tasks-build.md %}).
-<code>settings.yml</code>  | Ufo's settings file, where you and adjust the default settings.
+<code>settings.yml</code>  | Ufo's settings file, where you and adjust the default [settings]({% link _docs/settings.md %}).
 <code>task_definitions.rb</code>  | This where you define the task definitions and specify the variables to be used by the ERB templates.
 <code>templates/</code>  | The ERB templates with the task definition json code.  The template are covered in more detail in [ufo tasks build]({% link _docs/tutorial-ufo-tasks-build.md %}).
 <code>templates/main.json.erb</code>  | This is the main and starter template task definition json file that ufo initially generates.
