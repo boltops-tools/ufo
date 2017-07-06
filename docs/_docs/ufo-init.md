@@ -2,7 +2,7 @@
 title: ufo init
 ---
 
-The `ufo init` command provides a way to quickly setup a project to be ufo ready. It creates a ufo with all the starter supporting files in order to use ufo.  This page demonstrates how to use `ufo init`.  The command has a few required options `--app`, `--env`, `--cluster`, and `--image`.
+The `ufo init` command provides a way to quickly setup a project to be ufo ready. It creates a ufo folder with all the starter supporting files in order to use ufo.  This page demonstrates how to use `ufo init`.  The command has a few required options `--app`, `--env`, `--cluster`, and `--image`.
 
 For this example we will use [tongueroo/hi](https://github.com/tongueroo/hi) which is a small test sinatra app.
 
