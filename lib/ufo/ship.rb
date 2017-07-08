@@ -227,8 +227,9 @@ module Ufo
     # the ECS console.  `ufo scale` will allow you to updated the desired_count from the
     # CLI though.
     def create_service
+      puts "This service #{@service} does not yet exist in the #{@cluster} cluster.  This deploy will create it."
       container = container_info(@task_definition)
-      target_group = create_service_prompt(container)
+      target_group = target_group_prompt(container)
 
       message = "#{@service} service created on #{@cluster} cluster"
       if @options[:noop]
@@ -245,7 +246,7 @@ module Ufo
           task_definition: @task_definition
         }
         unless target_group.nil? || target_group.empty?
-          add_load_balancer!(container, options)
+          add_load_balancer!(container, options, target_group)
         end
         response = ecs.create_service(options)
         service = response.service # must set service here since this might never be called if @wait_for_deployment is false
@@ -285,14 +286,14 @@ module Ufo
     # Only support Application Load Balancer
     # Think there is an AWS bug that complains about not having the LB
     # name but you cannot pass both a LB Name and a Target Group.
-    def add_load_balancer!(container, options)
+    def add_load_balancer!(container, options, target_group)
       options.merge!(
         role: "ecsServiceRole", # assumption that we're using the ecsServiceRole
         load_balancers: [
           {
             container_name: container[:name],
             container_port: container[:port],
-            target_group_arn: @options[:target_group],
+            target_group_arn: target_group,
           }
         ]
       )
@@ -301,16 +302,17 @@ module Ufo
     # Returns the target_group.
     # Will only allow an target_group and the service to use a load balancer
     # if the container name is "web".
-    def create_service_prompt(container)
+    def target_group_prompt(container)
       return if @options[:noop]
-      return unless @target_group_prompt
-      if container[:name] != "web" and @options[:target_group]
-        puts "WARNING: A --target-group #{@options[:target_group]} was provided but it will not be used because this not a web container.  Container name: #{container[:name].inspect}."
-      end
-      return unless container[:name] == 'web'
+      # If a target_group is provided at the CLI return it right away.
       return @options[:target_group] if @options[:target_group]
+      # Allows skipping the target group prompt.
+      return unless @target_group_prompt
 
-      puts "This service #{@service} does not yet exist in the #{@cluster} cluster.  This deploy will create it."
+      # If the container name is web then it is assume that this is a web service that
+      # needs a target group/elb.
+      return unless container[:name] == 'web'
+
       puts "Would you like this service to be associated with an Application Load Balancer?"
       puts "If yes, please provide the Application Load Balancer Target Group ARN."
       puts "If no, simply press enter."
