@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.6.3]
+* fix target_group_prompt
+
 ## [1.6.2]
 * update bin/deploy starter project script
 * update help menu
