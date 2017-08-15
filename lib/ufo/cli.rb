@@ -49,6 +49,7 @@ module Ufo
 
       task_definition = options[:task] || service # convention
       Tasks::Builder.register(task_definition, options) if options[:tasks]
+      LogGroup.new(task_definition, options).create
       ship = Ship.new(service, task_definition, options)
       ship.deploy
 
@@ -65,6 +66,7 @@ module Ufo
         service_name, task_defintion_name = service.split(':')
         task_definition = task_defintion_name || service_name # convention
         Tasks::Builder.register(task_definition, options) if options[:tasks]
+        LogGroup.new(task_definition, options).create
         ship = Ship.new(service, task_definition, options)
         ship.deploy
       end
