@@ -23,7 +23,9 @@ module Ufo
     end
 
     def create_log_group(log_group_name)
-      cloudwatchlogs.create_log_group(log_group_name: log_group_name)
+      resp = cloudwatchlogs.describe_log_groups(log_group_name_prefix: log_group_name)
+      exists = resp.log_groups.find { |lg| lg.log_group_name == log_group_name }
+      cloudwatchlogs.create_log_group(log_group_name: log_group_name) unless exists
     end
 
     def task_def_path
