@@ -13,5 +13,9 @@ module Ufo
     def ecr
       @ecr ||= Aws::ECR::Client.new
     end
+
+    def cloudwatchlogs
+      @cloudwatchlogs ||= Aws::CloudWatchLogs::Client.new
+    end
   end
 end
