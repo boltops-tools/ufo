@@ -35,6 +35,7 @@ ufo destroy
         {
             "name": "<%= @name %>",
             "image": "<%= @image %>",
+            <% if @cpu %>
             "cpu": <%= @cpu %>,
             <% end %>
             "command": <%= @command.to_json %>,
