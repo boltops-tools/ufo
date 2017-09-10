@@ -4,6 +4,10 @@ title: Conventions
 
 Ufo uses a set of naming conventions.  This helps enforce some best practices and also allows the ufo commands to be concise.  Ufo allows you to easily override or bypass the conventions if you need it.
 
+### UFO_ENV to ECS Cluster Convention
+
+By default, the ECS cluster value is the same as UFO_ENV's value.  So if `UFO_ENV=prod` then the ECS Cluster is prod and if `UFO_ENV=stag` then the ECS Cluster is stag.  You can easily override this convention by specifying the `--cluster` CLI option.  You can also override this behavior with [settings.yml]({% link _docs/settings.md %}) to spare you from having to type `--cluster` over and over.
+
 ### Service and Task Names Convention
 
 Ufo assumes a convention that service\_name and the task\_name are the same. If you would like to override this convention then you can specify the task name.

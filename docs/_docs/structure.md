@@ -9,8 +9,12 @@ ufo
 ├── output
 ├── settings.yml
 ├── task_definitions.rb
-└── templates
-    └── main.json.erb
+├── templates
+|   └── main.json.erb
+└── variables
+    ├── base.rb
+    ├── prod.rb
+    └── stag.rb
 ```
 
 The table below covers the purpose of each folder and file.

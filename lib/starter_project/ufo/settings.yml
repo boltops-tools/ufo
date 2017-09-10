@@ -2,6 +2,7 @@
 image: <%= @image %>
 # clean_keep: 30
 # ecr_keep: 30
+
 service_cluster:
   default: <%= @cluster %> # default cluster
   # can override the default cluster for each service.  CLI overrides all of these settings.

@@ -17,6 +17,6 @@ To call the helper in task_definitions.rb you must add `helper.` in front.  So f
 
 The 2 classes which provide these special helper methods are in [ufo/dsl.rb](https://github.com/tongueroo/ufo/blob/master/lib/ufo/dsl.rb) and [ufo/dsl/helper.rb](https://github.com/tongueroo/ufo/blob/master/lib/ufo/dsl/helper.rb). Refer to these classes for the full list of the special variables and methods.
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/settings.md %}">Back</a>
+<a id="prev" class="btn btn-basic" href="{% link _docs/variables.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/conventions.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
