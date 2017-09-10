@@ -19,8 +19,39 @@ module Ufo
       end
 
       def build
+        load_variables
         instance_eval(&@block)
         erb_result(source_path)
+      end
+
+      def load_variables
+        load_variables_file("base")
+        load_variables_file(UFO_ENV)
+      end
+
+      # Load the variables defined in ufo/variables/* to make available in the
+      # template blocks in ufo/templates/*.
+      #
+      # Example:
+      #
+      #   `ufo/variables/base.rb`:
+      #     @name = "docker-process-name"
+      #     @image = "docker-image-name"
+      #
+      #   `ufo/templates/main.json.erb`:
+      #   {
+      #     "containerDefinitions": [
+      #       {
+      #          "name": "<%= @name %>",
+      #          "image": "<%= @image %>",
+      #      ....
+      #   }
+      #
+      # NOTE: Only able to make instance variables avaialble with instance_eval
+      #   Wasnt able to make local variables available.
+      def load_variables_file(filename)
+        path = "#{@project_root}/ufo/variables/#{filename}.rb"
+        instance_eval(IO.read(path)) if File.exist?(path)
       end
 
       def erb_result(path)

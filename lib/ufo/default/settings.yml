@@ -1,19 +1,22 @@
+# More info: http://ufoships.com/docs/ufo-settings/
+#
 # image:
 # clean_keep: 30
 # ecr_keep: 30
 
-aws_profile_ufo_env_map:
-  default: prod
-  # More examples:
-  # aws_profile1: prod
-  # aws_profile2: stag
-  # aws_profile3: dev
-ufo_env_cluster_map:
-  default: prod
-  # More examples:
-  # aws_profile1: prod
-  # aws_profile2: stag
-  # aws_profile3: dev
+# aws_profile_ufo_env_map:
+#   default: prod
+#   # More examples:
+#   aws_profile1: prod
+#   aws_profile2: stag
+#   aws_profile3: dev
+
+# ufo_env_cluster_map:
+#   default: prod
+#   # More examples:
+#   aws_profile1: prod
+#   aws_profile2: stag
+#   aws_profile3: dev
 
 # defaults when an new ECS service is created by ufo ship
 new_service:

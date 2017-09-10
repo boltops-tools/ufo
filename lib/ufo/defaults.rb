@@ -8,18 +8,19 @@ module Ufo
   #
   # So @options must be set
   module Defaults
-    # image: 123456789.dkr.ecr.us-east-1.amazonaws.com/sinatra
-    # # service to cluster mapping, overrides default cluster cli overrides this
-    # service_cluster:
-    #   default: prod-lo
-    #   hi-web-prod: prod-hi
-    #   hi-clock-prod: prod-lo
-    #   hi-worker-prod: prod-lo
+    # The default cluster normally defaults to the UFO_ENV value.
+    # But it can be overriden by ufo/settings.yml ufo_env_cluster_map
     #
-    # Assumes that @service is set in the class that the Defaults module is included in.
+    # Covered: http://localhost:4000/docs/settings/
     def default_cluster
-      service_cluster = settings.data["service_cluster"]
-      service_cluster[@service] || service_cluster["default"]
+      #
+
+      map = settings.data["ufo_env_cluster_map"]
+      if map
+        ecs_cluster = map[UFO_ENV] || map["default"]
+      end
+
+      ecs_cluster || UFO_ENV
     end
 
     # These default service values only are used when a service is created by `ufo`

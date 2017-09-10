@@ -3,9 +3,16 @@ image: <%= @image %>
 # clean_keep: 30
 # ecr_keep: 30
 
-service_cluster:
-  default: <%= @cluster %> # default cluster
-  # can override the default cluster for each service.  CLI overrides all of these settings.
-  <%= @app %>-web-<%= @env %>:
-  <%= @app %>-clock-<%= @env %>:
-  <%= @app %>-worker-<%= @env %>:
+# aws_profile_ufo_env_map:
+#   default: prod
+#   # More examples:
+#   aws_profile1: prod
+#   aws_profile2: stag
+#   aws_profile3: dev
+
+# ufo_env_cluster_map:
+#   default: prod
+#   # More examples:
+#   aws_profile1: prod
+#   aws_profile2: stag
+#   aws_profile3: dev
