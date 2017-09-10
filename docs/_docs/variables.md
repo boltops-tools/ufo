@@ -19,27 +19,36 @@ You can now use @image in your `ufo/templates/main.json.erb` without having to e
 
 Shared variables also support a concept called layering.  The `config/variables/base.rb` file is treated specially and will always be evaluated.  Additionally, ufo will also evaluate the `config/variables/[UFO_ENV].rb` according to what UFO_ENV's value is. Thanks layering, you can easily override variables to suite different environments like production or staging. For example:
 
-`config/variables/base.rb`:
+`ufo/variables/base.rb`:
 
 ```ruby
+@image = helper.full_image_name # includes the git sha tongueroo/hi:ufo-[sha].
 @cpu = 128
+@memory_reservation = 256
+@environment = helper.env_file(".env")
 ```
 
 When `ufo ship` is ran with `UFO_ENV=prod` he `config/variables/prod.rb` will be evaluated and layered on top of the variables defined in `base.rb:
 
-`config/variables/prod.rb`:
+`ufo/variables/prod.rb`:
 
 ```ruby
-@cpu = 256
+@environment = helper.env_vars(%Q{
+  RAILS_ENV=production
+  SECRET_KEY_BASE=secret
+})
 ```
 
 When `ufo ship` is ran with `UFO_ENV=stag` he `config/variables/stag.rb` will be evaluated and layered on top of the variables defined in `base.rb:
 
 
-`config/variables/stag.rb`:
+`ufo/variables/prod.rb`:
 
 ```ruby
-@cpu = 192
+@environment = helper.env_vars(%Q{
+  RAILS_ENV=staging
+  SECRET_KEY_BASE=secret
+})
 ```
 
 
