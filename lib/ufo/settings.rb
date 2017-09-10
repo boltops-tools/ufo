@@ -2,8 +2,9 @@ require 'yaml'
 
 module Ufo
   class Settings
-    def initialize(project_root='.')
+    def initialize(project_root='.', check_ufo_project=true)
       @project_root = project_root
+      @check_ufo_project = check_ufo_project
     end
 
     # data contains the settings.yml config.  The order or precedence for settings
@@ -11,7 +12,7 @@ module Ufo
     def data
       return @settings_yaml if @settings_yaml
 
-      unless File.exist?(project_settings_path) || ENV['TEST']
+      if @check_ufo_project && !File.exist?(project_settings_path)
         puts "ERROR: No settings file at #{project_settings_path}.  Are you sure you are in a project with ufo setup?"
         puts "Please create a settings file via: ufo init"
         exit 1
