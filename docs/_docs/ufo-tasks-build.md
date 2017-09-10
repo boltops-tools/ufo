@@ -56,49 +56,56 @@ Here's an example of each of them:
 **task_definitions.rb**:
 
 ```
-# common variables
-common = {
-  image: helper.full_image_name, # includes the git sha tongueroo/hi:ufo-[sha].
-  cpu: 128,
-  memory_reservation: 256,
-  environment: helper.env_file(".env")
-  # another example
-  # environment: helper.env_vars(%Q{
-  #   RAILS_ENV=production
-  #   SECRET_KEY_BASE=secret
-  # })
-}
-
-task_definition "hi-web-stag" do
+task_definition "hi-web" do
   source "main" # will use ufo/templates/main.json.erb
-  variables(common.dup.deep_merge(
+  variables(
     family: task_definition_name,
     name: "web",
     container_port: helper.dockerfile_port,
     command: ["bin/web"]
-  ))
+  )
 end
 
-task_definition "hi-worker-stag" do
+task_definition "hi-worker" do
   source "main" # will use ufo/templates/main.json.erb
-  variables(common.dup.deep_merge(
+  variables(
     family: task_definition_name,
     name: "worker",
     command: ["bin/worker"]
-  ))
+  )
 end
 
-task_definition "hi-clock-stag" do
+task_definition "hi-clock" do
   source "main" # will use ufo/templates/main.json.erb
-  variables(common.dup.deep_merge(
+  variables(
     family: task_definition_name,
     name: "clock",
     command: ["bin/clock"]
-  ))
+  )
 end
 ```
 
-Ufo uses the ERB template in `main.json.erb` and combines it with the variables defined in the task definition declarations in `task_definitions.rb` and generates the raw AWS formatted task definition in the `output` folder.  In this case there are 3 task_definitions so there will be 3 generated output files.
+The shared variables are set in the variables folder:
+
+**ufo/variables/base.rb**:
+
+```ruby
+@image = helper.full_image_name # includes the git sha tongueroo/hi:ufo-[sha].
+@cpu = 128
+@memory_reservation = 256
+@environment = helper.env_file(".env")
+```
+
+**ufo/variables/prod.rb**:
+
+```ruby
+@environment = helper.env_vars(%Q{
+  RAILS_ENV=production
+  SECRET_KEY_BASE=secret
+})
+```
+
+Ufo combines the `main.json.erb` template, `task_definitions.rb` definitions, and variables in the `ufo/variables` folder.  It then generates the raw AWS formatted task definition in the `output` folder.
 
 To build the task definitions:
 
@@ -108,13 +115,22 @@ ufo tasks build
 
 You should see output similar to below:
 
-<img src="/img/tutorials/ufo-tasks-build.png" class="doc-photo" />
+```sh
+$ ufo tasks build
+Building Task Definitions...
+Generating Task Definitions:
+  ufo/output/hi-web.json
+  ufo/output/hi-worker.json
+  ufo/output/hi-clock.json
+Task Definitions built in ufo/output.
+$
+```
 
-Let's take a look at one of the generated files: `ufo/output/hi-web-stag.json`.
+Let's take a look at one of the generated files: `ufo/output/hi-web.json`.
 
 ```json
 {
-  "family": "hi-web-stag",
+  "family": "hi-web",
   "containerDefinitions": [
     {
       "name": "web",

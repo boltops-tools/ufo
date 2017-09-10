@@ -13,7 +13,7 @@ Let's take a look at the 2 files that are used by ufo to build the the ECS task 
 
 Ufo task definitions are written as an ERB template that makes it every easily accessible and configurable to your requirements.  Here is is an example of an ERB template `ufo/templates/main.json.erb` that shows how easy it is to modfied the task definition you want to be uploaded by ufo:
 
-**main.json.erb**:
+**ufo/templates/main.json.erb**:
 
 ```json
 {
@@ -27,30 +27,7 @@ Ufo task definitions are written as an ERB template that makes it every easily a
             "memory": <%= @memory %>,
             <% end %>
             <% if @memory_reservation %>
-            "memoryReservation": <%= @memory_reservation %>,
-            <% end %>
-            <% if @container_port %>
-            "portMappings": [
-                {
-                    "containerPort": "<%= @container_port %>",
-                    "protocol": "tcp"
-                }
-            ],
-            <% end %>
-            "command": <%= @command.to_json %>,
-            <% if @environment %>
-            "environment": <%= @environment.to_json %>,
-            <% end %>
-            <% if @awslogs_group %>
-            "logConfiguration": {
-                "logDriver": "awslogs",
-                "options": {
-                    "awslogs-group": "<%= @awslogs_group %>",
-                    "awslogs-region": "<%= @awslogs_region || 'us-east-1' %>",
-                    "awslogs-stream-prefix": "<%= @awslogs_stream_prefix %>"
-                }
-            },
-            <% end %>
+...
             "essential": true
         }
     ]
@@ -59,52 +36,50 @@ Ufo task definitions are written as an ERB template that makes it every easily a
 
 The instance variable values are specified in `ufo/task_definitions.rb` via a DSL.  Here's the file:
 
-**task_definitions.rb**:
+**ufo/task_definitions.rb**:
 
 ```
-# common variables
-common = {
-  image: helper.full_image_name, # includes the git sha tongueroo/hi:ufo-[sha].
-  cpu: 128,
-  memory_reservation: 256,
-  environment: helper.env_file(".env")
-  # another example
-  # environment: helper.env_vars(%Q{
-  #   RAILS_ENV=production
-  #   SECRET_KEY_BASE=secret
-  # })
-}
-
-task_definition "hi-web-stag" do
+task_definition "hi-web" do
   source "main" # will use ufo/templates/main.json.erb
-  variables(common.dup.deep_merge(
+  variables(
     family: task_definition_name,
     name: "web",
     container_port: helper.dockerfile_port,
     command: ["bin/web"]
-  ))
+  )
 end
 
-task_definition "hi-worker-stag" do
+task_definition "hi-worker" do
   source "main" # will use ufo/templates/main.json.erb
-  variables(common.dup.deep_merge(
+  variables(
     family: task_definition_name,
     name: "worker",
     command: ["bin/worker"]
-  ))
-end
-
-task_definition "hi-clock-stag" do
-  source "main" # will use ufo/templates/main.json.erb
-  variables(common.dup.deep_merge(
-    family: task_definition_name,
-    name: "clock",
-    command: ["bin/clock"]
-  ))
+  )
 end
 ```
 
-Ufo uses the ERB template in `main.json.erb` and combines it with the variables defined in the task definition declarations in `task_definitions.rb` and generates the raw AWS formatted task definition in the `output` folder.  In this case there are 3 task_definitions so there will be 3 generated output files.
+The shared variables are set in the variables folder:
+
+**ufo/variables/base.rb**:
+
+```ruby
+@image = helper.full_image_name # includes the git sha tongueroo/hi:ufo-[sha].
+@cpu = 128
+@memory_reservation = 256
+@environment = helper.env_file(".env")
+```
+
+**ufo/variables/prod.rb**:
+
+```ruby
+@environment = helper.env_vars(%Q{
+  RAILS_ENV=production
+  SECRET_KEY_BASE=secret
+})
+```
+
+Ufo combines the `main.json.erb` template, `task_definitions.rb` definitions, and variables in the `ufo/variables` folder.  It then generates the raw AWS formatted task definition in the `output` folder.
 
 If you need to modify the task definition template to suite your own needs it is super simple, just edit `main.json.erb`.  You do not have to dive deep into internal code somewhere.  It is all there for you to fully control.
 
@@ -118,17 +93,26 @@ ufo tasks build
 
 You should see output similar to below:
 
-<img src="/img/tutorials/ufo-tasks-build.png" class="doc-photo" />
+```sh
+$ ufo tasks build
+Building Task Definitions...
+Generating Task Definitions:
+  ufo/output/hi-web.json
+  ufo/output/hi-worker.json
+  ufo/output/hi-clock.json
+Task Definitions built in ufo/output.
+$
+```
 
-Let's take a look at one of the generated files: `ufo/output/hi-web-stag.json`.
+Let's take a look at one of the generated files: `ufo/output/hi-web.json`.
 
 ```json
 {
-  "family": "hi-web-stag",
+  "family": "hi-web",
   "containerDefinitions": [
     {
       "name": "web",
-      "image": "tongueroo/hi:ufo-2017-06-11T22-22-32-a18aa30",
+      "image": "tongueroo/hi:ufo-2017-09-10T15-13-14-1105f71",
       "cpu": 128,
       "memoryReservation": 256,
       "portMappings": [
@@ -143,13 +127,16 @@ Let's take a look at one of the generated files: `ufo/output/hi-web-stag.json`.
       "environment": [
         {
           "name": "RAILS_ENV",
-          "value": "staging"
+          "value": "production"
+        },
+        {
+          "name": "SECRET_KEY_BASE",
+          "value": "secret"
         }
       ],
       "essential": true
     }
   ]
-}
 ```
 
 ### Register the ECS Task Definitions
@@ -163,9 +150,9 @@ ufo tasks register
 You should see something similiar to this:
 
 ```sh
-hi-clock-stag task definition registered.
-hi-web-stag task definition registered.
-hi-worker-stag task definition registered.
+hi-clock task definition registered.
+hi-web task definition registered.
+hi-worker task definition registered.
 ```
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/tutorial-ufo-docker-build.md %}">Back</a>

@@ -8,14 +8,32 @@ In a hurry? No sweat! Here's a quick start to using ufo that takes only a few mi
 brew cask install boltopslabs/software/bolts
 git clone https:///github.com/tongueroo/hi.git
 cd hi
-ufo init --app=hi --env stag --cluster=stag --image=tongueroo/hi
-ufo ship hi-web-stag
+ufo init --app=hi --env prod --cluster=prod --image=tongueroo/hi
+ufo ship hi-web
 ```
 
 You should see something similar to this:
 
-<img src="/img/tutorials/ufo-init.png" class="doc-photo" />
-
+```
+$ ufo init --app=hi --env prod --cluster=prod --image=tongueroo/hi
+Setting up ufo project...
+created: ./bin/deploy
+created: ./Dockerfile
+created: ./ufo/settings.yml
+created: ./ufo/task_definitions.rb
+created: ./ufo/templates/main.json.erb
+created: ./ufo/variables/base.rb
+created: ./ufo/variables/prod.rb
+created: ./ufo/variables/stag.rb
+created: ./.env
+Starter ufo files created.
+$ ufo ship hi-web
+Building docker image with:
+  docker build -t tongueroo/hi:ufo-2017-09-10T15-00-19-c781aaf -f Dockerfile .
+....
+Software shipped!
+$
+```
 Congratulations! You have successfully deployed code to AWS ECS with ufo. It was really that simple 😁
 
 Note: This quick start does require that you have a docker working on your environment.  For docker installation instructions refer to to the official [docker installation guide](https://docs.docker.com/engine/installation/).
