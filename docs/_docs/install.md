@@ -2,19 +2,9 @@
 title: Installation
 ---
 
-### Install with Bolts Toolbelt
-
-If you want to quickly install ufo without having to worry about ufo's dependencies you can simply install the Bolts Toolbelt which has ufo included.
-
-```sh
-brew cask install boltopslabs/software/bolts
-```
-
-For more information about the Bolts Toolbelt or to get an installer for another operating system visit: [https://boltops.com/toolbelt](https://boltops.com/toolbelt)
-
 ### Install with RubyGems
 
-If you prefer to install ufo via RubyGems follow the instructions:
+You can install ufo with RubyGems:
 
 ```sh
 gem install ufo
@@ -25,6 +15,16 @@ Or you can add ufo to your Gemfile in your project if you are working with a rub
 {% highlight ruby %}
 gem "ufo"
 {% endhighlight %}
+
+### Install with Bolts Toolbelt
+
+If you want to quickly install ufo without having to worry about ufo's dependencies you can simply install the Bolts Toolbelt which has ufo included.
+
+```sh
+brew cask install boltopslabs/software/bolts
+```
+
+For more information about the Bolts Toolbelt or to get an installer for another operating system visit: [https://boltops.com/toolbelt](https://boltops.com/toolbelt)
 
 ### Dependencies
 
