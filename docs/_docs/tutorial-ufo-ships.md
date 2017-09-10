@@ -9,9 +9,9 @@ These processes use the same codebase and same docker image, but have slightly d
 While we can use the `ufo ship` command to deploy to all 3 service roles individually like so:
 
 ```sh
-ufo ship hi-web-stag
-ufo ship hi-worker-stag
-ufo ship hi-clock-stag
+ufo ship hi-web
+ufo ship hi-worker
+ufo ship hi-clock
 ```
 
 This would build a new Docker image for each process.  We actually want have the same docker image running on all of these roles.  In this case where we want to use the *same* Docker image for all 3 roles, ufo provides a `ufo ships` command.
@@ -19,7 +19,7 @@ This would build a new Docker image for each process.  We actually want have the
 ### ufo ships
 
 ```sh
-ufo ships hi-web-stag hi-worker-stag hi-clock-stag
+ufo ships hi-web hi-worker hi-clock
 ```
 
 You can check on the ECS console and should see something similar to this:
@@ -29,7 +29,7 @@ You can check on the ECS console and should see something similar to this:
 You can shorten the command by taking advantage of shell expansion:
 
 ```sh
-ufo ships hi-{web,worker,clock}-stag
+ufo ships hi-{web,worker,clock}
 ```
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/tutorial-ufo-ship.md %}">Back</a>

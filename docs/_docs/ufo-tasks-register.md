@@ -11,9 +11,9 @@ ufo tasks register
 You should see something similiar to this:
 
 ```sh
-hi-clock-stag task definition registered.
-hi-web-stag task definition registered.
-hi-worker-stag task definition registered.
+hi-clock task definition registered.
+hi-web task definition registered.
+hi-worker task definition registered.
 ```
 
 You can verify that the task definitions have been registered properly by viewing the AWS ECS Console Task Definitions page.  You should see something similar to this:

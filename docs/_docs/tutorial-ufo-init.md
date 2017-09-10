@@ -8,12 +8,31 @@ Let's run the command in our newly clone project.
 ```sh
 git clone https://github.com/tongueroo/hi.git
 cd hi
-ufo init --app=hi --env stag --cluster=stag --image=tongueroo/hi
+ufo init --app=hi --env prod --cluster=prod --image=tongueroo/hi
 ```
 
 You should see output similiar to this:
 
-<img src="/img/tutorials/ufo-init.png" class="doc-photo" />
+```
+$ ufo init --app=hi --env prod --cluster=prod --image=tongueroo/hi
+Setting up ufo project...
+created: ./bin/deploy
+created: ./Dockerfile
+created: ./ufo/settings.yml
+created: ./ufo/task_definitions.rb
+created: ./ufo/templates/main.json.erb
+created: ./ufo/variables/base.rb
+created: ./ufo/variables/prod.rb
+created: ./ufo/variables/stag.rb
+created: ./.env
+Starter ufo files created.
+$ ufo ship hi-web
+Building docker image with:
+  docker build -t tongueroo/hi:ufo-2017-09-10T15-00-19-c781aaf -f Dockerfile .
+....
+Software shipped!
+$
+```
 
 The `ufo init` command generated a few starter ufo files for you. The standard directory structure of the ufo folder looks like this:
 
@@ -34,24 +53,11 @@ Take a look at the `ufo/settings.yml` file and notice that it contains some defa
 
 ```yaml
 image: tongueroo/hi
-service_cluster:
-  default: stag # default cluster
-  # can override the default cluster for each service.  CLI overrides all of these settings.
-  hi-web-stag:
-  hi-clock-stag:
-  hi-worker-stag:
 ```
 
 The `image` value is the name that ufo will use as a base to generate a Docker image name.
 
-The `service_cluster` mapping provides a way to set default service-to-cluster mappings so that you do not have to specify the `--cluster` repeatedly.  This is very helpful. For example:
-
-```
-ufo ship hi-web-stag --cluster hi-cluster
-ufo ship hi-web-stag # same as above because it is configured in ufo/settings.yml
-ufo ship hi-web-stag --cluster special-cluster # overrides the default setting in `ufo/settings.yml`.
-```
-
+The other settings are optional.  You can learn more about them at [Settings]({% link _docs/settings.md %}).
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/tutorial.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/tutorial-ufo-docker-build.md %}">Next Step</a>

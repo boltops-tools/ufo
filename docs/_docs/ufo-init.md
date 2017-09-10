@@ -11,7 +11,7 @@ Let's run the command in our newly clone project.
 ```sh
 git clone https://github.com/tongueroo/hi.git
 cd hi
-ufo init --app=hi --env stag --cluster=stag --image=tongueroo/hi
+ufo init --app=hi --env prod --cluster=prod --image=tongueroo/hi
 ```
 
 You should see output similiar to this:
@@ -25,8 +25,12 @@ ufo
 ├── output
 ├── settings.yml
 ├── task_definitions.rb
-└── templates
-    └── main.json.erb
+├── templates
+├   └── main.json.erb
+└── variables
+    ├── base.rb
+    ├── prod.rb
+    └── stag.rb
 ```
 
 The explanation of the folders and files were covered in detailed earlier at [Structure]({% link _docs/structure.md %}).

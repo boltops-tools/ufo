@@ -11,7 +11,7 @@ The `ufo ships` command allows you to deploy the *same* Docker image and task de
 Instead of using the [ufo ship]({% link _docs/ufo-ship.md %}) and build and deploying the code 3 times you can instead use `ufo ships`.  This will result in the *same* Docker image and *same* task definition being deployed to all 3 services.  Example usage:
 
 ```sh
-ufo ships hi-web-stag hi-worker-stag hi-clock-stag
+ufo ships hi-web hi-worker hi-clock
 ```
 
 ### Shell expansion
@@ -19,14 +19,14 @@ ufo ships hi-web-stag hi-worker-stag hi-clock-stag
 Since the ECS service names are provided as a list you can shorten the command by using bash shell expansion 😁
 
 ```sh
-ufo ships hi-{web,worker,clock}-stag
+ufo ships hi-{web,worker,clock}
 ```
 
 If you're new to shell expansion, run this to understand why above works just as well:
 
 ```sh
-$ echo hi-{web,worker,clock}-stag
-hi-web-stag hi-worker-stag hi-clock-stag
+$ echo hi-{web,worker,clock}
+hi-web hi-worker hi-clock
 ```
 
 ### Overriding convention

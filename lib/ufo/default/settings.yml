@@ -1,5 +1,6 @@
 # More info: http://ufoships.com/docs/ufo-settings/
-image: <%= @image %>
+#
+# image:
 # clean_keep: 30
 # ecr_keep: 30
 
@@ -16,3 +17,9 @@ image: <%= @image %>
 #   aws_profile1: prod
 #   aws_profile2: stag
 #   aws_profile3: dev
+
+# defaults when an new ECS service is created by ufo ship
+new_service:
+  maximum_percent: 200
+  minimum_healthy_percent: 100
+  desired_count: 1
