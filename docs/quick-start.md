@@ -5,7 +5,7 @@ title: Quick Start
 In a hurry? No sweat! Here's a quick start to using ufo that takes only a few minutes. For this example, we will use a sinatra app from [tongueroo/hi](https://github.com/tongueroo/ufo).  The first `ufo init` command sets up the ufo directory structure in your project. The second `ufo ship` command deploys your code to an AWS ECS service.
 
 ```sh
-brew cask install boltopslabs/software/bolts
+gem install ufo
 git clone https:///github.com/tongueroo/hi.git
 cd hi
 ufo init --app=hi --env prod --cluster=prod --image=tongueroo/hi
