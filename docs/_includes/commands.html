@@ -2,13 +2,8 @@
     <section id="about">
         <div class="container">
             <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2>Commands</h2>
-                    <hr class="star-primary">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2">
+                <div class="col-lg-6">
+                    <h3>Commands</h3>
                     <div class="commands">
 {% highlight sh %}
 ufo ship
@@ -20,6 +15,20 @@ ufo tasks build
 ufo scale
 
 ufo destroy
+{% endhighlight %}
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <h3>ufo/variables/base.rb</h3>
+                    <div class="commands">
+{% highlight ruby %}
+@image = helper.full_image_name # includes the git sha tongueroo/hi:ufo-[sha].
+@cpu = 128
+@memory_reservation = 256
+@environment = helper.env_vars(%Q{
+  RAILS_ENV=production
+  SITE=awesome
+})
 {% endhighlight %}
                     </div>
                 </div>

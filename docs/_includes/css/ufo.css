@@ -164,3 +164,9 @@ table.ship-options td:first-child {
         font-size: 0.9em;
     }
 }
+
+#summary {
+    font-size: 18px;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
