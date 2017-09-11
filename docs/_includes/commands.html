@@ -62,23 +62,15 @@ ufo destroy
                     <h3>ufo/template_definitions.rb</h3>
                     <div class="commands">
 {% highlight ruby %}
-common = {
-  image: helper.full_image_name,
-  cpu: 128,
-  memory_reservation: 256,
-  environment: helper.env_vars("RAILS_ENV=production"),
-  container_port: helper.dockerfile_port,
-}
-
 task_definition "example-web" do
   source "main"
-  variables(common.dup.deep_merge(
+  variables(
     family: task_definition_name,
     name: "web",
     awslogs_group: "example-web",
     awslogs_stream_prefix: "example",
     command: ["bin/web"]
-  ))
+  )
 end
 {% endhighlight %}
                     </div>
