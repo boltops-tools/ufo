@@ -21,7 +21,7 @@ ufo tasks register # will register all genreated task definitinos in the ufo/out
 Skips all the build docker phases of a deploy sequence and only update the service with the task definitions.
 
 ```bash
-ufo ship hi-web-prod --no-docker
+ufo ship hi-web --no-docker
 ```
 Note if you use the `--no-docker` option you should ensure that you have already push a docker image to your docker registry.  Or else the task will not be able to spin up because the docker image does not exist.  It is normally recommended that you normally use `ufo ship`.
 

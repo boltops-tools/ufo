@@ -13,7 +13,7 @@ By default, the ECS cluster value is the same as UFO_ENV's value.  So if `UFO_EN
 Ufo assumes a convention that service\_name and the task\_name are the same. If you would like to override this convention then you can specify the task name.
 
 ```
-ufo ship hi-web-prod --task my-task
+ufo ship hi-web --task my-task
 ```
 
 This means that in the task_definition.rb you will also defined it with `my-task`.  For example:
@@ -34,13 +34,13 @@ end
 By convention, if the service has a container name web, you'll get prompted to create an ELB and specify a target group arn.  If you would like to name a service with the word "web" in it without having to use an ELB target group then you can use the `--no-target-group-prompt`.  Example:
 
 ```sh
-ufo ship hi-web-prod --no-target-group-prompt
+ufo ship hi-web --no-target-group-prompt
 ```
 
 You can also bypass the prompt by specifying the target group arn as part of the command upfront. The ELB and target group must already exist.  The elb target group only gets associated when the service gets created for the first time.  If the service already exists then the `--target-group` parameter just gets ignored and the ECS task simply gets updated.  Example:
 
 ```bash
-ufo ship hi-web-prod --target-group=arn:aws:elasticloadbalancing:us-east-1:12345689:targetgroup/hi-web-prod/12345
+ufo ship hi-web --target-group=arn:aws:elasticloadbalancing:us-east-1:12345689:targetgroup/hi-web/12345
 ```
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/helpers.md %}">Back</a>

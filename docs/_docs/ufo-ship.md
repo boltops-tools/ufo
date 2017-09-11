@@ -21,7 +21,7 @@ ufo ship hi-web --no-target-group-prompt
 Or if you would like specify the target-group up front and not be bother with the prompted later you can use the `--target-group` option.
 
 ```sh
-ufo ship hi-web --target-group=arn:aws:elasticloadbalancing:us-east-1:12345689:targetgroup/hi-web-prod/12345
+ufo ship hi-web --target-group=arn:aws:elasticloadbalancing:us-east-1:12345689:targetgroup/hi-web/12345
 ```
 
 #### Deploying Existing Task Definition

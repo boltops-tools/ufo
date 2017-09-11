@@ -34,8 +34,8 @@ hi-web hi-worker hi-clock
 As explained in detail in [Conventions]({% link _docs/conventions.md %}) the task definition and service name are the same by convention.  This convention also applies for each of the services being shipped in the list. The task definition and service names match for each of the services in the list.  If you would like to override the convention as part of the ships command then you use a special syntax. In the special syntax the service and task definition is separated by a colon.  Examples:
 
 ```sh
-ufo ships hi-web-prod-1:hi-web-prod hi-clock-prod-1 hi-worker-prod-1
-ufo ships hi-web-prod-1:my-task hi-clock-prod-1:another-task hi-worker-prod-1:third-task
+ufo ships hi-web-1:hi-web hi-clock-1 hi-worker-1
+ufo ships hi-web-1:my-task hi-clock-1:another-task hi-worker-1:third-task
 ```
 
 ### ufo ships Options
