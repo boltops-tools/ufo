@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ufo (2.0.1)
+    ufo (2.0.3)
       aws-sdk
       colorize
       deep_merge
