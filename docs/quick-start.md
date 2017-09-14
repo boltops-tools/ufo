@@ -8,14 +8,14 @@ In a hurry? No sweat! Here's a quick start to using ufo that takes only a few mi
 gem install ufo
 git clone https:///github.com/tongueroo/hi.git
 cd hi
-ufo init --app=hi --env prod --cluster=prod --image=tongueroo/hi
+ufo init --app=hi --image=tongueroo/hi
 ufo ship hi-web
 ```
 
 You should see something similar to this:
 
 ```
-$ ufo init --app=hi --env prod --cluster=prod --image=tongueroo/hi
+$ ufo init --app=hi --image=tongueroo/hi
 Setting up ufo project...
 created: ./bin/deploy
 created: ./Dockerfile

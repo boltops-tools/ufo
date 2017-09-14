@@ -4,4 +4,4 @@
 # be overridden.
 
 # Only build one docker image and deploys it to multiple ECS services
-ufo ships <%= @app %>-{web,clock,worker} --cluster <%= @cluster %>
+ufo ships <%= @app %>-{web,clock,worker}

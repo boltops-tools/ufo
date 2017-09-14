@@ -8,13 +8,13 @@ Let's run the command in our newly clone project.
 ```sh
 git clone https://github.com/tongueroo/hi.git
 cd hi
-ufo init --app=hi --env prod --cluster=prod --image=tongueroo/hi
+ufo init --app=hi --image=tongueroo/hi
 ```
 
 You should see output similiar to this:
 
 ```
-$ ufo init --app=hi --env prod --cluster=prod --image=tongueroo/hi
+$ ufo init --app=hi --image=tongueroo/hi
 Setting up ufo project...
 created: ./bin/deploy
 created: ./Dockerfile

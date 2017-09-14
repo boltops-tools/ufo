@@ -1,8 +1,6 @@
 require 'colorize'
 require 'erb'
 
-# quick test:
-# rm -rf ufo ; /Users/tung/src/tongueroo/ufo/bin/ufo init --cluster default2 --image tongueroo/ruby ; cat ufo/settings.yml
 module Ufo
   class Init
     def initialize(options = {})

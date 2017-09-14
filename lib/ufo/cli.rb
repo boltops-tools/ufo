@@ -19,7 +19,6 @@ module Ufo
     subcommand "tasks", Tasks
 
     desc "init", "setup initial ufo files"
-    option :cluster, type: :string, required: true, desc: "ECS cluster name. Example: default"
     option :image, type: :string, required: true, desc: "Docker image name without the tag. Example: tongueroo/hi. Configures ufo/settings.yml"
     option :app, type: :string, required: true, desc: "App name. Preferably one word. Used in the generated ufo/task_definitions.rb."
     long_desc Help.init
