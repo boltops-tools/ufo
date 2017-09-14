@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [2.1.0]
+* ufo init: only require --app and --image option
+
 ## [2.0.3]
 * add aws log group as a comment in the starter project
 
