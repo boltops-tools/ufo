@@ -44,7 +44,7 @@ To quickly demonstrate how simple it is to use ufo we will use an example app fr
 brew cask install boltopslabs/software/bolts
 git clone https:///github.com/tongueroo/hi.git
 cd hi
-ufo init --app=hi --env stag --cluster=stag --image=tongueroo/hi
+ufo init --app=hi --cluster=stag --image=tongueroo/hi
 ufo ship hi-web-stag
 ```
 
