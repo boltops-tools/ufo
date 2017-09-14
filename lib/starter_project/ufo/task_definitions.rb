@@ -15,8 +15,9 @@ task_definition "<%= @app %>-web" do
     family: task_definition_name,
     name: "web",
     container_port: helper.dockerfile_port,
-    awslogs_group: "<%= @app %>-web",
-    awslogs_stream_prefix: "<%= @app %>",
+    # uncomment out to set the log group
+    # awslogs_group: "<%= @app %>-web",
+    # awslogs_stream_prefix: "<%= @app %>",
     command: ["bin/web"]
   )
 end
@@ -26,8 +27,9 @@ task_definition "<%= @app %>-worker" do
   variables(
     family: task_definition_name,
     name: "worker",
-    awslogs_group: "<%= @app %>-web",
-    awslogs_stream_prefix: "<%= @app %>",
+    # uncomment out to set the log group
+    # awslogs_group: "<%= @app %>-worker",
+    # awslogs_stream_prefix: "<%= @app %>",
     command: ["bin/worker"]
   )
 end
@@ -37,8 +39,9 @@ task_definition "<%= @app %>-clock" do
   variables(
     family: task_definition_name,
     name: "clock",
-    awslogs_group: "<%= @app %>-web",
-    awslogs_stream_prefix: "<%= @app %>",
+    # uncomment out to set the log group
+    # awslogs_group: "<%= @app %>-clock",
+    # awslogs_stream_prefix: "<%= @app %>",
     command: ["bin/clock"]
   )
 end
