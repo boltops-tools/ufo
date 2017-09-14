@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [2.0.2]
+* ufo init: update cli help
+
 ## [2.0.1]
 * ufo init: remove --env option requirement
 
