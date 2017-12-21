@@ -6,7 +6,7 @@ In a hurry? No sweat! Here's a quick start to using ufo that takes only a few mi
 
 ```sh
 gem install ufo
-git clone https:///github.com/tongueroo/hi.git
+git clone https://github.com/tongueroo/hi.git
 cd hi
 ufo init --app=hi --image=tongueroo/hi
 ufo ship hi-web
