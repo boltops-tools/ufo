@@ -18,6 +18,7 @@ task_definition "<%= @app %>-web" do
     # uncomment out to set the log group
     # awslogs_group: "<%= @app %>-web",
     # awslogs_stream_prefix: "<%= @app %>",
+    # awslogs_region: "us-east-1",
     command: ["bin/web"]
   )
 end
@@ -30,6 +31,7 @@ task_definition "<%= @app %>-worker" do
     # uncomment out to set the log group
     # awslogs_group: "<%= @app %>-worker",
     # awslogs_stream_prefix: "<%= @app %>",
+    # awslogs_region: "us-east-1",
     command: ["bin/worker"]
   )
 end
@@ -42,6 +44,7 @@ task_definition "<%= @app %>-clock" do
     # uncomment out to set the log group
     # awslogs_group: "<%= @app %>-clock",
     # awslogs_stream_prefix: "<%= @app %>",
+    # awslogs_region: "us-east-1",
     command: ["bin/clock"]
   )
 end

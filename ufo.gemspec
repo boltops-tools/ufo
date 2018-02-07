@@ -22,7 +22,10 @@ Gem::Specification.new do |spec|
   spec.add_dependency "hashie"
   spec.add_dependency "colorize"
   spec.add_dependency "deep_merge"
-  spec.add_dependency "aws-sdk"
+  spec.add_dependency "aws-sdk-ecs"
+  spec.add_dependency "aws-sdk-ec2"
+  spec.add_dependency "aws-sdk-elasticloadbalancingv2"
+  spec.add_dependency "aws-sdk-cloudwatchlogs"
   spec.add_dependency "plissken"
 
   spec.add_development_dependency "bundler", "~> 1.3"

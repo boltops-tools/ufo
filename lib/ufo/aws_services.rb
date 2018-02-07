@@ -1,4 +1,7 @@
-require 'aws-sdk'
+require "aws-sdk-ecs"
+require "aws-sdk-ec2"
+require "aws-sdk-elasticloadbalancingv2"
+require "aws-sdk-cloudwatchlogs"
 
 module Ufo
   module AwsServices

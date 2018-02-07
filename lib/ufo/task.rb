@@ -16,7 +16,11 @@ module Ufo
         cluster: @cluster,
         task_definition: @task_definition
       }
-      task_options.merge!(overrides: overrides) if @options[:command]
+      if @options[:command]
+        task_options.merge!(overrides: overrides)
+        puts "Running task with container overrides."
+        puts "Command: #{@options[:command].join(' ')}"
+      end
       resp = ecs.run_task(task_options)
       puts "Task ARN: #{resp.tasks[0].task_arn}" unless @options[:mute]
     end
