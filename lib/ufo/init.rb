@@ -59,8 +59,7 @@ module Ufo
     def ufo_ignores
       ignores =<<-EOL
 ufo/output
-ufo/docker_image_name*.txt
-ufo/version
+ufo/data
 EOL
     end
 

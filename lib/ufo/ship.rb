@@ -227,7 +227,7 @@ module Ufo
     # the ECS console.  `ufo scale` will allow you to updated the desired_count from the
     # CLI though.
     def create_service
-      puts "This service #{@service} does not yet exist in the #{@cluster} cluster.  This deploy will create it."
+      puts "This service #{@service.colorize(:green)} does not yet exist in the #{@cluster.colorize(:green)} cluster.  This deploy will create it."
       container = container_info(@task_definition)
       target_group = target_group_prompt(container)
 
