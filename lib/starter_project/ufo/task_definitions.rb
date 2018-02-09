@@ -1,11 +1,12 @@
-# There will be some special variables that are automatically available in this file.
+# There some built-in helpers that are automatically available in this file.
 #
-# Some of variables are from the Dockerfile and some are from other places.
+# Some of helpers get data from the Dockerfile and some are from other places.
+# Here's a summary of the some helpers:
 #
-# * helper.full_image_name - Docker image name with the tag when docker image is built by ufo. This is defined in ufo/settings.yml.  The helper.full_image_name includes the git sha tongueroo/hi:ufo-[sha].
-# * helper.dockerfile_port - Expose port in the Dockerfile.  Only supports one exposed port, the first one that is encountered.
-#
-# helper.env_vars - is a helper method that generates the proper environment Array of Hashes
+#   full_image_name 
+#   dockerfile_port
+#   env_vars(text)
+#   env_file(path)
 #
 # More info: http://ufoships.com/docs/helpers/
 #
