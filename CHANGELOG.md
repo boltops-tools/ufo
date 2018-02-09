@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [2.2.1]
+- require aws-sdk-ecr
+
 ## [2.2.0]
 - only use required aws-sdk components
 - allow overriding one off task command
