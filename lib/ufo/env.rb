@@ -10,7 +10,7 @@ class Ufo::Env
     if map
       ufo_env = map[ENV['AWS_PROFILE']] || map['default']
     end
-    ufo_env ||= 'prod' # defaults to prod
+    ufo_env ||= 'development' # defaults to development
     ufo_env = ENV['UFO_ENV'] if ENV['UFO_ENV'] # highest precedence
 
     Kernel.const_set(:UFO_ENV, ufo_env)

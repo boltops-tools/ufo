@@ -103,7 +103,6 @@ module Ufo
       FileUtils.mkdir_p(dirname) unless File.exist?(dirname)
       full_image_name = generate_name
       IO.write(docker_name_path, full_image_name)
-      IO.write("#{@project_root}/ufo/version", full_image_name)
     end
 
     def generate_name
@@ -112,7 +111,7 @@ module Ufo
 
     def docker_name_path
       # output gets entirely wiped by tasks builder so dotn use that folder
-      "#{@project_root}/ufo/docker_image_name_#{@image_namespace}.txt"
+      "#{@project_root}/ufo/data/docker_image_name_#{@image_namespace}.txt"
     end
 
     def timestamp
