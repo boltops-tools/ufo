@@ -1,4 +1,4 @@
-FROM ruby:2.3.3
+FROM ruby:2.5.0
 MAINTAINER Tung Nguyen <tongueroo@gmail.com>
 
 # This is just a sample Dockerfile. This is meant to be overriden.

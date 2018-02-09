@@ -1,6 +1,5 @@
 require 'thor'
 require 'ufo/command'
-require 'ufo/cli/help'
 
 module Ufo
   class CLI < Command
@@ -11,17 +10,17 @@ module Ufo
     class_option :cluster, desc: "Cluster.  Overrides ufo/settings.yml."
 
     desc "docker [ACTION]", "docker related tasks"
-    long_desc Help.docker
+    long_desc Help.text(:docker)
     subcommand "docker", Docker
 
     desc "tasks [ACTION]", "task definition related tasks"
-    long_desc Help.tasks
+    long_desc Help.text(:tasks)
     subcommand "tasks", Tasks
 
     desc "init", "setup initial ufo files"
     option :image, type: :string, required: true, desc: "Docker image name without the tag. Example: tongueroo/hi. Configures ufo/settings.yml"
     option :app, type: :string, required: true, desc: "App name. Preferably one word. Used in the generated ufo/task_definitions.rb."
-    long_desc Help.init
+    long_desc Help.text(:init)
     def init
       Init.new(options).setup
     end
@@ -40,7 +39,7 @@ module Ufo
     end
 
     desc "ship [SERVICE]", "builds and ships container image to the ECS service"
-    long_desc Help.ship
+    long_desc Help.text(:ship)
     ship_options.call
     def ship(service)
       builder = build_docker
@@ -55,7 +54,7 @@ module Ufo
     end
 
     desc "ships [LIST-OF-SERVICES]", "builds and ships same container image to multiple ECS services"
-    long_desc Help.ships
+    long_desc Help.text(:ships)
     ship_options.call
     def ships(*services)
       builder = build_docker
@@ -73,7 +72,7 @@ module Ufo
     end
 
     desc "task [TASK_DEFINITION]", "runs a one time task"
-    long_desc Help.task
+    long_desc Help.text(:task)
     option :docker, type: :boolean, desc: "Enable docker build and push", default: true
     option :command, type: :array, desc: "Override the command used for the container"
     def task(task_definition)
@@ -83,7 +82,7 @@ module Ufo
     end
 
     desc "destroy [SERVICE]", "destroys the ECS service"
-    long_desc Help.destroy
+    long_desc Help.text(:destroy)
     option :sure, type: :boolean, desc: "By pass are you sure prompt."
     def destroy(service)
       task_definition = options[:task] || service # convention
@@ -91,14 +90,14 @@ module Ufo
     end
 
     desc "scale [SERVICE] [COUNT]", "scale the ECS service"
-    long_desc Help.scale
+    long_desc Help.text(:scale)
     def scale(service, count)
       Scale.new(service, count, options).update
     end
 
     desc "version", "Prints version number of installed ufo"
     def version
-      puts Ufo::VERSION
+      puts VERSION
     end
 
     no_tasks do

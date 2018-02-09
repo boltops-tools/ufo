@@ -1,12 +1,11 @@
 module Ufo
   class Docker < Command
-    autoload :Help, 'ufo/docker/help'
     autoload :Builder, 'ufo/docker/builder'
     autoload :Dockerfile, 'ufo/docker/dockerfile'
     autoload :Cleaner, 'ufo/docker/cleaner'
 
     desc "build", "builds docker image"
-    long_desc Help.build
+    long_desc Help.text("docker:build")
     option :push, type: :boolean, default: false
     def build
       builder = Docker::Builder.new(options)
@@ -15,7 +14,7 @@ module Ufo
     end
 
     desc "base", "builds docker image from Dockerfile.base and update current Dockerfile"
-    long_desc Help.base
+    long_desc Help.text("docker:base")
     option :push, type: :boolean, default: true
     def base
       builder = Docker::Builder.new(options.dup.merge(
@@ -31,7 +30,7 @@ module Ufo
 
     desc "name", "displays the full docker image with tag that will be generated"
     option :generate, type: :boolean, default: false, desc: "Generate a name without storing it"
-    long_desc Help.name
+    long_desc Help.text("docker:name")
     def name
       full_image_name = Docker::Builder.new(options).full_image_name
       puts full_image_name
@@ -40,7 +39,7 @@ module Ufo
     desc "clean IMAGE_NAME", "Cleans up old images.  Keeps a specified amount."
     option :keep, type: :numeric, default: 3
     option :tag_prefix, default: "ufo"
-    long_desc Help.clean
+    long_desc Help.text("docker:clean")
     def clean(image_name)
       Docker::Cleaner.new(image_name, options).cleanup
     end

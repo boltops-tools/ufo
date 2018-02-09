@@ -22,14 +22,6 @@ See [ufoships.com](http://ufoships.com) for full documentation.
 
 ## Installation
 
-If you want to quickly install ufo without having to worry about ufo’s dependencies you can simply install the Bolts Toolbelt which has ufo included.
-
-```sh
-brew cask install boltopslabs/software/bolts
-```
-
-Or if you prefer you can install ufo with RubyGems
-
 ```sh
 gem install ufo
 ```

@@ -12,6 +12,7 @@ full\_image\_name | The full docker image name that ufo builds. The "base" por
 dockerfile\_port | Exposed port extracted from the Dockerfile of the project. 
 env_vars(text) | This method takes a block of text that contains the env values in key=value format and converts that block of text to the proper task definition json format.
 env_file(path) | This method takes an `.env` file which contains a simple key value list of environment variables and converts the list to the proper task definition json format.
+task_definition_name | The name of the task_definition.  So if the code looks like this `task_definition "demo-web" do`, the task_definition_name is "demo-web".
 
 To call the helper in task_definitions.rb you must add `helper.` in front.  So full\_image\_name  is called via `helper.full_image_name`.
 
