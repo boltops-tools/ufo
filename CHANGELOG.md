@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [2.2.0]
+- only use required aws-sdk components
+- allow overriding one off task command
+- change default environment to development
+- cleanup: help uses markdown files
+- starter files: comment out command and fallback to the dockerfile command
+- update docs to reflect full env naming
+- update generated gitignore
+- update help: remove -prod
+
 ## [2.1.0]
 * ufo init: only require --app and --image option
 
