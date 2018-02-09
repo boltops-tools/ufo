@@ -20,7 +20,7 @@ task_definition "<%= @app %>-web" do
     # awslogs_group: "<%= @app %>-web",
     # awslogs_stream_prefix: "<%= @app %>",
     # awslogs_region: "us-east-1",
-    command: ["bin/web"]
+    # command: ["bin/web"] # IMPORTANT: change or create a bin/web file
   )
 end
 
@@ -33,7 +33,7 @@ task_definition "<%= @app %>-worker" do
     # awslogs_group: "<%= @app %>-worker",
     # awslogs_stream_prefix: "<%= @app %>",
     # awslogs_region: "us-east-1",
-    command: ["bin/worker"]
+    # command: ["bin/worker"] # IMPORTANT: change or create a bin/worker file
   )
 end
 
@@ -46,6 +46,6 @@ task_definition "<%= @app %>-clock" do
     # awslogs_group: "<%= @app %>-clock",
     # awslogs_stream_prefix: "<%= @app %>",
     # awslogs_region: "us-east-1",
-    command: ["bin/clock"]
+    # command: ["bin/clock"] # IMPORTANT: change or create a bin/clock file
   )
 end
