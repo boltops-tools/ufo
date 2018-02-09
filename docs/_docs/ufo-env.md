@@ -15,13 +15,13 @@ The `UFO_ENV` can be set easily in several ways:
 ### At the CLI Command
 
 ```sh
-UFO_ENV=prod ufo ship hi-web --cluster prod
+UFO_ENV=production ufo ship hi-web --cluster prod
 ```
 
 ### As an environment variable
 
 ```sh
-export UFO_ENV=prod
+export UFO_ENV=production
 ufo ship hi-web --cluster prod
 ```
 
@@ -33,21 +33,21 @@ The most interesting way to set `UFO_ENV` is with the `aws_profile_ufo_env_map` 
 
 ```yaml
 aws_profile_ufo_env_map:
-  default: dev
-  my-prod-profile: prod
-  my-stag-profile: stag
+  default: development
+  my-prod-profile: production
+  my-stag-profile: staging
 ```
 
 In this case, when you set `AWS_PROFILE` to switch AWS profiles, ufo picks this up and maps the `AWS_PROFILE` value to the specified `UFO_ENV` using the `aws_profile_ufo_env_map` lookup.  Example:
 
 ```sh
-AWS_PROFILE=my-prod-profile => UFO_ENV=prod
-AWS_PROFILE=my-stag-profile => UFO_ENV=stag
-AWS_PROFILE=default => UFO_ENV=dev
-AWS_PROFILE=whatever => UFO_ENV=dev
+AWS_PROFILE=my-prod-profile => UFO_ENV=production
+AWS_PROFILE=my-stag-profile => UFO_ENV=staging
+AWS_PROFILE=default => UFO_ENV=development
+AWS_PROFILE=whatever => UFO_ENV=development
 ```
 
-Notice how `AWS_PROFILE=whatever` results in `UFO_ENV=dev`.  This is because the `default: dev` map is specially treated. If you set the `default` map, this becomes the default value when the profile map is not specified in the rest of `ufo/settings.yml`.  More info on settings is available at [settings]({% link _docs/settings.md %}).
+Notice how `AWS_PROFILE=whatever` results in `UFO_ENV=development`.  This is because the `default: development` map is specially treated. If you set the `default` map, this becomes the default value when the profile map is not specified in the rest of `ufo/settings.yml`.  More info on settings is available at [settings]({% link _docs/settings.md %}).
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/settings.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/variables.md %}">Next Step</a>

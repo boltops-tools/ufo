@@ -4,15 +4,15 @@ image: <%= @image %>
 # ecr_keep: 30
 
 # aws_profile_ufo_env_map:
-#   default: prod
+#   default: staging
 #   # More examples:
-#   aws_profile1: prod
-#   aws_profile2: stag
-#   aws_profile3: dev
+#   aws_profile1: production
+#   aws_profile2: staging
+#   aws_profile3: development
 
 # ufo_env_cluster_map:
 #   default: prod
 #   # More examples:
-#   aws_profile1: prod
-#   aws_profile2: stag
-#   aws_profile3: dev
+#   production: prod
+#   staging: stag
+#   development: dev

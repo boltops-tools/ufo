@@ -15,17 +15,18 @@ image: tongueroo/hi
 clean_keep: 30
 ecr_keep: 30
 aws_profile_ufo_env_map:
-  default: prod
-  # More examples:
-  # aws_profile1: prod
-  # aws_profile2: stag
-  # aws_profile3: dev
+  default: staging
+#   # More examples:
+#   aws_profile1: production
+#   aws_profile2: staging
+#   aws_profile3: development
+
 ufo_env_cluster_map:
-  default: prod
-  # More examples:
-  # aws_profile1: prod
-  # aws_profile2: stag
-  # aws_profile3: dev
+  default: production
+#   # More examples:
+#   production: production
+#   staging: staging
+#   development: development
 ```
 
 The table below covers what each setting does:
@@ -39,19 +40,19 @@ Setting  | Description
 
 ### UFO_ENV to ECS Cluster Mapping
 
-The `ufo_env_cluster_map` option allows you to override the [UFO_ENV to ECS Cluster Convention]({% link _docs/conventions.md %}).  Normally, the ECS cluster defaults to whatever UFO_ENV is set to.  For example, when `UFO_ENV=prod` the ECS Cluster is prod and when `UFO_ENV=stag` the ECS Cluster is stag.  This setting allows you to override this behavior so that you do not have to specify the `--cluster` CLI option repeatedly.  Let's go through an example:
+The `ufo_env_cluster_map` option allows you to override the [UFO_ENV to ECS Cluster Convention]({% link _docs/conventions.md %}).  Normally, the ECS cluster defaults to whatever UFO_ENV is set to.  For example, when `UFO_ENV=production` the ECS Cluster is production and when `UFO_ENV=staging` the ECS Cluster is staging.  This setting allows you to override this behavior so that you do not have to specify the `--cluster` CLI option repeatedly.  Let's go through an example:
 
 By default:
 
 ```sh
-UFO_ENV=prod ufo ship hi-web # cluster defaults to UFO_ENV which is prod
-UFO_ENV=prod ufo ship hi-web --cluster prod # same as above
+UFO_ENV=production ufo ship hi-web # cluster defaults to UFO_ENV which is prod
+UFO_ENV=production ufo ship hi-web --cluster prod # same as above
 ```
 
 Override the convention and explicitly specify the `--cluster` option in the CLI.
 
 ```sh
-UFO_ENV=prod ufo ship hi-web --cluster custom-cluster # override the default UFO_ENV TO cluster mapping
+UFO_ENV=production ufo ship hi-web --cluster custom-cluster # override the default UFO_ENV TO cluster mapping
 ```
 
 We can also override the convention with `settings.yml`:
@@ -64,7 +65,7 @@ ufo_env_cluster_map:
 Because of the `ufo_env_cluster_map` setting, the `--cluster` CLI option is not longer required:
 
 ```sh
-UFO_ENV=prod ufo ship hi-web # same as --cluster custom-cluster because of settings.yml
+UFO_ENV=production ufo ship hi-web # same as --cluster custom-cluster because of settings.yml
 ```
 
 ### AWS_PROFILE TO UFO_ENV Mapping
@@ -73,23 +74,23 @@ An interesting way to set `UFO_ENV` is with the `aws_profile_ufo_env_map` in `uf
 
 ```yaml
 aws_profile_ufo_env_map:
-  default: dev
-  my-prod-profile: prod
-  my-stag-profile: stag
+  default: development
+  my-prod-profile: production
+  my-stag-profile: staging
 ```
 
 In this case, when you set `AWS_PROFILE` to switch AWS profiles, ufo picks this up and maps the `AWS_PROFILE` value to the specified `UFO_ENV` using the `aws_profile_ufo_env_map` lookup.  Example:
 
 ```sh
-AWS_PROFILE=my-prod-profile => UFO_ENV=prod
-AWS_PROFILE=my-stag-profile => UFO_ENV=stag
-AWS_PROFILE=default => UFO_ENV=dev
-AWS_PROFILE=whatever => UFO_ENV=dev
+AWS_PROFILE=my-prod-profile => UFO_ENV=production
+AWS_PROFILE=my-stag-profile => UFO_ENV=staging
+AWS_PROFILE=default => UFO_ENV=development
+AWS_PROFILE=whatever => UFO_ENV=development
 ```
 
-Notice how `AWS_PROFILE=whatever` results in `UFO_ENV=dev`.  This is because the `default: dev` map is specially treated. If you set the `default` map, this becomes the default value when the profile map is not specified in the rest of `ufo/settings.yml`.
+Notice how `AWS_PROFILE=whatever` results in `UFO_ENV=development`.  This is because the `default: development` map is specially treated. If you set the `default` map, this becomes the default value when the profile map is not specified in the rest of `ufo/settings.yml`.
 
-This behavior prevents you from switching `AWS_PROFILE`s and then accidentally deploying a production based docker image to staging and vice versas because you forgot to also switch `LONO_ENV` to its respective environment.
+This behavior prevents you from switching `AWS_PROFILE`s and then accidentally deploying a production based docker image to staging and vice versas because you forgot to also switch `UFO_ENV` to its respective environment.
 
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/ufo-help.md %}">Back</a>

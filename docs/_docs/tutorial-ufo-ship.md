@@ -14,7 +14,7 @@ By convention, ufo will ship the docker container to an ECS cluster with the sam
 
 ```sh
 ufo ship hi-web --cluster prod
-UFO_ENV=prod ufo ship hi-web --cluster prod
+UFO_ENV=production ufo ship hi-web --cluster prod
 ```
 
 When you run `ufo ship hi-web`:

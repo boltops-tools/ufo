@@ -28,27 +28,27 @@ Shared variables also support a concept called layering.  The `config/variables/
 @environment = helper.env_file(".env")
 ```
 
-When `ufo ship` is ran with `UFO_ENV=prod` he `config/variables/prod.rb` will be evaluated and layered on top of the variables defined in `base.rb:
+When `ufo ship` is ran with `UFO_ENV=production` he `config/variables/production.rb` will be evaluated and layered on top of the variables defined in `base.rb:
 
-`ufo/variables/prod.rb`:
+`ufo/variables/production.rb`:
 
 ```ruby
-@environment = helper.env_vars(%Q{
+@environment = helper.env_vars(%Q[
   RAILS_ENV=production
   SECRET_KEY_BASE=secret
-})
+])
 ```
 
-When `ufo ship` is ran with `UFO_ENV=stag` he `config/variables/stag.rb` will be evaluated and layered on top of the variables defined in `base.rb:
+When `ufo ship` is ran with `UFO_ENV=staging` he `config/variables/staging.rb` will be evaluated and layered on top of the variables defined in `base.rb:
 
 
-`ufo/variables/prod.rb`:
+`ufo/variables/production.rb`:
 
 ```ruby
-@environment = helper.env_vars(%Q{
+@environment = helper.env_vars(%Q[
   RAILS_ENV=staging
   SECRET_KEY_BASE=secret
-})
+])
 ```
 
 
