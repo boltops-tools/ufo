@@ -7,10 +7,7 @@
 module Ufo
   class Completions
     def initialize(*params)
-      # ["scale", ""] => ["scale"]
-      log "params unfiltered #{params.inspect}"
-      @params = params.reject(&:empty?)
-      log "@params filtered #{@params.inspect}"
+      @params = params
     end
 
     def run
