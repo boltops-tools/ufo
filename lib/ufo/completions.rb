@@ -28,8 +28,8 @@ module Ufo
         puts filtered_options
       else
         # puts "here2"
-        method_@params = Ufo::CLI.instance_method(current_command).parameters.map(&:last)
-        # puts "method_@params #{method_@params.inspect}"
+        method_params = Ufo::CLI.instance_method(current_command).parameters.map(&:last)
+        # puts "method_params #{method_params.inspect}"
         # puts "@params.size #{@params.size}"
         offset = @params.size - 1
         # puts "offset #{offset}"
