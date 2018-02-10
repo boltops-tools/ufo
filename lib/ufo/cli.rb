@@ -106,14 +106,6 @@ module Ufo
       puts "foo(example, *rest)"
     end
 
-    desc "commands", "Prints all commands"
-    def commands
-      commands = CLI.all_commands.reject do |k,v|
-        v.is_a?(Thor::HiddenCommand)
-      end
-      puts commands.keys
-    end
-
     desc "completions *PARAMS", "puts auto completion words"
     long_desc Help.text(:completions)
     def completions(*params)

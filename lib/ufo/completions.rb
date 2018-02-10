@@ -1,8 +1,16 @@
 # To test:
 #
+#   ufo completions
 #   ufo completions scale
 #   ufo completions scale service
 #   ufo completions scale service count
+#
+#   ufo completions
+#   ufo completions ship
+#
+#   ufo completions
+#   ufo completions ships
+#   ufo completions ships services
 #
 module Ufo
   class Completions
@@ -11,14 +19,13 @@ module Ufo
     end
 
     def run
-      return if @params.size == 0
+      if @params.size == 0
+        puts all_commands
+        return
+      end
 
       current_command = @params[0]
-      log "current_command: #{current_command}"
-
       arity = Ufo::CLI.instance_method(current_command).arity.abs
-      log "@params.size > arity"
-      log "#{@params.size} > #{arity.inspect}"
       # artity value examples:
       #
       #  ship(service) = 1
@@ -26,12 +33,12 @@ module Ufo
       #  ships(*services) = -1
       #  foo(example, *rest) = -2
       #
-      # Negative and positive arity values happen to be handle the same way
+      # Negative and positive arity values are handled the same way;
       # thats why we take the abs of the arity.
 
       if @params.size > arity
-        # When arity is positive and greater than arity we are have auto-completed
-        # the command parameters.  Example:
+        # When arity is positive and greater than arity we are have finished
+        # auto-completing the parameters in the method declaration.  Example:
         #
         #   scale(service, count) = arity of 2
         #
@@ -41,38 +48,48 @@ module Ufo
         #
         # So we are done with method params, the completions should be
         # all flag options now.
-
-        log "params greater than arity. processing options"
-
-        used = ARGV.select {|a| a.include?('--')} # to remove used options
-        method_options = CLI.all_commands[current_command].options.keys
-        class_options = Ufo::CLI.class_options.keys
-        all_options = method_options + class_options
-
-        all_options.map! { |o| "--#{o.to_s.dasherize}" }
-        filtered_options = all_options - used
-        puts filtered_options
+        puts options_completions(current_command)
       else
-        log "params equal or less than arity. processing method params"
-        method_params = Ufo::CLI.instance_method(current_command).parameters
-        # Example:
-        # >> Ufo::CLI.instance_method(:scale).parameters
-        # => [[:req, :service], [:req, :count]]
-        # >> Ufo::CLI.instance_method(:ships).parameters
-        # => [[:rest, :services]]
-        # >>
-        method_params.map!(&:last)
-
-        # log "method_params #{method_params.inspect}"
-        # log "@params.size #{@params.size}"
-        offset = @params.size - 1
-        # log "offset #{offset}"
-        offset_params = method_params[offset..-1]
-        log "offset_params #{offset_params.inspect}"
-        puts method_params[offset..-1].first
+        puts params_completions(current_command)
       end
+    end
 
-      log ""
+    def all_commands
+      commands = CLI.all_commands.reject do |k,v|
+        v.is_a?(Thor::HiddenCommand)
+      end
+      commands.keys
+    end
+
+    def options_completions(current_command)
+      used = ARGV.select {|a| a.include?('--')} # to remove used options
+      method_options = CLI.all_commands[current_command].options.keys
+      class_options = Ufo::CLI.class_options.keys
+      all_options = method_options + class_options
+
+      all_options.map! { |o| "--#{o.to_s.dasherize}" }
+      filtered_options = all_options - used
+      filtered_options
+    end
+
+    def params_completions(current_command)
+      log "params equal or less than arity. processing method params"
+      method_params = Ufo::CLI.instance_method(current_command).parameters
+      # Example:
+      # >> Ufo::CLI.instance_method(:scale).parameters
+      # => [[:req, :service], [:req, :count]]
+      # >> Ufo::CLI.instance_method(:ships).parameters
+      # => [[:rest, :services]]
+      # >>
+      method_params.map!(&:last)
+
+      # log "method_params #{method_params.inspect}"
+      # log "@params.size #{@params.size}"
+      offset = @params.size - 1
+      # log "offset #{offset}"
+      offset_params = method_params[offset..-1]
+      log "offset_params #{offset_params.inspect}"
+      method_params[offset..-1].first
     end
 
     def log(msg)
