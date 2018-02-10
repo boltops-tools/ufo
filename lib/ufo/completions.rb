@@ -1,3 +1,9 @@
+# To test:
+#
+#   ufo completions scale
+#   ufo completions scale service
+#   ufo completions scale service count
+#
 module Ufo
   class Completions
     def initialize(*params)
@@ -15,7 +21,7 @@ module Ufo
       # TODO: arity -1 ships command, and -2 for foo(a, *rest)
 
       # log "current_command: #{current_command}"
-      arity = Ufo::CLI.instance_method(current_command).arity
+      arity = Ufo::CLI.instance_method(current_command).arity.abs
       # log "@params.size: #{@params.size} arity #{arity.inspect} "
       log "@params.size > arity"
       log "#{@params.size} > #{arity.inspect}"
@@ -25,15 +31,18 @@ module Ufo
       #  ships(*services) = -1
       #  foo(example, *rest) = -2
 
+
       if @params.size > arity
         # Done with any method params, the completions will be flag options now.
         #
         # When arity is positive and greater than arity we are have auto-completed
         # the command parameters.  Example:
         #
-        #   scale(service, count) = 2
+        #   scale(service, count) = arity of 2
         #
-        # ufo scale service count
+        #   ufo scale service count [TAB]
+        #
+        # Will return --noop --verbose etc
         #
 
         log "params greater than arity. processing options"
