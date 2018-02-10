@@ -101,6 +101,11 @@ module Ufo
       puts VERSION
     end
 
+    desc "foo a b", "testing for artity of -2"
+    def foo(example, *rest)
+      puts "foo(example, *rest)"
+    end
+
     desc "commands", "Prints all commands"
     def commands
       commands = CLI.all_commands.reject do |k,v|
