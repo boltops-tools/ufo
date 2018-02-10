@@ -59,6 +59,10 @@ module Ufo
         env_vars(text)
       end
 
+      def current_region
+        @current_region ||= `aws configure get region`.strip rescue 'us-east-1'
+      end
+
       def settings
         @settings ||= Settings.new(@project_root)
       end
