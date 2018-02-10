@@ -17,24 +17,22 @@ module Ufo
       return if @params.size == 0
 
       current_command = @params[0]
+      log "current_command: #{current_command}"
 
-      # TODO: arity -1 ships command, and -2 for foo(a, *rest)
-
-      # log "current_command: #{current_command}"
       arity = Ufo::CLI.instance_method(current_command).arity.abs
-      # log "@params.size: #{@params.size} arity #{arity.inspect} "
       log "@params.size > arity"
       log "#{@params.size} > #{arity.inspect}"
-      # artity values:
+      # artity value examples:
+      #
       #  ship(service) = 1
       #  scale(service, count) = 2
       #  ships(*services) = -1
       #  foo(example, *rest) = -2
-
+      #
+      # Negative and positive arity values happen to be handle the same way
+      # thats why we take the abs of the arity.
 
       if @params.size > arity
-        # Done with any method params, the completions will be flag options now.
-        #
         # When arity is positive and greater than arity we are have auto-completed
         # the command parameters.  Example:
         #
@@ -44,23 +42,30 @@ module Ufo
         #
         # Will return --noop --verbose etc
         #
+        # So we are done with method params, the completions should be
+        # all flag options now.
 
         log "params greater than arity. processing options"
 
-        used = ARGV.select {|a| a.include?('--')}
-
+        used = ARGV.select {|a| a.include?('--')} # to remove used options
         method_options = CLI.all_commands[current_command].options.keys
         class_options = Ufo::CLI.class_options.keys
         all_options = method_options + class_options
-
 
         all_options.map! { |o| "--#{o.to_s.dasherize}" }
         filtered_options = all_options - used
         puts filtered_options
       else
-
         log "params equal or less than arity. processing method params"
-        method_params = Ufo::CLI.instance_method(current_command).parameters.map(&:last)
+        method_params = Ufo::CLI.instance_method(current_command).parameters
+        # Example:
+        # >> Ufo::CLI.instance_method(:scale).parameters
+        # => [[:req, :service], [:req, :count]]
+        # >> Ufo::CLI.instance_method(:ships).parameters
+        # => [[:rest, :services]]
+        # >>
+        method_params.map!(&:last)
+
         # log "method_params #{method_params.inspect}"
         # log "@params.size #{@params.size}"
         offset = @params.size - 1
