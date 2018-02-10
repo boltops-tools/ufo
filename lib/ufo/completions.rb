@@ -50,6 +50,7 @@
 module Ufo
   class Completions
     def initialize(*params)
+      log "params #{params.inspect}"
       @params = params
     end
 
@@ -61,11 +62,15 @@ module Ufo
 
       current_command = @params[0]
       arity = Ufo::CLI.instance_method(current_command).arity.abs
+      log "@params.size > arity"
+      log "#{@params.size} > #{arity}"
       if @params.size > arity
         puts options_completions(current_command)
       else
         puts params_completions(current_command)
       end
+
+      log ""
     end
 
     def all_commands
@@ -76,6 +81,7 @@ module Ufo
     end
 
     def options_completions(current_command)
+      log "options_completions"
       used = ARGV.select { |a| a.include?('--') } # so we can remove used options
       method_options = CLI.all_commands[current_command].options.keys
       class_options = Ufo::CLI.class_options.keys
@@ -87,7 +93,7 @@ module Ufo
     end
 
     def params_completions(current_command)
-      # log "params equal or less than arity. processing method params"
+      log "params_completions"
       method_params = Ufo::CLI.instance_method(current_command).parameters
       # Example:
       # >> Ufo::CLI.instance_method(:scale).parameters
@@ -97,11 +103,9 @@ module Ufo
       # >>
       method_params.map!(&:last)
 
-      # log "method_params #{method_params.inspect}"
-      # log "@params.size #{@params.size}"
       offset = @params.size - 1
-      # log "offset #{offset}"
       offset_params = method_params[offset..-1]
+      log "offset #{offset}"
       log "offset_params #{offset_params.inspect}"
       method_params[offset..-1].first
     end
