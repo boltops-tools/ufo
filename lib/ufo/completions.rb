@@ -2,7 +2,9 @@ module Ufo
   class Completions
     def initialize(*params)
       # ["scale", ""] => ["scale"]
+      log "params unfiltered #{params.inspect}"
       @params = params.reject(&:empty?)
+      log "@params filtered #{@params.inspect}"
     end
 
     def run
@@ -14,11 +16,13 @@ module Ufo
 
       # log "current_command: #{current_command}"
       arity = Ufo::CLI.instance_method(current_command).arity
-      log "arity #{arity.inspect}"
+      # log "@params.size: #{@params.size} arity #{arity.inspect} "
+      log "@params.size > arity"
+      log "#{@params.size} > #{arity.inspect}"
       # artity values:
-      #  ships(*services) = -1
       #  ship(service) = 1
       #  scale(service, count) = 2
+      #  ships(*services) = -1
       #  foo(example, *rest) = -2
 
       if @params.size > arity
@@ -32,7 +36,7 @@ module Ufo
         # ufo scale service count
         #
 
-        log "here1 params greater than arity"
+        log "params greater than arity. processing options"
 
         used = ARGV.select {|a| a.include?('--')}
 
@@ -46,7 +50,7 @@ module Ufo
         puts filtered_options
       else
 
-        log "here2 processing method params: #{@params.inspect} @params.size: #{@params.size} arity: #{arity}"
+        log "params equal or less than arity. processing method params"
         method_params = Ufo::CLI.instance_method(current_command).parameters.map(&:last)
         # log "method_params #{method_params.inspect}"
         # log "@params.size #{@params.size}"
@@ -56,6 +60,8 @@ module Ufo
         log "offset_params #{offset_params.inspect}"
         puts method_params[offset..-1].first
       end
+
+      log ""
     end
 
     def log(msg)
