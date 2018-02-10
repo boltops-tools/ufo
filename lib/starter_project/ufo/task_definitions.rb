@@ -19,7 +19,8 @@ task_definition "<%= @app %>-web" do
     container_port: helper.dockerfile_port,
     # Comment out awslogs_* if you do not want logs to be sent to CloudWatch.
     # Strongly recommended to use CloudWatch/centralized logging.
-    awslogs_group: "<%= @app %>-web",
+    # Ufo automatically creates the log group as part of deployment.
+    awslogs_group: "ecs/<%= @app %>-web",
     awslogs_stream_prefix: "<%= @app %>",
     awslogs_region: current_region,
     # command: ["bin/web"] # IMPORTANT: change or create a bin/web file
@@ -32,7 +33,7 @@ task_definition "<%= @app %>-worker" do
     family: task_definition_name,
     name: "worker",
     # Comment out awslogs_* if you do not want logs to be sent to CloudWatch.
-    awslogs_group: "<%= @app %>-worker",
+    awslogs_group: "ecs/<%= @app %>-worker",
     awslogs_stream_prefix: "<%= @app %>",
     awslogs_region: current_region,
     # command: ["bin/worker"] # IMPORTANT: change or create a bin/worker file
@@ -45,7 +46,7 @@ task_definition "<%= @app %>-clock" do
     family: task_definition_name,
     name: "clock",
     # Comment out awslogs_* if you do not want logs to be sent to CloudWatch.
-    awslogs_group: "<%= @app %>-clock",
+    awslogs_group: "ecs/<%= @app %>-clock",
     awslogs_stream_prefix: "<%= @app %>",
     awslogs_region: current_region,
     # command: ["bin/clock"] # IMPORTANT: change or create a bin/clock file
