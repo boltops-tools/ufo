@@ -101,7 +101,7 @@ module Ufo
       puts VERSION
     end
 
-    desc "commands", "Prints all commands", hide: true
+    desc "commands", "Prints all commands"
     def commands
       commands = CLI.all_commands.reject do |k,v|
         v.is_a?(Thor::HiddenCommand)
@@ -109,11 +109,29 @@ module Ufo
       puts commands.keys
     end
 
-    desc "completions *PARAMS", "puts auto completion words", hide: true
+    desc "completions *PARAMS", "puts auto completion words"
     def completions(*params)
+      return if params.size == 0
+
       current_command = params[0]
-      options = CLI.all_commands[current_command].options.keys
-      puts options.map { |o| "--#{o.to_s.dasherize}" }
+
+      # puts "current_command: #{current_command}"
+      arity = Ufo::CLI.instance_method(current_command).arity
+      if params.size > arity
+        # puts "here1"
+        method_options = CLI.all_commands[current_command].options.keys
+        class_options = Ufo::CLI.class_options.keys
+        all_options = method_options + class_options
+        puts all_options.map { |o| "--#{o.to_s.dasherize}" }
+      else
+        # puts "here2"
+        method_params = Ufo::CLI.instance_method(current_command).parameters.map(&:last)
+        # puts "method_params #{method_params.inspect}"
+        # puts "params.size #{params.size}"
+        offset = params.size - 1
+        # puts "offset #{offset}"
+        puts method_params[offset..-1].first.upcase
+      end
     end
 
     no_tasks do
