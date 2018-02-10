@@ -288,7 +288,6 @@ module Ufo
     # name but you cannot pass both a LB Name and a Target Group.
     def add_load_balancer!(container, options, target_group)
       options.merge!(
-        role: "ecsServiceRole", # assumption that we're using the ecsServiceRole
         load_balancers: [
           {
             container_name: container[:name],
