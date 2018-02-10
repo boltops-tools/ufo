@@ -24,6 +24,7 @@ module Ufo
   autoload :Docker, 'ufo/docker'
   autoload :Ecr, 'ufo/ecr'
   autoload :Tasks, 'ufo/tasks'
+  autoload :Completions, 'ufo/completions'
 end
 
 Ufo::Env.setup!
