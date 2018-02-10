@@ -1,5 +1,6 @@
 require 'thor'
 require 'ufo/command'
+require 'active_support/core_ext/string'
 
 module Ufo
   class CLI < Command
@@ -98,6 +99,21 @@ module Ufo
     desc "version", "Prints version number of installed ufo"
     def version
       puts VERSION
+    end
+
+    desc "commands", "Prints all commands", hide: true
+    def commands
+      commands = CLI.all_commands.reject do |k,v|
+        v.is_a?(Thor::HiddenCommand)
+      end
+      puts commands.keys
+    end
+
+    desc "completions *PARAMS", "puts auto completion words", hide: true
+    def completions(*params)
+      current_command = params[0]
+      options = CLI.all_commands[current_command].options.keys
+      puts options.map { |o| "--#{o.to_s.dasherize}" }
     end
 
     no_tasks do
