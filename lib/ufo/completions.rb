@@ -49,6 +49,8 @@
 #
 module Ufo
   class Completions
+    autoload :Script, 'ufo/completions/script'
+
     def initialize(*params)
       log "params #{params.inspect}"
       @params = params

@@ -112,6 +112,12 @@ module Ufo
       Completions.new(*params).run
     end
 
+    desc "completions_script", "script to eval to setup auto-completion"
+    long_desc Help.text(:completions_script)
+    def completions_script
+      Completions::Script.new.generate
+    end
+
     no_tasks do
       def build_docker
         builder = Docker::Builder.new(options)
