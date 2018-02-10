@@ -1,3 +1,38 @@
+# Code Explanation.  This is mainly focused on the run method.
+#
+# There are 3 main branches of logic for completions:
+#
+#   1. top-level commands - when there are zero completed words
+#   2. params completions - when a command has some required params
+#   3. options completions - when we have finished auto-completing the top-level command and required params, the rest of the completion will be the command options
+#
+# Terms:
+#
+#   params - these are params in the command itself. Example: for the method `scale(service, count)` the params are `service, count`.
+#   options - these are cli options flags.  Examples: --noop, --verbose
+#
+# When we are done processing method params, the completions will be only options. When detected params size greater than arity we are have finished
+# auto-completing the parameters in the method declaration.  Example:
+#
+#   scale(service, count) = arity of 2
+#
+#   ufo scale service count [TAB] # there are 3 params includin the "scale" command
+#
+# So the completions will be something like:
+#
+#   --noop --verbose etc
+#
+# A note about artity values:
+#
+# We are using the arity of the command method to determine if we have finish auto-completing the params completions. When the ruby method has a splat param, it's arity will be negative.  Here are some example methods and their arities.
+#
+#    ship(service) = 1
+#    scale(service, count) = 2
+#    ships(*services) = -1
+#    foo(example, *rest) = -2
+#
+# Fortunately, negative and positive arity values are processed the same way. So we take simply take the abs of the arity.
+#
 # To test:
 #
 #   ufo completions
@@ -26,28 +61,7 @@ module Ufo
 
       current_command = @params[0]
       arity = Ufo::CLI.instance_method(current_command).arity.abs
-      # artity value examples:
-      #
-      #  ship(service) = 1
-      #  scale(service, count) = 2
-      #  ships(*services) = -1
-      #  foo(example, *rest) = -2
-      #
-      # Negative and positive arity values are handled the same way;
-      # thats why we take the abs of the arity.
-
       if @params.size > arity
-        # When arity is positive and greater than arity we are have finished
-        # auto-completing the parameters in the method declaration.  Example:
-        #
-        #   scale(service, count) = arity of 2
-        #
-        #   ufo scale service count [TAB]
-        #
-        # Will return --noop --verbose etc
-        #
-        # So we are done with method params, the completions should be
-        # all flag options now.
         puts options_completions(current_command)
       else
         puts params_completions(current_command)
@@ -62,7 +76,7 @@ module Ufo
     end
 
     def options_completions(current_command)
-      used = ARGV.select {|a| a.include?('--')} # to remove used options
+      used = ARGV.select { |a| a.include?('--') } # so we can remove used options
       method_options = CLI.all_commands[current_command].options.keys
       class_options = Ufo::CLI.class_options.keys
       all_options = method_options + class_options
@@ -73,7 +87,7 @@ module Ufo
     end
 
     def params_completions(current_command)
-      log "params equal or less than arity. processing method params"
+      # log "params equal or less than arity. processing method params"
       method_params = Ufo::CLI.instance_method(current_command).parameters
       # Example:
       # >> Ufo::CLI.instance_method(:scale).parameters
