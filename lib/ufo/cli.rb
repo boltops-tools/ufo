@@ -109,20 +109,33 @@ module Ufo
       puts commands.keys
     end
 
+    # TO TEST:
+    #  ufo ship SERVICE --mute[TAB]
+    #
+    #  ufo completions ship SERVICE --mute
     desc "completions *PARAMS", "puts auto completion words"
     def completions(*params)
       return if params.size == 0
 
       current_command = params[0]
 
+      # TODO: arity -1 ships command, and -2 for foo(a, *rest)
+
       # puts "current_command: #{current_command}"
       arity = Ufo::CLI.instance_method(current_command).arity
       if params.size > arity
         # puts "here1"
+
+        used = ARGV.select {|a| a.include?('--')}
+
         method_options = CLI.all_commands[current_command].options.keys
         class_options = Ufo::CLI.class_options.keys
         all_options = method_options + class_options
-        puts all_options.map { |o| "--#{o.to_s.dasherize}" }
+
+
+        all_options.map! { |o| "--#{o.to_s.dasherize}" }
+        filtered_options = all_options - used
+        puts filtered_options
       else
         # puts "here2"
         method_params = Ufo::CLI.instance_method(current_command).parameters.map(&:last)
