@@ -1,6 +1,6 @@
 module Ufo
   class Destroy
-    include Defaults
+    include Default
     include AwsService
 
     def initialize(service, options={})

@@ -1,7 +1,7 @@
 module Ufo
   class Docker::Cleaner
     include Util
-    include Defaults
+    include Default
 
     def initialize(docker_image_name, options)
       # docker_image_name does not containg the tag

@@ -1,6 +1,6 @@
 module Ufo
   class Task
-    include Defaults
+    include Default
     include AwsService
 
     def initialize(task_definition, options)

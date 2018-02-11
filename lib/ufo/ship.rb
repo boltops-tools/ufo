@@ -22,7 +22,7 @@ module Ufo
   class ShipmentOverridden < UfoError; end
 
   class Ship
-    include Defaults
+    include Default
     include AwsService
     include Util
 

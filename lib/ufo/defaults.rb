@@ -7,7 +7,7 @@ module Ufo
   # end
   #
   # So @options must be set
-  module Defaults
+  module Default
     # The default cluster normally defaults to the UFO_ENV value.
     # But it can be overriden by ufo/settings.yml ufo_env_cluster_map
     #
