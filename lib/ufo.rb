@@ -12,6 +12,7 @@ module Ufo
   autoload :Setting, 'ufo/setting'
   autoload :Util, 'ufo/util'
   autoload :Init, 'ufo/init'
+  autoload :Sequence, 'ufo/sequence'
   autoload :CLI, 'ufo/cli'
   autoload :Help, 'ufo/help'
   autoload :Ship, 'ufo/ship'

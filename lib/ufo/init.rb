@@ -1,80 +1,50 @@
-require 'colorize'
-require 'erb'
-
 module Ufo
-  class Init
-    def initialize(options = {})
-      @options = options
-      @project_root = options[:project_root] || '.'
+  class Init < Sequence
+    autoload :Helper, 'ufo/init/helper'
+    include Helper
+    add_runtime_options! # force, pretend, quiet, skip options
+      # https://github.com/erikhuda/thor/blob/master/lib/thor/actions.rb#L49
+
+    # Ugly, this is how I can get the options from to match with this Thor::Group
+    def self.cli_options
+      [
+        [:force, type: :boolean, desc: "Bypass overwrite are you sure prompt for existing files."],
+        [:image, type: :string, required: true, desc: "Docker image name without the tag. Example: tongueroo/hi. Configures ufo/settings.yml"],
+        [:app, type: :string, required: true, desc: "App name. Preferably one word. Used in the generated ufo/task_definitions.rb."],
+      ]
+    end
+    cli_options.each do |args|
+      class_option *args
     end
 
-    def setup
-      puts "Setting up ufo project...".blue unless @options[:quiet]
-      source_root = File.expand_path("../../starter_project", __FILE__)
-      # https://ruby-doc.org/core-2.2.0/Dir.html
-      # use the File::FNM_DOTMATCH flag or something like "{*,.*}".
-      paths = Dir.glob("#{source_root}/**/{*,.*}").
-                select {|p| File.file?(p) }
-      paths.each do |src|
-        dest = src.gsub(%r{.*starter_project/},'')
-        dest = "#{@project_root}/#{dest}"
-
-        if File.exist?(dest) and !@options[:sure]
-          puts "exists: #{dest}".yellow unless @options[:quiet]
-        else
-          dirname = File.dirname(dest)
-          FileUtils.mkdir_p(dirname) unless File.exist?(dirname)
-          if dest =~ /\.erb$/
-            FileUtils.cp(src, dest)
-          else
-            write_erb_result(src, dest)
-          end
-          puts "created: #{dest}".green unless @options[:quiet]
-        end
-      end
-      puts "Starter ufo files created.".blue
-      File.chmod(0755, "#{@project_root}/bin/deploy")
-      add_gitignore
+    def init_files
+      # map variables
+      @app = options[:app]
+      @image = options[:image]
+      # copy the files
+      directory "."
     end
 
-    def write_erb_result(src, dest)
-      source = IO.read(src)
-      b = ERBContext.new(@options).get_binding
-      output = ERB.new(source).result(b)
-      IO.write(dest, output)
-    end
-
-    def add_gitignore
-      gitignore_path = "#{@project_root}/.gitignore"
-      if File.exist?(gitignore_path)
-        ignores = IO.read(gitignore_path)
-        has_ignore = ignores.include?("ufo/output")
-        ignores << ufo_ignores unless has_ignore
-      else
-        ignores = ufo_ignores
-      end
-      IO.write(gitignore_path, ignores)
-    end
-
-    def ufo_ignores
-      ignores =<<-EOL
+    def upsert_gitignore
+      append_to_file ".gitignore", <<-EOL
 ufo/output
 ufo/data
 EOL
     end
 
-  end
-end
+    def user_message
+      puts <<-EOL
+#{"="*64}
+Congrats 🎉 You have successfully set up ufo for your project. To deploy to ECS:
 
-# http://stackoverflow.com/questions/1338960/ruby-templates-how-to-pass-variables-into-inlined-erb
-class ERBContext
-  def initialize(hash)
-    hash.each_pair do |key, value|
-      instance_variable_set('@' + key.to_s, value)
+  ufo ship #{@app}
+
+If you need to customize the ECS task definition to configure things like memory and cpu allocation. You can do this by adjusting the files the ufo/variables folder. These variables get applied to the ufo/templates/main.json.erb task definition json that is passed to the ECS register task definition api.
+
+This allows you to fully customize and control your environment to fit your application's needs.
+
+More info: http://ufoships.com
+EOL
     end
-  end
-
-  def get_binding
-    binding
   end
 end
