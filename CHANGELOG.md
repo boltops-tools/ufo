@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [2.2.3]
+- eval $(ufo completion_script) for tab auto-completion
+- default task_defintion template fixes: add ecs/ to awslogs_group, add helper.current_region
+- move bin/ufo to exe/ufo
+- rename: AwsServices to AwsService, Defaults to Default, Settings to Setting
+
 ## [2.2.2]
 - Remove role passed to create_service. Fixes ufo ship when target-group-arn is provided.
 
