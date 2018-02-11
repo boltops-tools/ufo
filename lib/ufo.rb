@@ -6,10 +6,10 @@ require 'fileutils'
 
 module Ufo
   autoload :Env, 'ufo/env'
-  autoload :Defaults, 'ufo/defaults'
-  autoload :AwsServices, 'ufo/aws_services'
+  autoload :Default, 'ufo/default'
+  autoload :AwsService, 'ufo/aws_service'
   autoload :Command, 'ufo/command'
-  autoload :Settings, 'ufo/settings'
+  autoload :Setting, 'ufo/setting'
   autoload :Util, 'ufo/util'
   autoload :Init, 'ufo/init'
   autoload :CLI, 'ufo/cli'
@@ -24,6 +24,8 @@ module Ufo
   autoload :Docker, 'ufo/docker'
   autoload :Ecr, 'ufo/ecr'
   autoload :Tasks, 'ufo/tasks'
+  autoload :Completion, "ufo/completion"
+  autoload :Completer, "ufo/completer"
 end
 
 Ufo::Env.setup!

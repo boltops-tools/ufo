@@ -35,7 +35,7 @@ module Ufo
       option :wait, type: :boolean, desc: "Wait for deployment to complete", default: false
       option :pretty, type: :boolean, default: true, desc: "Pretty format the json for the task definitions"
       option :stop_old_tasks, type: :boolean, default: false, desc: "Stop old tasks after waiting for deploying to complete"
-      option :ecr_keep, type: :numeric, desc: "ECR specific cleanup of old images.  Specifies how many images to keep.  Only runs if the images are ECR images. Defaults to keeping all the images."
+      option :ecr_keep, type: :numeric, desc: "ECR specific cleanup of old images.  Specifies how many images to keep.  Only runs if the images are ECR images. Defaults keeps all images."
     end
 
     desc "ship [SERVICE]", "builds and ships container image to the ECS service"
@@ -93,6 +93,18 @@ module Ufo
     long_desc Help.text(:scale)
     def scale(service, count)
       Scale.new(service, count, options).update
+    end
+
+    desc "completion *PARAMS", "prints words for auto-completion"
+    long_desc Help.text("completion")
+    def completion(*params)
+      Completer.new(CLI, *params).run
+    end
+
+    desc "completion_script", "generates script that can be eval to setup auto-completion", hide: true
+    long_desc Help.text("completion_script")
+    def completion_script
+      Completer::Script.generate
     end
 
     desc "version", "Prints version number of installed ufo"

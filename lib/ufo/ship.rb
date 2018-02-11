@@ -22,8 +22,8 @@ module Ufo
   class ShipmentOverridden < UfoError; end
 
   class Ship
-    include Defaults
-    include AwsServices
+    include Default
+    include AwsService
     include Util
 
     def initialize(service, task_definition, options={})

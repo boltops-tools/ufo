@@ -18,23 +18,24 @@ module Ufo
     class << self
       def dispatch(m, args, options, config)
         # Allow calling for help via:
-        #   ufo docker help
-        #   ufo docker -h
-        #   ufo docker --help
-        #   ufo docker -D
+        #   ufo command help
+        #   ufo command -h
+        #   ufo command --help
+        #   ufo command -D
         #
-        # as well thor's nomral setting as
+        # as well thor's normal way:
         #
-        #   ufo help docker
+        #   ufo help command
         help_flags = Thor::HELP_MAPPINGS + ["help"]
         if args.length > 1 && !(args & help_flags).empty?
           args -= help_flags
           args.insert(-2, "help")
         end
 
+        #   ufo version
         #   ufo --version
         #   ufo -v
-        version_flags = ["-v", "--version"]
+        version_flags = ["--version", "-v"]
         if args.length == 1 && !(args & version_flags).empty?
           args = ["version"]
         end

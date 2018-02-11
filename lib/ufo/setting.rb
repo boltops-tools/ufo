@@ -1,7 +1,7 @@
 require 'yaml'
 
 module Ufo
-  class Settings
+  class Setting
     def initialize(project_root='.', check_ufo_project=true)
       @project_root = project_root
       @check_ufo_project = check_ufo_project

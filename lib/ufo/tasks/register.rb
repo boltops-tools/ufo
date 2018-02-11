@@ -3,7 +3,7 @@ require 'json'
 
 module Ufo
   class Tasks::Register
-    include AwsServices
+    include AwsService
 
     def self.register(task_name, options={})
       project_root = options[:project_root] || '.'

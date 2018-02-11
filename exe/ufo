@@ -7,10 +7,8 @@ Signal.trap("INT") {
   exit
 }
 
-require 'rubygems'
-
-$:.unshift(File.expand_path('../../lib', __FILE__))
-require 'ufo'
-require 'ufo/cli'
+$:.unshift(File.expand_path("../../lib", __FILE__))
+require "ufo"
+require "ufo/cli"
 
 Ufo::CLI.start(ARGV)

@@ -78,7 +78,7 @@ module Ufo
 
     # full_image - does not include the tag
     def image_name
-      settings.data["image"]
+      setting.data["image"]
     end
 
     # full_image - includes the tag
@@ -86,6 +86,8 @@ module Ufo
       if @options[:generate]
         return generate_name # name already has a newline
       end
+
+      return "tongueroo/hi:ufo-12345678" if ENV['TEST']
 
       unless File.exist?(docker_name_path)
         puts "Unable to find #{docker_name_path} which contains the last docker image name that was used as a part of `ufo docker build`.  Please run `ufo docker build` first."
@@ -125,8 +127,8 @@ module Ufo
       @git_sha.strip!
     end
 
-    def settings
-      @settings ||= Settings.new(@project_root)
+    def setting
+      @setting ||= Setting.new(@project_root)
     end
 
     def update_dockerfile
