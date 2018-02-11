@@ -96,26 +96,21 @@ module Ufo
       Scale.new(service, count, options).update
     end
 
+    desc "completion *PARAMS", "prints words for auto-completion"
+    long_desc Help.text("completion")
+    def completion(*params)
+      Completer.new(CLI, *params).run
+    end
+
+    desc "completion_script", "generates script that can be eval to setup auto-completion", hide: true
+    long_desc Help.text("completion_script")
+    def completion_script
+      Completer::Script.generate
+    end
+
     desc "version", "Prints version number of installed ufo"
     def version
       puts VERSION
-    end
-
-    desc "foo a b", "testing for artity of -2"
-    def foo(example, *rest)
-      puts "foo(example, *rest)"
-    end
-
-    desc "completions *PARAMS", "puts auto completion words"
-    long_desc Help.text(:completions)
-    def completions(*params)
-      Completions.new(*params).run
-    end
-
-    desc "completions_script", "script to eval to setup auto-completion"
-    long_desc Help.text(:completions_script)
-    def completions_script
-      Completions::Script.new.generate
     end
 
     no_tasks do

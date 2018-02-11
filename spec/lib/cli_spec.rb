@@ -59,8 +59,8 @@ describe Ufo::CLI do
 
     context "task" do
       it "runs one time task" do
-        out = execute("bin/ufo task hi-migrate-prod #{@args}")
-        expect(out).to include("Running task_definition")
+        out = execute("bin/ufo completion ship name")
+        expect(out).to include("--help")
       end
     end
   end
