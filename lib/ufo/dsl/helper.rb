@@ -64,8 +64,8 @@ module Ufo
         @current_region ||= `aws configure get region`.strip rescue 'us-east-1'
       end
 
-      def settings
-        @settings ||= Settings.new(@project_root)
+      def setting
+        @setting ||= Setting.new(@project_root)
       end
 
       def parse_for_dockerfile_port(dockerfile_path)

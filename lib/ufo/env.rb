@@ -3,9 +3,9 @@ class Ufo::Env
     # Ensures that  UFO_ENV is always set to a default value.
     # For Ufo::Env.setup! we do not need to check if we're in a ufo project
     # Because we could not be at first. For example when: ufo init is first called.
-    # Other uses of Ufo::Settings assumes that we should be in a ufo project.
-    settings = Ufo::Settings.new(project_root, false).data
-    map = settings['aws_profile_ufo_env_map']
+    # Other uses of Ufo::Setting assumes that we should be in a ufo project.
+    setting = Ufo::Setting.new(project_root, false).data
+    map = setting['aws_profile_ufo_env_map']
 
     if map
       ufo_env = map[ENV['AWS_PROFILE']] || map['default']

@@ -78,7 +78,7 @@ module Ufo
 
     # full_image - does not include the tag
     def image_name
-      settings.data["image"]
+      setting.data["image"]
     end
 
     # full_image - includes the tag
@@ -127,8 +127,8 @@ module Ufo
       @git_sha.strip!
     end
 
-    def settings
-      @settings ||= Settings.new(@project_root)
+    def setting
+      @setting ||= Setting.new(@project_root)
     end
 
     def update_dockerfile
