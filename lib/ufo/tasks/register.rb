@@ -6,8 +6,7 @@ module Ufo
     include AwsService
 
     def self.register(task_name, options={})
-      project_root = options[:project_root] || '.'
-      Dir.glob("#{project_root}/ufo/output/*").each do |path|
+      Dir.glob("#{Ufo.root}/ufo/output/*").each do |path|
         if task_name == :all or path.include?(task_name)
           task_register = Tasks::Register.new(path, options)
           task_register.register

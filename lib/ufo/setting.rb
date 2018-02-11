@@ -2,8 +2,7 @@ require 'yaml'
 
 module Ufo
   class Setting
-    def initialize(project_root='.', check_ufo_project=true)
-      @project_root = project_root
+    def initialize(check_ufo_project=true)
       @check_ufo_project = check_ufo_project
     end
 
@@ -33,7 +32,7 @@ module Ufo
 
   private
     def project_settings_path
-      "#{@project_root}/ufo/settings.yml"
+      "#{Ufo.root}/ufo/settings.yml"
     end
   end
 end

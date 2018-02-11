@@ -9,7 +9,7 @@ module Ufo
       end
 
       def write
-        output_path = "#{@options[:project_root]}/ufo/output"
+        output_path = "#{Ufo.root}/ufo/output"
         FileUtils.rm_rf(output_path) if @options[:clean]
         FileUtils.mkdir(output_path) unless File.exist?(output_path)
 

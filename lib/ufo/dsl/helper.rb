@@ -10,13 +10,12 @@ module Ufo
     class Helper
       def initialize(options={})
         @options = options
-        @project_root = options[:project_root] || '.'
       end
 
       ##############
       # helper variables
       def dockerfile_port
-        dockerfile_path = "#{@project_root}/Dockerfile"
+        dockerfile_path = "#{Ufo.root}/Dockerfile"
         if File.exist?(dockerfile_path)
           parse_for_dockerfile_port(dockerfile_path)
         end
@@ -50,7 +49,7 @@ module Ufo
       end
 
       def env_file(path)
-        full_path = "#{@project_root}/#{path}"
+        full_path = "#{Ufo.root}/#{path}"
         unless File.exist?(full_path)
           puts "The #{full_path} env file could not be found.  Are you sure it exists?"
           exit 1
@@ -65,7 +64,7 @@ module Ufo
       end
 
       def setting
-        @setting ||= Setting.new(@project_root)
+        @setting ||= Setting.new(Ufo.root)
       end
 
       def parse_for_dockerfile_port(dockerfile_path)

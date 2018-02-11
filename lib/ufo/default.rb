@@ -41,7 +41,7 @@ module Ufo
     end
 
     def setting
-      @setting ||= Setting.new(@options[:project_root])
+      @setting ||= Setting.new
     end
   end
 end

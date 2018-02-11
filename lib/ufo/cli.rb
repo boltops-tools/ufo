@@ -6,7 +6,6 @@ module Ufo
     class_option :verbose, type: :boolean
     class_option :mute, type: :boolean
     class_option :noop, type: :boolean
-    class_option :project_root, type: :string, default: '.'
     class_option :cluster, desc: "Cluster.  Overrides ufo/settings.yml."
 
     desc "docker [ACTION]", "docker related tasks"
