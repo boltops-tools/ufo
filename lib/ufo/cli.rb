@@ -1,6 +1,5 @@
 require 'thor'
 require 'ufo/command'
-require 'active_support/core_ext/string'
 
 module Ufo
   class CLI < Command

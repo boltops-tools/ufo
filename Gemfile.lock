@@ -4,6 +4,7 @@ PATH
     ufo (2.2.2)
       aws-sdk-cloudwatchlogs
       aws-sdk-ec2
+      aws-sdk-ecr
       aws-sdk-ecs
       aws-sdk-elasticloadbalancingv2
       colorize
@@ -23,6 +24,9 @@ GEM
       aws-sigv4 (~> 1.0)
       jmespath (~> 1.0)
     aws-sdk-ec2 (1.26.0)
+      aws-sdk-core (~> 3)
+      aws-sigv4 (~> 1.0)
+    aws-sdk-ecr (1.2.0)
       aws-sdk-core (~> 3)
       aws-sigv4 (~> 1.0)
     aws-sdk-ecs (1.8.0)
