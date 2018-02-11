@@ -23,7 +23,7 @@ module Ufo
 
   class Ship
     include Defaults
-    include AwsServices
+    include AwsService
     include Util
 
     def initialize(service, task_definition, options={})

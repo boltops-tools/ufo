@@ -5,7 +5,7 @@ require "json"
 #   ufo ship app-web --cluster prod --noop
 module Ufo
   class Ecr::Cleaner
-    include AwsServices
+    include AwsService
     include Defaults
 
     def initialize(docker_image_name, options={})

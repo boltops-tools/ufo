@@ -1,7 +1,7 @@
 # Use to automatically create the CloudWatch group
 module Ufo
   class LogGroup
-    include AwsServices
+    include AwsService
 
     def initialize(task_definition, options)
       @task_definition, @options = task_definition, options

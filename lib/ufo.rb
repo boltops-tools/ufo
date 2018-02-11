@@ -7,7 +7,7 @@ require 'fileutils'
 module Ufo
   autoload :Env, 'ufo/env'
   autoload :Defaults, 'ufo/defaults'
-  autoload :AwsServices, 'ufo/aws_services'
+  autoload :AwsService, 'ufo/aws_service'
   autoload :Command, 'ufo/command'
   autoload :Settings, 'ufo/settings'
   autoload :Util, 'ufo/util'
