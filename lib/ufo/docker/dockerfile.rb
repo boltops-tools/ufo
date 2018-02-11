@@ -3,7 +3,6 @@ module Ufo
     def initialize(full_image_name, options={})
       @full_image_name = full_image_name
       @options = options
-      @project_root = options[:project_root] || '.'
     end
 
     def update
@@ -15,7 +14,7 @@ module Ufo
     end
 
     def dockerfile_path
-      "#{@project_root}/Dockerfile"
+      "#{Ufo.root}/Dockerfile"
     end
 
     def new_dockerfile

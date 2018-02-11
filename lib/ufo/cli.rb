@@ -6,7 +6,6 @@ module Ufo
     class_option :verbose, type: :boolean
     class_option :mute, type: :boolean
     class_option :noop, type: :boolean
-    class_option :project_root, type: :string, default: '.'
     class_option :cluster, desc: "Cluster.  Overrides ufo/settings.yml."
 
     desc "docker [ACTION]", "docker related tasks"
@@ -17,13 +16,9 @@ module Ufo
     long_desc Help.text(:tasks)
     subcommand "tasks", Tasks
 
-    desc "init", "setup initial ufo files"
-    option :image, type: :string, required: true, desc: "Docker image name without the tag. Example: tongueroo/hi. Configures ufo/settings.yml"
-    option :app, type: :string, required: true, desc: "App name. Preferably one word. Used in the generated ufo/task_definitions.rb."
     long_desc Help.text(:init)
-    def init
-      Init.new(options).setup
-    end
+    option :foo, desc: "whatever"
+    register(Init, "init", "new", "setup initial ufo files")
 
     # common options to ship and ships command
     ship_options = Proc.new do

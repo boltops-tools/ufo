@@ -30,7 +30,6 @@ module Ufo
       @service = service
       @task_definition = task_definition
       @options = options
-      @project_root = options[:project_root] || '.'
       @target_group_prompt = @options[:target_group_prompt].nil? ? true : @options[:target_group_prompt]
       @cluster = @options[:cluster] || default_cluster
       @wait_for_deployment = @options[:wait].nil? ? true : @options[:wait]
@@ -338,14 +337,8 @@ module Ufo
     # assume only 1 container_definition
     # assume only 1 port mapping in that container_defintion
     def container_info(task_definition)
-      task_definition_path = "ufo/output/#{task_definition}.json"
-      task_definition_full_path = "#{@project_root}/#{task_definition_path}"
-      unless File.exist?(task_definition_full_path)
-        puts "ERROR: Unable to find the task definition at #{task_definition_path}.".colorize(:red)
-        puts "Are you sure you have defined it in ufo/template_definitions.rb?".colorize(:red)
-        exit
-      end
-      task_definition = JSON.load(IO.read(task_definition_full_path))
+      Ufo.check_task_definition!(task_defintion)
+      task_definition = JSON.load(IO.read(task_definition_path))
       container_def = task_definition["containerDefinitions"].first
       mappings = container_def["portMappings"]
       if mappings

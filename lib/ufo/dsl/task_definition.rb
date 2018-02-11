@@ -10,7 +10,6 @@ module Ufo
         @task_definition_name = task_definition_name
         @block = block
         @options = options
-        @project_root = @options[:project_root] || '.'
       end
 
       # delegate helper method back up to dsl
@@ -26,7 +25,7 @@ module Ufo
 
       def load_variables
         load_variables_file("base")
-        load_variables_file(UFO_ENV)
+        load_variables_file(Ufo.env)
       end
 
       # Load the variables defined in ufo/variables/* to make available in the
@@ -50,7 +49,7 @@ module Ufo
       # NOTE: Only able to make instance variables avaialble with instance_eval
       #   Wasnt able to make local variables available.
       def load_variables_file(filename)
-        path = "#{@project_root}/ufo/variables/#{filename}.rb"
+        path = "#{Ufo.root}/ufo/variables/#{filename}.rb"
         instance_eval(IO.read(path)) if File.exist?(path)
       end
 
@@ -101,7 +100,7 @@ module Ufo
 
       def source_path
         if @source # this means that source has been called
-          path = "#{@project_root}/ufo/templates/#{@source}.json.erb"
+          path = "#{Ufo.root}/ufo/templates/#{@source}.json.erb"
           check_source_path(path)
         else
           # default source path
@@ -113,7 +112,7 @@ module Ufo
 
       def check_source_path(path)
         unless File.exist?(path)
-          friendly_path = path.sub("#{@project_root}/", '')
+          friendly_path = path.sub("#{Ufo.root}/", '')
           puts "ERROR: Could not find the #{friendly_path} template.  Are sure it exists?  Check where you called source in ufo/task_definitions.rb"
           exit 1
         else

@@ -13,7 +13,6 @@ module Ufo
 
     def initialize(options={})
       @options = options
-      @project_root = options[:project_root] || '.'
       @dockerfile = options[:dockerfile] || 'Dockerfile'
       @image_namespace = options[:image_namespace] || 'ufo'
     end
@@ -27,7 +26,7 @@ module Ufo
       say "Building docker image with:".green
       say "  #{command}".green
       check_dockerfile_exists
-      command = "cd #{@project_root} && #{command}"
+      command = "cd #{Ufo.root} && #{command}"
       success = execute(command, use_system: true)
       unless success
         puts "ERROR: The docker image fail to build.  Are you sure the docker daemon is available?  Try running: docker version".colorize(:red)
@@ -59,7 +58,7 @@ module Ufo
     end
 
     def check_dockerfile_exists
-      unless File.exist?("#{@project_root}/#{@dockerfile}")
+      unless File.exist?("#{Ufo.root}/#{@dockerfile}")
         puts "#{@dockerfile} does not exist.  Are you sure it exists?"
         exit 1
       end
@@ -113,7 +112,7 @@ module Ufo
 
     def docker_name_path
       # output gets entirely wiped by tasks builder so dotn use that folder
-      "#{@project_root}/ufo/data/docker_image_name_#{@image_namespace}.txt"
+      "#{Ufo.root}/ufo/data/docker_image_name_#{@image_namespace}.txt"
     end
 
     def timestamp
@@ -123,12 +122,12 @@ module Ufo
     def git_sha
       return @git_sha if @git_sha
       # always call this and dont use the execute method because of the noop option
-      @git_sha = `cd #{@project_root} && git rev-parse --short HEAD`
+      @git_sha = `cd #{Ufo.root} && git rev-parse --short HEAD`
       @git_sha.strip!
     end
 
     def setting
-      @setting ||= Setting.new(@project_root)
+      @setting ||= Setting.new(Ufo.root)
     end
 
     def update_dockerfile

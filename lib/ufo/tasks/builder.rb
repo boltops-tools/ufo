@@ -13,7 +13,6 @@ module Ufo
 
     def initialize(options={})
       @options = options
-      @project_root = options[:project_root] || '.'
     end
 
     def build
@@ -26,14 +25,14 @@ module Ufo
 
     def check_templates_definitions_path
       unless File.exist?(template_definitions_path)
-        pretty_path = template_definitions_path.sub("#{@project_root}/", '')
+        pretty_path = template_definitions_path.sub("#{Ufo.root}/", '')
         puts "ERROR: #{pretty_path} does not exist.  Run: `ufo init` to create a starter file" unless @options[:mute]
         exit 1
       end
     end
 
     def template_definitions_path
-      "#{@project_root}/ufo/task_definitions.rb"
+      "#{Ufo.root}/ufo/task_definitions.rb"
     end
   end
 end

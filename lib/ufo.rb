@@ -5,13 +5,14 @@ require 'colorize'
 require 'fileutils'
 
 module Ufo
-  autoload :Env, 'ufo/env'
+  autoload :Core, 'ufo/core'
   autoload :Default, 'ufo/default'
   autoload :AwsService, 'ufo/aws_service'
   autoload :Command, 'ufo/command'
   autoload :Setting, 'ufo/setting'
   autoload :Util, 'ufo/util'
   autoload :Init, 'ufo/init'
+  autoload :Sequence, 'ufo/sequence'
   autoload :CLI, 'ufo/cli'
   autoload :Help, 'ufo/help'
   autoload :Ship, 'ufo/ship'
@@ -26,6 +27,7 @@ module Ufo
   autoload :Tasks, 'ufo/tasks'
   autoload :Completion, "ufo/completion"
   autoload :Completer, "ufo/completer"
+
+  extend Core
 end
 
-Ufo::Env.setup!
