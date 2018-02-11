@@ -32,7 +32,7 @@ module Ufo
     end
 
     def template_definitions_path
-      "#{Ufo.root}/ufo/task_definitions.rb"
+      "#{Ufo.root}/.ufo/task_definitions.rb"
     end
   end
 end

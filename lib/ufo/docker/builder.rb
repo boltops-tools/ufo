@@ -112,7 +112,7 @@ module Ufo
 
     def docker_name_path
       # output gets entirely wiped by tasks builder so dotn use that folder
-      "#{Ufo.root}/ufo/data/docker_image_name_#{@image_namespace}.txt"
+      "#{Ufo.root}/.ufo/data/docker_image_name_#{@image_namespace}.txt"
     end
 
     def timestamp

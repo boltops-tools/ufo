@@ -32,7 +32,7 @@ module Ufo
 
   private
     def project_settings_path
-      "#{Ufo.root}/ufo/settings.yml"
+      "#{Ufo.root}/.ufo/settings.yml"
     end
   end
 end
