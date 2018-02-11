@@ -1,7 +1,5 @@
 module Ufo
   class Init < Sequence
-    autoload :Helper, 'ufo/init/helper'
-    include Helper
     add_runtime_options! # force, pretend, quiet, skip options
       # https://github.com/erikhuda/thor/blob/master/lib/thor/actions.rb#L49
 
