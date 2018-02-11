@@ -2,6 +2,9 @@ require 'pathname'
 
 module Ufo
   module Core
+    autoload :Check, 'ufo/core/check'
+    include Check
+
     # Ensures that UFO_ENV is always set to a default value.
     # For Ufo::Env.setup! we do not need to check if we're in a ufo project
     # Because we could not be at first. For example when: ufo init is first called.
@@ -25,13 +28,6 @@ module Ufo
     def root
       path = ENV['UFO_ROOT'] || '.'
       Pathname.new(path)
-    end
-
-    def validate_in_project!
-      unless File.exist?("#{root}/ufo")
-        puts "Could not find a ufo folder in the current directory.  It does not look like you are running this command within a project that has been setup with ufo.  Please confirm that you are in a project and try again.  If you need to set up ufo on the project, check out ufo init -h".colorize(:red)
-        exit
-      end
     end
   end
 end

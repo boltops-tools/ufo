@@ -10,6 +10,8 @@ module Ufo
     def create
       puts "Ensuring log group for #{@task_definition} exists"
       return if @options[:noop]
+
+      Ufo.check_task_definition!(@task_definition)
       task_def = JSON.load(IO.read(task_def_path))
       task_def["containerDefinitions"].each do |container_def|
         begin
