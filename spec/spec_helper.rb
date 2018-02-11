@@ -12,6 +12,11 @@ root = File.expand_path("../", File.dirname(__FILE__))
 require "#{root}/lib/ufo"
 
 module Helpers
+  def create_starter_project_fixture
+    FileUtils.rm_rf("spec/fixtures/hi")
+    execute("exe/ufo init --app hi --image tongueroo/hi --project-root spec/fixtures/hi")
+  end
+
   def execute(cmd)
     puts "Running: #{cmd}" if show_command?
     out = `#{cmd}`

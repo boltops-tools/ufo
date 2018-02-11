@@ -87,6 +87,8 @@ module Ufo
         return generate_name # name already has a newline
       end
 
+      return "fake/image" if ENV['TEST']
+
       unless File.exist?(docker_name_path)
         puts "Unable to find #{docker_name_path} which contains the last docker image name that was used as a part of `ufo docker build`.  Please run `ufo docker build` first."
         exit 1

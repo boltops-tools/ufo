@@ -22,7 +22,7 @@ task_definition "<%= @app %>-web" do
     # Ufo automatically creates the log group as part of deployment.
     awslogs_group: "ecs/<%= @app %>-web",
     awslogs_stream_prefix: "<%= @app %>",
-    awslogs_region: current_region,
+    awslogs_region: helper.current_region,
     # command: ["bin/web"] # IMPORTANT: change or create a bin/web file
   )
 end
@@ -35,7 +35,7 @@ task_definition "<%= @app %>-worker" do
     # Comment out awslogs_* if you do not want logs to be sent to CloudWatch.
     awslogs_group: "ecs/<%= @app %>-worker",
     awslogs_stream_prefix: "<%= @app %>",
-    awslogs_region: current_region,
+    awslogs_region: helper.current_region,
     # command: ["bin/worker"] # IMPORTANT: change or create a bin/worker file
   )
 end
@@ -48,7 +48,7 @@ task_definition "<%= @app %>-clock" do
     # Comment out awslogs_* if you do not want logs to be sent to CloudWatch.
     awslogs_group: "ecs/<%= @app %>-clock",
     awslogs_stream_prefix: "<%= @app %>",
-    awslogs_region: current_region,
+    awslogs_region: helper.current_region,
     # command: ["bin/clock"] # IMPORTANT: change or create a bin/clock file
   )
 end
