@@ -6,7 +6,7 @@ module Ufo
     include AwsService
 
     def self.register(task_name, options={})
-      Dir.glob("#{Ufo.root}/ufo/output/*").each do |path|
+      Dir.glob("#{Ufo.root}/.ufo/output/*").each do |path|
         if task_name == :all or path.include?(task_name)
           task_register = Tasks::Register.new(path, options)
           task_register.register
@@ -19,7 +19,7 @@ module Ufo
       @options = options
     end
 
-    # aws ecs register-task-definition --cli-input-json file://ufo/output/hi-web-prod.json
+    # aws ecs register-task-definition --cli-input-json file://.ufo/output/hi-web-prod.json
     def register
       data = JSON.parse(IO.read(@template_definition_path), symbolize_names: true)
       data = data.to_snake_keys

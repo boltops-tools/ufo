@@ -31,7 +31,7 @@ module Ufo
     end
 
     def task_def_path
-      "#{Ufo.root}/ufo/output/#{@task_definition}.json"
+      "#{Ufo.root}/.ufo/output/#{@task_definition}.json"
     end
   end
 end

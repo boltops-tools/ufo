@@ -68,7 +68,7 @@ module Ufo
 
     def clean_existing_task_definitions
       # removing 1 file a a time instead of recursing removing the directory to be safe
-      Dir.glob("#{Ufo.root}/ufo/output/*").each do |path|
+      Dir.glob("#{Ufo.root}/.ufo/output/*").each do |path|
         FileUtils.rm_f(path)
       end
     end

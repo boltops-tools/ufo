@@ -49,7 +49,7 @@ module Ufo
       # NOTE: Only able to make instance variables avaialble with instance_eval
       #   Wasnt able to make local variables available.
       def load_variables_file(filename)
-        path = "#{Ufo.root}/ufo/variables/#{filename}.rb"
+        path = "#{Ufo.root}/.ufo/variables/#{filename}.rb"
         instance_eval(IO.read(path)) if File.exist?(path)
       end
 
@@ -100,7 +100,7 @@ module Ufo
 
       def source_path
         if @source # this means that source has been called
-          path = "#{Ufo.root}/ufo/templates/#{@source}.json.erb"
+          path = "#{Ufo.root}/.ufo/templates/#{@source}.json.erb"
           check_source_path(path)
         else
           # default source path
