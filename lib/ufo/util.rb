@@ -1,8 +1,6 @@
 module Ufo
   module Util
     def execute(command, local_options={})
-      command = "cd #{Ufo.root} && #{command}"
-      # local_options[:live] overrides the global @options[:noop]
       if @options[:noop] && !local_options[:live]
         say "NOOP: #{command}"
         result = true # always success with no noop for specs

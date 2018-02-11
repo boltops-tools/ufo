@@ -9,6 +9,7 @@ module Ufo
     @@env = nil
     def env
       return @@env if @@env
+
       setting = Ufo::Setting.new(check_ufo_project=false).data
       map = setting['aws_profile_ufo_env_map']
 
@@ -17,7 +18,7 @@ module Ufo
       end
       ufo_env ||= 'development' # defaults to development
       ufo_env = ENV['UFO_ENV'] if ENV['UFO_ENV'] # highest precedence
-      Kernel.const_set(:UFO_ENV, ufo_env)
+
       @@env = ufo_env
     end
 

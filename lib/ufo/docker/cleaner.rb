@@ -22,9 +22,11 @@ module Ufo
     end
 
     def delete_list
+      return [] if ENV['TEST']
       return @delete_list if @delete_list
 
-      out = execute("docker images", live: true) # live to override the noop cli options
+      out = execute("docker images") # live to override the noop cli options
+
       name_regexp = Regexp.new(@docker_image_name)
       # Example tag: ufo-2016-10-19T00-36-47-211b63a
       tag_string = "#{@tag_prefix}-\\d{4}-\\d{2}-\\d{2}T\\d{2}-\\d{2}-\\d{2}-.{7}"

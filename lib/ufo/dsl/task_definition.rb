@@ -25,7 +25,7 @@ module Ufo
 
       def load_variables
         load_variables_file("base")
-        load_variables_file(UFO_ENV)
+        load_variables_file(Ufo.env)
       end
 
       # Load the variables defined in ufo/variables/* to make available in the

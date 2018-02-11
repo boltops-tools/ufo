@@ -9,7 +9,7 @@ describe Ufo::CLI do
   before(:all) do
     create_starter_project_fixture
     project_root = File.expand_path("../../fixtures/hi", __FILE__)
-    @args = "--noop --project-root=#{project_root}"
+    @args = "--noop"
   end
 
   describe "ufo" do

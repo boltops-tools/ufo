@@ -11,10 +11,14 @@ require "byebug"
 root = File.expand_path("../", File.dirname(__FILE__))
 require "#{root}/lib/ufo"
 
+$dest = "tmp/project"
+ENV['DEST_ROOT'] = $dest
+ENV['UFO_ROOT'] = $dest
+
 module Helpers
   def create_starter_project_fixture
-    FileUtils.rm_rf("spec/fixtures/hi")
-    execute("exe/ufo init --app hi --image tongueroo/hi --project-root spec/fixtures/hi")
+    FileUtils.rm_rf($dest)
+    execute("exe/ufo init --app hi --image tongueroo/hi")
   end
 
   def execute(cmd)
