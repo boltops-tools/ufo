@@ -15,6 +15,15 @@ module Ufo
       class_option *args
     end
 
+    # for specs
+    def set_destination_root
+      return unless ENV['TEST']
+      dest = "tmp/project"
+      FileUtils.rm_rf(dest) && FileUtils.mkdir_p(dest)
+      self.destination_root = dest
+      FileUtils.cd(dest)
+    end
+
     def init_files
       # map variables
       @app = options[:app]
