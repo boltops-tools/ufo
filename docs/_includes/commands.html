@@ -67,7 +67,7 @@ task_definition "example-web" do
   variables(
     family: task_definition_name,
     name: "web",
-    awslogs_group: "example-web",
+    awslogs_group: "ecs/example-web",
     awslogs_stream_prefix: "example",
     command: ["bin/web"]
   )
