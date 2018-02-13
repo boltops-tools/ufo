@@ -1,14 +1,6 @@
-require 'spec_helper'
-
-# to run specs with what's remembered from vcr
-#   $ rake
-#
-# to run specs with new fresh data from aws api calls
-#   $ rake clean:vcr ; time rake
 describe Ufo::CLI do
   before(:all) do
     create_starter_project_fixture
-    project_root = File.expand_path("../../fixtures/hi", __FILE__)
     @args = "--noop"
   end
 

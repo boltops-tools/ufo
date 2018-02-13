@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe Ufo::Ship do
   let(:project_root) { File.expand_path("../../fixtures/hi", __FILE__) }
   let(:options) do

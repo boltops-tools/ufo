@@ -18,8 +18,9 @@ module Ufo
       end
 
       # project based settings files
-      env = File.exist?(env_settings_path) ? YAML.load_file(env_settings_path) : {}
-      base = File.exist?(base_settings_path) ? YAML.load_file(base_settings_path) : {}
+      env = env_settings_path
+      exit
+      base = load_file(base_settings_path)
 
       user_file = "#{ENV['HOME']}/.ufo/settings.yml"
       user = File.exist?(user_file) ? YAML.load_file(user_file) : {}
@@ -31,16 +32,20 @@ module Ufo
     end
 
   private
-    # need either the base or env specific settings project file to exist
-    def a_settings_file_exists?
-      File.exist?(project_base_settings_path) || File.exist?(project_settings_path)
+    def load_file(path)
+      File.exist?(path) ? YAML.load_file(path) : {}
     end
 
-    def project_base_settings_path
+    # need either the base or env specific settings project file to exist
+    def a_settings_file_exists?
+      File.exist?(base_settings_path) || File.exist?(env_settings_path)
+    end
+
+    def base_settings_path
       "#{Ufo.root}/.ufo/settings/base.yml"
     end
 
-    def project_settings_path
+    def env_settings_path
       "#{Ufo.root}/.ufo/settings/#{Ufo.env}.yml"
     end
   end

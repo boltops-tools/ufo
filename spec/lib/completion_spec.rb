@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe Ufo::CLI do
   describe "ufo completion" do
     commands = {

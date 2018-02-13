@@ -1,33 +1,34 @@
 require 'pathname'
+require 'yaml'
 
 module Ufo
   module Core
     autoload :Check, 'ufo/core/check'
     include Check
 
-    # Ensures that UFO_ENV is always set to a default value.
-    # For Ufo::Env.setup! we do not need to check if we're in a ufo project
-    # Because we could not be at first. For example when: ufo init is first called.
-    # Other uses of Ufo::Setting assumes that we should be in a ufo project.
-    @@env = nil
-    def env
-      return @@env if @@env
-
-      setting = Ufo::Setting.new(check_ufo_project=false).data
-      map = setting['aws_profile_ufo_env_map']
-
-      if map
-        ufo_env = map[ENV['AWS_PROFILE']] || map['default']
-      end
-      ufo_env ||= 'development' # defaults to development
-      ufo_env = ENV['UFO_ENV'] if ENV['UFO_ENV'] # highest precedence
-
-      @@env = ufo_env
-    end
-
     def root
       path = ENV['UFO_ROOT'] || '.'
       Pathname.new(path)
+    end
+
+    @@env = nil
+    def env
+      return @@env if @@env
+      ufo_env = env_from_profile(ENV['AWS_PROFILE']) || 'development'
+      ufo_env = ENV['UFO_ENV'] if ENV['UFO_ENV'] # highest precedence
+      @@env = ufo_env
+    end
+
+    private
+    # Do not use the Setting class to load the profile because it can cause an
+    # infinite loop then if we decide to use Ufo.env from within settings class.
+    def env_from_profile(aws_profile)
+      data = YAML.load_file("#{Ufo.root}/.ufo/settings.yml")
+      env = data.find do |_env, setting|
+        profiles = setting['profiles']
+        profiles && profiles.include?(aws_profile)
+      end
+      env.first if env
     end
   end
 end

@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe Ufo::Ecr::Cleaner do
   let(:docker_image_name) { "123456789.dkr.ecr.us-east-1.amazonaws.com/my-name" }
   let(:repo_domain) { "https://123456789.dkr.ecr.us-east-1.amazonaws.com" }

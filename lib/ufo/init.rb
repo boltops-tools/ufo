@@ -34,6 +34,7 @@ module Ufo
     end
 
     def upsert_gitignore
+      return unless File.exist?(".gitignore")
       append_to_file ".gitignore", <<-EOL
 .ufo/output
 .ufo/data

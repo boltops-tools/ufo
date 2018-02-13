@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe Ufo::Ecr::Auth do
   let(:repo_domain) { "https://123456789.dkr.ecr.us-east-1.amazonaws.com" }
   let(:auth) { Ufo::Ecr::Auth.new(repo_domain) }

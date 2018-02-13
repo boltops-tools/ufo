@@ -18,7 +18,8 @@ module Ufo
       end
 
       puts "Upgrading structure of your current project to the new ufo version 3 project structure"
-      mv("ufo/settings.yml", "ufo/settings/base.yml")
+      FileUtils.mkdir_p(".ufo/settings")
+      mv("ufo/settings.yml", ".ufo/settings/base.yml")
       mv("ufo", ".ufo")
       puts "Upgrade complete."
     end
