@@ -1,23 +1,6 @@
 require 'colorize'
 
 module Ufo
-  # Creating this class pass so we can have a reference we do not have describe
-  # all services and look up service_name creating more API calls.
-  #
-  # Also this class allows us to pass one object around instead of both
-  # cluster_name and service_name.
-  module ECS
-    Service = Struct.new(:cluster_arn, :service_arn) do
-      def cluster_name
-        cluster_arn.split('/').last
-      end
-
-      def service_name
-        service_arn.split('/').last
-      end
-    end
-  end
-
   class UfoError < RuntimeError; end
   class ShipmentOverridden < UfoError; end
 
@@ -65,7 +48,7 @@ module Ufo
       puts "Software shipped!" unless @options[:mute]
     end
 
-    # A single service name shouold had been passed and the service automatically
+    # A single service name should had been passed and the service automatically
     # gets created if it does not exist.
     def process_single_service
       ecs_service = find_ecs_service

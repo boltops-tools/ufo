@@ -38,6 +38,7 @@ module Ufo
     ship_options.call
     def deploy(service)
       task_definition = options[:task] || service # convention
+      Tasks::Builder.ship(task_definition, options)
       LogGroup.new(task_definition, options).create # TODO: move into ship
       ship = Ship.new(service, task_definition, options)
       ship.deploy
@@ -50,7 +51,7 @@ module Ufo
       builder = build_docker
 
       task_definition = options[:task] || service # convention
-      Tasks::Builder.register(task_definition, options)
+      Tasks::Builder.ship(task_definition, options)
       LogGroup.new(task_definition, options).create
       ship = Ship.new(service, task_definition, options)
       ship.deploy
@@ -67,7 +68,7 @@ module Ufo
       services.each_with_index do |service|
         service_name, task_definition_name = service.split(':')
         task_definition = task_definition_name || service_name # convention
-        Tasks::Builder.register(task_definition, options)
+        Tasks::Builder.ship(task_definition, options)
         LogGroup.new(task_definition, options).create
         ship = Ship.new(service, task_definition, options)
         ship.deploy
@@ -82,7 +83,7 @@ module Ufo
     option :command, type: :array, desc: "Override the command used for the container"
     def task(task_definition)
       Docker::Builder.build(options)
-      Tasks::Builder.register(task_definition, options)
+      Tasks::Builder.ship(task_definition, options)
       Task.new(task_definition, options).run
     end
 

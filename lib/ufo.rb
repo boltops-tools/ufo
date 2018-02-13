@@ -24,6 +24,7 @@ module Ufo
   autoload :DSL, 'ufo/dsl'
   autoload :Scale, 'ufo/scale'
   autoload :LogGroup, 'ufo/log_group'
+  autoload :Ecs, 'ufo/ecs'
 
   autoload :Docker, 'ufo/docker'
   autoload :Ecr, 'ufo/ecr'

@@ -1,12 +1,10 @@
 module Ufo
   class Tasks::Builder
-    # build and registers together
-    def self.register(task_definition, options)
-      # task definition and deploy logic are coupled in the Ship class.
-      # Example: We need to know if the task defintion is a web service to see if we need to
-      # add the elb target group.  The web service information is in the Tasks::Builder
-      # and the elb target group gets set in the Ship class.
-      # So we always call these together.
+    # ship: build and registers task definitions together
+    def self.ship(task_definition, options)
+      # When handling task definitions in with the ship command and class, we always want to
+      # build and register task definitions. There is little point of running them independently
+      # This method helps us do that.
       Tasks::Builder.new(options).build
       Tasks::Register.register(task_definition, options)
     end
