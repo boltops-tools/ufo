@@ -1,8 +1,11 @@
 # More info: http://ufoships.com/docs/ufo-settings/
-base: &base
+# The base config is treated special. It gets included the other environments automatically.
+# Yaml also directly supports merging with & and <<* syntax but doing it automatically
+# for a cleaner syntax.
+base:
   image: <%= @image %>
-  # clean_keep: 30 # cleans up docker images on your docker server.
-  # ecr_keep: 30 # cleans up images on ECR and keeps this remaining amount. Defaults to keep all.
+  # clean_keep: 30
+  # ecr_keep: 30
   # defaults when an new ECS service is created by ufo ship
   new_service:
     maximum_percent: 200
@@ -10,10 +13,7 @@ base: &base
     desired_count: 1
 
 development:
-  <<: *base
-  # cluster: dev # uncomment if you want the cluster name be other than the default
-                 # the default is to match UFO_ENV.  So UFO_ENV=development means the ECS
-                 # cluster will be name development
+  # cluster: dev
   # When you have AWS_PROFILE set to one of these values, ufo will switch to the desired
   # environment. This prevents you from switching AWS_PROFILE, forgetting to
   # also switch UFO_ENV, and accidentally deploying to production vs development.
@@ -22,7 +22,6 @@ development:
   #   - dev_profile2
 
 production:
-  <<: *base
   # cluster: prod
   # aws_profiles:
   #   - prod_profile
