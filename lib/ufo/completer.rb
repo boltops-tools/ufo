@@ -101,13 +101,13 @@ module Ufo
       end
     end
 
+    def subcommand?(command)
+      @command_class.subcommands.include?(command)
+    end
+
     # hacky way to detect that command is a registered Thor::Group command
     def thor_group_command?
       command_params(raw=true) == [[:rest, :args]]
-    end
-
-    def subcommand?(command)
-      @command_class.subcommands.include?(command)
     end
 
     def found?(command)
