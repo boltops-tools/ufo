@@ -19,18 +19,6 @@ module Ufo
       @stop_old_tasks = @options[:stop_old_tasks].nil? ? false : @options[:stop_old_tasks]
     end
 
-    # Find all the matching services on a cluster and update them.
-    # If no service is found at all, then create a service on the very first specified cluster
-    # only.
-    #
-    # If it looks like one service is passed in then it'll automatically create the service
-    # on the first cluster.
-
-    # If it looks like a regexp is passed in then it'll only update the services
-    # This is because regpex cannot be used to determined a list of service_names.
-    #
-    # Example:
-    #   No way to map: hi-.*-prod -> hi-web-prod hi-worker-prod hi-clock-prod
     def deploy
       message = "Shipping #{@service}..."
       unless @options[:mute]
@@ -43,14 +31,12 @@ module Ufo
       end
 
       ensure_cluster_exist
-      process_single_service
+      process_deployment
 
       puts "Software shipped!" unless @options[:mute]
     end
 
-    # A single service name should had been passed and the service automatically
-    # gets created if it does not exist.
-    def process_single_service
+    def process_deployment
       ecs_service = find_ecs_service
       deployed_service = if ecs_service
                            # update all existing service
@@ -254,11 +240,14 @@ module Ufo
       if @options[:noop]
         message = "NOOP #{message}"
       else
-        response = ecs.update_service(
+        params = {
           cluster: ecs_service.cluster_arn, # can use the cluster name also since it is unique
           service: ecs_service.service_arn, # can use the service name also since it is unique
           task_definition: @task_definition
-        )
+        }
+        puts "parmas: "
+        pp params
+        response = ecs.update_service(params)
         service = response.service # must set service here since this might never be called if @wait_for_deployment is false
       end
       puts message unless @options[:mute]
@@ -340,11 +329,11 @@ module Ufo
     end
 
     # find all services on a cluster
-    # yields ECS::Service object
+    # yields Ufo::ECS::Service object
     def find_all_ecs_services
       ecs_services = []
       service_arns.each do |service_arn|
-        ecs_service = ECS::Service.new(cluster_arn, service_arn)
+        ecs_service = Ufo::ECS::Service.new(cluster_arn, service_arn)
         yield(ecs_service) if block_given?
         ecs_services << ecs_service
       end
@@ -373,6 +362,8 @@ module Ufo
           message = "NOOP #{message}"
         else
           ecs.create_cluster(cluster_name: @cluster)
+          # TODO: Aad Waiter logic, sometimes the cluster does not exist by the time
+          # we create the service
         end
         puts message unless @options[:mute]
       end

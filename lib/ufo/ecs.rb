@@ -1,5 +1,5 @@
 module Ufo
-  module Ecs
+  module ECS
     autoload :Service, 'ufo/ecs/service'
   end
 end

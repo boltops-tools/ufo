@@ -4,6 +4,8 @@
 #
 # Also this class allows us to pass one object around instead of both
 # cluster_name and service_name.
+#
+# This is really only used in the Ufo::Ship class.
 module Ufo
   module ECS
     Service = Struct.new(:cluster_arn, :service_arn) do
