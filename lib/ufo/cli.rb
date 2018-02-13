@@ -39,7 +39,6 @@ module Ufo
     def deploy(service)
       task_definition = options[:task] || service # convention
       Tasks::Builder.ship(task_definition, options)
-      LogGroup.new(task_definition, options).create # TODO: move into ship
       ship = Ship.new(service, task_definition, options)
       ship.deploy
     end
@@ -52,7 +51,6 @@ module Ufo
 
       task_definition = options[:task] || service # convention
       Tasks::Builder.ship(task_definition, options)
-      LogGroup.new(task_definition, options).create
       ship = Ship.new(service, task_definition, options)
       ship.deploy
 
@@ -69,7 +67,6 @@ module Ufo
         service_name, task_definition_name = service.split(':')
         task_definition = task_definition_name || service_name # convention
         Tasks::Builder.ship(task_definition, options)
-        LogGroup.new(task_definition, options).create
         ship = Ship.new(service, task_definition, options)
         ship.deploy
       end

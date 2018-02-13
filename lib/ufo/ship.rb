@@ -30,10 +30,15 @@ module Ufo
         end
       end
 
+      ensure_log_group_exist
       ensure_cluster_exist
       process_deployment
 
       puts "Software shipped!" unless @options[:mute]
+    end
+
+    def ensure_log_group_exist
+      LogGroup.new(@task_definition, @options).create
     end
 
     def process_deployment
