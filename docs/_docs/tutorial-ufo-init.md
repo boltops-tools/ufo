@@ -13,7 +13,7 @@ ufo init --app=hi --image=tongueroo/hi
 
 You should see output similiar to this:
 
-```
+```sh
 $ ufo init --app=hi --image=tongueroo/hi
 Setting up ufo project...
       create  .env

@@ -40,13 +40,13 @@ ufo ships hi-web-1:my-task hi-clock-1:another-task hi-worker-1:third-task
 
 ### ufo ships Options
 
-The `ufo ships` and `ufo ship` command support the same options. The options are presented here again for convenience:
+The `ufo ships`, `ufo ship`, `ufo deploy` command support the same options. The options are presented here again for convenience:
 
 {% include ufo-ship-options.md %}
 
 Note: The `--task` option is not used with the `ufo ships` command.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/ufo-ship.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/ufo-scale.md %}">Next Step</a>
+<a id="next" class="btn btn-primary" href="{% link _docs/ufo-deploy.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
 

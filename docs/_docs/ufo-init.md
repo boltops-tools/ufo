@@ -16,7 +16,20 @@ ufo init --app=hi --image=tongueroo/hi
 
 You should see output similiar to this:
 
-<img src="/img/tutorials/ufo-init.png" class="doc-photo" />
+```sh
+$ ufo init --app=hi --image=tongueroo/hi
+Setting up ufo project...
+      create  .ufo/settings.yml
+      create  .ufo/task_definitions.rb
+      create  .ufo/templates/main.json.erb
+      create  .ufo/variables/base.rb
+      create  .ufo/variables/development.rb
+      create  .ufo/variables/production.rb
+      create  Dockerfile
+      create  bin/deploy
+      append  .gitignore
+Starter ufo files created.
+```
 
 The standard directory structure of the ufo folder looks like this:
 

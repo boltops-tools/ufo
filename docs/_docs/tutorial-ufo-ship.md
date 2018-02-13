@@ -68,14 +68,19 @@ Checking the ECS console you should see something like this:
 
 You have successfully shipped a docker image to ECS! 🍾🥂
 
-### Skipping Previous Steps
+### Skipping Previous Steps Method
 
 You should notice that `ufo ship` re-built the docker image and re-registered the task definitions.  The `ufo ship` command is designed to run everything in one simple command, so we do not have to manually call the commands in the previous pages: `ufo build` and `ufo tasks`.
 
-If you would like to skip the first 2 steps you can use the `--no-docker` and `--no-tasks` flags:
+If you would like to skip the first 2 steps, then you can use the [ufo deploy]({% link _docs/ufo-deploy.md %}) instead.  The `ufo deploy` command will:
+
+1. register the task definition in `.ufo/output/hi-web.json` unmodified
+2. update the ECS service
+
+Example:
 
 ```sh
-ufo ship hi-web --no-docker --no-tasks
+ufo deploy hi-web
 ```
 
 The output should look something like this:
