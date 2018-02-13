@@ -94,16 +94,16 @@ module Ufo
 
       # will only get to here if command aws found (above)
       arity = @command_class.instance_method(@current_command).arity.abs
-      if @params.size <= arity
-        # hacky way to detect that command is a registered Thor::Group command
-        if command_params(raw=true) == [[:rest, :args]]
-          puts options_completion
-        else
-          puts params_completion
-        end
-      else
+      if @params.size > arity or thor_group_command?
         puts options_completion
+      else
+        puts params_completion
       end
+    end
+
+    # hacky way to detect that command is a registered Thor::Group command
+    def thor_group_command?
+      command_params(raw=true) == [[:rest, :args]]
     end
 
     def subcommand?(command)
