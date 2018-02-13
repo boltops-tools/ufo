@@ -8,11 +8,11 @@ module Ufo
     class_option :noop, type: :boolean
     class_option :cluster, desc: "Cluster.  Overrides ufo/settings.yml."
 
-    desc "docker [ACTION]", "docker related tasks"
+    desc "docker SUBCOMMAND", "docker related tasks"
     long_desc Help.text(:docker)
     subcommand "docker", Docker
 
-    desc "tasks [ACTION]", "task definition related tasks"
+    desc "tasks SUBCOMMAND", "task definition related tasks"
     long_desc Help.text(:tasks)
     subcommand "tasks", Tasks
 
@@ -35,7 +35,7 @@ module Ufo
       option :ecr_keep, type: :numeric, desc: "ECR specific cleanup of old images.  Specifies how many images to keep.  Only runs if the images are ECR images. Defaults keeps all images."
     end
 
-    desc "ship [SERVICE]", "builds and ships container image to the ECS service"
+    desc "ship SERVICE", "builds and ships container image to the ECS service"
     long_desc Help.text(:ship)
     ship_options.call
     def ship(service)
@@ -50,7 +50,7 @@ module Ufo
       cleanup(builder.image_name)
     end
 
-    desc "ships [LIST-OF-SERVICES]", "builds and ships same container image to multiple ECS services"
+    desc "ships [LIST_OF_SERVICES]", "builds and ships same container image to multiple ECS services"
     long_desc Help.text(:ships)
     ship_options.call
     def ships(*services)
@@ -68,7 +68,7 @@ module Ufo
       cleanup(builder.image_name)
     end
 
-    desc "task [TASK_DEFINITION]", "runs a one time task"
+    desc "task TASK_DEFINITION", "runs a one time task"
     long_desc Help.text(:task)
     option :docker, type: :boolean, desc: "Enable docker build and push", default: true
     option :command, type: :array, desc: "Override the command used for the container"
@@ -78,7 +78,7 @@ module Ufo
       Task.new(task_definition, options).run
     end
 
-    desc "destroy [SERVICE]", "destroys the ECS service"
+    desc "destroy SERVICE", "destroys the ECS service"
     long_desc Help.text(:destroy)
     option :sure, type: :boolean, desc: "By pass are you sure prompt."
     def destroy(service)
@@ -86,7 +86,7 @@ module Ufo
       Destroy.new(service, options).bye
     end
 
-    desc "scale [SERVICE] [COUNT]", "scale the ECS service"
+    desc "scale SERVICE COUNT", "scale the ECS service"
     long_desc Help.text(:scale)
     def scale(service, count)
       Scale.new(service, count, options).update
