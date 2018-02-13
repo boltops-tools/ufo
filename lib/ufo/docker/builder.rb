@@ -1,9 +1,11 @@
-module Ufo
-  class Docker::Builder
-    include Util
+require 'active_support/core_ext/module/delegation'
+
+class Ufo::Docker
+  class Builder
+    include Ufo::Util
 
     def self.build(options)
-      builder = Docker::Builder.new(options) # outside if because it need builder.full_image_name
+      builder = Builder.new(options) # outside if because it need builder.full_image_name
       if options[:docker]
         builder.build
         builder.push
@@ -11,6 +13,7 @@ module Ufo
       builder
     end
 
+    delegate :update_auth_token, :push, to: :pusher
     def initialize(options={})
       @options = options
       @dockerfile = options[:dockerfile] || 'Dockerfile'
@@ -37,24 +40,8 @@ module Ufo
       say "Docker image #{full_image_name} built.  " + "Took #{pretty_time(took)}.".green
     end
 
-    def push
-      update_auth_token
-      start_time = Time.now
-      message = "Pushed #{full_image_name} docker image."
-      if @options[:noop]
-        message = "NOOP #{message}"
-      else
-        command = "docker push #{full_image_name}"
-        puts "=> #{command}".colorize(:green)
-        success = execute(command, use_system: true)
-        unless success
-          puts "ERROR: The docker image fail to push.".colorize(:red)
-          exit 1
-        end
-      end
-      took = Time.now - start_time
-      message << " Took #{pretty_time(took)}.".green
-      puts message unless @options[:mute]
+    def pusher
+      @pusher ||= Pusher.new(@options)
     end
 
     def check_dockerfile_exists
@@ -62,17 +49,6 @@ module Ufo
         puts "#{@dockerfile} does not exist.  Are you sure it exists?"
         exit 1
       end
-    end
-
-    def update_auth_token
-      return unless ecr_image?
-      repo_domain = "https://#{image_name.split('/').first}"
-      auth = Ecr::Auth.new(repo_domain)
-      auth.update
-    end
-
-    def ecr_image?
-      full_image_name =~ /\.amazonaws\.com/
     end
 
     # full_image - does not include the tag
@@ -124,11 +100,11 @@ module Ufo
     end
 
     def setting
-      @setting ||= Setting.new(Ufo.root)
+      @setting ||= Ufo::Setting.new(Ufo.root)
     end
 
     def update_dockerfile
-      dockerfile = Docker::Dockerfile.new(full_image_name, @options)
+      dockerfile = Dockerfile.new(full_image_name, @options)
       dockerfile.update
     end
 
