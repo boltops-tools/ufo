@@ -1,5 +1,5 @@
 describe Ufo::Ecr::Auth do
-  let(:repo_domain) { "https://123456789.dkr.ecr.us-east-1.amazonaws.com" }
+  let(:repo_domain) { "123456789.dkr.ecr.us-east-1.amazonaws.com" }
   let(:auth) { Ufo::Ecr::Auth.new(repo_domain) }
   before(:each) do
     allow(auth).to receive(:fetch_auth_token).and_return("opensesame")
