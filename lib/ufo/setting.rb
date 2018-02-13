@@ -26,12 +26,13 @@ module Ufo
       default_file = File.expand_path("../default/settings.yml", __FILE__)
       default = YAML.load_file(default_file)
 
-      @settings_yaml = default.merge(user.merge(project))
+      @settings_yaml = default.deep_merge(user.deep_merge(project))
     end
 
   private
     def load_file(path)
-      data = File.exist?(path) ? YAML.load_file(path) : {}
+      content = RenderMePretty.result(path)
+      data = File.exist?(path) ? YAML.load(content) : {}
       # automatically add base settings to the rest of the environments
       data.each do |env, _setting|
         base = data["base"] || {}
