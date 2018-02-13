@@ -367,8 +367,14 @@ module Ufo
       ecs_services
     end
 
-    def service_arns
-      ecs.list_services(cluster: @cluster).service_arns
+    def service_arns      
+      services = ecs.list_services(cluster: @cluster)
+      list_service_arns = services.service_arns
+      while services.next_token != nil
+        services = ecs.list_services(cluster: @cluster, next_token: services.next_token)
+        list_service_arns += services.service_arns
+      end
+      list_service_arns
     end
 
     def cluster_arn
