@@ -19,11 +19,11 @@ describe Ufo::Ship do
 
   context "hi-web-prod service" do
     it "should create or update service" do
-      allow(ship).to receive(:process_single_service)
+      allow(ship).to receive(:process_deployment)
 
       ship.deploy
 
-      expect(ship).to have_received(:process_single_service)
+      expect(ship).to have_received(:process_deployment)
     end
 
     context "0 services found" do
