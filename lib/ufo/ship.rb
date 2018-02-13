@@ -250,8 +250,6 @@ module Ufo
           service: ecs_service.service_arn, # can use the service name also since it is unique
           task_definition: @task_definition
         }
-        puts "parmas: "
-        pp params
         response = ecs.update_service(params)
         service = response.service # must set service here since this might never be called if @wait_for_deployment is false
       end

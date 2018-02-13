@@ -33,12 +33,12 @@ module Ufo
       option :ecr_keep, type: :numeric, desc: "ECR specific cleanup of old images.  Specifies how many images to keep.  Only runs if the images are ECR images. Defaults keeps all images."
     end
 
-    desc "deploy SERVICE", "deploys task definition to ECS service"
+    desc "deploy SERVICE", "deploys task definition to ECS service without re-building the definition"
     long_desc Help.text(:deploy)
     ship_options.call
     def deploy(service)
       task_definition = options[:task] || service # convention
-      Tasks::Builder.ship(task_definition, options)
+      Tasks::Register.register(task_definition, options)
       ship = Ship.new(service, task_definition, options)
       ship.deploy
     end

@@ -1,4 +1,5 @@
-# Use to automatically create the CloudWatch group
+# Use to automatically create the CloudWatch group.
+# For some reason creating ECS does do this by default.
 module Ufo
   class LogGroup
     include AwsService
