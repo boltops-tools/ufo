@@ -60,6 +60,7 @@ module Ufo
     def initialize(command_class, *params)
       @params = params
       @current_command = @params[0]
+      log "@current_command #{@current_command.inspect}"
       @command_class = command_class # CLI initiall
     end
 
@@ -68,22 +69,33 @@ module Ufo
         subcommand_class = @command_class.subcommand_classes[@current_command]
         @params.shift # destructive
         Completer.new(subcommand_class, *@params).run # recursively use subcommand
+        log "done1\n\n"
         return
       end
 
       # full command has been found!
+      log "@current_command2 #{@current_command.inspect}"
       unless found?(@current_command)
+        log "all commands for #{@current_command.inspect}"
         puts all_commands
+        log "done2\n"
         return
       end
 
       # will only get to here if command aws found (above)
+      log "@command_class #{@command_class}"
+      log "@command_class.superclass #{@command_class.superclass}"
       arity = @command_class.instance_method(@current_command).arity.abs
+      log "@params.size <= arity"
+      log "#{@params.size} <= #{arity}"
       if @params.size <= arity
+        log "params_completion"
         puts params_completion
       else
+        log "options_completion"
         puts options_completion
       end
+      log "done3\n\n"
     end
 
     def subcommand?(command)
@@ -91,7 +103,9 @@ module Ufo
     end
 
     def found?(command)
-      public_methods = @command_class.public_instance_methods - Object.methods
+      public_methods = @command_class.public_instance_methods(false)
+      log "@command_class #{@command_class.inspect}"
+      log "public_methods #{public_methods.inspect}"
       command && public_methods.include?(command.to_sym)
     end
 
