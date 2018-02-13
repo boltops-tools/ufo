@@ -30,6 +30,7 @@ module Ufo
   autoload :Tasks, 'ufo/tasks'
   autoload :Completion, "ufo/completion"
   autoload :Completer, "ufo/completer"
+  autoload :Upgrade3, "ufo/upgrade3"
 
   extend Core
 end

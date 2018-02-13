@@ -104,6 +104,12 @@ module Ufo
       Completer::Script.generate
     end
 
+    desc "upgrade3", "upgrades from version 2 and below to 3"
+    long_desc Help.text("upgrade3")
+    def upgrade3
+      Upgrade3.new(options).run
+    end
+
     desc "version", "Prints version number of installed ufo"
     def version
       puts VERSION
