@@ -28,7 +28,7 @@ module Ufo
       Ecr::Cleaner.new(builder.image_name, options.merge(tag_prefix: "base")).cleanup
     end
 
-    desc "name", "displays the full docker image with tag that will be generated"
+    desc "name", "displays the full docker image with tag that was last generated."
     option :generate, type: :boolean, default: false, desc: "Generate a name without storing it"
     long_desc Help.text("docker:name")
     def name
