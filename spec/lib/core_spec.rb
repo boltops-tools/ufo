@@ -3,7 +3,7 @@ describe Ufo::Core do
     create_starter_project_fixture
   end
 
-  it "finds the first that contains the aws profile" do
+  it "finds the first env that contains the aws profile" do
     env = Ufo.send(:env_from_profile, "aws_dev_profile1")
     expect(env).to eq "development"
     env = Ufo.send(:env_from_profile, "aws_dev_profile2")

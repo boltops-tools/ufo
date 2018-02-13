@@ -31,7 +31,13 @@ module Ufo
 
   private
     def load_file(path)
-      File.exist?(path) ? YAML.load_file(path) : {}
+      data = File.exist?(path) ? YAML.load_file(path) : {}
+      # automatically add base settings to the rest of the environments
+      data.each do |env, _setting|
+        base = data["base"] || {}
+        data[env] = base.merge(data[env]) unless env == "base"
+      end
+      data
     end
 
     def project_settings_path
