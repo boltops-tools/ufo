@@ -5,7 +5,7 @@ This project *tries* to adhere to [Semantic Versioning](http://semver.org/), eve
 
 ## [2.2.3]
 - eval $(ufo completion_script) for tab auto-completion
-- default task_defintion template fixes: add ecs/ to awslogs_group, add helper.current_region
+- default task_definition template fixes: add ecs/ to awslogs_group, add helper.current_region
 - move bin/ufo to exe/ufo
 - rename: AwsServices to AwsService, Defaults to Default, Settings to Setting
 

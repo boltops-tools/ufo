@@ -337,7 +337,7 @@ module Ufo
     # assume only 1 container_definition
     # assume only 1 port mapping in that container_defintion
     def container_info(task_definition)
-      Ufo.check_task_definition!(task_defintion)
+      Ufo.check_task_definition!(task_definition)
       task_definition = JSON.load(IO.read(task_definition_path))
       container_def = task_definition["containerDefinitions"].first
       mappings = container_def["portMappings"]
@@ -367,7 +367,7 @@ module Ufo
       ecs_services
     end
 
-    def service_arns      
+    def service_arns
       services = ecs.list_services(cluster: @cluster)
       list_service_arns = services.service_arns
       while services.next_token != nil

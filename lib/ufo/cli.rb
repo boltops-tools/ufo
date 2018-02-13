@@ -57,8 +57,8 @@ module Ufo
       builder = build_docker
 
       services.each_with_index do |service|
-        service_name, task_defintion_name = service.split(':')
-        task_definition = task_defintion_name || service_name # convention
+        service_name, task_definition_name = service.split(':')
+        task_definition = task_definition_name || service_name # convention
         Tasks::Builder.register(task_definition, options) if options[:tasks]
         LogGroup.new(task_definition, options).create
         ship = Ship.new(service, task_definition, options)
