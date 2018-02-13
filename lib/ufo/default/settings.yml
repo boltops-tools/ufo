@@ -13,15 +13,15 @@ base:
     desired_count: 1
 
 development:
-  cluster: dev
+  # cluster: dev
   # When you have AWS_PROFILE set to one of these values, ufo will switch to the desired
   # environment. This prevents you from switching AWS_PROFILE, forgetting to
   # also switch UFO_ENV, and accidentally deploying to production vs development.
-  aws_profiles:
-    - aws_dev_profile1
-    - aws_dev_profile2
+  # aws_profiles:
+  #   - dev_profile1
+  #   - dev_profile2
 
 production:
-  cluster: prod
-  aws_profiles:
-    - aws_prod_profile
+  # cluster: prod
+  # aws_profiles:
+  #   - prod_profile

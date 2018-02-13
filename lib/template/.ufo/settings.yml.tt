@@ -12,12 +12,12 @@ base: &base
 development:
   <<: *base
   cluster: dev
-  profiles:
-    - aws_dev_profile1
-    - aws_dev_profile2
+  aws_profiles:
+    - dev_profile1
+    - dev_profile2
 
 production:
   <<: *base
   cluster: prod
-  profiles:
-    - aws_prod_profile
+  aws_profiles:
+    - prod_profile
