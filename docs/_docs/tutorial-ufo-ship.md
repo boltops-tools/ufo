@@ -10,10 +10,10 @@ In this guide we have walked through what ufo does step by step.  First ufo buil
 ufo ship hi-web
 ```
 
-By convention, ufo will ship the docker container to an ECS cluster with the same value as UFO_ENV, which defaults to prod.  So the command above is the same as:
+By convention, ufo will ship the docker container to an ECS cluster with the same value as UFO_ENV, which defaults to development.  So the command above is the same as:
 
 ```sh
-ufo ship hi-web --cluster prod
+ufo ship hi-web --cluster production
 UFO_ENV=production ufo ship hi-web --cluster prod
 ```
 
@@ -23,7 +23,9 @@ When you run `ufo ship hi-web`:
 2. Generates a task definition and registers it.
 3. Updates the ECS service to use it.
 
-If the ECS service hi-web does not yet exist, ufo will create the service for you. Ufo will also automatically create the ECS cluster. If you are relying on this tool to create the cluster, you still need to associate ECS Container Instances to the cluster yourself.
+If the ECS service hi-web does not yet exist, ufo will create the service for you. Ufo will also automatically create the ECS cluster.
+
+NOTE: If you are relying on this tool to create the cluster, you still need to associate ECS Container Instances to the cluster yourself.
 
 By convention, if the service has a container name web, you'll get prompted to create an ELB and specify a target group arn.  The ELB and target group must already exist. You can bypass the prompt and specify the target group ARN as part of the ship command or with the `--no-target-group-prompt` option.  The elb target group only gets associated with the ECS service if the service is being created for the first time.  If the service already exists then the `--target-group` parameter just gets ignored and the ECS task simply gets updated.  Example:
 
@@ -68,7 +70,7 @@ You have successfully shipped a docker image to ECS! 🍾🥂
 
 ### Skipping Previous Steps
 
-The `ufo ship` command will automatically calls the steps we called manually in the previous pages: `ufo build` and `ufo tasks`.
+You should notice that `ufo ship` re-built the docker image and re-registered the task definitions.  The `ufo ship` command is designed to run everything in one simple command, so we do not have to manually call the commands in the previous pages: `ufo build` and `ufo tasks`.
 
 If you would like to skip the first 2 steps you can use the `--no-docker` and `--no-tasks` flags:
 
