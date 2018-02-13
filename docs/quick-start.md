@@ -12,20 +12,29 @@ ufo init --app=hi --image=tongueroo/hi
 ufo ship hi-web
 ```
 
+### What Happened
+
+The `ufo ship hi-web` command does the following:
+
+1. Builds the Docker image and pushes it to a registry
+2. Builds the ECS task definitions and registry them to ECS
+3. Updates the ECS Service
+
 You should see something similar to this:
 
 ```
 $ ufo init --app=hi --image=tongueroo/hi
 Setting up ufo project...
-created: ./bin/deploy
-created: ./Dockerfile
-created: ./ufo/settings.yml
-created: ./ufo/task_definitions.rb
-created: ./ufo/templates/main.json.erb
-created: ./ufo/variables/base.rb
-created: ./ufo/variables/prod.rb
-created: ./ufo/variables/stag.rb
-created: ./.env
+      create  .env
+      create  .ufo/settings.yml
+      create  .ufo/task_definitions.rb
+      create  .ufo/templates/main.json.erb
+      create  .ufo/variables/base.rb
+      create  .ufo/variables/development.rb
+      create  .ufo/variables/production.rb
+      create  Dockerfile
+      create  bin/deploy
+      append  .gitignore
 Starter ufo files created.
 $ ufo ship hi-web
 Building docker image with:

@@ -48,19 +48,26 @@ $
 
 As you can see `ufo docker build` effectively shells out and calls `docker build -t tongueroo/hi:ufo-2017-06-11T22-18-03-a18aa30 -f Dockerfile .`.  The docker image tag that is generated contains a useful timestamp and the current HEAD git sha of the project that you are on.
 
-By default when you are running `ufo docker build` directly it does not push the docker image to the registry.  If you would like it to automaticaly push the built image to a registry at the end of the build use the `--push` flag.
+By default when you are running `ufo docker build` directly it does not push the docker image to the registry.  If you would like it to push the built image to a registry at the end of the build use the `--push` flag.
 
 ```sh
 ufo docker build --push
 ```
 
-You should see it being pushed at the end:
+You can also use the `ufo docker push` command which will push the last built image from `ufo docker build`.
+
+```
+ufo docker push
+```
+
+You should see the image being pushed with a message that looks something like this:
 
 ```sh
 Pushed tongueroo/hi:ufo-2017-06-11T22-22-32-a18aa30 docker image. Took 9s.
 ```
 
-Note in order to push the image to a register you will need to login into the registry.  If you are using DockerHub use the `docker login` command.  If you are using AWS ECR then you can use the `aws ecr get-login` command.
+
+Note in order to push the image to a registry you will need to login into the registry.  If you are using DockerHub use the `docker login` command.  If you are using AWS ECR then you can use the `aws ecr get-login` command.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/tutorial-ufo-init.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/tutorial-ufo-tasks-build.md %}">Next Step</a>
