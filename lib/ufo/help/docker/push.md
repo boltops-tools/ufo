@@ -4,6 +4,8 @@ This command pushes a docker image up to the registry.  By default it pushes the
   ufo docker name  # to see the image name
   ufo docker push  # push up the registry
 
-You can also push up a custom by specifying the image name with the `--image` option.
+You can also push up a custom image by specifying the image name as the first parameter.
 
-  ufo docker push --image my/image:tag
+  ufo docker push my/image:tag
+
+The command also updates your ECR auth token in `~/.docker/config.json` in case it has expired.

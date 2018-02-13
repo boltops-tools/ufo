@@ -6,9 +6,9 @@ class Ufo::Docker
 
     delegate :full_image_name, to: :builder
     attr_reader :last_image_name
-    def initialize(options)
+    def initialize(image, options)
       @options = options
-      @last_image_name = options[:image] || full_image_name
+      @last_image_name = image || full_image_name
     end
 
     def push
@@ -32,18 +32,13 @@ class Ufo::Docker
     end
 
     def builder
-      @builder ||= Builder.new(@options)
+      @builder ||= Builder.new(@options.merge(image: last_image_name))
     end
 
     def update_auth_token
-      return unless ecr_image?
-      repo_domain = "https://#{image_name.split('/').first}"
-      auth = Ufo::Ecr::Auth.new(repo_domain)
-      auth.update
-    end
-
-    def ecr_image?
-      full_image_name =~ /\.amazonaws\.com/
+      auth = Ufo::Ecr::Auth.new(last_image_name)
+      # wont update auth token unless the image being pushed in the ECR image format
+      auth.update if auth.ecr_image?
     end
 
     # full_image - does not include the tag

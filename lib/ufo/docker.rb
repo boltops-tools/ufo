@@ -11,16 +11,16 @@ module Ufo
     def build
       builder = Docker::Builder.new(options)
       builder.build
-      builder.push if options[:push]
+      push if options[:push]
     end
 
-    desc "push", "push the docker image"
+    desc "push IMAGE", "push the docker image"
     long_desc Help.text("docker:push")
     option :push, type: :boolean, default: false
-    def build
-      builder = Docker::Builder.new(options)
-      builder.build
-      builder.push if options[:push]
+    def push(full_image_name=nil)
+      # full_image_name of nil results in defaulting to the last built image by ufo docker build
+      pusher = Docker::Pusher.new(full_image_name, options)
+      pusher.push
     end
 
     desc "base", "builds docker image from Dockerfile.base and update current Dockerfile"

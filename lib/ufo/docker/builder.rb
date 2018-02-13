@@ -8,12 +8,12 @@ class Ufo::Docker
       builder = Builder.new(options) # outside if because it need builder.full_image_name
       if options[:docker]
         builder.build
-        builder.push
+        pusher = Docker::Pusher.new(nil, options)
+        pusher.push
       end
       builder
     end
 
-    delegate :update_auth_token, :push, to: :pusher
     def initialize(options={})
       @options = options
       @dockerfile = options[:dockerfile] || 'Dockerfile'
@@ -23,7 +23,6 @@ class Ufo::Docker
     def build
       start_time = Time.now
       store_full_image_name
-      update_auth_token # call after store_full_image_name
 
       command = "docker build -t #{full_image_name} -f #{@dockerfile} ."
       say "Building docker image with:".green
@@ -38,10 +37,6 @@ class Ufo::Docker
 
       took = Time.now - start_time
       say "Docker image #{full_image_name} built.  " + "Took #{pretty_time(took)}.".green
-    end
-
-    def pusher
-      @pusher ||= Pusher.new(@options)
     end
 
     def check_dockerfile_exists
