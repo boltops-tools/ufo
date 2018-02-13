@@ -12,7 +12,7 @@ Examples:
 
 To enable, TAB auto-completion add the following to your profile:
 
-  eval $(ufo completion script)
+  eval $(ufo completion_script)
 
 Auto-completion example usage:
 
