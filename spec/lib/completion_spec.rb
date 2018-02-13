@@ -3,16 +3,12 @@ require 'spec_helper'
 describe Ufo::CLI do
   describe "ufo completion" do
     commands = {
-      "hell" => "hello",
-      "hello" => "name",
-      "hello -" =>  "--from",
-      "hello name" => "--from",
-      "hello name --" => "--from",
-      "sub goodb" => "goodbye",
-      "sub goodbye" => "name",
-      "sub goodbye name" => "--from",
-      "sub goodbye name --" => "--from",
-      "sub goodbye name --from" => "--help",
+      "ship" => "service",
+      "ship service" => "--task",
+      "docker" =>  "build",
+      "docker build" => "--push",
+      "docker clean" => "image_name",
+      "init" => "--image",
     }
     commands.each do |command, expected_word|
       it "#{command}" do

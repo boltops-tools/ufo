@@ -17,7 +17,9 @@ module Ufo
     subcommand "tasks", Tasks
 
     long_desc Help.text(:init)
-    option :foo, desc: "whatever"
+    Init.cli_options.each do |args|
+      option *args
+    end
     register(Init, "init", "new", "setup initial ufo files")
 
     # common options to ship and ships command

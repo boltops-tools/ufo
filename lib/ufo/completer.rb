@@ -106,7 +106,7 @@ module Ufo
       log "#{@params.size} <= #{arity}"
       if @params.size <= arity
         # hacky way to detect that command is a registered Thor::Group command
-        if command_params == [[:rest, :args]]
+        if command_params(raw=true) == [[:rest, :args]]
           puts options_completion
         else
           puts params_completion
@@ -138,13 +138,13 @@ module Ufo
       commands.keys
     end
 
-    def command_params
+    def command_params(raw=false)
       params = @command_class.instance_method(@current_command).parameters
       # Example:
       # >> Sub.instance_method(:goodbye).parameters
       # => [[:req, :name]]
       # >>
-      params.map!(&:last)
+      raw ? params : params.map!(&:last)
     end
 
     def params_completion
