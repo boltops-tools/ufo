@@ -26,7 +26,7 @@ module Ufo
       default_file = File.expand_path("../default/settings.yml", __FILE__)
       default = YAML.load_file(default_file)
 
-      @settings_yaml = default.deep_merge(user.deep_merge(project))
+      @settings_yaml = default.deep_merge(user.deep_merge(project))[Ufo.env]
     end
 
   private

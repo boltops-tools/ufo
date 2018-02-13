@@ -13,8 +13,6 @@ module Ufo
     #
     # More info: http://ufoships.com/docs/settings/
     def default_cluster
-      #
-
       map = setting.data["ufo_env_cluster_map"]
       if map
         ecs_cluster = map[Ufo.env] || map["default"]

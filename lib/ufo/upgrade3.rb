@@ -52,7 +52,7 @@ module Ufo
       IO.write(path, text)
       puts "Upgraded settings: #{path}"
       if path.include?(ENV['HOME'])
-        puts "NOTICE: Your ~/.ufo/settings.yml file was also upgraded to the new format. If you are using ufo in other projects those will have to be upgraded also."
+        puts "NOTE: Your ~/.ufo/settings.yml file was also upgraded to the new format. If you are using ufo in other projects those will have to be upgraded also."
       end
     end
 

@@ -3,10 +3,10 @@ describe Ufo::Setting do
     create_starter_project_fixture
   end
 
-  let(:setting) { Ufo::Setting.new.data }
+  let(:setting) { Ufo::Setting.new }
 
   it "includes base into other environments automatically" do
-    count = setting["development"]["new_service"]["desired_count"]
+    count = setting.data["new_service"]["desired_count"]
     expect(count).to eq 1
   end
 end
