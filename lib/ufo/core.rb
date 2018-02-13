@@ -31,7 +31,7 @@ module Ufo
     def env_from_profile(aws_profile)
       data = YAML.load_file("#{Ufo.root}/.ufo/settings.yml")
       env = data.find do |_env, setting|
-        profiles = setting['profiles']
+        profiles = setting['aws_profiles']
         profiles && profiles.include?(aws_profile)
       end
       env.first if env

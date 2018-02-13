@@ -17,11 +17,11 @@ development:
   # When you have AWS_PROFILE set to one of these values, ufo will switch to the desired
   # environment. This prevents you from switching AWS_PROFILE, forgetting to
   # also switch UFO_ENV, and accidentally deploying to production vs development.
-  profiles:
+  aws_profiles:
     - aws_dev_profile1
     - aws_dev_profile2
 
 production:
   cluster: prod
-  profiles:
+  aws_profiles:
     - aws_prod_profile
