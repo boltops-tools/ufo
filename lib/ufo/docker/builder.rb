@@ -7,11 +7,9 @@ class Ufo::Docker
     delegate :push, to: :pusher
     def self.build(options)
       builder = Builder.new(options) # outside if because it need builder.full_image_name
-      if options[:docker]
-        builder.build
-        pusher = Docker::Pusher.new(nil, options)
-        pusher.push
-      end
+      builder.build
+      pusher = Docker::Pusher.new(nil, options)
+      pusher.push
       builder
     end
 

@@ -22,17 +22,25 @@ module Ufo
     end
     register(Init, "init", "new", "setup initial ufo files")
 
-    # common options to ship and ships command
+    # common options to deploy. ship, and ships command
     ship_options = Proc.new do
       option :task, desc: "ECS task name, to override the task name convention."
       option :target_group, desc: "ELB Target Group ARN."
       option :target_group_prompt, type: :boolean, desc: "Enable Target Group ARN prompt", default: true
-      option :docker, type: :boolean, desc: "Enable docker build and push", default: true
-      option :tasks, type: :boolean, desc: "Enable tasks build and register", default: true
       option :wait, type: :boolean, desc: "Wait for deployment to complete", default: false
       option :pretty, type: :boolean, default: true, desc: "Pretty format the json for the task definitions"
       option :stop_old_tasks, type: :boolean, default: false, desc: "Stop old tasks after waiting for deploying to complete"
       option :ecr_keep, type: :numeric, desc: "ECR specific cleanup of old images.  Specifies how many images to keep.  Only runs if the images are ECR images. Defaults keeps all images."
+    end
+
+    desc "deploy SERVICE", "deploys task definition to ECS service"
+    long_desc Help.text(:deploy)
+    ship_options.call
+    def deploy(service)
+      task_definition = options[:task] || service # convention
+      LogGroup.new(task_definition, options).create # TODO: move into ship
+      ship = Ship.new(service, task_definition, options)
+      ship.deploy
     end
 
     desc "ship SERVICE", "builds and ships container image to the ECS service"
@@ -42,7 +50,7 @@ module Ufo
       builder = build_docker
 
       task_definition = options[:task] || service # convention
-      Tasks::Builder.register(task_definition, options) if options[:tasks]
+      Tasks::Builder.register(task_definition, options)
       LogGroup.new(task_definition, options).create
       ship = Ship.new(service, task_definition, options)
       ship.deploy
@@ -59,7 +67,7 @@ module Ufo
       services.each_with_index do |service|
         service_name, task_definition_name = service.split(':')
         task_definition = task_definition_name || service_name # convention
-        Tasks::Builder.register(task_definition, options) if options[:tasks]
+        Tasks::Builder.register(task_definition, options)
         LogGroup.new(task_definition, options).create
         ship = Ship.new(service, task_definition, options)
         ship.deploy
@@ -118,16 +126,12 @@ module Ufo
     no_tasks do
       def build_docker
         builder = Docker::Builder.new(options)
-        if options[:docker]
-          builder.build
-          builder.push
-        end
+        builder.build
+        builder.push
         builder
       end
 
       def cleanup(image_name)
-        return unless options[:docker]
-
         Docker::Cleaner.new(image_name, options).cleanup
         Ecr::Cleaner.new(image_name, options).cleanup
       end
