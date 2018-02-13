@@ -1,0 +1,3 @@
+[submodule "vendor/render_me_pretty"]
+	path = vendor/render_me_pretty
+	url = git@github.com:tongueroo/render_me_pretty.git
