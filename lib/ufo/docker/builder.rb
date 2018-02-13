@@ -4,6 +4,7 @@ class Ufo::Docker
   class Builder
     include Ufo::Util
 
+    delegate :push, to: :pusher
     def self.build(options)
       builder = Builder.new(options) # outside if because it need builder.full_image_name
       if options[:docker]
@@ -37,6 +38,10 @@ class Ufo::Docker
 
       took = Time.now - start_time
       say "Docker image #{full_image_name} built.  " + "Took #{pretty_time(took)}.".green
+    end
+
+    def pusher
+      @pusher ||= Pusher.new(full_image_name, @options)
     end
 
     def check_dockerfile_exists
