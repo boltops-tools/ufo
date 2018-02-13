@@ -82,10 +82,7 @@ module Ufo
 
     # full_image - includes the tag
     def full_image_name
-      if @options[:generate]
-        return generate_name # name already has a newline
-      end
-
+      return generate_name if @options[:generate]
       return "tongueroo/hi:ufo-12345678" if ENV['TEST']
 
       unless File.exist?(docker_name_path)
