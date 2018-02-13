@@ -58,6 +58,7 @@ module Ufo
     autoload :Script, 'ufo/completer/script'
 
     def initialize(command_class, *params)
+      log "self #{self.inspect}"
       @params = params
       @current_command = @params[0]
       log "@current_command #{@current_command.inspect}"
@@ -89,8 +90,13 @@ module Ufo
       log "@params.size <= arity"
       log "#{@params.size} <= #{arity}"
       if @params.size <= arity
+        # hacky way to detect that command is a registered Thor::Group command
+        if method_params == [[:rest, :args]]
+          puts options_completion
+        else
+          puts params_completion
+        end
         log "params_completion"
-        puts params_completion
       else
         log "options_completion"
         puts options_completion
@@ -117,8 +123,11 @@ module Ufo
       commands.keys
     end
 
+    def method_params
+      @command_class.instance_method(@current_command).parameters
+    end
+
     def params_completion
-      method_params = @command_class.instance_method(@current_command).parameters
       # Example:
       # >> Sub.instance_method(:goodbye).parameters
       # => [[:req, :name]]
