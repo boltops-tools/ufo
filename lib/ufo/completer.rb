@@ -1,58 +1,73 @@
-# Code Explanation.  This is mainly focused on the run method.
-#
-# There are 3 main branches of logic for completion:
-#
-#   1. top-level commands - when there are zero completed words
-#   2. params completion - when a command has some required params
-#   3. options completion - when we have finished auto-completing the top-level command and required params, the rest of the completion words will be options
-#
-# Terms:
-#
-#   params - these are params in the command itself. Example: for the method `scale(service, count)` the params would be `service, count`.
-#   options - these are cli options flags.  Examples: --noop, --verbose
-#
-# When we are done processing method params, the completion will be only options. When the detected params size is greater than the arity we are have finished auto-completing the parameters in the method declaration.  For example, say you had a method for a CLI command with the following form:
-#
-#   scale(service, count) = arity of 2
-#
-#   ufo scale service count [TAB] # there are 3 params including the "scale" command
-#
-# So the completion will be something like:
-#
-#   --noop --verbose etc
-#
-# A note about artity values:
-#
-# We are using the arity of the command method to determine if we have finish auto-completing the params completion. When the ruby method has a splat param, it's arity will be negative.  Here are some example methods and their arities.
-#
-#    ship(service) = 1
-#    scale(service, count) = 2
-#    ships(*services) = -1
-#    foo(example, *rest) = -2
-#
-# Fortunately, negative and positive arity values are processed the same way. So we take simply take the abs of the arity.
-#
-# To test:
-#
-#   ufo completion
-#   ufo completion hello
-#   ufo completion hello name
-#   ufo completion hello name --
-#   ufo completion hello name --noop
-#
-#   ufo completion
-#   ufo completion sub:goodbye
-#   ufo completion sub:goodbye name
-#
-# Note when testing, the first top-level word must be an exact match
-#
-#   ufo completion hello # works fine
-#   ufo completion he # incomplete, this will just break
-#
-# The completion assumes that the top-level word that is being passed in
-# from completor/scripts.sh will always match exactly.  This must be the
-# case.  For parameters, the word does not have to match exactly.
-#
+=begin
+Code Explanation:
+
+There are 3 types of things to auto-complete:
+
+  1. command: the command itself
+  2. parameters: command parameters.
+  3. options: command options
+
+Here's an example:
+
+  mycli hello name --from me
+
+  * command: hello
+  * parameters: name
+  * option: --from
+
+When command parameters are done processing, the remaining completion words will be options.  We can tell that the command params are completed based on the method arity.
+
+## Arity
+
+For example, say you had a method for a CLI command with the following form:
+
+  ufo scale service count --cluster development
+
+It's equivalent ruby method:
+
+  scale(service, count) = has an arity of 2
+
+So typing:
+
+  ufo scale service count [TAB] # there are 3 parameters including the "scale" command according to Thor's CLI processing.
+
+So the completion should only show options, something like this:
+
+  --noop --verbose --cluster
+
+## Splat Arguments
+
+When the ruby method has a splat argument, it's arity is negative.  Here are some example methods and their arities.
+
+   ship(service) = 1
+   scale(service, count) = 2
+   ships(*services) = -1
+   foo(example, *rest) = -2
+
+Fortunately, negative and positive arity values are processed the same way. So we take simply take the absolute value of the arity and process it the same.
+
+Here are some test cases, hit TAB after typing the command:
+
+  ufo completion
+  ufo completion hello
+  ufo completion hello name
+  ufo completion hello name --
+  ufo completion hello name --noop
+
+  ufo completion
+  ufo completion sub:goodbye
+  ufo completion sub:goodbye name
+
+## Subcommands and Thor::Group Registered Commands
+
+Sometimes the commands are not simple thor commands but are subcommands or Thor::Group commands. A good specific example is the ufo tool.
+
+  * regular command: ufo ship
+  * subcommand: ufo docker
+  * Thor::Group command: ufo init
+
+Auto-completion accounts for each of these type of commands.
+=end
 module Ufo
   class Completer
     autoload :Script, 'ufo/completer/script'
@@ -79,10 +94,10 @@ module Ufo
 
       # will only get to here if command aws found (above)
       arity = @command_class.instance_method(@current_command).arity.abs
-      if @params.size <= arity
-        puts params_completion
-      else
+      if @params.size > arity or thor_group_command?
         puts options_completion
+      else
+        puts params_completion
       end
     end
 
@@ -90,8 +105,13 @@ module Ufo
       @command_class.subcommands.include?(command)
     end
 
+    # hacky way to detect that command is a registered Thor::Group command
+    def thor_group_command?
+      command_params(raw=true) == [[:rest, :args]]
+    end
+
     def found?(command)
-      public_methods = @command_class.public_instance_methods - Object.methods
+      public_methods = @command_class.public_instance_methods(false)
       command && public_methods.include?(command.to_sym)
     end
 
@@ -103,17 +123,19 @@ module Ufo
       commands.keys
     end
 
-    def params_completion
-      method_params = @command_class.instance_method(@current_command).parameters
+    def command_params(raw=false)
+      params = @command_class.instance_method(@current_command).parameters
       # Example:
       # >> Sub.instance_method(:goodbye).parameters
       # => [[:req, :name]]
       # >>
-      method_params.map!(&:last)
+      raw ? params : params.map!(&:last)
+    end
 
+    def params_completion
       offset = @params.size - 1
-      offset_params = method_params[offset..-1]
-      method_params[offset..-1].first
+      offset_params = command_params[offset..-1]
+      command_params[offset..-1].first
     end
 
     def options_completion

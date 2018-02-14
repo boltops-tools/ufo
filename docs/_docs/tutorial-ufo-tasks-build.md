@@ -59,7 +59,9 @@ task_definition "hi-worker" do
 end
 ```
 
-The shared variables are set in the variables folder:
+### Shared Variables
+
+Ufo has a concept of shared variables, covered in [Shared Variables]({% link _docs/variables.md %}). The shared variables are set in the `variables` folder and essentially allow you to use a set of shared variables through your templates:
 
 **ufo/variables/base.rb**:
 
@@ -70,11 +72,11 @@ The shared variables are set in the variables folder:
 @environment = helper.env_file(".env")
 ```
 
-**ufo/variables/prod.rb**:
+**ufo/variables/development.rb**:
 
 ```ruby
 @environment = helper.env_vars(%Q{
-  RAILS_ENV=production
+  RAILS_ENV=development
   SECRET_KEY_BASE=secret
 })
 ```
@@ -97,10 +99,10 @@ You should see output similar to below:
 $ ufo tasks build
 Building Task Definitions...
 Generating Task Definitions:
-  ufo/output/hi-web.json
-  ufo/output/hi-worker.json
-  ufo/output/hi-clock.json
-Task Definitions built in ufo/output.
+  .ufo/output/hi-web.json
+  .ufo/output/hi-worker.json
+  .ufo/output/hi-clock.json
+Task Definitions built in .ufo/output
 $
 ```
 
@@ -112,8 +114,8 @@ Let's take a look at one of the generated files: `ufo/output/hi-web.json`.
   "containerDefinitions": [
     {
       "name": "web",
-      "image": "tongueroo/hi:ufo-2017-09-10T15-13-14-1105f71",
-      "cpu": 128,
+      "image": "tongueroo/hi:ufo-2018-02-13T11-33-15-27aa242",
+      "cpu": 192,
       "memoryReservation": 256,
       "portMappings": [
         {
@@ -121,27 +123,34 @@ Let's take a look at one of the generated files: `ufo/output/hi-web.json`.
           "protocol": "tcp"
         }
       ],
-      "command": [
-        "bin/web"
-      ],
+      "command": null,
       "environment": [
         {
           "name": "RAILS_ENV",
-          "value": "production"
+          "value": "development"
         },
         {
           "name": "SECRET_KEY_BASE",
           "value": "secret"
         }
       ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "ecs/hi-web",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "hi"
+        }
+      },
       "essential": true
     }
   ]
+}
 ```
 
 ### Register the ECS Task Definitions
 
-You have built the ecs task definitions locally on your machine. To register the task definitions in output run this command:
+You have built the ecs task definitions locally on your machine. To register the task definitions in the `output` folder run:
 
 ```sh
 ufo tasks register

@@ -20,7 +20,19 @@ module Ufo
       def build
         load_variables
         instance_eval(&@block)
-        erb_result(source_path)
+
+        hash = assign_instance_variables
+        RenderMePretty.result(source_path, hash)
+      end
+
+      def assign_instance_variables
+        # copy over the instance variables from TaskDefinition scope to RenderMePretty's scope
+        hash = {}
+        instance_variables.each do |var|
+          key = var.to_s.sub('@','') # rid of the leading @
+          hash[key.to_sym] = instance_variable_get(var)
+        end
+        hash
       end
 
       def load_variables
@@ -53,37 +65,6 @@ module Ufo
         instance_eval(IO.read(path)) if File.exist?(path)
       end
 
-      def erb_result(path)
-        template = IO.read(path)
-        begin
-          ERB.new(template, nil, "-").result(binding)
-        rescue Exception => e
-          puts e
-
-          # how to know where ERB stopped? - https://www.ruby-forum.com/topic/182051
-          # syntax errors have the (erb):xxx info in e.message
-          # undefined variables have (erb):xxx info in e.backtrac
-          error_info = e.message.split("\n").grep(/\(erb\)/)[0]
-          error_info ||= e.backtrace.grep(/\(erb\)/)[0]
-          raise unless error_info # unable to find the (erb):xxx: error line
-          line = error_info.split(':')[1].to_i
-          puts "Error evaluating ERB template on line #{line.to_s.colorize(:red)} of: #{path.sub(/^\.\//, '')}"
-
-          template_lines = template.split("\n")
-          context = 5 # lines of context
-          top, bottom = [line-context-1, 0].max, line+context-1
-          spacing = template_lines.size.to_s.size
-          template_lines[top..bottom].each_with_index do |line_content, index|
-            line_number = top+index+1
-            if line_number == line
-              printf("%#{spacing}d %s\n".colorize(:red), line_number, line_content)
-            else
-              printf("%#{spacing}d %s\n", line_number, line_content)
-            end
-          end
-          exit 1 unless ENV['TEST']
-        end
-      end
       # at this point instance_eval has been called and source has possibly been called
       def source(name)
         @source = name

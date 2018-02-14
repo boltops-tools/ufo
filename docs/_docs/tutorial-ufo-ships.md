@@ -2,7 +2,7 @@
 title: Deploy Multiple Apps
 ---
 
-You might have noticed in in the tutorial that the generated starter ufo folder contains 3 task definitions a web, worker and clock role.  This is a common pattern.  The web process handles web traffic, the worker process handles background job processing that would be too slow and potentially block web requests, and a clock process is typically used to schedule recurring jobs.
+You might have noticed in in the tutorial that the generated starter ufo folder contains 3 task definitions a `web`, `worker` and `clock` role.  This is a common pattern.  The web process handles web traffic, the worker process handles background job processing that would be too slow and potentially block web requests, and a clock process is typically used to schedule recurring jobs.
 
 These processes use the same codebase and same docker image, but have slightly different run time settings.  The docker run command for a web process could be [puma](http://puma.io/) and the command for a worker process could be [sidekiq](http://sidekiq.org/).  Environment variables are also sometimes different.  The important key is that the same docker image is used for all 3 services but the task definition for each service is slightly different.
 

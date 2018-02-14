@@ -2,10 +2,10 @@
 title: Structure
 ---
 
-Ufo creates a ufo folder within your project which contains the required files used by ufo to build and deploy docker images to ECS.  The standard directory structure of the ufo folder looks like this:
+Ufo creates a `.ufo` folder within your project which contains the required files used by ufo to build and deploy docker images to ECS.  The standard directory structure of the `.ufo` folder looks like this:
 
 ```sh
-ufo
+.ufo
 ├── output
 ├── settings.yml
 ├── task_definitions.rb

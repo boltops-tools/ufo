@@ -33,7 +33,7 @@ Full installation instructions are at [Install Ufo](http://ufoships.com/docs/ins
 To quickly demonstrate how simple it is to use ufo we will use an example app from [tongueroo/hi](https://github.com/tongueroo/ufo).  The app is a barebones sinatra app.  Here are the steps:
 
 ```sh
-brew cask install boltopslabs/software/bolts
+gem install ufo
 git clone https:///github.com/tongueroo/hi.git
 cd hi
 ufo init --app=hi --image=tongueroo/hi

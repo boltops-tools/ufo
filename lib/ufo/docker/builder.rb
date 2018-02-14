@@ -1,13 +1,15 @@
-module Ufo
-  class Docker::Builder
-    include Util
+require 'active_support/core_ext/module/delegation'
 
+class Ufo::Docker
+  class Builder
+    include Ufo::Util
+
+    delegate :push, to: :pusher
     def self.build(options)
-      builder = Docker::Builder.new(options) # outside if because it need builder.full_image_name
-      if options[:docker]
-        builder.build
-        builder.push
-      end
+      builder = Builder.new(options) # outside if because it need builder.full_image_name
+      builder.build
+      pusher = Docker::Pusher.new(nil, options)
+      pusher.push
       builder
     end
 
@@ -20,7 +22,6 @@ module Ufo
     def build
       start_time = Time.now
       store_full_image_name
-      update_auth_token # call after store_full_image_name
 
       command = "docker build -t #{full_image_name} -f #{@dockerfile} ."
       say "Building docker image with:".green
@@ -37,24 +38,8 @@ module Ufo
       say "Docker image #{full_image_name} built.  " + "Took #{pretty_time(took)}.".green
     end
 
-    def push
-      update_auth_token
-      start_time = Time.now
-      message = "Pushed #{full_image_name} docker image."
-      if @options[:noop]
-        message = "NOOP #{message}"
-      else
-        command = "docker push #{full_image_name}"
-        puts "=> #{command}".colorize(:green)
-        success = execute(command, use_system: true)
-        unless success
-          puts "ERROR: The docker image fail to push.".colorize(:red)
-          exit 1
-        end
-      end
-      took = Time.now - start_time
-      message << " Took #{pretty_time(took)}.".green
-      puts message unless @options[:mute]
+    def pusher
+      @pusher ||= Pusher.new(full_image_name, @options)
     end
 
     def check_dockerfile_exists
@@ -64,17 +49,6 @@ module Ufo
       end
     end
 
-    def update_auth_token
-      return unless ecr_image?
-      repo_domain = "https://#{image_name.split('/').first}"
-      auth = Ecr::Auth.new(repo_domain)
-      auth.update
-    end
-
-    def ecr_image?
-      full_image_name =~ /\.amazonaws\.com/
-    end
-
     # full_image - does not include the tag
     def image_name
       setting.data["image"]
@@ -82,10 +56,7 @@ module Ufo
 
     # full_image - includes the tag
     def full_image_name
-      if @options[:generate]
-        return generate_name # name already has a newline
-      end
-
+      return generate_name if @options[:generate]
       return "tongueroo/hi:ufo-12345678" if ENV['TEST']
 
       unless File.exist?(docker_name_path)
@@ -127,11 +98,11 @@ module Ufo
     end
 
     def setting
-      @setting ||= Setting.new(Ufo.root)
+      @setting ||= Ufo::Setting.new(Ufo.root)
     end
 
     def update_dockerfile
-      dockerfile = Docker::Dockerfile.new(full_image_name, @options)
+      dockerfile = Dockerfile.new(full_image_name, @options)
       dockerfile.update
     end
 

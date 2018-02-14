@@ -13,13 +13,12 @@ module Ufo
 
       if @check_ufo_project && !File.exist?(project_settings_path)
         puts "ERROR: No settings file at #{project_settings_path}.  Are you sure you are in a project with ufo setup?"
-        puts "Please create a settings file via: ufo init"
+        puts "If you want to set up ufo for this prjoect, please create a settings file via: ufo init"
         exit 1
       end
 
-      project = File.exist?(project_settings_path) ?
-                  YAML.load_file(project_settings_path) :
-                  {}
+      # project based settings files
+      project = load_file(project_settings_path)
 
       user_file = "#{ENV['HOME']}/.ufo/settings.yml"
       user = File.exist?(user_file) ? YAML.load_file(user_file) : {}
@@ -27,10 +26,22 @@ module Ufo
       default_file = File.expand_path("../default/settings.yml", __FILE__)
       default = YAML.load_file(default_file)
 
-      @settings_yaml = default.merge(user.merge(project))
+      @settings_yaml = default.deep_merge(user.deep_merge(project))[Ufo.env]
     end
 
   private
+    def load_file(path)
+      content = RenderMePretty.result(path)
+      data = File.exist?(path) ? YAML.load(content) : {}
+      # automatically add base settings to the rest of the environments
+      data.each do |ufo_env, _setting|
+        base = data["base"] || {}
+        env = data[ufo_env] || {}
+        data[ufo_env] = base.merge(env) unless ufo_env == "base"
+      end
+      data
+    end
+
     def project_settings_path
       "#{Ufo.root}/.ufo/settings.yml"
     end

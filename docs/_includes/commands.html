@@ -19,7 +19,7 @@ ufo destroy
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <h3>ufo/variables/base.rb</h3>
+                    <h3>variables/base.rb</h3>
                     <div class="commands">
 {% highlight ruby %}
 @image = helper.full_image_name # includes the git sha tongueroo/hi:ufo-[sha].
@@ -35,7 +35,7 @@ ufo destroy
             </div>
             <div class="row">
                 <div class="col-lg-6">
-                    <h3>ufo/templates/main.json.erb</h3>
+                    <h3>templates/main.json.erb</h3>
                     <div class="commands">
 {% highlight json %}
 {
@@ -59,7 +59,7 @@ ufo destroy
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <h3>ufo/template_definitions.rb</h3>
+                    <h3>template_definitions.rb</h3>
                     <div class="commands">
 {% highlight ruby %}
 task_definition "example-web" do
@@ -67,7 +67,7 @@ task_definition "example-web" do
   variables(
     family: task_definition_name,
     name: "web",
-    awslogs_group: "example-web",
+    awslogs_group: "ecs/example-web",
     awslogs_stream_prefix: "example",
     command: ["bin/web"]
   )

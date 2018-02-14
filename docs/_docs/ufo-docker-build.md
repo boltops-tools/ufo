@@ -2,7 +2,7 @@
 title: ufo docker build
 ---
 
-The `ufo docker build` builds a Docker image using the Dockerfile in the current project folder.  This simply a wrapper command that shells out and calls the `docker` command.  We're use the [tongueroo/hi]((https://github.com/tongueroo/hi) project and it's Dockerfile for demonstration.  Example:
+The `ufo docker build` builds a Docker image using the Dockerfile in the current project folder.  This simply is a wrapper command that shells out and calls the `docker` command.  We're use the [tongueroo/hi]((https://github.com/tongueroo/hi) project and it's Dockerfile for demonstration.  Example:
 
 ```sh
 ufo docker build
@@ -71,9 +71,9 @@ ufo-2017-06-11T22-22-32-a18aa30: digest: sha256:c5385a5084e87643bd943eb120e11032
 Pushed tongueroo/hi:ufo-2017-06-11T22-22-32-a18aa30 docker image. Took 9s.
 ```
 
-Note in order to push the image to a register you will need to login into the registry.  If you are using DockerHub use the `docker login` command.  If you are using AWS ECR then you can use the `aws ecr get-login` command.
+Note in order to push the image to a registry you will need to login into the registry.  If you are using DockerHub use the `docker login` command.  If you are using AWS ECR then you can use the `aws ecr get-login` command.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/ufo-destroy.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/ufo-docker-base.md %}">Next Step</a>
+<a id="next" class="btn btn-primary" href="{% link _docs/ufo-docker-push.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
 

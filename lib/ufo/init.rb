@@ -30,10 +30,12 @@ module Ufo
       @app = options[:app]
       @image = options[:image]
       # copy the files
+      puts "Setting up ufo project..."
       directory "."
     end
 
     def upsert_gitignore
+      return unless File.exist?(".gitignore")
       append_to_file ".gitignore", <<-EOL
 .ufo/output
 .ufo/data
@@ -41,13 +43,16 @@ EOL
     end
 
     def user_message
+      puts "Starter ufo files created."
       puts <<-EOL
 #{"="*64}
 Congrats 🎉 You have successfully set up ufo for your project. To deploy to ECS:
 
-  ufo ship #{@app}
+  ufo ship #{@app}-web
 
-If you need to customize the ECS task definition to configure things like memory and cpu allocation. You can do this by adjusting the files the ufo/variables folder. These variables get applied to the ufo/templates/main.json.erb task definition json that is passed to the ECS register task definition api.
+If you need to customize the ECS task definition to configure things like memory and cpu allocation. You can do this by adjusting the files the .ufo/variables folder. These variables get applied to the .ufo/templates/main.json.erb task definition json that is passed to the ECS register task definition api.
+
+Some additional starter example roles for your apps were set up in in .ufo/task_definitions.rb.  Be sure to check it out and adjust it for your needs.
 
 This allows you to fully customize and control your environment to fit your application's needs.
 

@@ -6,7 +6,7 @@ Ufo uses a set of naming conventions.  This helps enforce some best practices an
 
 ### UFO_ENV to ECS Cluster Convention
 
-By default, the ECS cluster value is the same as UFO_ENV's value.  So if `UFO_ENV=production` then the ECS Cluster is production and if `UFO_ENV=staging` then the ECS Cluster is staging.  You can easily override this convention by specifying the `--cluster` CLI option.  You can also override this behavior with [settings.yml]({% link _docs/settings.md %}) to spare you from having to type `--cluster` over and over.
+By default, the ECS cluster value is the same as UFO_ENV's value.  So if `UFO_ENV=production` then the ECS Cluster is `production` and if `UFO_ENV=development` then the ECS Cluster is `development`.  You can easily override this convention by specifying the `--cluster` CLI option.  You can also override this behavior with [settings.yml]({% link _docs/settings.md %}) to spare you from having to type `--cluster` over and over.
 
 ### Service and Task Names Convention
 
@@ -44,5 +44,5 @@ ufo ship hi-web --target-group=arn:aws:elasticloadbalancing:us-east-1:12345689:t
 ```
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/helpers.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/run-in-pieces.md %}">Next Step</a>
+<a id="next" class="btn btn-primary" href="{% link _docs/auto-completion.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>

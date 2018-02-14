@@ -4,6 +4,9 @@ require 'deep_merge'
 require 'colorize'
 require 'fileutils'
 
+$:.unshift(File.expand_path("../../vendor/render_me_pretty/lib", __FILE__))
+require "render_me_pretty"
+
 module Ufo
   autoload :Core, 'ufo/core'
   autoload :Default, 'ufo/default'
@@ -21,12 +24,14 @@ module Ufo
   autoload :DSL, 'ufo/dsl'
   autoload :Scale, 'ufo/scale'
   autoload :LogGroup, 'ufo/log_group'
+  autoload :ECS, 'ufo/ecs'
 
   autoload :Docker, 'ufo/docker'
   autoload :Ecr, 'ufo/ecr'
   autoload :Tasks, 'ufo/tasks'
   autoload :Completion, "ufo/completion"
   autoload :Completer, "ufo/completer"
+  autoload :Upgrade3, "ufo/upgrade3"
 
   extend Core
 end

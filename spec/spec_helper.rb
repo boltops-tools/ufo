@@ -19,6 +19,12 @@ module Helpers
   def create_starter_project_fixture
     FileUtils.rm_rf($dest)
     execute("exe/ufo init --app hi --image tongueroo/hi")
+    create_test_settings
+  end
+
+  # modify the generated settings so we can spec the settings themselves
+  def create_test_settings
+    FileUtils.cp("spec/fixtures/settings.yml", "#{$dest}/.ufo/settings.yml")
   end
 
   def execute(cmd)
