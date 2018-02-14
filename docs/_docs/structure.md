@@ -13,8 +13,8 @@ Ufo creates a `.ufo` folder within your project which contains the required file
 |   └── main.json.erb
 └── variables
     ├── base.rb
-    ├── prod.rb
-    └── stag.rb
+    ├── production.rb
+    └── development.rb
 ```
 
 The table below covers the purpose of each folder and file.

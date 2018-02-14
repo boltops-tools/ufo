@@ -96,7 +96,7 @@ The shared variables are set in the variables folder:
 @environment = helper.env_file(".env")
 ```
 
-**ufo/variables/prod.rb**:
+**ufo/variables/production.rb**:
 
 ```ruby
 @environment = helper.env_vars(%Q{

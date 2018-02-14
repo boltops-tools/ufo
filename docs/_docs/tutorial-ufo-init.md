@@ -46,8 +46,8 @@ The `ufo init` command generated a few starter ufo files for you. The standard d
 |   └── main.json.erb
 └── variables
     ├── base.rb
-    ├── prod.rb
-    └── stag.rb
+    ├── production.rb
+    └── development.rb
 ```
 
 The explanation of the folders and files were covered in detailed earlier at [Structure]({% link _docs/structure.md %}).
