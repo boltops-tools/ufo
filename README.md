@@ -20,6 +20,10 @@ Ufo deploys a task definition that is written in a templating language that is e
 
 See [ufoships.com](http://ufoships.com) for full documentation.
 
+## Important
+
+If you are on version 2, you can run `ufo upgrade3` within your project to upgrade it to version 3.  Refer to the [CHANGELOG](CHANGELOG.md).
+
 ## Installation
 
 ```sh

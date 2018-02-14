@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [3.0.0]
+- dotufo: rename ufo folder to .ufo. Use ufo upgrade3 command to upgrade.
+- new settings.yml format to account for multiple AWS accounts and environments.
+- allows for environment specific setting file
+- add auto-completion, to setup: eval $(ufo completion_script)
+- ufo upgrade3 command
+- ufo init: Use Thor::Group as generator
+- default UFO_ENV is now development, not production
+- Merge pull request #9 from jlchenwenbo/master
+- Merge branch 'patch-1' of https://github.com/breezeight/ufo into breezeight-patch-1
+- Bug: Update ship.rb: list all ecs services instead of just the first page
+- replace project_root with Ufo.root internally
+- update docs
+- use vendorized render_me_pretty for erb rendering
+
 ## [2.2.3]
 - eval $(ufo completion_script) for tab auto-completion
 - default task_definition template fixes: add ecs/ to awslogs_group, add helper.current_region
