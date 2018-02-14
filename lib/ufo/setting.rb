@@ -39,7 +39,6 @@ module Ufo
         env = data[ufo_env] || {}
         data[ufo_env] = base.merge(env) unless ufo_env == "base"
       end
-      pp data
       data
     end
 
