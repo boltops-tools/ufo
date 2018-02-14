@@ -8,6 +8,8 @@ Ufo supports bash auto-completion.  To set it up add this to your `~/.profile` o
 eval $(ufo completion_script)
 ```
 
+Don't forget to restart your shell.
+
 Auto Completion examples:
 
 ```
