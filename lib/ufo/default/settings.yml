@@ -1,5 +1,5 @@
 # More info: http://ufoships.com/docs/ufo-settings/
-# The base config is treated special. It gets included the other environments automatically.
+# The base config is specially treated. It gets included the other environments automatically.
 # Yaml also directly supports merging with & and <<* syntax but doing it automatically
 # for a cleaner syntax.
 base:
