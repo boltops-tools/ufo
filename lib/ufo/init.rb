@@ -17,9 +17,9 @@ module Ufo
 
     # for specs
     def set_destination_root
-      return unless ENV['DEST_ROOT']
+      return unless ENV['UFO_ROOT']
 
-      dest = ENV['DEST_ROOT']
+      dest = ENV['UFO_ROOT']
       FileUtils.rm_rf(dest) && FileUtils.mkdir_p(dest)
       self.destination_root = dest
       FileUtils.cd(dest)

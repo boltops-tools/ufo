@@ -11,20 +11,18 @@ require "byebug"
 root = File.expand_path("../", File.dirname(__FILE__))
 require "#{root}/lib/ufo"
 
-$dest = "tmp/project"
-ENV['DEST_ROOT'] = $dest
-ENV['UFO_ROOT'] = $dest
+ENV['UFO_ROOT'] = "tmp/project"
 
 module Helpers
   def create_starter_project_fixture
-    FileUtils.rm_rf($dest)
+    FileUtils.rm_rf(Ufo.root)
     execute("exe/ufo init --app hi --image tongueroo/hi")
     create_test_settings
   end
 
   # modify the generated settings so we can spec the settings themselves
   def create_test_settings
-    FileUtils.cp("spec/fixtures/settings.yml", "#{$dest}/.ufo/settings.yml")
+    FileUtils.cp("spec/fixtures/settings.yml", "#{Ufo.root}/.ufo/settings.yml")
   end
 
   def execute(cmd)
