@@ -34,10 +34,12 @@ module Ufo
       content = RenderMePretty.result(path)
       data = File.exist?(path) ? YAML.load(content) : {}
       # automatically add base settings to the rest of the environments
-      data.each do |env, _setting|
+      data.each do |ufo_env, _setting|
         base = data["base"] || {}
-        data[env] = base.merge(data[env]) unless env == "base"
+        env = data[ufo_env] || {}
+        data[ufo_env] = base.merge(env) unless ufo_env == "base"
       end
+      pp data
       data
     end
 
