@@ -41,7 +41,7 @@ gem install ufo
 git clone https:///github.com/tongueroo/hi.git
 cd hi
 ufo init --app=hi --image=tongueroo/hi
-ufo ship hi-web-stag
+ufo ship hi-web
 ```
 
 Congratulations, you have successfully used ufo to deploy to an ECS service.
