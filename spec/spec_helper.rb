@@ -14,7 +14,7 @@ require "#{root}/lib/ufo"
 ENV['UFO_ROOT'] = "tmp/project"
 
 module Helpers
-  def create_starter_project_fixture
+  def create_ufo_project
     FileUtils.rm_rf(Ufo.root)
     execute("exe/ufo init --app hi --image tongueroo/hi")
     create_test_settings

@@ -1,6 +1,6 @@
 describe Ufo::Setting do
   before(:all) do
-    create_starter_project_fixture
+    create_ufo_project
   end
 
   let(:setting) { Ufo::Setting.new }

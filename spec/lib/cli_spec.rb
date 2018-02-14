@@ -1,6 +1,6 @@
 describe Ufo::CLI do
   before(:all) do
-    create_starter_project_fixture
+    create_ufo_project
     @args = "--noop"
   end
 

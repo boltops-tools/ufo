@@ -1,6 +1,6 @@
 describe Ufo::Core do
   before(:all) do
-    create_starter_project_fixture
+    create_ufo_project
   end
 
   it "finds the first env that contains the aws profile" do
