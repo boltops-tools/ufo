@@ -79,6 +79,18 @@ UFO_ENV=production ufo ship hi-web --cluster production-cluster # override the c
 
 Override the convention by setting the cluster option in the `settings.yml` file, so you won't have to specify the `--cluster` option in the command repeatedly.
 
+```yaml
+development:
+  aws_profiles:
+    - dev-profile-1
+    - dev-profile-2
+
+production:
+  aws_profiles:
+    - prod-profile
+```
+
+
 ### AWS_PROFILE support
 
 An interesting option is `aws_profiles`.  Here's an example:
