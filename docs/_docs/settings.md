@@ -81,13 +81,10 @@ Override the convention by setting the cluster option in the `settings.yml` file
 
 ```yaml
 development:
-  aws_profiles:
-    - dev-profile-1
-    - dev-profile-2
+  cluster: dev
 
 production:
-  aws_profiles:
-    - prod-profile
+  cluster: prod
 ```
 
 
