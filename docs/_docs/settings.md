@@ -45,11 +45,8 @@ Setting  | Description
 `image`  | The `image` value is the name that ufo will use for the Docker image name to be built.  Only provide the basename part of the image name without the tag because ufo automatically generates the tag for you. For example, `tongueroo/hi` is correct and `tongueroo/hi:my-tag` is incorrect.
 `clean_keep`  | Docker images generated from ufo are cleaned up automatically for you at the end of `ufo ship`. This controls how many docker images to keep around. The default is 3.
 `ecr_keep`  | If you are using AWS ECR, then the ECR images can also be automatically cleaned up at the end of `ufo ship`. By default this is set to `nil` and all AWS ECR are kept.
-`cluster`  | By convention, the ECS cluster that ufo deploys to matches the `UFO_ENV`. If `UFO=development`, then `ufo ship` deploys to the `development` ECS cluster. This is option overrides this convetion.
+`cluster`  | By convention, the ECS cluster that ufo deploys to matches the `UFO_ENV`. If `UFO=development`, then `ufo ship` deploys to the `development` ECS cluster. This is option overrides this convention.
 `aws_profiles`  | If you have the `AWS_PROFILE` environment variable set, this will ensure that you are deploying the right `UFO_ENV` to the right AWS
-
-Maps the `UFO_ENV` to an ECS cluster value.  This allows you to override the convention where the default cluster equals to `UFO_ENV`. value.  This is covered in detailed at [Conventions]({% link _docs/conventions.md %}).
-
 
 ### ECS Cluster Convention
 
