@@ -2,7 +2,7 @@
 title: Settings
 ---
 
-The behavior of ufo can be configured with a `settings.yml` file.  A starter project `.ufo/settings.yml` file is generated as part of the `ufo init` command. You can have multiple settings files. The options from the files get merged and respect the following precedence:
+The behavior of ufo can be configured with a `settings.yml` file.  A starter project `.ufo/settings.yml` file is generated as part of the `ufo init` command. You can have multiple settings files. The options from the files get merged and respected in the following precedence:
 
 1. current folder - The current folder's `.ufo/settings.yml` values take the highest precedence.
 2. user - The user's `~/.ufo/settings.yml` values take the second highest precedence.
@@ -53,7 +53,7 @@ Maps the `UFO_ENV` to an ECS cluster value.  This allows you to override the con
 
 ### ECS Cluster Convention
 
-Normally, the ECS cluster defaults to whatever UFO_ENV is set to by [convention]({% link _docs/conventions.md %}).  For example, when `UFO_ENV=production` the ECS Cluster is `production` and when `UFO_ENV=development` the ECS Cluster is `development`.  This setting allows you to override this behavior so that you do not have to specify the `--cluster` CLI option repeatedly.  Let's go through an example:
+Normally, the ECS cluster defaults to whatever UFO_ENV is set to by [convention]({% link _docs/conventions.md %}).  For example, when `UFO_ENV=production` the ECS Cluster is `production` and when `UFO_ENV=development` the ECS Cluster is `development`.  There are several ways to override this behavior. Let's go through an example:
 
 By default, these are all the same:
 
@@ -70,14 +70,14 @@ UFO_ENV=production ufo ship hi-web
 UFO_ENV=production ufo ship hi-web --cluster production # same
 ```
 
-Override the convention and explicitly specify the `--cluster` option in the CLI.
+Override the convention by explicitly specifying the `--cluster` option in the CLI.
 
 ```sh
 ufo ship hi-web --cluster custom-cluster # override the cluster
 UFO_ENV=production ufo ship hi-web --cluster production-cluster # override the cluster
 ```
 
-By setting the cluster option in the `settings.yml` file, you won't have to specify the cluster repeatedly.
+Override the convention by setting the cluster option in the `settings.yml` file, so you won't have to specify the `--cluster` option in the command repeatedly.
 
 ### AWS_PROFILE support
 
