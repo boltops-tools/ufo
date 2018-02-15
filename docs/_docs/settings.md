@@ -2,18 +2,17 @@
 title: Settings
 ---
 
-The behavior of ufo can be configured via the `ufo/settings.yml` file.  A starter project `ufo/settings.yml` file is generated as part of the `ufo init` command. You can have multiple settings files. The options from the files get merged and respect the following precedence:
+The behavior of ufo can be configured with a `settings.yml` file.  A starter project `.ufo/settings.yml` file is generated as part of the `ufo init` command. You can have multiple settings files. The options from the files get merged and respect the following precedence:
 
-1. current folder - The current folder's `ufo/settings.yml` values take the highest precedence.
+1. current folder - The current folder's `.ufo/settings.yml` values take the highest precedence.
 2. user - The user's `~/.ufo/settings.yml` values take the second highest precedence.
 3. default - The [default settings](https://github.com/tongueroo/ufo/blob/master/lib/ufo/default/settings.yml) bundled with the tool takes the lowest precedence.
 
-Let's take a look at an example `ufo/settings.yml`:
+Let's take a look at an example `settings.yml`:
 
 ```yaml
-image: tongueroo/hi
 base:
-  image: <%= @image %>
+  image: tongueroo/hi
   # clean_keep: 30 # cleans up docker images on your docker server.
   # ecr_keep: 30 # cleans up images on ECR and keeps this remaining amount. Defaults to keep all.
   # defaults when an new ECS service is created by ufo ship
@@ -80,7 +79,7 @@ UFO_ENV=production ufo ship hi-web --cluster production-cluster # override the c
 
 By setting the cluster option in the `settings.yml` file, you won't have to specify the cluster repeatedly.
 
-### AWS_PROFILE awareness
+### AWS_PROFILE support
 
 An interesting option is `aws_profiles`.  Here's an example:
 
