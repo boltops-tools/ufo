@@ -13,7 +13,8 @@ Gem::Specification.new do |spec|
   spec.homepage      = "http://ufoships.com"
   spec.license       = "MIT"
 
-  spec.files         = `git ls-files`.split($/)
+  vendor_files       = Dir.glob("vendor/**/*")
+  spec.files         = `git ls-files`.split($/) + vendor_files
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
