@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [3.0.1]
+- add vendor files to gem package: fixes gem install ufo misses 'render_me_pretty' #18
+
 ## [3.0.0]
 - dotufo: rename ufo folder to .ufo. Use ufo upgrade3 command to upgrade.
 - new settings.yml format to account for multiple AWS accounts and environments.
