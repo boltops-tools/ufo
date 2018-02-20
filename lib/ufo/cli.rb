@@ -110,7 +110,7 @@ module Ufo
       Completer::Script.generate
     end
 
-    desc "upgrade3", "upgrades from version 2 and below to 3"
+    desc "upgrade3", "upgrade from version 2 to 3"
     long_desc Help.text("upgrade3")
     def upgrade3
       Upgrade3.new(options).run

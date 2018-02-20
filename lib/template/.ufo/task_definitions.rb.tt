@@ -20,6 +20,12 @@ task_definition "<%= @app %>-web" do
     # Comment out awslogs_* if you do not want logs to be sent to CloudWatch.
     # Strongly recommended to use CloudWatch/centralized logging.
     # Ufo automatically creates the log group as part of deployment.
+    #
+    # More info on awslogs settings: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/using_awslogs.html
+    # The log stream takes the following format:
+    #   prefix-name/container-name/ecs-task-id
+    # Here's an exmaple when you specify the prefix of "demo"
+    #   demo/web/209e93b4-5523-4496-9a27-662fd151eb78
     awslogs_group: "ecs/<%= @app %>-web",
     awslogs_stream_prefix: "<%= @app %>",
     awslogs_region: helper.current_region,
