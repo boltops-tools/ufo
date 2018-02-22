@@ -9,16 +9,11 @@ module Ufo
   # So @options must be set
   module Default
     # The default cluster normally defaults to the Ufo.env value.
-    # But it can be overriden by ufo/settings.yml ufo_env_cluster_map
+    # But it can be overriden by ufo/settings.yml cluster
     #
     # More info: http://ufoships.com/docs/settings/
     def default_cluster
-      map = setting.data["ufo_env_cluster_map"]
-      if map
-        ecs_cluster = map[Ufo.env] || map["default"]
-      end
-
-      ecs_cluster || Ufo.env
+      setting.data["cluster"] || Ufo.env
     end
 
     # These default service values only are used when a service is created by `ufo`
