@@ -313,7 +313,7 @@ module Ufo
     # assume only 1 port mapping in that container_defintion
     def container_info(task_definition)
       Ufo.check_task_definition!(task_definition)
-      task_definition_path = "ufo/output/#{task_definition}.json"
+      task_definition_path = ".ufo/output/#{task_definition}.json"
       task_definition = JSON.load(IO.read(task_definition_path))
       container_def = task_definition["containerDefinitions"].first
       mappings = container_def["portMappings"]
