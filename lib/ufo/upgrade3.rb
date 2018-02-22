@@ -24,8 +24,26 @@ module Ufo
       if File.exist?(user_settings_path)
         upgrade_settings(user_settings_path)
       end
+
+      upgrade_variables
+
       mv("ufo", ".ufo")
       puts "Upgrade complete."
+      new_env_info
+    end
+
+    def upgrade_variables
+      upgrade_variable_path("dev")
+      upgrade_variable_path("stag")
+      upgrade_variable_path("prod")
+    end
+
+    def upgrade_variable_path(old_ufo_env)
+      old_path = "ufo/variables/#{old_ufo_env}.rb"
+      return unless File.exist?(old_path)
+
+      ufo_env = map_env(old_ufo_env)
+      mv(old_path, "ufo/variables/#{ufo_env}.rb")
     end
 
     def upgrade_settings(path)
@@ -56,8 +74,6 @@ module Ufo
       if path.include?(ENV['HOME'])
         puts "NOTE: Your ~/.ufo/settings.yml file was also upgraded to the new format. If you are using ufo in other projects those will have to be upgraded also."
       end
-
-      new_env_info
     end
 
     ENV_MAP = {
