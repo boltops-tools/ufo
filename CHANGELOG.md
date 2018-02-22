@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [3.1.2]
+- upgrade3 updates .gitignore also
+
 ## [3.1.1]
 - actually use the cluster value in settings
 - upgrade variables path also #20
