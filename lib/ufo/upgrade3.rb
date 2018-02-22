@@ -26,10 +26,19 @@ module Ufo
       end
 
       upgrade_variables
+      upgrade_gitignore
 
       mv("ufo", ".ufo")
       puts "Upgrade complete."
       new_env_info
+    end
+
+    def upgrade_gitignore
+      lines = IO.readlines(".gitignore")
+      text = lines.map do |line|
+          line.sub(/[\/]?ufo/, '.ufo')
+        end.join
+      IO.write(".gitignore", text)
     end
 
     def upgrade_variables
