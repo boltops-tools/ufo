@@ -1,4 +1,3 @@
-# coding: utf-8
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "ufo/version"
@@ -29,8 +28,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "deep_merge"
   spec.add_dependency "plissken"
   spec.add_dependency "thor"
-
-  spec.add_dependency "activesupport" # render_me_pretty submodule dependency
+  spec.add_dependency "render_me_pretty"
 
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "byebug"
