@@ -35,6 +35,7 @@ module Ufo
       new_structure = {}
 
       (data["aws_profile_ufo_env_map"] || {}).each do |aws_profile, ufo_env|
+        ufo_env = map_env(ufo_env)
         new_structure[ufo_env] ||= {}
         new_structure[ufo_env]["aws_profiles"] ||= []
         new_structure[ufo_env]["aws_profiles"] << aws_profile
@@ -42,6 +43,7 @@ module Ufo
       data.delete("aws_profile_ufo_env_map")
 
       (data["ufo_env_cluster_map"] || {}).each do |ufo_env, cluster|
+        ufo_env = map_env(ufo_env)
         new_structure[ufo_env] ||= {}
         new_structure[ufo_env]["cluster"] = cluster
       end
@@ -54,6 +56,34 @@ module Ufo
       if path.include?(ENV['HOME'])
         puts "NOTE: Your ~/.ufo/settings.yml file was also upgraded to the new format. If you are using ufo in other projects those will have to be upgraded also."
       end
+
+      new_env_info
+    end
+
+    ENV_MAP = {
+      "dev" => "development",
+      "prod" => "production",
+      "stag" => "staging",
+    }
+    def map_env(ufo_env)
+      ENV_MAP[ufo_env] || ufo_env
+    end
+
+    def new_env_info
+      puts <<-EOL.colorize(:yellow)
+INFO: The UFO_ENV default environment is now development.
+The short env names have been mapped over to their longer names.
+Examples:
+
+  prod => production
+  dev => development
+
+To adjust the default UFO_ENV, export it in your ~/.profile. Example:
+
+export UFO_ENV=production # the default is now development, when not set
+
+Refer to https://github.com/tongueroo/ufo/blob/master/CHANGELOG.md for other notable changes.
+EOL
     end
 
     def mv(src, dest)
