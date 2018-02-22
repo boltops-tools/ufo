@@ -13,7 +13,7 @@ This project *tries* to adhere to [Semantic Versioning](http://semver.org/), eve
 - add auto-completion, to setup: eval $(ufo completion_script)
 - ufo upgrade3 command
 - ufo init: Use Thor::Group as generator
-- default UFO_ENV is now development, not production
+- default UFO_ENV is now development, not prod
 - Merge pull request #9 from jlchenwenbo/master
 - Merge branch 'patch-1' of https://github.com/breezeight/ufo into breezeight-patch-1
 - Bug: Update ship.rb: list all ecs services instead of just the first page
