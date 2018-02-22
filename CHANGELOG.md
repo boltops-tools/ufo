@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [3.1.0]
+- fix container_info to refer to .ufo instead of old ufo folder  #20
+- fix ufo upgrade3 #20
+- add render_me_pretty as gemspec dependency, remove vendor/render_me_pretty submodule #20 #18
+
 ## [3.0.1]
 - add vendor files to gem package: fixes gem install ufo misses 'render_me_pretty' #18
 
