@@ -21,8 +21,8 @@ Note all the existing ufo/output generated task defintions are wiped out.
 
 ## Subcommands
 
-* [ufo tasks build]({% link _reference/ufo-tasks-build.md %}) - builds task definitions
-* [ufo tasks register]({% link _reference/ufo-tasks-register.md %}) - register all built task definitions in ufo/output
+* [ufo tasks build]({% link _reference/ufo-tasks-build.md %}) - Build task definitions.
+* [ufo tasks register]({% link _reference/ufo-tasks-register.md %}) - Register all built task definitions in `ufo/output` folder.
 
 ## Options
 

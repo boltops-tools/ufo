@@ -9,7 +9,7 @@ reference: true
 
 ## Description
 
-Build docker image from Dockerfile.base and update current Dockerfile.
+Build docker image from `Dockerfile.base` and update current `Dockerfile`.
 
 The docker cache task builds a docker image using the `Dockerfile.base` file and
 updates the FROM `Dockerfile` image with the generated image from `Dockerfile.base`.

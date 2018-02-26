@@ -9,7 +9,7 @@ reference: true
 
 ## Description
 
-Cleans up old images.  Keeps a specified amount.
+Clean up old images.  Keeps a specified amount.
 
 Ufo comes with a handy command to clean up old images that ufo generates. Ufo only deletes images from the docker daemon and does not remove any images from any registry.  To use it you pass the base portion of the image name to the command.
 

@@ -9,7 +9,7 @@ reference: true
 
 ## Description
 
-Builds docker image.
+Build docker image.
 
 The `ufo docker build` builds a Docker image using the Dockerfile in the current project folder.  This simply is a wrapper command that shells out and calls the `docker` command.  We're use the [tongueroo/hi](https://github.com/tongueroo/hi) project and it's Dockerfile for demonstration.  Example:
 

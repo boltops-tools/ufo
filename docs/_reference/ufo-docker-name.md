@@ -9,7 +9,7 @@ reference: true
 
 ## Description
 
-Displays the full docker image with tag that was last generated.
+Display the full docker image with tag that was last generated.
 
 It is sometimes handy to grab the name of the Docker image that was just generated.  Let's say ou needed the image name so you can feed it into another script that you have. The command `ufo docker name` returns the image of the most recently built Docker image.
 

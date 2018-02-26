@@ -9,7 +9,7 @@ reference: true
 
 ## Description
 
-builds task definitions
+Build task definitions.
 
 ## Summarized Example
 

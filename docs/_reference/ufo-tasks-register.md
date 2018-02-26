@@ -9,7 +9,7 @@ reference: true
 
 ## Description
 
-register all built task definitions in ufo/output
+Register all built task definitions in `ufo/output` folder.
 
 The `ufo tasks register` command registers all the generated task definitions in `output/` to AWS ECS. Let's run it:
 
