@@ -7,8 +7,7 @@ Gem::Specification.new do |spec|
   spec.version       = Ufo::VERSION
   spec.authors       = ["Tung Nguyen"]
   spec.email         = ["tongueroo@gmail.com"]
-  spec.description   = %q{Build Docker Containers and Ship Them to AWS ECS}
-  spec.summary       = %q{Build Docker Containers and Ship Them to AWS ECS}
+  spec.summary       = "Build Docker Containers and Ship Them to AWS ECS"
   spec.homepage      = "http://ufoships.com"
   spec.license       = "MIT"
 
@@ -24,11 +23,12 @@ Gem::Specification.new do |spec|
   spec.add_dependency "aws-sdk-ecr"
   spec.add_dependency "aws-sdk-ecs"
   spec.add_dependency "aws-sdk-elasticloadbalancingv2"
+  # spec.add_dependency "cli_markdown"
   spec.add_dependency "colorize"
   spec.add_dependency "deep_merge"
   spec.add_dependency "plissken"
-  spec.add_dependency "thor"
   spec.add_dependency "render_me_pretty"
+  spec.add_dependency "thor"
 
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "byebug"

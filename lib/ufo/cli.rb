@@ -8,11 +8,11 @@ module Ufo
     class_option :noop, type: :boolean
     class_option :cluster, desc: "Cluster.  Overrides ufo/settings.yml."
 
-    desc "docker SUBCOMMAND", "docker related tasks"
+    desc "docker SUBCOMMAND", "docker subcommands"
     long_desc Help.text(:docker)
     subcommand "docker", Docker
 
-    desc "tasks SUBCOMMAND", "task definition related tasks"
+    desc "tasks SUBCOMMAND", "task definition subcommands"
     long_desc Help.text(:tasks)
     subcommand "tasks", Tasks
 
@@ -20,7 +20,7 @@ module Ufo
     Init.cli_options.each do |args|
       option *args
     end
-    register(Init, "init", "new", "setup initial ufo files")
+    register(Init, "init", "new", "Setup initial ufo files.")
 
     # common options to deploy. ship, and ships command
     ship_options = Proc.new do
