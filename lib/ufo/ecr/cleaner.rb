@@ -49,7 +49,7 @@ module Ufo
     end
 
     def update_auth_token
-      repo_domain = "https://#{@docker_image_name.split('/').first}"
+      repo_domain = "#{@docker_image_name.split('/').first}"
       auth = Ecr::Auth.new(repo_domain)
       auth.update
     end

@@ -59,7 +59,8 @@ describe Ufo::Ship do
   # ensure_cluster_exist calls this and this makes sure that the cluster 'exists'
   def ecs_describe_clusters
     describe_clusters = double("ecs-describe-clusters")
-    allow(describe_clusters).to receive(:clusters).and_return(["cluster1"])
+    cluster1 = OpenStruct.new(status: "ACTIVE")
+    allow(describe_clusters).to receive(:clusters).and_return([cluster1])
     describe_clusters
   end
 
