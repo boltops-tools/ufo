@@ -8,6 +8,11 @@
     <section id="main">
         <div class="container">
             <div class="row">
+                {% if page.reference %}
+                <div class="col-md-9 reference-nav">
+                    <a href="/reference">Back to Reference Index</a>
+                </div>
+                {% endif %}
                 <div class="col-md-9 content-body">
                     <h2>{{ page.title }}</h2>
                     {{ content }}

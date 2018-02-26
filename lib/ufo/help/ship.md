@@ -8,27 +8,31 @@ Basic usage is:
 
     ufo ship hi-web
 
+The ECS service gets created if the service does not yet exist on the cluster.
+
+### Conventions
+
+By convention the task and service names match. If you need override to this convention then you can specific the task.  For example if you want to ship to the `hi-web-1` service and use the `hi-web` task, run:
+
+    ufo ship hi-web-1 --task hi-web
+
 ## Options in Detail
 
 The command has a decent amount of options, you can see the options available with `ufo ship -h`.  The table below covers some of the options in detail:
 
 {% include ufo-ship-options.md %}
 
-As you can see there are plenty of options for `ufo ship`.  Let's demonstrate usage of them in a few examples:
+As you can see there are plenty of options for `ufo ship`.  Let's demonstrate usage of them in a few examples.
 
 ### Load Balancer Target Group
 
-When you are deploying to a service with the word 'web' in it, ufo by convention assumes that this is a web service that uses a load balancer in front of it.  This is also covered a in the [Conventions]({% link _docs/conventions.md %}) page.  If you would you like to create a service with the word web without an load balancer associated with it you can use the `--no-target-group-prompt` option:
+When you are deploying to a service with the word 'web' in it, ufo assumes that this is a web service that uses a load balancer in front of it.  This is also covered a in the [Conventions]({% link _docs/conventions.md %}) page.  The deploy will prompt you for the ELB `--target-group`  if the ECS does not yet exist.  For non-web container the `--target-group` option gets ignored.  The prommpt can be bypassed by specifying a valid `--target-group` option or specifying the `---no-target-group-prompt` option.
 
-```sh
-ufo ship hi-web --no-target-group-prompt
-```
+    ufo ship hi-web --no-target-group-prompt
 
-Or if you would like specify the target-group up front and not be bother with the prompted later you can use the `--target-group` option.
+Or if you would like to specify the target-group upfront and not be bother with the prompted later you can use the `--target-group` option.
 
-```sh
-ufo ship hi-web --target-group=arn:aws:elasticloadbalancing:us-east-1:12345689:targetgroup/hi-web/12345
-```
+    ufo ship hi-web --target-group=arn:aws:elasticloadbalancing:us-east-1:12345689:targetgroup/hi-web/12345
 
 ### Deploying Existing Task Definition
 
@@ -74,16 +78,3 @@ Running: docker rmi tongueroo/hi:ufo-2017-06-12T06-46-12-a18aa30
 
 If you are using DockerHub or another registry, ufo does not automatically clean up images.
 
-## Conventions
-
-By convention the task and service names match. If you need override to this convention then you can specific the task.  For example if you want to ship to the `hi-web-1` service and use the `hi-web` task, run:
-
-    ufo ship hi-web-1 --task hi-web
-
-The deploy will also created the ECS service if the service does not yet exist on the cluster.  The deploy will prompt you for the ELB `--target-group` if you are shipping a web container that does not yet exist.  If it is not a web container the `--target-group` option gets ignored.
-
-The prommpt can be bypassed by specifying a valid `--target-group` option or specifying the `---no-target-group-prompt` option.
-
-    ufo ship hi-web --target-group arn:aws:elasticloadbalancing:us-east-1:123456789:targetgroup/hi-web/abcdefg
-
-    ufo ship hi-web --no-target-group-prompt

@@ -57,7 +57,7 @@ module Ufo
       cleanup(builder.image_name)
     end
 
-    desc "ships [LIST_OF_SERVICES]", "builds and ships same container image to multiple ECS services"
+    desc "ships [LIST_OF_SERVICES]", "Builds and ships same container image to multiple ECS services."
     long_desc Help.text(:ships)
     ship_options.call
     def ships(*services)
