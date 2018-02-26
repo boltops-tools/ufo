@@ -28,8 +28,13 @@ module Ufo
         data = JSON.load(IO.read(docker_config))
         data["auths"][@repo_domain] = {auth: auth_token}
       else
-        data = {auths: {@repo_domain => {auth: auth_token}}}
+        data = {"auths" => {@repo_domain => {auth: auth_token}}}
       end
+
+      # Handle legacy docker clients that still have old format with https://
+      legacy_entry = "https://#{@repo_domain}"
+      data["auths"][legacy_entry] = {auth: auth_token}
+
       ensure_dotdocker_exists
       IO.write(docker_config, JSON.pretty_generate(data))
     end
