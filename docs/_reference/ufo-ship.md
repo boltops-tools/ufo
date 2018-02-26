@@ -47,11 +47,9 @@ Or if you would like to specify the target-group upfront and not be bother with 
 
     ufo ship hi-web --target-group=arn:aws:elasticloadbalancing:us-east-1:12345689:targetgroup/hi-web/12345
 
-### Deploying Existing Task Definition
+### Deploying Task Definition without Docker Build
 
-Let's say you already have built an registered a task definition by some other means and only want to use ufo to deploy that already registered task definition. You can do this by skipping the task build and register phase. It probably also makes sense to skip the docker phase in this case.
-
-    ufo ship hi-web --no-docker --no-tasks
+Let's you want skip the docker build phase and only want use ufo to deploy a task definition. You can do this with the `ufo deploy` command.  Refer to [ufo deploy](http://ufoships.com/reference/ufo-deploy/) for more info.
 
 ### Waiting for Deployments to Complete
 
