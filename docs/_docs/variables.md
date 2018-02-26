@@ -15,7 +15,7 @@ For example, given `variables/base.rb`:
 
 You can now use `@image` in your `.ufo/templates/main.json.erb` without having to explicitly declaring them in the `.ufo/task_definitions.rb` file.  Variables are automatically made available to all templates and the `task_definition.rb` file also.
 
-### Layering
+## Layering
 
 Shared variables also support a concept called layering.  The `variables/base.rb` file is treated specially and will always be evaluated.  Additionally, ufo will also evaluate the `variables/[UFO_ENV].rb` according to what UFO_ENV's value is. Thanks to layering, you can easily override variables to suit different environments like `production` or `development`. For example:
 

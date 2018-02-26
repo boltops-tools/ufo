@@ -38,6 +38,3 @@ ufo docker build --push # same as above
 
 Note in order to push the image to a registry you will need to login into the registry.  If you are using DockerHub use the `docker login` command.  If you are using AWS ECR then, ufo will automatically try to authorize you and configure your `~/.docker/config.json`.  If can also use `aws ecr get-login` command.
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/ufo-docker-build.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/ufo-docker-base.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>

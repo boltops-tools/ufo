@@ -12,7 +12,7 @@ ufo init --app=hi --image=tongueroo/hi
 ufo ship hi-web
 ```
 
-### What Happened
+## What Happened
 
 The `ufo ship hi-web` command does the following:
 

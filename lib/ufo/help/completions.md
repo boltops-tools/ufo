@@ -1,6 +1,6 @@
 Provides completions words.
 
-Examples:
+## Examples
 
   ufo completions ship service --mute
 

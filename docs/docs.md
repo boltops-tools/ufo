@@ -2,7 +2,7 @@
 title: Docs
 ---
 
-### Overview
+## Overview
 
 Ufo is a tool that makes building and shipping Docker containers to AWS ECS super easy. Ufo provides a `ufo ship` command that does this. Essentially:
 

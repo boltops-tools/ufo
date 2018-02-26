@@ -11,7 +11,7 @@ reference: true
 
 register all built task definitions in ufo/output
 
-Examples:
+## Examples
 
     ufo tasks register
 

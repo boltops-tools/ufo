@@ -20,7 +20,3 @@ You can verify that the task definitions have been registered properly by viewin
 
 <img src="/img/tutorials/ecs-console-task-definitions.png" class="doc-photo" />
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/ufo-tasks-build.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/ufo-help.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
-

@@ -20,8 +20,3 @@ By default the clean command keeps the most 3 recent docker images. If you would
 ```sh
 ufo docker clean tongueroo/hi --keep 5
 ```
-
-<a id="prev" class="btn btn-basic" href="{% link _docs/ufo-docker-name.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/ufo-tasks-build.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
-

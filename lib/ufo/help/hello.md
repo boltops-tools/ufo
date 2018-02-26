@@ -1,4 +1,4 @@
-Examples:
+## Examples
 
   ufo hello
   ufo hello NAME

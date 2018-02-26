@@ -14,7 +14,7 @@ builds docker image from Dockerfile.base and update current Dockerfile
 The docker cache task builds a docker image using the Dockerfile.base file and
 updates the FROM Dockerfile image with the generated image from Dockerfile.base.
 
-Examples:
+## Examples
 
     ufo docker base
     ufo docker base --no-push # do not push the image to the registry

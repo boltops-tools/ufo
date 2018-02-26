@@ -11,7 +11,7 @@ reference: true
 
 Cleans up old images.  Keeps a specified amount.
 
-Examples:
+## Examples
 
 Say you currently have these images:
 

@@ -17,7 +17,7 @@ Example:
 
 Prints words for TAB auto-completion.
 
-Examples:
+## Examples
 
     ufo completion
     ufo completion hello

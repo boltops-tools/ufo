@@ -41,7 +41,7 @@ h3,
 h4,
 h5,
 h6 {
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
     font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
     font-weight: 700;
 }
@@ -211,7 +211,11 @@ section {
 section h2 {
     margin: 0;
     margin-bottom: 15px;
-    font-size: 2em;
+    font-size: 1.6em;
+}
+
+section h3 {
+    font-size: 1.4em;
 }
 
 section.success {

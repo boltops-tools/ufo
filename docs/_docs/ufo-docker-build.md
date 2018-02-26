@@ -73,7 +73,3 @@ Pushed tongueroo/hi:ufo-2017-06-11T22-22-32-a18aa30 docker image. Took 9s.
 
 Note in order to push the image to a registry you will need to login into the registry.  If you are using DockerHub use the `docker login` command.  If you are using AWS ECR then you can use the `aws ecr get-login` command.
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/ufo-destroy.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/ufo-docker-push.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
-

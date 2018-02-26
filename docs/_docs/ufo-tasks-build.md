@@ -160,7 +160,3 @@ Let's take a look at one of the generated files: `.ufo/output/hi-web.json`.
 
 If you need to modify the task definition template to suite your own needs it is super simple, just edit `main.json.erb`.  No need to dive deep into internal code that builds up the task definition with some internal structure.  It is all there for you to fully control.
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/ufo-docker-clean.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/ufo-tasks-register.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
-

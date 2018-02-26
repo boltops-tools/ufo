@@ -1,4 +1,4 @@
-Examples:
+## Examples
 
 Say you currently have these images:
 

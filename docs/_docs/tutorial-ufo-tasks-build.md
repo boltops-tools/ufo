@@ -2,7 +2,7 @@
 title: Task Definitions
 ---
 
-### Build the ECS Task Definitions
+## Build the ECS Task Definitions
 
 Now that we have a docker image pushed to a registry we can use that image for ECS.  Ufo takes that image and adds it to an ECS task definition.  This is where ufo is super powerful.  Ufo gives you the power to build and control your ECS task definition easily.
 
@@ -59,7 +59,7 @@ task_definition "hi-worker" do
 end
 ```
 
-### Shared Variables
+## Shared Variables
 
 Ufo has a concept of shared variables, covered in [Shared Variables]({% link _docs/variables.md %}). The shared variables are set in the `variables` folder and essentially allow you to use a set of shared variables through your templates:
 
@@ -148,7 +148,7 @@ Let's take a look at one of the generated files: `.ufo/output/hi-web.json`.
 }
 ```
 
-### Register the ECS Task Definitions
+## Register the ECS Task Definitions
 
 You have built the ecs task definitions locally on your machine. To register the task definitions in the `output` folder run:
 

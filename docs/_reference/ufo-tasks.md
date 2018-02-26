@@ -11,7 +11,7 @@ reference: true
 
 task definition subcommands
 
-Examples:
+## Examples
 
     ufo tasks build
 

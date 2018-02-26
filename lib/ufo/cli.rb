@@ -20,7 +20,7 @@ module Ufo
     Init.cli_options.each do |args|
       option *args
     end
-    register(Init, "init", "new", "Setup initial ufo files.")
+    register(Init, "init", "new", "Set up initial ufo files.")
 
     # common options to deploy. ship, and ships command
     ship_options = Proc.new do

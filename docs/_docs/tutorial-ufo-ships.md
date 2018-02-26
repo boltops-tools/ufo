@@ -16,7 +16,7 @@ ufo ship hi-clock
 
 This would build a new Docker image for each process.  We actually want have the same docker image running on all of these roles.  In this case where we want to use the *same* Docker image for all 3 roles, ufo provides a `ufo ships` command.
 
-### ufo ships
+## ufo ships
 
 ```sh
 ufo ships hi-web hi-worker hi-clock

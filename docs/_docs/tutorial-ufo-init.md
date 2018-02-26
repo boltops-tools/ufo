@@ -52,7 +52,7 @@ The `ufo init` command generated a few starter ufo files for you. The standard d
 
 The explanation of the folders and files were covered in detailed earlier at [Structure]({% link _docs/structure.md %}).
 
-### Settings
+## Settings
 
 Take a look at the `settings.yml` file and notice that it contains some default configuration settings so you do not have to type out these options repeatedly for some of the ufo commands.
 

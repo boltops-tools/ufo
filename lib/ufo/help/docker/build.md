@@ -1,4 +1,4 @@
-Examples:
+## Examples
 
   ufo docker build
   ufo docker build --push # also pushes the image to the docker registry

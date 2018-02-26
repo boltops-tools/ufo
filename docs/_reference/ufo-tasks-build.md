@@ -11,7 +11,7 @@ reference: true
 
 builds task definitions
 
-Examples:
+## Examples
 
     ufo tasks build
 
