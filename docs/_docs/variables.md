@@ -2,7 +2,7 @@
 title: Shared Variables
 ---
 
-Often times, you end up using the set of common variables across your task definitions for a project.  Ufo supports a shared variables concept to help with this.  You specify variables files in the `ufo/variables` folder and they are made availale to your `ufo/task_definitions.rb` as well as your `ufo/templates` files.
+Often times, you end up using the set of common variables across your task definitions for a project.  Ufo supports a shared variables concept to help with this.  You specify variables files in the `.ufo/variables` folder and they are made availale to your `.ufo/task_definitions.rb` as well as your `.ufo/templates` files.
 
 For example, given `variables/base.rb`:
 
@@ -13,13 +13,13 @@ For example, given `variables/base.rb`:
 @environment = helper.env_file(".env")
 ```
 
-You can now use @image in your `ufo/templates/main.json.erb` without having to explicitly declaring them in the `ufo/task_definitions.rb` file.  Variables are automatically made available to all templates and the `task_definition.rb` file also.
+You can now use `@image` in your `.ufo/templates/main.json.erb` without having to explicitly declaring them in the `.ufo/task_definitions.rb` file.  Variables are automatically made available to all templates and the `task_definition.rb` file also.
 
 ### Layering
 
 Shared variables also support a concept called layering.  The `variables/base.rb` file is treated specially and will always be evaluated.  Additionally, ufo will also evaluate the `variables/[UFO_ENV].rb` according to what UFO_ENV's value is. Thanks to layering, you can easily override variables to suit different environments like `production` or `development`. For example:
 
-`ufo/variables/base.rb`:
+`.ufo/variables/base.rb`:
 
 ```ruby
 @image = helper.full_image_name # includes the git sha tongueroo/hi:ufo-[sha].
@@ -30,7 +30,7 @@ Shared variables also support a concept called layering.  The `variables/base.rb
 
 When `ufo ship` is ran with `UFO_ENV=production` he `variables/production.rb` will be evaluated and layered on top of the variables defined in `base.rb:
 
-`ufo/variables/production.rb`:
+`.ufo/variables/production.rb`:
 
 ```ruby
 @environment = helper.env_vars(%Q[
@@ -42,7 +42,7 @@ When `ufo ship` is ran with `UFO_ENV=production` he `variables/production.rb` wi
 When `ufo ship` is ran with `UFO_ENV=development` the `variables/development.rb` will be evaluated and layered on top of the variables defined in `base.rb:
 
 
-`ufo/variables/development.rb`:
+`.ufo/variables/development.rb`:
 
 ```ruby
 @environment = helper.env_vars(%Q[

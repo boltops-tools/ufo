@@ -105,7 +105,7 @@ The shared variables are set in the variables folder:
 })
 ```
 
-Ufo combines the `main.json.erb` template, `task_definitions.rb` definitions, and variables in the `ufo/variables` folder.  It then generates the raw AWS formatted task definition in the `output` folder.
+Ufo combines the `main.json.erb` template, `task_definitions.rb` definitions, and variables in the `.ufo/variables` folder.  It then generates the raw AWS formatted task definition in the `output` folder.
 
 To build the task definitions:
 
@@ -126,7 +126,7 @@ Task Definitions built in ufo/output.
 $
 ```
 
-Let's take a look at one of the generated files: `ufo/output/hi-web.json`.
+Let's take a look at one of the generated files: `.ufo/output/hi-web.json`.
 
 ```json
 {

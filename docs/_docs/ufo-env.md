@@ -29,7 +29,7 @@ Most people will set `UFO_ENV` in their `~/.profile`.
 
 ### In ufo/settings.yml
 
-The most interesting way to set `UFO_ENV` is with the `aws_profiles` setting in `ufo/settings.yml`.  Let's say you have a `~/.ufo/settings.yml` with the following:
+The most interesting way to set `UFO_ENV` is with the `aws_profiles` setting in `.ufo/settings.yml`.  Let's say you have a `~/.ufo/settings.yml` with the following:
 
 ```yaml
 development:
