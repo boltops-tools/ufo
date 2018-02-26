@@ -9,11 +9,21 @@ body {
 }
 
 p {
-    font-size: 20px;
+    /*font-size: 20px;*/
+    font-size: 1.2em;
 }
 
 p.small {
-    font-size: 16px;
+    /*font-size: 16px;*/
+    font-size: 1em;
+}
+
+pre code {
+    font-size: 0.85em;
+}
+
+code {
+    font-size: 0.75em;
 }
 
 a,

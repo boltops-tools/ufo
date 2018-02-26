@@ -1,10 +1,10 @@
 ol.overview-stages li {
-    font-size: 1.1em;
+    /*font-size: 1.1em;*/
     padding: 10px 0;
 }
 
 section#main {
-    text-align: center;
+    /*text-align: center;*/
     color: #fff;
     background: #{{ site.color.primary }};
 }
@@ -23,12 +23,12 @@ section#main .intro-text .name {
     display: block;
     text-transform: uppercase;
     font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-size: 2em;
+    /*font-size: 2em;*/
     font-weight: 700;
 }
 
 section#main .intro-text .skills {
-    font-size: 1.25em;
+    /*font-size: 1.25em;*/
     font-weight: 300;
 }
 
@@ -43,11 +43,11 @@ section#main .intro-text .skills {
     }
 
     section#main .intro-text .name {
-        font-size: 4.75em;
+        /*font-size: 4.75em;*/
     }
 
     section#main .intro-text .skills {
-        font-size: 1.75em;
+        /*font-size: 1.75em;*/
     }
 }
 
@@ -56,7 +56,7 @@ section#main .intro-text .skills {
 }
 
 .content-body h2 {
-    text-align: center;
+    /*text-align: center;*/
 }
 
 .content-body ul,
@@ -71,7 +71,7 @@ section#main .intro-text .skills {
 .content-nav {
     /*background-color: green;*/
     margin-top: 40px;
-    font-size: 1.25em;
+    font-size: 1.2em;
 }
 
 .content-nav ul, .content-nav ol {
@@ -166,7 +166,7 @@ table.ship-options td:first-child {
 }
 
 #summary {
-    font-size: 18px;
+    /*font-size: 18px;*/
     padding-bottom: 0;
     margin-bottom: 0;
 }
