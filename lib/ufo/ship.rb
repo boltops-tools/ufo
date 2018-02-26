@@ -99,8 +99,6 @@ module Ufo
       # ELB to drain the register container otherwise. This might cut off some requests but
       # providing this as an option that can be turned of beause I've seen deploys go way too
       # slow.
-      puts "@options[:stop_old_tasks] #{@options[:stop_old_tasks].inspect}"
-      puts "old_tasks.size #{old_tasks.size}"
       old_tasks.each do |task|
         puts "stopping task.task_definition_arn #{task.task_definition_arn.inspect}"
         ecs.stop_task(cluster: @cluster, task: task.task_arn, reason: reason)
@@ -358,8 +356,8 @@ module Ufo
     end
 
     def ensure_cluster_exist
-      cluster_exist = ecs_clusters.first
-      unless cluster_exist
+      cluster = ecs_clusters.first
+      unless cluster && cluster.status == "ACTIVE"
         message = "#{@cluster} cluster created."
         if @options[:noop]
           message = "NOOP #{message}"
