@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [3.2.0]
+- pr #23 from tongueroo/cli_markdown: http://ufoships.com/reference/ section now available
+- pr #24 from tongueroo/circleci
+- pr #25 from tongueroo/ecr-auth-legacy-docker-fix: ecr auth: also write legacy_entry to .docker/config.json
+- fix ensure_cluster_exist for inactive cluster bug fix
+
 ## [3.1.2]
 - upgrade3 updates .gitignore also
 
