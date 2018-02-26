@@ -7,16 +7,12 @@ PATH
       aws-sdk-ecr
       aws-sdk-ecs
       aws-sdk-elasticloadbalancingv2
+      cli_markdown
       colorize
       deep_merge
       plissken
       render_me_pretty
       thor
-
-PATH
-  remote: /Users/tung/src/tongueroo/cli_markdown
-  specs:
-    cli_markdown (0.1.0)
 
 GEM
   remote: https://rubygems.org/
@@ -48,6 +44,7 @@ GEM
       aws-sigv4 (~> 1.0)
     aws-sigv4 (1.0.2)
     byebug (10.0.0)
+    cli_markdown (0.1.0)
     codeclimate-test-reporter (1.0.8)
       simplecov (<= 0.13)
     colorize (0.8.1)
@@ -96,7 +93,6 @@ PLATFORMS
 DEPENDENCIES
   bundler
   byebug
-  cli_markdown!
   codeclimate-test-reporter
   rake
   rspec

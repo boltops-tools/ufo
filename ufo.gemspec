@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "aws-sdk-ecr"
   spec.add_dependency "aws-sdk-ecs"
   spec.add_dependency "aws-sdk-elasticloadbalancingv2"
-  # spec.add_dependency "cli_markdown"
+  spec.add_dependency "cli_markdown"
   spec.add_dependency "colorize"
   spec.add_dependency "deep_merge"
   spec.add_dependency "plissken"
