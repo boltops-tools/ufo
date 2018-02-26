@@ -9,7 +9,7 @@ reference: true
 
 ## Description
 
-scale the ECS service
+Scale the ECS service.
 
 Ufo provides a command to quickly scale up and down an ECS service. It is a simple wrapper for `aws ecs update-service --service xxx ----desired-count xxx`.  Here's an example of how you use it:
 

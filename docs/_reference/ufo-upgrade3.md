@@ -9,7 +9,7 @@ reference: true
 
 ## Description
 
-upgrade from version 2 to 3
+Upgrade from version 2 to 3.
 
 
 ## Options

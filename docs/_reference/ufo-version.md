@@ -9,7 +9,7 @@ reference: true
 
 ## Description
 
-Prints version number of installed ufo
+Prints version number of installed ufo.
 
 
 ## Options

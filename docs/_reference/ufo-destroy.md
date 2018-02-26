@@ -9,7 +9,7 @@ reference: true
 
 ## Description
 
-destroys the ECS service
+Destroy the ECS service.
 
 ## Examples
 

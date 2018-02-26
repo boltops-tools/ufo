@@ -9,7 +9,7 @@ reference: true
 
 ## Description
 
-builds and ships container image to the ECS service
+Builds and ships container image to the ECS service.
 
 The main command you use when using ufo is: `ufo ship`.  This command:
 

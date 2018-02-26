@@ -9,7 +9,7 @@ reference: true
 
 ## Description
 
-prints words for auto-completion
+Prints words for auto-completion.
 
 Example:
 

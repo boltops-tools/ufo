@@ -9,7 +9,7 @@ reference: true
 
 ## Description
 
-runs a one time task
+Run a one-time task.
 
 ## Examples
 
