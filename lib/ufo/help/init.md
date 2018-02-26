@@ -33,18 +33,16 @@ The generated `tongueroo/hi:ufo-2018-02-08T21-04-02-3c86158` image name gets pus
 
 The standard directory structure of the `.ufo` folder that was created looks like this:
 
-```sh
-ufo
-├── output
-├── settings.yml
-├── task_definitions.rb
-├── templates
-├   └── main.json.erb
-└── variables
-    ├── base.rb
-    ├── production.rb
-    └── development.rb
-```
+    ufo
+    ├── output
+    ├── settings.yml
+    ├── task_definitions.rb
+    ├── templates
+    ├   └── main.json.erb
+    └── variables
+        ├── base.rb
+        ├── production.rb
+        └── development.rb
 
 For a explanation of the folders and files refer to [Structure]({% link _docs/structure.md %}).
 

@@ -9,7 +9,7 @@ reference: true
 
 ## Description
 
-deploys task definition to ECS service without re-building the definition
+Deploy task definition to ECS service without re-building the definition.
 
 It is useful to sometimes deploy only the task definition without re-building it.  Say for example, you are debugging the task definition and just want to directly edit the `.ufo/output/hi-web.json` definition. You can accomplish this with the `ufo deploy` command.  The `ufo deploy` command will deploy the task definition in `.ufo/output` unmodified.  Example:
 
@@ -25,6 +25,10 @@ The `ufo deploy` command does less than the `ufo ship` command.  Typically, peop
 1. build the Docker image
 2. register the ECS task definition
 3. update the ECS service
+
+The `ufo ships`, `ufo ship`, `ufo deploy` command support the same options. The options are presented here again for convenience:
+
+{% include ufo-ship-options.md %}
 
 
 ## Options

@@ -51,43 +51,33 @@ Or if you would like to specify the target-group upfront and not be bother with 
 
 Let's say you already have built an registered a task definition by some other means and only want to use ufo to deploy that already registered task definition. You can do this by skipping the task build and register phase. It probably also makes sense to skip the docker phase in this case.
 
-```sh
-ufo ship hi-web --no-docker --no-tasks
-```
+    ufo ship hi-web --no-docker --no-tasks
 
 ### Waiting for Deployments to Complete
 
 By default when ufo updates the ECS service with the new task definition it does so asynchronuously. You then normally visit the ECS service console and then refresh until you see that the deployment is completed.  You can also have ufo poll and wait for the deployment to be done with the `--wait` option
 
-```sh
-ufo ship hi-web --wait
-```
+    ufo ship hi-web --wait
 
 You should see output similar to this:
 
-```sh
-Shipping hi-web...
-hi-web service updated on cluster with task hi-web
-Waiting for deployment of task definition hi-web:8 to complete
-......
-Time waiting for ECS deployment: 31s.
-Software shipped!
-```
+    Shipping hi-web...
+    hi-web service updated on cluster with task hi-web
+    Waiting for deployment of task definition hi-web:8 to complete
+    ......
+    Time waiting for ECS deployment: 31s.
+    Software shipped!
 
 ### Cleaning up Docker Images Automatically
 
 Since ufo builds the Docker image every time there's a deployment you will end up with a long list of docker images.  Ufo automatically cleans up older docker images at the end of the deploy process if you are using AWS ECR.  By default ufo keeps the most recent 30 Docker images. This can be adjust with the `--ecr-keep` option.
 
-```sh
-docker ship hi-web --ecr-keep 2
-```
+    docker ship hi-web --ecr-keep 2
 
 You should see something like this:
 
-```sh
-Cleaning up docker images...
-Running: docker rmi tongueroo/hi:ufo-2017-06-12T06-46-12-a18aa30
-```
+    Cleaning up docker images...
+    Running: docker rmi tongueroo/hi:ufo-2017-06-12T06-46-12-a18aa30
 
 If you are using DockerHub or another registry, ufo does not automatically clean up images.
 
