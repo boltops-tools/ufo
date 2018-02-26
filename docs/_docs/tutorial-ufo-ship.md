@@ -2,7 +2,7 @@
 title: Deploy One App
 ---
 
-### Step 3 - Ship the Code to ECS
+## Step 3 - Ship the Code to ECS
 
 In this guide we have walked through what ufo does step by step.  First ufo builds the Docker image with `ufo docker build`.  Then it will build and register the ECS task definitions with the `ufo tasks` commands. Now we'll deploy the code to ECS.
 
@@ -68,11 +68,11 @@ Checking the ECS console you should see something like this:
 
 You have successfully shipped a docker image to ECS! 🍾🥂
 
-### Skipping Previous Steps Method
+## Skipping Previous Steps Method
 
 You should notice that `ufo ship` re-built the docker image and re-registered the task definitions.  The `ufo ship` command is designed to run everything in one simple command, so we do not have to manually call the commands in the previous pages: `ufo build` and `ufo tasks`.
 
-If you would like to skip the first 2 steps, then you can use the [ufo deploy]({% link _docs/ufo-deploy.md %}) instead.  The `ufo deploy` command will:
+If you would like to skip the first 2 steps, then you can use the [ufo deploy]({% link _reference/ufo-deploy.md %}) instead.  The `ufo deploy` command will:
 
 1. register the task definition in `.ufo/output/hi-web.json` unmodified
 2. update the ECS service
@@ -94,8 +94,4 @@ Software shipped!
 Normally you run everything together in one `ufo ship` command though.  Ufo takes a multiple step process and simplifies it down to a single command!
 
 Congratulations 🎊 You have successfully built a Docker image, register it and deployed it to AWS ECS.
-
-<a id="prev" class="btn btn-basic" href="{% link _docs/tutorial-ufo-tasks-build.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/tutorial-ufo-ships.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
 

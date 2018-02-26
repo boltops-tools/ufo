@@ -5,7 +5,7 @@ module Ufo
     autoload :Dockerfile, 'ufo/docker/dockerfile'
     autoload :Cleaner, 'ufo/docker/cleaner'
 
-    desc "build", "builds docker image"
+    desc "build", "Build docker image."
     long_desc Help.text("docker:build")
     option :push, type: :boolean, default: false
     def build
@@ -14,7 +14,7 @@ module Ufo
       push if options[:push]
     end
 
-    desc "push IMAGE", "push the docker image"
+    desc "push IMAGE", "Push the docker image."
     long_desc Help.text("docker:push")
     option :push, type: :boolean, default: false
     def push(full_image_name=nil)
@@ -23,7 +23,7 @@ module Ufo
       pusher.push
     end
 
-    desc "base", "builds docker image from Dockerfile.base and update current Dockerfile"
+    desc "base", "Build docker image from `Dockerfile.base` and update current `Dockerfile`."
     long_desc Help.text("docker:base")
     option :push, type: :boolean, default: true
     def base
@@ -38,7 +38,7 @@ module Ufo
       Ecr::Cleaner.new(builder.image_name, options.merge(tag_prefix: "base")).cleanup
     end
 
-    desc "name", "displays the full docker image with tag that was last generated."
+    desc "name", "Display the full docker image with tag that was last generated."
     option :generate, type: :boolean, default: false, desc: "Generate a name without storing it"
     long_desc Help.text("docker:name")
     def name
@@ -46,7 +46,7 @@ module Ufo
       puts full_image_name
     end
 
-    desc "clean IMAGE_NAME", "Cleans up old images.  Keeps a specified amount."
+    desc "clean IMAGE_NAME", "Clean up old images.  Keeps a specified amount."
     option :keep, type: :numeric, default: 3
     option :tag_prefix, default: "ufo"
     long_desc Help.text("docker:clean")

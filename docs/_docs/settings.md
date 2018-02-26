@@ -48,7 +48,7 @@ Setting  | Description
 `cluster`  | By convention, the ECS cluster that ufo deploys to matches the `UFO_ENV`. If `UFO=development`, then `ufo ship` deploys to the `development` ECS cluster. This is option overrides this convention.
 `aws_profiles`  | If you have the `AWS_PROFILE` environment variable set, this will ensure that you are deploying the right `UFO_ENV` to the right AWS
 
-### ECS Cluster Convention
+## ECS Cluster Convention
 
 Normally, the ECS cluster defaults to whatever UFO_ENV is set to by [convention]({% link _docs/conventions.md %}).  For example, when `UFO_ENV=production` the ECS Cluster is `production` and when `UFO_ENV=development` the ECS Cluster is `development`.  There are several ways to override this behavior. Let's go through an example:
 
@@ -85,7 +85,7 @@ production:
 ```
 
 
-### AWS_PROFILE support
+## AWS_PROFILE support
 
 An interesting option is `aws_profiles`.  Here's an example:
 
@@ -110,7 +110,7 @@ AWS_PROFILE=prod-profile => UFO_ENV=production
 
 This behavior prevents you from switching `AWS_PROFILE`s and then accidentally deploying a production based docker image to development and vice versas because you forgot to also switch `UFO_ENV` to its respective environment.
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/ufo-help.md %}">Back</a>
+<a id="prev" class="btn btn-basic" href="{% link _docs/structure.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/ufo-env.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
 

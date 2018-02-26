@@ -8,11 +8,11 @@ module Ufo
     class_option :noop, type: :boolean
     class_option :cluster, desc: "Cluster.  Overrides ufo/settings.yml."
 
-    desc "docker SUBCOMMAND", "docker related tasks"
+    desc "docker SUBCOMMAND", "docker subcommands"
     long_desc Help.text(:docker)
     subcommand "docker", Docker
 
-    desc "tasks SUBCOMMAND", "task definition related tasks"
+    desc "tasks SUBCOMMAND", "task definition subcommands"
     long_desc Help.text(:tasks)
     subcommand "tasks", Tasks
 
@@ -20,7 +20,7 @@ module Ufo
     Init.cli_options.each do |args|
       option *args
     end
-    register(Init, "init", "new", "setup initial ufo files")
+    register(Init, "init", "new", "Set up initial ufo files.")
 
     # common options to deploy. ship, and ships command
     ship_options = Proc.new do
@@ -33,7 +33,7 @@ module Ufo
       option :ecr_keep, type: :numeric, desc: "ECR specific cleanup of old images.  Specifies how many images to keep.  Only runs if the images are ECR images. Defaults keeps all images."
     end
 
-    desc "deploy SERVICE", "deploys task definition to ECS service without re-building the definition"
+    desc "deploy SERVICE", "Deploy task definition to ECS service without re-building the definition."
     long_desc Help.text(:deploy)
     ship_options.call
     def deploy(service)
@@ -43,7 +43,7 @@ module Ufo
       ship.deploy
     end
 
-    desc "ship SERVICE", "builds and ships container image to the ECS service"
+    desc "ship SERVICE", "Builds and ships container image to the ECS service."
     long_desc Help.text(:ship)
     ship_options.call
     def ship(service)
@@ -57,7 +57,7 @@ module Ufo
       cleanup(builder.image_name)
     end
 
-    desc "ships [LIST_OF_SERVICES]", "builds and ships same container image to multiple ECS services"
+    desc "ships [LIST_OF_SERVICES]", "Builds and ships same container image to multiple ECS services."
     long_desc Help.text(:ships)
     ship_options.call
     def ships(*services)
@@ -74,7 +74,7 @@ module Ufo
       cleanup(builder.image_name)
     end
 
-    desc "task TASK_DEFINITION", "runs a one time task"
+    desc "task TASK_DEFINITION", "Run a one-time task."
     long_desc Help.text(:task)
     option :docker, type: :boolean, desc: "Enable docker build and push", default: true
     option :command, type: :array, desc: "Override the command used for the container"
@@ -84,7 +84,7 @@ module Ufo
       Task.new(task_definition, options).run
     end
 
-    desc "destroy SERVICE", "destroys the ECS service"
+    desc "destroy SERVICE", "Destroy the ECS service."
     long_desc Help.text(:destroy)
     option :sure, type: :boolean, desc: "By pass are you sure prompt."
     def destroy(service)
@@ -92,31 +92,31 @@ module Ufo
       Destroy.new(service, options).bye
     end
 
-    desc "scale SERVICE COUNT", "scale the ECS service"
+    desc "scale SERVICE COUNT", "Scale the ECS service."
     long_desc Help.text(:scale)
     def scale(service, count)
       Scale.new(service, count, options).update
     end
 
-    desc "completion *PARAMS", "prints words for auto-completion"
+    desc "completion *PARAMS", "Prints words for auto-completion."
     long_desc Help.text("completion")
     def completion(*params)
       Completer.new(CLI, *params).run
     end
 
-    desc "completion_script", "generates script that can be eval to setup auto-completion", hide: true
+    desc "completion_script", "Generates a script that can be eval to setup auto-completion.", hide: true
     long_desc Help.text("completion_script")
     def completion_script
       Completer::Script.generate
     end
 
-    desc "upgrade3", "upgrade from version 2 to 3"
+    desc "upgrade3", "Upgrade from version 2 to 3."
     long_desc Help.text("upgrade3")
     def upgrade3
       Upgrade3.new(options).run
     end
 
-    desc "version", "Prints version number of installed ufo"
+    desc "version", "Prints version number of installed ufo."
     def version
       puts VERSION
     end

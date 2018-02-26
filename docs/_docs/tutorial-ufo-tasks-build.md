@@ -2,7 +2,7 @@
 title: Task Definitions
 ---
 
-### Build the ECS Task Definitions
+## Build the ECS Task Definitions
 
 Now that we have a docker image pushed to a registry we can use that image for ECS.  Ufo takes that image and adds it to an ECS task definition.  This is where ufo is super powerful.  Ufo gives you the power to build and control your ECS task definition easily.
 
@@ -11,7 +11,7 @@ Let's take a look at the 2 files that are used by ufo to build the ECS task defi
 1. ufo/templates/main.json.erb
 2. ufo/task_definitions.rb
 
-Ufo task definitions are written as an ERB template that makes it every easily accessible and configurable to your requirements.  Here is is an example of an ERB template `ufo/templates/main.json.erb` that shows how easy it is to modfied the task definition you want to be uploaded by ufo:
+Ufo task definitions are written as an ERB template that makes it every easily accessible and configurable to your requirements.  Here is is an example of an ERB template `.ufo/templates/main.json.erb` that shows how easy it is to modfied the task definition you want to be uploaded by ufo:
 
 **ufo/templates/main.json.erb**:
 
@@ -34,7 +34,7 @@ Ufo task definitions are written as an ERB template that makes it every easily a
 }
 ```
 
-The instance variable values are specified in `ufo/task_definitions.rb` via a DSL.  Here's the file:
+The instance variable values are specified in `.ufo/task_definitions.rb` via a DSL.  Here's the file:
 
 **ufo/task_definitions.rb**:
 
@@ -59,7 +59,7 @@ task_definition "hi-worker" do
 end
 ```
 
-### Shared Variables
+## Shared Variables
 
 Ufo has a concept of shared variables, covered in [Shared Variables]({% link _docs/variables.md %}). The shared variables are set in the `variables` folder and essentially allow you to use a set of shared variables through your templates:
 
@@ -81,7 +81,7 @@ Ufo has a concept of shared variables, covered in [Shared Variables]({% link _do
 })
 ```
 
-Ufo combines the `main.json.erb` template, `task_definitions.rb` definitions, and variables in the `ufo/variables` folder.  It then generates the raw AWS formatted task definition in the `output` folder.
+Ufo combines the `main.json.erb` template, `task_definitions.rb` definitions, and variables in the `.ufo/variables` folder.  It then generates the raw AWS formatted task definition in the `output` folder.
 
 If you need to modify the task definition template to suite your own needs it is super simple, just edit `main.json.erb`.  You do not have to dive deep into internal code somewhere.  It is all there for you to fully control.
 
@@ -106,7 +106,7 @@ Task Definitions built in .ufo/output
 $
 ```
 
-Let's take a look at one of the generated files: `ufo/output/hi-web.json`.
+Let's take a look at one of the generated files: `.ufo/output/hi-web.json`.
 
 ```json
 {
@@ -148,7 +148,7 @@ Let's take a look at one of the generated files: `ufo/output/hi-web.json`.
 }
 ```
 
-### Register the ECS Task Definitions
+## Register the ECS Task Definitions
 
 You have built the ecs task definitions locally on your machine. To register the task definitions in the `output` folder run:
 
