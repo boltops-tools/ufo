@@ -35,9 +35,11 @@ module Ufo
 
     def upgrade_gitignore
       lines = IO.readlines(".gitignore")
-      text = lines.map do |line|
-          line.sub(/[\/]?ufo/, '.ufo')
-        end.join
+      lines.map! do |line|
+        line.sub(/[\/]?ufo/, '.ufo')
+      end
+      lines << [".ufo/data\n"] # new ignore rule
+      text = lines.join
       IO.write(".gitignore", text)
     end
 
