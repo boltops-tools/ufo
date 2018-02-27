@@ -9,7 +9,7 @@ module Ufo
     # data contains the settings.yml config.  The order or precedence for settings
     # is the project ufo/settings.yml and then the ~/.ufo/settings.yml.
     def data
-      return @settings_yaml if @settings_yaml
+      return @data if @data
 
       if @check_ufo_project && !File.exist?(project_settings_path)
         puts "ERROR: No settings file at #{project_settings_path}.  Are you sure you are in a project with ufo setup?"
@@ -24,22 +24,34 @@ module Ufo
       user = File.exist?(user_file) ? YAML.load_file(user_file) : {}
 
       default_file = File.expand_path("../default/settings.yml", __FILE__)
-      default = YAML.load_file(default_file)
+      default = load_file(default_file)
 
-      @settings_yaml = default.deep_merge(user.deep_merge(project))[Ufo.env]
+      all_envs = default.deep_merge(user.deep_merge(project))
+      all_envs = merge_base(all_envs)
+      @@data = all_envs[Ufo.env] || all_envs["base"] || {}
     end
 
   private
     def load_file(path)
+      return Hash.new({}) unless File.exist?(path)
+
       content = RenderMePretty.result(path)
-      data = File.exist?(path) ? YAML.load(content) : {}
-      # automatically add base settings to the rest of the environments
+      data = YAML.load(content)
+      # If key is is accidentally set to nil it screws up the merge_base later.
+      # So ensure that all keys with nil value are set to {}
       data.each do |ufo_env, _setting|
-        base = data["base"] || {}
-        env = data[ufo_env] || {}
-        data[ufo_env] = base.merge(env) unless ufo_env == "base"
+        data[ufo_env] ||= {}
       end
       data
+    end
+
+    # automatically add base settings to the rest of the environments
+    def merge_base(all_envs)
+      base = all_envs["base"]
+      all_envs.each do |ufo_env, env_settings|
+        all_envs[ufo_env] = base.merge(env_settings) unless ufo_env == "base"
+      end
+      all_envs
     end
 
     def project_settings_path
