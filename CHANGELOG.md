@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [3.2.1]
+- ensure settings is always a hash even when settings.yml has nil
+- move cli_markdown as development dependency
+
 ## [3.2.0]
 - pr #23 from tongueroo/cli_markdown: http://ufoships.com/reference/ section now available
 - pr #24 from tongueroo/circleci
