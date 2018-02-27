@@ -7,8 +7,8 @@ Prints words for TAB auto-completion.
 ## Examples
 
   ufo completion
-  ufo completion hello
-  ufo completion hello name
+  ufo completion ship
+  ufo completion docker
 
 To enable, TAB auto-completion add the following to your profile:
 
@@ -17,6 +17,6 @@ To enable, TAB auto-completion add the following to your profile:
 Auto-completion example usage:
 
   ufo [TAB]
-  ufo hello [TAB]
-  ufo hello name [TAB]
-  ufo hello name --[TAB]
+  ufo ship [TAB]
+  ufo docker build [TAB]
+  ufo docker build --[TAB]
