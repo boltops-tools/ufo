@@ -39,7 +39,7 @@ When `ufo ship` is ran with `UFO_ENV=production` he `variables/production.rb` wi
 ])
 ```
 
-When `ufo ship` is ran with `UFO_ENV=development` the `variables/development.rb` will be evaluated and layered on top of the variables defined in `base.rb:
+When `ufo ship` is ran with `UFO_ENV=development` the `variables/development.rb` will be evaluated and layered on top of the variables defined in `base.rb`:
 
 
 `.ufo/variables/development.rb`:
