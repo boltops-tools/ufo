@@ -28,7 +28,7 @@ Shared variables also support a concept called layering.  The `variables/base.rb
 @environment = helper.env_file(".env")
 ```
 
-When `ufo ship` is ran with `UFO_ENV=production` he `variables/production.rb` will be evaluated and layered on top of the variables defined in `base.rb:
+When `ufo ship` is ran with `UFO_ENV=production` he `variables/production.rb` will be evaluated and layered on top of the variables defined in `base.rb`:
 
 `.ufo/variables/production.rb`:
 
