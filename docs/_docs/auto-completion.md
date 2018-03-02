@@ -2,13 +2,13 @@
 title: Auto Completion
 ---
 
-Ufo supports bash auto-completion.  To set it up add this to your `~/.profile` or `.bashrc`:
+Ufo supports bash auto-completion.  To set it up add the following to your `~/.profile` or `.bashrc`:
 
 ```
 eval $(ufo completion_script)
 ```
 
-Don't forget to restart your shell.
+Remember to restart your shell or source your profile file.
 
 Auto Completion examples:
 
