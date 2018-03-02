@@ -49,7 +49,7 @@ AWS_PROFILE=my-dev-profile => UFO_ENV=development
 AWS_PROFILE=whatever => UFO_ENV=development # since there are no profiles that match
 ```
 
-Notice how `AWS_PROFILE=whatever` results in `UFO_ENV=development`.  This is because there are not matching aws_profiles in the `settings.yml`.  More info on settings is available at [settings]({% link _docs/settings.md %}).
+Notice how `AWS_PROFILE=whatever` results in `UFO_ENV=development`.  This is because there are no matching aws_profiles in the `settings.yml`.  More info on settings is available at [settings]({% link _docs/settings.md %}).
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/settings.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/variables.md %}">Next Step</a>
