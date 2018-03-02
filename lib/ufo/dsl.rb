@@ -27,9 +27,13 @@ module Ufo
       begin
         instance_eval(source_code, @template_definitions_path)
       rescue Exception => e
-        task_definition_error(e)
-        puts "\nFull error:"
-        raise
+        if e.class == SystemExit # allow exit to happen normally
+          raise
+        else
+          task_definition_error(e)
+          puts "\nFull error:"
+          raise
+        end
       end
     end
 

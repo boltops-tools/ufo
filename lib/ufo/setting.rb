@@ -39,17 +39,17 @@ module Ufo
       data = YAML.load(content)
       # If key is is accidentally set to nil it screws up the merge_base later.
       # So ensure that all keys with nil value are set to {}
-      data.each do |ufo_env, _setting|
-        data[ufo_env] ||= {}
+      data.each do |env, _setting|
+        data[env] ||= {}
       end
       data
     end
 
     # automatically add base settings to the rest of the environments
     def merge_base(all_envs)
-      base = all_envs["base"]
-      all_envs.each do |ufo_env, env_settings|
-        all_envs[ufo_env] = base.merge(env_settings) unless ufo_env == "base"
+      base = all_envs["base"] || {}
+      all_envs.each do |env, settings|
+        all_envs[env] = base.merge(settings) unless env == "base"
       end
       all_envs
     end
