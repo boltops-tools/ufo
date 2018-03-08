@@ -2,7 +2,7 @@
   "family": "<%= @family %>",
   "containerDefinitions": [
     {
-      "name2": "<%= @name %>",
+      "name": "<%= @name %>",
       "image": "<%= @image %>",
       "cpu": <%= @cpu %>,
       <% if @memory %>
@@ -14,7 +14,7 @@
       <% if @container_port %>
       "portMappings": [
         {
-          "containerPort": "<%= @container_port %>",
+          "containerPort": <%= @container_port %>,
           "protocol": "tcp"
         }
       ],
