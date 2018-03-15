@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [3.3.0]
+- Merge pull request #27 from tongueroo/template
+- add custom templates support
+- colorize ufo destroy output
+
 ## [3.2.2]
 - add .ufo/data to gitignore for upgrade3
 - allow system exit to normally happen for rendering error in the task definition
