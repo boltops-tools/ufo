@@ -85,7 +85,7 @@ module Ufo
           check_source_path(path)
         else
           # default source path
-          path = File.expand_path("../../templates/default.json.erb", __FILE__)
+          path = File.expand_path("../../default/templates/main.json.erb", __FILE__)
           puts "#{task_definition_name} template definition using default template: #{path}" unless @options[:mute]
         end
         path

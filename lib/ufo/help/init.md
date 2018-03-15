@@ -38,7 +38,7 @@ The standard directory structure of the `.ufo` folder that was created looks lik
     ├── settings.yml
     ├── task_definitions.rb
     ├── templates
-    ├   └── main.json.erb
+    │   └── main.json.erb
     └── variables
         ├── base.rb
         ├── production.rb
@@ -46,4 +46,22 @@ The standard directory structure of the `.ufo` folder that was created looks lik
 
 For a explanation of the folders and files refer to [Structure]({% link _docs/structure.md %}).
 
+## Custom Templates
 
+If you would like the `ufo init` command to use your own custom templates, you can achieve this with the `--template` and `--template-mode` options.  Example:
+
+    ufo init --app=hi --image=tongueroo/hi --template=tongueroo/ufo-custom-template
+
+This will clone the repo on GitHub into the `~/.ufo/templates/tongueroo/ufo-custom-template` and use that as an additional template source.  The default `--template-mode=additive` which means that if there's a file in `tongueroo/ufo-custom-template` that exists it will use that in place of the default template files.
+
+If you do not want to use any of the original default template files within the ufo gem at all, you can use the `--template-mode=replace` mode. Replace mode will only use templates from the provided `--template` option.  Example:
+
+    ufo init --app=hi --image=tongueroo/hi --template=tongueroo/ufo-custom-template --template-mode=replace
+
+You can also specific the full GitHub url. Example:
+
+    ufo init --app=hi --image=tongueroo/hi --template=https://github.com/tongueroo/ufo-custom-template
+
+If you would like to use a local template that is not on GitHub just created top-level folder in `~/.ufo/templates` without a subfolder. Example:
+
+    ufo init --app=hi --image=tongueroo/hi --template=my-custom # uses ~/.ufo/templates/my-custom

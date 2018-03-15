@@ -7,12 +7,33 @@ module Ufo
     def self.cli_options
       [
         [:force, type: :boolean, desc: "Bypass overwrite are you sure prompt for existing files."],
-        [:image, type: :string, required: true, desc: "Docker image name without the tag. Example: tongueroo/hi. Configures ufo/settings.yml"],
-        [:app, type: :string, required: true, desc: "App name. Preferably one word. Used in the generated ufo/task_definitions.rb."],
+        [:image, required: true, desc: "Docker image name without the tag. Example: tongueroo/hi. Configures ufo/settings.yml"],
+        [:app, required: true, desc: "App name. Preferably one word. Used in the generated ufo/task_definitions.rb."],
+        [:template, desc: "Custom template to use."],
+        [:template_mode, desc: "Template mode: replace or additive."],
       ]
     end
     cli_options.each do |args|
       class_option *args
+    end
+
+    def setup_template_repo
+      return unless @options[:template]&.include?('/')
+
+      sync_template_repo
+    end
+
+    def set_source_path
+      return unless @options[:template]
+
+      custom_template = "#{ENV['HOME']}/.ufo/templates/#{@options[:template]}"
+
+      if @options[:template_mode] == "replace" # replace the template entirely
+        override_source_paths(custom_template)
+      else # additive: modify on top of default template
+        default_template = File.expand_path("../../template", __FILE__)
+        override_source_paths([custom_template, default_template])
+      end
     end
 
     # for specs
@@ -31,7 +52,9 @@ module Ufo
       @image = options[:image]
       # copy the files
       puts "Setting up ufo project..."
-      directory "."
+
+      # directory ".ufo", ".ufo"
+      directory ".", exclude_pattern: /\.git/
     end
 
     def upsert_gitignore
