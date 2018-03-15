@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [3.3.1]
+- fix starter template name
+
 ## [3.3.0]
 - Merge pull request #27 from tongueroo/template
 - add custom templates support
