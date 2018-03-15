@@ -62,6 +62,6 @@ You can also specific the full GitHub url. Example:
 
     ufo init --app=hi --image=tongueroo/hi --template=https://github.com/tongueroo/ufo-custom-template
 
-If you would like to use a local template that is not on GitHub just created top-level folder in `~/.ufo/templates` without a subfolder. Example:
+If you would like to use a local template that is not on GitHub, then created a top-level folder in `~/.ufo/templates` without a subfolder. Example:
 
     ufo init --app=hi --image=tongueroo/hi --template=my-custom # uses ~/.ufo/templates/my-custom
