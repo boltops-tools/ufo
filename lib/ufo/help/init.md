@@ -52,7 +52,7 @@ If you would like the `ufo init` command to use your own custom templates, you c
 
     ufo init --app=hi --image=tongueroo/hi --template=tongueroo/ufo-custom-template
 
-This will clone the repo on GitHub into the `~/.ufo/templates/tongueroo/ufo-custom-template` and use that as an additional template source.  The default `--template-mode=additive` which means that if there's a file in `tongueroo/ufo-custom-template` that exists it will use that in place of the default template files.
+This will clone the repo on GitHub into the `~/.ufo/templates/tongueroo/ufo-custom-template` and use that as an additional template source.  The default `--template-mode=additive` mode means that if there's a file in `tongueroo/ufo-custom-template` that exists it will use that in place of the default template files.
 
 If you do not want to use any of the original default template files within the ufo gem at all, you can use the `--template-mode=replace` mode. Replace mode will only use templates from the provided `--template` option.  Example:
 
