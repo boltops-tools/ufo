@@ -1,5 +1,5 @@
 # More info: http://ufoships.com/docs/ufo-settings/
-base: &base
+base:
   image: <%= @image %>
   # clean_keep: 30 # cleans up docker images on your docker server.
   # ecr_keep: 30 # cleans up images on ECR and keeps this remaining amount. Defaults to keep all.
@@ -10,14 +10,12 @@ base: &base
     desired_count: 1
 
 development:
-  <<: *base
   cluster: dev
   aws_profiles:
     - dev_profile1
     - dev_profile2
 
 production:
-  <<: *base
   cluster: prod
   aws_profiles:
     - prod_profile

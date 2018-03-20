@@ -30,7 +30,8 @@ module Ufo
       def env_vars(text)
         lines = filtered_lines(text)
         lines.map do |line|
-          key,value = line.strip.split("=").map {|x| x.strip}
+          key,*value = line.strip.split("=").map {|x| x.strip}
+          value = value.join('=')
           {
             name: key,
             value: value,

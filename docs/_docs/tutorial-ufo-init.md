@@ -57,8 +57,8 @@ The explanation of the folders and files were covered in detailed earlier at [St
 Take a look at the `settings.yml` file and notice that it contains some default configuration settings so you do not have to type out these options repeatedly for some of the ufo commands.
 
 ```yaml
-# More info: http://ufoships.com/docs/ufo-settings/
-base: &base
+# More info: http://ufoships.com/docs/settings/
+base:
   image: tongueroo/hi
   # clean_keep: 30 # cleans up docker images on your docker server.
   # ecr_keep: 30 # cleans up images on ECR and keeps this remaining amount. Defaults to keep all.
@@ -69,7 +69,6 @@ base: &base
     desired_count: 1
 
 development:
-  <<: *base
   # cluster: dev # uncomment if you want the cluster name be other than the default
                  # the default is to match UFO_ENV.  So UFO_ENV=development means the ECS
                  # cluster will be name development
@@ -81,7 +80,6 @@ development:
   #   - dev_profile2
 
 production:
-  <<: *base
   # cluster: prod
   # aws_profiles:
   #   - prod_profile
