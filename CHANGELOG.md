@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [3.3.2]
+- Merge pull request #28 from netguru/master
+- Fix one off task: ufo task
+
 ## [3.3.1]
 - fix starter template name
 
