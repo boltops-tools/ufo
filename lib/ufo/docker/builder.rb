@@ -8,7 +8,7 @@ class Ufo::Docker
     def self.build(options)
       builder = Builder.new(options) # outside if because it need builder.full_image_name
       builder.build
-      pusher = Docker::Pusher.new(nil, options)
+      pusher = Pusher.new(nil, options)
       pusher.push
       builder
     end
