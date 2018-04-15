@@ -7,7 +7,15 @@ The above command does the following:
 1. register the `.ufo/output/hi-web.json` task definition to ECS untouched.
 2. deploys it to ECS by updating the service
 
-The `ufo deploy` command does less than the `ufo ship` command.  Typically, people use `ufo ship` over the `ufo deploy` command do everything in one step:
+### ufo tasks build
+
+To regenerate a `.ufo/output/hi-web.json` definition:
+
+    ufo tasks build
+
+### ufo ship
+
+The `ufo deploy` command does less than the `ufo ship` command.  Normally, it is recommended to use `ufo ship` over the `ufo deploy` command to do everything in one step:
 
 1. build the Docker image
 2. register the ECS task definition
