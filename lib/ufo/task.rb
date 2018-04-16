@@ -17,7 +17,7 @@ module Ufo
         cluster: @cluster,
         task_definition: @task_definition
       }
-      task_options = task_options.merge(default_params[:run_task])
+      task_options = task_options.merge(default_params[:run_task] || {})
 
       if @options[:command]
         task_options.merge!(overrides: overrides)
