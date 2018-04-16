@@ -31,6 +31,7 @@ module Ufo
   autoload :Completion, "ufo/completion"
   autoload :Completer, "ufo/completer"
   autoload :Upgrade3, "ufo/upgrade3"
+  autoload :Upgrade33_to_34, "ufo/upgrade33_to_34"
 
   extend Core
 end

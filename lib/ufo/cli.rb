@@ -111,9 +111,13 @@ module Ufo
     end
 
     desc "upgrade3", "Upgrade from version 2 to 3."
-    long_desc Help.text("upgrade3")
     def upgrade3
       Upgrade3.new(options).run
+    end
+
+    desc "upgrade3_3_to_3_4", "Upgrade from version 3.3 to 3.4"
+    def upgrade3_3_to_3_4
+      Upgrade33_to_34.new(options).run
     end
 
     desc "version", "Prints version number of installed ufo."
