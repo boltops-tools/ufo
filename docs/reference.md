@@ -15,4 +15,5 @@ title: CLI Reference
 * [ufo task]({% link _reference/ufo-task.md %})
 * [ufo tasks]({% link _reference/ufo-tasks.md %})
 * [ufo upgrade3]({% link _reference/ufo-upgrade3.md %})
+* [ufo upgrade3_3_to_3_4]({% link _reference/ufo-upgrade3_3_to_3_4.md %})
 * [ufo version]({% link _reference/ufo-version.md %})
