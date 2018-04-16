@@ -11,6 +11,18 @@ module Ufo
     end
 
   private
+    def get_execution_role_arn_input
+      return @execution_role_arn if @execution_role_arn
+
+      if @options[:execution_role_arn]
+        @execution_role_arn = @options[:execution_role_arn]
+        return @execution_role_arn
+      end
+
+      print "Please provide a execution role arn role for the ecs task: "
+      @execution_role_arn = $stdin.gets.strip
+    end
+
     def override_source_paths(*paths)
       # Using string with instance_eval because block doesnt have access to
       # path at runtime.

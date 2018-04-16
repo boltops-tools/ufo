@@ -10,6 +10,7 @@ module Ufo
         [:image, required: true, desc: "Docker image name without the tag. Example: tongueroo/hi. Configures ufo/settings.yml"],
         [:app, required: true, desc: "App name. Preferably one word. Used in the generated ufo/task_definitions.rb."],
         [:launch_type, default: "ec2", desc: "ec2 or fargate."],
+        [:execution_role_arn, desc: "execution role arn used by tasks, required for fargate."],
         [:template, desc: "Custom template to use."],
         [:template_mode, desc: "Template mode: replace or additive."],
       ]
@@ -51,9 +52,9 @@ module Ufo
       # map variables
       @app = options[:app]
       @image = options[:image]
+      @execution_role_arn_input = get_execution_role_arn_input
       # copy the files
       puts "Setting up ufo project..."
-      # directory ".ufo", ".ufo"
       directory ".", exclude_pattern: /(\.git|templates)/
 
       if @options[:launch_type].downcase == "fargate"
