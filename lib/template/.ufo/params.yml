@@ -34,8 +34,8 @@ update_service:
   # launch_type: "FARGATE"
   # network_configuration:
   #   awsvpc_configuration:
-  #     subnets: ["subnet-0ea22ddeb59d13ecc","subnet-0215e12250b7404e7"] # required
-  #     security_groups: ["sg-0815f009d64fc4b2d"]
+  #     subnets: <%= @subnets.inspect %> # required
+  #     security_groups: <%= @security_groups.inspect %>
   #     assign_public_ip: "ENABLED" # accepts ENABLED, DISABLED
 
 run_task:
