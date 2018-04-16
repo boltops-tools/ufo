@@ -1,6 +1,6 @@
 module Ufo
   class Task
-    include Default
+    include Util
     include AwsService
 
     def initialize(task_definition, options)
@@ -21,6 +21,7 @@ module Ufo
         puts "Running task with container overrides."
         puts "Command: #{@options[:command].join(' ')}"
       end
+      display_params(task_options)
       resp = ecs.run_task(task_options)
       puts "Task ARN: #{resp.tasks[0].task_arn}" unless @options[:mute]
     end

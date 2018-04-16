@@ -17,14 +17,52 @@ module Ufo
         @dsl.helper
       end
 
-      def template_scope
-        @template_scope ||= Ufo::TemplateScope.new(helper)
+      def build
+        load_variables
+        instance_eval(&@block)
+
+        hash = assign_instance_variables
+        RenderMePretty.result(source_path, hash)
       end
 
-      def build
-        instance_eval(&@block)
-        hash = template_scope.assign_instance_variables
-        RenderMePretty.result(source_path, hash)
+      def assign_instance_variables
+        # copy over the instance variables from TaskDefinition scope to RenderMePretty's scope
+        hash = {}
+        instance_variables.each do |var|
+          key = var.to_s.sub('@','') # rid of the leading @
+          hash[key.to_sym] = instance_variable_get(var)
+        end
+        hash
+      end
+
+      def load_variables
+        load_variables_file("base")
+        load_variables_file(Ufo.env)
+      end
+
+      # Load the variables defined in ufo/variables/* to make available in the
+      # template blocks in ufo/templates/*.
+      #
+      # Example:
+      #
+      #   `ufo/variables/base.rb`:
+      #     @name = "docker-process-name"
+      #     @image = "docker-image-name"
+      #
+      #   `ufo/templates/main.json.erb`:
+      #   {
+      #     "containerDefinitions": [
+      #       {
+      #          "name": "<%= @name %>",
+      #          "image": "<%= @image %>",
+      #      ....
+      #   }
+      #
+      # NOTE: Only able to make instance variables avaialble with instance_eval
+      #   Wasnt able to make local variables available.
+      def load_variables_file(filename)
+        path = "#{Ufo.root}/.ufo/variables/#{filename}.rb"
+        instance_eval(IO.read(path)) if File.exist?(path)
       end
 
       # at this point instance_eval has been called and source has possibly been called
@@ -37,7 +75,7 @@ module Ufo
           if instance_variable_defined?("@#{var}")
             puts "WARNING: The instance variable @#{var} is already used internally with ufo.  Please name you variable another name!"
           end
-          template_scope.instance_variable_set("@#{var}", value)
+          instance_variable_set("@#{var}", value)
         end
       end
 

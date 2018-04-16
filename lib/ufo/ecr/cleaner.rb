@@ -5,15 +5,15 @@ require "json"
 #   ufo ship app-web --cluster prod --noop
 module Ufo
   class Ecr::Cleaner
+    include Util
     include AwsService
-    include Default
 
     def initialize(docker_image_name, options={})
       # docker_image_name does not containg the tag
       # Example: 123456789.dkr.ecr.us-east-1.amazonaws.com/image
       @docker_image_name = docker_image_name
       @options = options
-      @keep = options[:ecr_keep] || setting.data["ecr_keep"]
+      @keep = options[:ecr_keep] || settings["ecr_keep"]
       @tag_prefix = options[:tag_prefix] || "ufo"
     end
 

@@ -51,7 +51,7 @@ class Ufo::Docker
 
     # full_image - does not include the tag
     def image_name
-      setting.data["image"]
+      settings["image"]
     end
 
     # full_image - includes the tag
@@ -95,10 +95,6 @@ class Ufo::Docker
       # always call this and dont use the execute method because of the noop option
       @git_sha = `cd #{Ufo.root} && git rev-parse --short HEAD`
       @git_sha.strip!
-    end
-
-    def setting
-      @setting ||= Ufo::Setting.new(Ufo.root)
     end
 
     def update_dockerfile
