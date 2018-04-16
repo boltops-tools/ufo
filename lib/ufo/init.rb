@@ -9,6 +9,7 @@ module Ufo
         [:force, type: :boolean, desc: "Bypass overwrite are you sure prompt for existing files."],
         [:image, required: true, desc: "Docker image name without the tag. Example: tongueroo/hi. Configures ufo/settings.yml"],
         [:app, required: true, desc: "App name. Preferably one word. Used in the generated ufo/task_definitions.rb."],
+        [:launch_type, default: "ec2", desc: "ec2 or fargate."],
         [:template, desc: "Custom template to use."],
         [:template_mode, desc: "Template mode: replace or additive."],
       ]
@@ -52,9 +53,14 @@ module Ufo
       @image = options[:image]
       # copy the files
       puts "Setting up ufo project..."
-
       # directory ".ufo", ".ufo"
-      directory ".", exclude_pattern: /\.git/
+      directory ".", exclude_pattern: /(\.git|templates)/
+
+      if @options[:launch_type].downcase == "fargate"
+        copy_file ".ufo/templates/fargate.json.erb", ".ufo/templates/main.json.erb"
+      else
+        copy_file ".ufo/templates/main.json.erb"
+      end
     end
 
     def upsert_gitignore
