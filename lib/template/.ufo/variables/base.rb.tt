@@ -10,6 +10,6 @@
 @memory = 512
 @memory_reservation = 256
 
-<% if @options[:launch_type] == "fargate" -%>
+<% if @execution_role_arn_input -%>
 @execution_role_arn = "<%= @execution_role_arn_input %>"
 <% end -%>

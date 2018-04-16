@@ -19,6 +19,8 @@ module Ufo
         return @execution_role_arn
       end
 
+      return unless @options[:launch_type] == "fargate"
+      # execution role arn required for fargate
       print "Please provide a execution role arn role for the ecs task: "
       @execution_role_arn = $stdin.gets.strip
     end
