@@ -14,8 +14,7 @@ For larger fixes, you can run the site locally with the following:
 git clone https://github.com/tongueroo/ufo.git
 cd ufo/docs
 bundle
-jekyll clean
-jekyll serve
+bin/web # runs jekyll clean and jekyll serve
 ```
 
 You'll be able to view the site on [http://localhost:4000](http://localhost:4000).

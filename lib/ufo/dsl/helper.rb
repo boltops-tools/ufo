@@ -8,9 +8,7 @@ module Ufo
   class DSL
     # provides some helperally context variables
     class Helper
-      def initialize(options={})
-        @options = options
-      end
+      include Ufo::Util
 
       ##############
       # helper variables
@@ -22,7 +20,8 @@ module Ufo
       end
 
       def full_image_name
-        Docker::Builder.new(@options).full_image_name
+        # Dont need to use @options here. Helps simplify the Helper initialization.
+        Docker::Builder.new({}).full_image_name
       end
 
       #############
@@ -62,10 +61,6 @@ module Ufo
       def current_region
         return 'us-east-1' if ENV['TEST']
         @current_region ||= `aws configure get region`.strip rescue 'us-east-1'
-      end
-
-      def setting
-        @setting ||= Setting.new(Ufo.root)
       end
 
       def parse_for_dockerfile_port(dockerfile_path)

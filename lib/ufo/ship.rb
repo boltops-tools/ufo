@@ -5,7 +5,6 @@ module Ufo
   class ShipmentOverridden < UfoError; end
 
   class Ship
-    include Default
     include AwsService
     include Util
 
@@ -209,16 +208,14 @@ module Ufo
         options = {
           cluster: @cluster,
           service_name: @service,
-          desired_count: default_desired_count,
-          deployment_configuration: {
-            maximum_percent: default_maximum_percent,
-            minimum_healthy_percent: default_minimum_healthy_percent
-          },
           task_definition: @task_definition
         }
+        options = options.merge(default_params[:create_service])
         unless target_group.nil? || target_group.empty?
           add_load_balancer!(container, options, target_group)
         end
+        puts "Creating ECS service with params:"
+        display_params(options)
         response = ecs.create_service(options)
         service = response.service # must set service here since this might never be called if @wait_for_deployment is false
       end
@@ -248,6 +245,9 @@ module Ufo
           service: ecs_service.service_arn, # can use the service name also since it is unique
           task_definition: @task_definition
         }
+        params = params.merge(default_params[:update_service] || {})
+        puts "Updating ECS service with params:"
+        display_params(params)
         response = ecs.update_service(params)
         service = response.service # must set service here since this might never be called if @wait_for_deployment is false
       end

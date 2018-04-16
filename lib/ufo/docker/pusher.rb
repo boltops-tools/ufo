@@ -43,11 +43,7 @@ class Ufo::Docker
 
     # full_image - does not include the tag
     def image_name
-      setting.data["image"]
-    end
-
-    def setting
-      @setting ||= Ufo::Setting.new(Ufo.root)
+      settings["image"]
     end
   end
 end

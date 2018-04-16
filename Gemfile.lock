@@ -9,6 +9,7 @@ PATH
       aws-sdk-elasticloadbalancingv2
       colorize
       deep_merge
+      memoist
       plissken
       render_me_pretty
       thor
@@ -16,16 +17,16 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (5.1.5)
+    activesupport (5.2.0)
       concurrent-ruby (~> 1.0, >= 1.0.2)
-      i18n (~> 0.7)
+      i18n (>= 0.7, < 2)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
-    aws-partitions (1.73.0)
+    aws-partitions (1.80.0)
     aws-sdk-cloudwatchlogs (1.2.0)
       aws-sdk-core (~> 3)
       aws-sigv4 (~> 1.0)
-    aws-sdk-core (3.17.1)
+    aws-sdk-core (3.19.0)
       aws-partitions (~> 1.0)
       aws-sigv4 (~> 1.0)
       jmespath (~> 1.0)
@@ -42,7 +43,7 @@ GEM
       aws-sdk-core (~> 3)
       aws-sigv4 (~> 1.0)
     aws-sigv4 (1.0.2)
-    byebug (10.0.1)
+    byebug (10.0.2)
     cli_markdown (0.1.0)
     codeclimate-test-reporter (1.0.8)
       simplecov (<= 0.13)
@@ -51,10 +52,11 @@ GEM
     deep_merge (1.2.1)
     diff-lcs (1.3)
     docile (1.1.5)
-    i18n (0.9.5)
+    i18n (1.0.0)
       concurrent-ruby (~> 1.0)
-    jmespath (1.3.1)
+    jmespath (1.4.0)
     json (2.1.0)
+    memoist (0.16.0)
     minitest (5.11.3)
     plissken (1.2.0)
     rake (12.3.1)

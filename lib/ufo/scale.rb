@@ -1,6 +1,6 @@
 module Ufo
   class Scale
-    include Default
+    include Util
     include AwsService
 
     def initialize(service, count, options={})

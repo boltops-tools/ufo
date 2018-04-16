@@ -89,7 +89,7 @@ module Ufo
     end
 
     def helper
-      Helper.new(@options)
+      Helper.new
     end
   end
 end

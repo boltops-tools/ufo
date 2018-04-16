@@ -1,0 +1,15 @@
+# Example ufo/variables/base.rb
+# More info on how variables work: http://ufoships.com/docs/variables/
+@image = helper.full_image_name # includes the git sha tongueroo/hi:ufo-[sha].
+@environment = helper.env_file(".env")
+<% if @options[:launch_type] == "fargate" -%>
+# Ensure that the cpu and memory values are a supported combination by Fargate.
+# More info: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-cpu-memory-error.html"
+<% end -%>
+@cpu = 256
+@memory = 512
+@memory_reservation = 256
+
+<% if @execution_role_arn_input -%>
+@execution_role_arn = "<%= @execution_role_arn_input %>"
+<% end -%>

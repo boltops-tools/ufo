@@ -7,7 +7,6 @@ require 'render_me_pretty'
 
 module Ufo
   autoload :Core, 'ufo/core'
-  autoload :Default, 'ufo/default'
   autoload :AwsService, 'ufo/aws_service'
   autoload :Command, 'ufo/command'
   autoload :Setting, 'ufo/setting'
@@ -23,6 +22,8 @@ module Ufo
   autoload :Scale, 'ufo/scale'
   autoload :LogGroup, 'ufo/log_group'
   autoload :ECS, 'ufo/ecs'
+  autoload :Param, 'ufo/param'
+  autoload :TemplateScope, 'ufo/template_scope'
 
   autoload :Docker, 'ufo/docker'
   autoload :Ecr, 'ufo/ecr'

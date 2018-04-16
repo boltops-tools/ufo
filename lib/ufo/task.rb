@@ -1,6 +1,6 @@
 module Ufo
   class Task
-    include Default
+    include Util
     include AwsService
 
     def initialize(task_definition, options)
@@ -12,14 +12,22 @@ module Ufo
     def run
       puts "Running task_definition: #{@task_definition}".colorize(:green) unless @options[:mute]
       return if @options[:noop]
+
       task_options = {
         cluster: @cluster,
         task_definition: @task_definition
       }
+      task_options = task_options.merge(default_params[:run_task] || {})
+
       if @options[:command]
         task_options.merge!(overrides: overrides)
         puts "Running task with container overrides."
         puts "Command: #{@options[:command].join(' ')}"
+      end
+
+      unless @options[:mute]
+        puts "Running task with params:"
+        display_params(task_options)
       end
       resp = ecs.run_task(task_options)
       puts "Task ARN: #{resp.tasks[0].task_arn}" unless @options[:mute]

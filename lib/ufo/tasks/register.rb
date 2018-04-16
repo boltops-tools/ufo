@@ -3,6 +3,7 @@ require 'json'
 
 module Ufo
   class Tasks::Register
+    include Util
     include AwsService
 
     def self.register(task_name, options={})
@@ -28,9 +29,28 @@ module Ufo
       if @options[:noop]
         message = "NOOP: #{message}"
       else
-        ecs.register_task_definition(data)
+        register_task_definition(data)
       end
       puts message unless @options[:mute]
+    end
+
+    def register_task_definition(data)
+      if ENV["UFO_SHOW_REGISTER_TASK_DEFINITION"]
+        puts "Registering task definition with:"
+        display_params(data)
+      end
+
+      ecs.register_task_definition(data)
+    rescue Aws::ECS::Errors::ClientException => e
+      if e.message =~ /No Fargate configuration exists for given values/
+        puts "ERROR: #{e.message}".colorize(:red)
+        puts "Configured values are: cpu #{data[:cpu]} memory #{data[:memory]}"
+        puts "Check that the cpu and memory values are a supported combination by Fargate."
+        puts "More info: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-cpu-memory-error.html"
+        exit 1
+      else
+        raise
+      end
     end
 
     # LogConfiguration requires a string with dashes as the keys
