@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [3.4.0]
+- Merge pull request #31 fargate support
+- ufo upgrade3_3_to_3_4 command
+- add params.yml concept to support fargate and any other aws-sdk option
+- add TemplateScope class
+- combine Default into Util module
+- clean up settings method
+- display params as helpful info
+
 ## [3.3.2]
 - Merge pull request #28 from netguru/master
 - Fix one off task: ufo task
