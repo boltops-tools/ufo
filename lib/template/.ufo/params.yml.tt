@@ -1,4 +1,4 @@
-<%
+<%%
   # replace with actual values:
   @subnets = ["subnet-111","subnet-222"]
   @security_groups = ["sg-111"]
@@ -15,12 +15,21 @@ create_service:
     maximum_percent: 200
     minimum_healthy_percent: 100
   desired_count: 1
+<% if @options[:launch_type] == "fargate" -%>
   launch_type: "FARGATE"
   network_configuration:
     awsvpc_configuration:
-      subnets: <%= @subnets.inspect %> # required
-      security_groups: <%= @security_groups.inspect %>
+      subnets: <%%= @subnets.inspect %> # required
+      security_groups: <%%= @security_groups.inspect %>
       assign_public_ip: "ENABLED" # accepts ENABLED, DISABLED
+<% else -%>
+  # launch_type: "FARGATE"
+  # network_configuration:
+  #   awsvpc_configuration:
+  #     subnets: <%%= @subnets.inspect %> # required
+  #     security_groups: <%%= @security_groups.inspect %>
+  #     assign_public_ip: "ENABLED" # accepts ENABLED, DISABLED
+<% end -%>
 
 # update service is provide as an example below.  Though it is probably better
 # to not add any options to update_service if you are using the ECS console
@@ -34,14 +43,23 @@ update_service:
   # launch_type: "FARGATE"
   # network_configuration:
   #   awsvpc_configuration:
-  #     subnets: <%= @subnets.inspect %> # required
-  #     security_groups: <%= @security_groups.inspect %>
+  #     subnets: <%%= @subnets.inspect %> # required
+  #     security_groups: <%%= @security_groups.inspect %>
   #     assign_public_ip: "ENABLED" # accepts ENABLED, DISABLED
 
 run_task:
+<% if @options[:launch_type] == "fargate" -%>
   launch_type: "FARGATE"
   network_configuration:
     awsvpc_configuration:
-      subnets: <%= @subnets.inspect %> # required
-      security_groups: <%= @security_groups.inspect %>
+      subnets: <%%= @subnets.inspect %> # required
+      security_groups: <%%= @security_groups.inspect %>
       assign_public_ip: "ENABLED" # accepts ENABLED, DISABLED
+<% else -%>
+  # launch_type: "FARGATE"
+  # network_configuration:
+  #   awsvpc_configuration:
+  #     subnets: <%%= @subnets.inspect %> # required
+  #     security_groups: <%%= @security_groups.inspect %>
+  #     assign_public_ip: "ENABLED" # accepts ENABLED, DISABLED
+<% end -%>

@@ -25,7 +25,10 @@ module Ufo
         puts "Command: #{@options[:command].join(' ')}"
       end
 
-      display_params(task_options) unless @options[:mute]
+      unless @options[:mute]
+        puts "Running task with params:"
+        display_params(task_options)
+      end
       resp = ecs.run_task(task_options)
       puts "Task ARN: #{resp.tasks[0].task_arn}" unless @options[:mute]
     end

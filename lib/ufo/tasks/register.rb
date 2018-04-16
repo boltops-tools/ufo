@@ -35,7 +35,7 @@ module Ufo
     end
 
     def register_task_definition(data)
-      unless @options[:mute]
+      if ENV["UFO_SHOW_REGISTER_TASK_DEFINITION"]
         puts "Registering task definition with:"
         display_params(data)
       end
