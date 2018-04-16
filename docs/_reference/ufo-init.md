@@ -32,6 +32,12 @@ For this example we will use [tongueroo/hi](https://github.com/tongueroo/hi) whi
           append  .gitignore
     Starter ufo files created.
 
+## More Short Examples
+
+    ufo init --image httpd --app demo
+    ufo init --image 123456789012.dkr.ecr.us-west-2.amazonaws.com/myimage --app demo
+    ufo init --image tongueroo/hi --app hi --force --launch-type fargate --execution-role-arn arn:aws:iam::536766270177:role/ecsTaskExecutionRole
+
 ## Options: app and image
 
 The `app` is that application name that you want to show up on the ECS dashboard.  It is encouraged to have the app name be a single word.
@@ -59,6 +65,16 @@ The standard directory structure of the `.ufo` folder that was created looks lik
 
 For a explanation of the folders and files refer to [Structure]({% link _docs/structure.md %}).
 
+## Fargate Example
+
+For ECS Fargate, the ECS task definition structure is a bit different.  To initialize a project to support Fargate use the `--launch-type fargate` option.  You'll be prompted for a execution role arn.  This value gets added to the generated `.ufo/variables/base.rb` and used in the `.ufo/templates/main.json.erb`.
+
+    ufo init --image tongueroo/hi --app hi --force --launch-type fargate
+
+You can also generate the init ufo files and bypass the prompt by providing the `----execution-role-arn` option upfront.
+
+    ufo init --image tongueroo/hi --app hi --force --launch-type fargate --execution-role-arn arn:aws:iam::536766270177:role/ecsTaskExecutionRole
+
 ## Custom Templates
 
 If you would like the `ufo init` command to use your own custom templates, you can achieve this with the `--template` and `--template-mode` options.  Example:
@@ -83,14 +99,17 @@ If you would like to use a local template that is not on GitHub, then created a 
 ## Options
 
 ```
-[--force]                        # Bypass overwrite are you sure prompt for existing files.
---image=IMAGE                    # Docker image name without the tag. Example: tongueroo/hi. Configures ufo/settings.yml
---app=APP                        # App name. Preferably one word. Used in the generated ufo/task_definitions.rb.
-[--template=TEMPLATE]            # Custom template to use.
-[--template-mode=TEMPLATE_MODE]  # Template mode: replace or additive.
-[--verbose], [--no-verbose]      
-[--mute], [--no-mute]            
-[--noop], [--no-noop]            
-[--cluster=CLUSTER]              # Cluster.  Overrides ufo/settings.yml.
+[--force]                                  # Bypass overwrite are you sure prompt for existing files.
+--image=IMAGE                              # Docker image name without the tag. Example: tongueroo/hi. Configures ufo/settings.yml
+--app=APP                                  # App name. Preferably one word. Used in the generated ufo/task_definitions.rb.
+[--launch-type=LAUNCH_TYPE]                # ec2 or fargate.
+                                           # Default: ec2
+[--execution-role-arn=EXECUTION_ROLE_ARN]  # execution role arn used by tasks, required for fargate.
+[--template=TEMPLATE]                      # Custom template to use.
+[--template-mode=TEMPLATE_MODE]            # Template mode: replace or additive.
+[--verbose], [--no-verbose]                
+[--mute], [--no-mute]                      
+[--noop], [--no-noop]                      
+[--cluster=CLUSTER]                        # Cluster.  Overrides ufo/settings.yml.
 ```
 
