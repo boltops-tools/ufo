@@ -23,8 +23,8 @@ module Ufo
 
       def build
         instance_eval(&@block)
-        hash = template_scope.assign_instance_variables
-        RenderMePretty.result(source_path, hash)
+        vars = template_scope.assign_instance_variables
+        RenderMePretty.result(source_path, vars)
       end
 
       # at this point instance_eval has been called and source has possibly been called
