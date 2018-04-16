@@ -63,11 +63,6 @@ base:
   # clean_keep: 30 # cleans up docker images on your docker server.
   # ecr_keep: 30 # cleans up images on ECR and keeps this remaining amount. Defaults to keep all.
   # defaults when an new ECS service is created by ufo ship
-  new_service:
-    maximum_percent: 200
-    minimum_healthy_percent: 100
-    desired_count: 1
-
 development:
   # cluster: dev # uncomment if you want the cluster name be other than the default
                  # the default is to match UFO_ENV.  So UFO_ENV=development means the ECS
