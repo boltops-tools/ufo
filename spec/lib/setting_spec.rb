@@ -5,8 +5,8 @@ describe Ufo::Setting do
 
   let(:setting) { Ufo::Setting.new }
 
-  it "includes base into other environments automatically" do
-    count = settings["new_service"]["desired_count"]
-    expect(count).to eq 1
+  it "includes the cluster setting" do
+    cluster = setting.data["cluster"]
+    expect(cluster).to eq "dev"
   end
 end

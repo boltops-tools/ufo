@@ -25,7 +25,7 @@ module Ufo
         puts "Command: #{@options[:command].join(' ')}"
       end
 
-      display_params(task_options)
+      display_params(task_options) unless @options[:mute]
       resp = ecs.run_task(task_options)
       puts "Task ARN: #{resp.tasks[0].task_arn}" unless @options[:mute]
     end
