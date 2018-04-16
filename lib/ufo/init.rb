@@ -57,7 +57,7 @@ module Ufo
       puts "Setting up ufo project..."
       directory ".", exclude_pattern: /(\.git|templates)/
 
-      if @options[:launch_type].downcase == "fargate"
+      if @options[:launch_type] == "fargate"
         copy_file ".ufo/templates/fargate.json.erb", ".ufo/templates/main.json.erb"
       else
         copy_file ".ufo/templates/main.json.erb"
