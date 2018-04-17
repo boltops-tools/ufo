@@ -56,7 +56,7 @@ run_task:
   #     assign_public_ip: "ENABLED" # accepts ENABLED, DISABLED
 ```
 
-Ufo provides 1st class citizen adjust to the params that get sent to the aws-sdk calls:
+Ufo provides 1st class citizen access to adjust the params sent to the aws-sdk calls:
 
 * create_service - `ufo ship` is calls this when the ECS service does not yet exist.
 * update_service - `ufo ship` is calls this when the ECS service already exists.
