@@ -19,6 +19,7 @@ A starter project `.ufo/params.yml` file is generated as part of the `ufo init` 
 # Uncomment launch_type and network_configuration sections to enable fargate.
 #
 
+# ufo ship calls create_service when service doesnt exist
 create_service:
   deployment_configuration:
     maximum_percent: 200
@@ -31,6 +32,8 @@ create_service:
   #     security_groups: <%= @security_groups.inspect %>
   #     assign_public_ip: "ENABLED" # accepts ENABLED, DISABLED
 
+
+# ufo ship calls update_service when service already exists
 # update service is provide as an example below.  Though it is probably better
 # to not add any options to update_service if you are using the ECS console
 # to update these settings often.
@@ -47,6 +50,7 @@ update_service:
   #     security_groups: ["sg-0815f009d64fc4b2d"]
   #     assign_public_ip: "ENABLED" # accepts ENABLED, DISABLED
 
+# ufo task calls run_tasks
 run_task:
   # launch_type: "FARGATE"
   # network_configuration:
