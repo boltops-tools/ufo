@@ -17,7 +17,9 @@ describe Ufo::Tasks::Register do
     end
 
     it "dasherizes log configuration option" do
-      register.dasherize_log_configuation_option(data)
+      result = register.dasherize_log_configuation_option(data)
+      driver = result[:container_definitions][0][:log_configuration][:log_driver]
+      expect(driver).to eq "syslog"
     end
   end
 
@@ -38,7 +40,10 @@ describe Ufo::Tasks::Register do
     end
 
     it "dasherizes log configuration option" do
-      register.dasherize_log_configuation_option(data)
+      result = register.dasherize_log_configuation_option(data)
+      log_configuration = result[:container_definitions][0][:log_configuration]
+      expect(log_configuration[:log_driver]).to eq "awslogs"
+      expect(log_configuration[:options].keys).to include("awslogs-group")
     end
   end
 end
