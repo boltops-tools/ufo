@@ -24,8 +24,8 @@ module Ufo
     def register
       data = JSON.parse(IO.read(@template_definition_path), symbolize_names: true)
       data = data.to_snake_keys
-      data = fix_log_configuation_option(data)
-      message = "#{data[:family]} task definition registered."
+      data = dasherize_log_configuation_option(data)
+    message = "#{data[:family]} task definition registered."
       if @options[:noop]
         message = "NOOP: #{message}"
       else
@@ -55,11 +55,13 @@ module Ufo
 
     # LogConfiguration requires a string with dashes as the keys
     # https://docs.aws.amazon.com/sdkforruby/api/Aws/ECS/Client.html
-    def fix_log_configuation_option(data)
+    def dasherize_log_configuation_option(data)
       definitions = data[:container_definitions]
       definitions.each do |definition|
         next unless definition[:log_configuration]
         options = definition[:log_configuration][:options]
+        next unless options
+
         options["awslogs-group"] = options.delete(:awslogs_group)
         options["awslogs-region"] = options.delete(:awslogs_region)
         options["awslogs-stream-prefix"] = options.delete(:awslogs_stream_prefix)
