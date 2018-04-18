@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [3.4.1]
+- Merge pull request #32 from tongueroo/fix-log-configuration
+- fix log configuration dasherization
+- Fixes issue #30 how can use syslog as driver for logging?
+
 ## [3.4.0]
 - Merge pull request #31 fargate support
 - ufo upgrade3_3_to_3_4 command
