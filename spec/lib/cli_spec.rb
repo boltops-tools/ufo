@@ -18,6 +18,14 @@ describe Ufo::CLI do
     end
 
     context "tasks" do
+      before(:each) do
+        FileUtils.mkdir_p("#{Ufo.root}/.ufo/data/")
+        FileUtils.touch("#{Ufo.root}/.ufo/data/docker_image_name_ufo.txt")
+      end
+      after(:each) do
+        FileUtils.rm_f("#{Ufo.root}/.ufo/data/docker_image_name_ufo.txt")
+      end
+
       it "build builds task definition" do
         out = execute("exe/ufo tasks build #{@args}")
         expect(out).to include("Task Definitions built")

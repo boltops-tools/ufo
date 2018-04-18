@@ -22,10 +22,10 @@ module Ufo
 
     # aws ecs register-task-definition --cli-input-json file://.ufo/output/hi-web-prod.json
     def register
-      data = JSON.parse(IO.read(@template_definition_path), symbolize_names: true)
-      data = data.to_snake_keys
-      data = dasherize_log_configuation_option(data)
-    message = "#{data[:family]} task definition registered."
+      data = JSON.parse(IO.read(@template_definition_path))
+      puts "@template_definition_path #{@template_definition_path.inspect}"
+      data = rubyize_format(data)
+      message = "#{data[:family]} task definition registered."
       if @options[:noop]
         message = "NOOP: #{message}"
       else
@@ -53,19 +53,28 @@ module Ufo
       end
     end
 
-    # LogConfiguration requires a string with dashes as the keys
-    # https://docs.aws.amazon.com/sdkforruby/api/Aws/ECS/Client.html
-    def dasherize_log_configuation_option(data)
+    # The ruby aws-sdk expects symbols for keys and AWS docs for the task
+    # definition uses json camelCase for the keys.  This method transforms
+    # the keys to the expected ruby aws-sdk format.
+    #
+    # One quirk is that the logConfiguration options casing should not be
+    # transformed.
+    def rubyize_format(original_data)
+      data = original_data.to_snake_keys.deep_symbolize_keys
+
       definitions = data[:container_definitions]
-      definitions.each do |definition|
+      definitions.each_with_index do |definition, i|
         next unless definition[:log_configuration]
         options = definition[:log_configuration][:options]
         next unless options
 
-        options["awslogs-group"] = options.delete(:awslogs_group)
-        options["awslogs-region"] = options.delete(:awslogs_region)
-        options["awslogs-stream-prefix"] = options.delete(:awslogs_stream_prefix)
+        # LogConfiguration options do not get transformed and keep their original
+        # structure:
+        #   https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/ECS/Types/ContainerDefinition.html
+        original_definition = original_data["containerDefinitions"][i]
+        definition[:log_configuration][:options] = original_definition["logConfiguration"]["options"]
       end
+
       data
     end
   end
