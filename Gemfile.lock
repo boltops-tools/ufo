@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ufo (3.4.2)
+    ufo (3.4.3)
       aws-sdk-cloudwatchlogs
       aws-sdk-ec2
       aws-sdk-ecr
