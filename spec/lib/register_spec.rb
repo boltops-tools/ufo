@@ -8,16 +8,16 @@ describe Ufo::Tasks::Register do
   context "syslog" do
     let(:data) do
       {
-        "container_definitions": [{
-          "logConfiguration": {
-            "logDriver": "syslog"
+        "containerDefinitions" => [{
+          "logConfiguration" => {
+            "logDriver" => "syslog"
           }
         }]
-      }.to_snake_keys.deep_symbolize_keys
+      }
     end
 
-    it "dasherizes log configuration option" do
-      result = register.dasherize_log_configuation_option(data)
+    it "#rubyize_format" do
+      result = register.rubyize_format(data)
       driver = result[:container_definitions][0][:log_configuration][:log_driver]
       expect(driver).to eq "syslog"
     end
@@ -26,21 +26,21 @@ describe Ufo::Tasks::Register do
   context "awslogs" do
     let(:data) do
       {
-        "container_definitions": [{
-          "logConfiguration": {
-            "logDriver": "awslogs",
-            "options": {
-              "awslogs-group": "mygroup",
-              "awslogs-region": "us-east-1",
-              "awslogs-stream-prefix": "mystream"
+        "containerDefinitions" => [{
+          "logConfiguration" => {
+            "logDriver" => "awslogs",
+            "options" => {
+              "awslogs-group" => "mygroup",
+              "awslogs-region" => "us-east-1",
+              "awslogs-stream-prefix" => "mystream"
             }
           }
         }]
-      }.to_snake_keys.deep_symbolize_keys
+      }
     end
 
-    it "dasherizes log configuration option" do
-      result = register.dasherize_log_configuation_option(data)
+    it "rubyize_format" do
+      result = register.rubyize_format(data)
       log_configuration = result[:container_definitions][0][:log_configuration]
       expect(log_configuration[:log_driver]).to eq "awslogs"
       expect(log_configuration[:options].keys).to include("awslogs-group")
