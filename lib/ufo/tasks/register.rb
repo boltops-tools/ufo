@@ -23,7 +23,6 @@ module Ufo
     # aws ecs register-task-definition --cli-input-json file://.ufo/output/hi-web-prod.json
     def register
       data = JSON.parse(IO.read(@template_definition_path))
-      puts "@template_definition_path #{@template_definition_path.inspect}"
       data = rubyize_format(data)
       message = "#{data[:family]} task definition registered."
       if @options[:noop]
