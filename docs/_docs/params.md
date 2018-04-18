@@ -62,8 +62,8 @@ run_task:
 
 Ufo provides 1st class citizen access to adjust the params sent to the aws-sdk calls:
 
-* create_service - `ufo ship` is calls this when the ECS service does not yet exist.
-* update_service - `ufo ship` is calls this when the ECS service already exists.
+* create_service - `ufo ship` calls this when the ECS service does not yet exist.
+* update_service - `ufo ship` calls this when the ECS service already exists.
 * run_task - `ufo task` calls this.
 
 The parameters from this `params.yml` file gets merged with params ufo generates internally.  Here's an example of where the merging happens in the source code for the run task command [task.rb](https://github.com/tongueroo/ufo/blob/90f12df035843528770122deb328d150249a25e2/lib/ufo/task.rb#L20)  Also, here's the starter [params.yml source code](https://github.com/tongueroo/ufo/blob/master/lib/template/.ufo/params.yml) for reference.
