@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [3.4.2]
+- Merge pull request #33 from tongueroo/rubyize_format
+- improve rubyize_format so that original log configuration options are kept
+
 ## [3.4.1]
 - Merge pull request #32 from tongueroo/fix-log-configuration
 - fix log configuration dasherization
