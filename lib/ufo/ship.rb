@@ -218,7 +218,7 @@ module Ufo
       FileUtils.rm_f(output_path)
 
       # Thanks: https://www.mnishiguchi.com/2017/11/29/rails-hash-camelize-and-underscore-keys/
-      params = params.deep_transform_keys! { |key| key.to_s.camelize(:lower) }
+      params = params.deep_transform_keys { |key| key.to_s.camelize(:lower) }
       json = JSON.pretty_generate(params)
       IO.write(output_path, json)
 
