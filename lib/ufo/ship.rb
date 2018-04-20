@@ -205,7 +205,7 @@ module Ufo
       end
 
       unless @options[:mute]
-        show_aws_cli_command(:update, params)
+        show_aws_cli_command(:update, options)
         puts message
       end
       service

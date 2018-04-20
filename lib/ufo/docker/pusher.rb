@@ -7,8 +7,8 @@ class Ufo::Docker
     delegate :full_image_name, to: :builder
     attr_reader :last_image_name
     def initialize(image, options)
-      @options = options
       @last_image_name = image || full_image_name
+      @options = options
     end
 
     def push
@@ -38,7 +38,7 @@ class Ufo::Docker
     def update_auth_token
       auth = Ufo::Ecr::Auth.new(last_image_name)
       # wont update auth token unless the image being pushed in the ECR image format
-      auth.update if auth.ecr_image?
+      auth.update
     end
 
     # full_image - does not include the tag

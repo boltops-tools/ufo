@@ -23,6 +23,9 @@ module Ufo
     end
 
     def update
+      # wont update auth token unless the image being pushed in the ECR image format
+      return unless ecr_image?
+
       auth_token = fetch_auth_token
       if File.exist?(docker_config)
         data = JSON.load(IO.read(docker_config))
