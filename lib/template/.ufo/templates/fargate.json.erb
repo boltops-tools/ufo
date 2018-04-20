@@ -12,7 +12,7 @@
       <% if @container_port %>
       "portMappings": [
         {
-          "containerPort": "<%= @container_port %>",
+          "containerPort": <%= @container_port %>,
           "protocol": "tcp"
         }
       ],

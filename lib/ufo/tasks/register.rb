@@ -24,13 +24,20 @@ module Ufo
     def register
       data = JSON.parse(IO.read(@template_definition_path))
       data = rubyize_format(data)
+
       message = "#{data[:family]} task definition registered."
       if @options[:noop]
         message = "NOOP: #{message}"
       else
         register_task_definition(data)
       end
-      puts message unless @options[:mute]
+
+      unless @options[:mute]
+        puts "Equivalent aws cli command:"
+        file_path = "file://#{@template_definition_path.sub(/^\.\//,'')}"
+        puts "  aws ecs register-task-definition --cli-input-json #{file_path}".colorize(:green)
+        puts message
+      end
     end
 
     def register_task_definition(data)
