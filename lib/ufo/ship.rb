@@ -213,15 +213,18 @@ module Ufo
 
     def show_aws_cli_command(action, params)
       puts "Equivalent aws cli command:"
-      rel_path = ".ufo/output/#{action}-params.json"
-      file_path = "file://#{rel_path}"
+      # Use .ufo/data instead of .ufo/output because output files all get looped
+      # through as part of `ufo tasks register`
+      rel_path = ".ufo/data/#{action}-params.json"
       output_path = "#{Ufo.root}/#{rel_path}"
       FileUtils.rm_f(output_path)
 
+      # Thanks: https://www.mnishiguchi.com/2017/11/29/rails-hash-camelize-and-underscore-keys/
       params = params.deep_transform_keys! { |key| key.to_s.camelize(:lower) }
       json = JSON.pretty_generate(params)
       IO.write(output_path, json)
 
+      file_path = "file://#{rel_path}"
       puts "  aws ecs #{action}-service --cli-input-json #{file_path}".colorize(:green)
     end
 
