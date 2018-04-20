@@ -7,8 +7,10 @@ class Ufo::Docker
     delegate :full_image_name, to: :builder
     attr_reader :last_image_name
     def initialize(image, options)
-      @last_image_name = image || full_image_name
       @options = options
+      # full_image_name ultimately uses @options, so @last_image_name assignment
+      # line must be defined after setting @options.
+      @last_image_name = image || full_image_name
     end
 
     def push
