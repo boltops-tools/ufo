@@ -56,3 +56,7 @@ Congratulations, you have successfully used ufo to deploy to an ECS service.
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at [https://github.com/tongueroo/ufo/issues](https://github.com/tongueroo/ufo/issues).
+
+### QA Checklist
+
+[QA Checklist](https://github.com/tongueroo/ufo/wiki/QA-Checklist) is a good list of things to check.

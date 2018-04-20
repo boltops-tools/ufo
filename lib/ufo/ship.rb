@@ -198,14 +198,12 @@ module Ufo
 
         puts "Creating ECS service with params:"
         display_params(options)
-        unless ENV['USER'] == 'tung'
-          response = ecs.create_service(options)
-          service = response.service # must set service here since this might never be called if @wait_for_deployment is false
-        end
+        show_aws_cli_command(:create, options)
+        response = ecs.create_service(options)
+        service = response.service # must set service here since this might never be called if @wait_for_deployment is false
       end
 
       unless @options[:mute]
-        show_aws_cli_command(:update, options)
         puts message
       end
       service
@@ -253,6 +251,7 @@ module Ufo
         params = params.merge(default_params[:update_service] || {})
         puts "Updating ECS service with params:"
         display_params(params)
+        show_aws_cli_command(:update, params)
 
         unless @options[:noop]
           response = ecs.update_service(params)
@@ -261,7 +260,6 @@ module Ufo
       end
 
       unless @options[:mute]
-        show_aws_cli_command(:update, params)
         puts message
       end
       service
