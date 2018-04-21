@@ -203,9 +203,7 @@ module Ufo
         service = response.service # must set service here since this might never be called if @wait_for_deployment is false
       end
 
-      unless @options[:mute]
-        puts message
-      end
+      puts message unless @options[:mute]
       service
     end
 
@@ -259,9 +257,7 @@ module Ufo
         end
       end
 
-      unless @options[:mute]
-        puts message
-      end
+      puts message unless @options[:mute]
       service
     end
 
@@ -376,6 +372,7 @@ module Ufo
           # TODO: Aad Waiter logic, sometimes the cluster does not exist by the time
           # we create the service
         end
+
         puts message unless @options[:mute]
       end
     end
