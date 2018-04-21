@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [3.4.4]
+- Merge pull request #34 from tongueroo/show-aws-cli-commands
+- Show equivalent cli commands when possible
+- Automatically auth ECR when Dockerfiles has ECR image in FROM instruction
+- Fix upgrade task and provide user with warning message for 3.4.x version.
+
 ## [3.4.3]
 - remove debugging puts
 
