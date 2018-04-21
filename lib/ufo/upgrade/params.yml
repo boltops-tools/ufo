@@ -1,4 +1,4 @@
-<%%
+<%
   # replace with actual values:
   @subnets = ["subnet-111","subnet-222"]
   @security_groups = ["sg-111"]

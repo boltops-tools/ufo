@@ -23,6 +23,8 @@ class Ufo::Docker
       start_time = Time.now
       store_full_image_name
 
+      update_auth_token
+
       command = "docker build -t #{full_image_name} -f #{@dockerfile} ."
       say "Building docker image with:".green
       say "  #{command}".green
@@ -36,6 +38,32 @@ class Ufo::Docker
 
       took = Time.now - start_time
       say "Docker image #{full_image_name} built.  " + "Took #{pretty_time(took)}.".green
+    end
+
+    # Parse Dockerfile for FROM instruction. If the starting image is from an ECR
+    # repository, it's likely an private image so we authorize ECR for pulling.
+    def update_auth_token
+      ecr_image_names = ecr_image_names("#{Ufo.root}/#{@dockerfile}")
+      return if ecr_image_names.empty?
+
+      ecr_image_names.each do |ecr_image_name|
+        auth = Ufo::Ecr::Auth.new(ecr_image_name)
+        # wont update auth token unless the image being pushed in the ECR image format
+        auth.update
+      end
+    end
+
+    def ecr_image_names(path)
+      from_image_names(path).select { |i| i =~ /\.amazonaws\.com/ }
+    end
+
+    def from_image_names(path)
+      lines = IO.readlines(path)
+      froms = lines.select { |l| l =~ /^FROM/ }
+      froms.map do |l|
+        md = l.match(/^FROM (.*)/)
+        md[1]
+      end.compact
     end
 
     def pusher
@@ -54,7 +82,9 @@ class Ufo::Docker
       settings["image"]
     end
 
-    # full_image - includes the tag
+    # full_image - Includes the tag. Examples:
+    #   123456789.dkr.ecr.us-west-2.amazonaws.com/myapp:ufo-2018-04-20T09-29-08-b7d51df
+    #   tongueroo/hi:ufo-2018-04-20T09-29-08-b7d51df
     def full_image_name
       return generate_name if @options[:generate]
       return "tongueroo/hi:ufo-12345678" if ENV['TEST']

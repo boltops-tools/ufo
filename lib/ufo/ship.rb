@@ -125,25 +125,6 @@ module Ufo
       [deployed_service.service_name, took]
     end
 
-    def wait_for_all_deployments(deployed_services)
-      start_time = Time.now
-      threads = deployed_services.map do |deployed_service|
-        Thread.new do
-          # http://stackoverflow.com/questions/1383390/how-can-i-return-a-value-from-a-thread-in-ruby
-          Thread.current[:output] = wait_for_deployment(deployed_service, quiet=true)
-        end
-      end
-      threads.each { |t| t.join }
-      total_took = Time.now - start_time
-      puts ""
-      puts "Shipments for all #{deployed_service.size} services took a total of #{pretty_time(total_took).green}."
-      puts "Each deployment took:"
-      threads.each do |t|
-        service_name, took = t[:output]
-        puts "  #{service_name}: #{pretty_time(took)}"
-      end
-    end
-
     # used for polling
     # must pass in a service and cannot use @service for the case of multi_services mode
     def find_updated_service(service)
@@ -214,13 +195,33 @@ module Ufo
         unless target_group.nil? || target_group.empty?
           add_load_balancer!(container, options, target_group)
         end
+
         puts "Creating ECS service with params:"
         display_params(options)
+        show_aws_cli_command(:create, options)
         response = ecs.create_service(options)
         service = response.service # must set service here since this might never be called if @wait_for_deployment is false
       end
+
       puts message unless @options[:mute]
       service
+    end
+
+    def show_aws_cli_command(action, params)
+      puts "Equivalent aws cli command:"
+      # Use .ufo/data instead of .ufo/output because output files all get looped
+      # through as part of `ufo tasks register`
+      rel_path = ".ufo/data/#{action}-params.json"
+      output_path = "#{Ufo.root}/#{rel_path}"
+      FileUtils.rm_f(output_path)
+
+      # Thanks: https://www.mnishiguchi.com/2017/11/29/rails-hash-camelize-and-underscore-keys/
+      params = params.deep_transform_keys { |key| key.to_s.camelize(:lower) }
+      json = JSON.pretty_generate(params)
+      IO.write(output_path, json)
+
+      file_path = "file://#{rel_path}"
+      puts "  aws ecs #{action}-service --cli-input-json #{file_path}".colorize(:green)
     end
 
     # $ aws ecs update-service --generate-cli-skeleton
@@ -248,9 +249,14 @@ module Ufo
         params = params.merge(default_params[:update_service] || {})
         puts "Updating ECS service with params:"
         display_params(params)
-        response = ecs.update_service(params)
-        service = response.service # must set service here since this might never be called if @wait_for_deployment is false
+        show_aws_cli_command(:update, params)
+
+        unless @options[:noop]
+          response = ecs.update_service(params)
+          service = response.service # must set service here since this might never be called if @wait_for_deployment is false
+        end
       end
+
       puts message unless @options[:mute]
       service
     end
@@ -366,6 +372,7 @@ module Ufo
           # TODO: Aad Waiter logic, sometimes the cluster does not exist by the time
           # we create the service
         end
+
         puts message unless @options[:mute]
       end
     end

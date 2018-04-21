@@ -8,6 +8,8 @@ class Ufo::Docker
     attr_reader :last_image_name
     def initialize(image, options)
       @options = options
+      # full_image_name ultimately uses @options, so @last_image_name assignment
+      # line must be defined after setting @options.
       @last_image_name = image || full_image_name
     end
 
@@ -38,7 +40,7 @@ class Ufo::Docker
     def update_auth_token
       auth = Ufo::Ecr::Auth.new(last_image_name)
       # wont update auth token unless the image being pushed in the ECR image format
-      auth.update if auth.ecr_image?
+      auth.update
     end
 
     # full_image - does not include the tag
