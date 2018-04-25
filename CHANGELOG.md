@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [3.5.0]
+- allow usage of template_definition_method in env variables files
+
 ## [3.4.4]
 - Merge pull request #34 from tongueroo/show-aws-cli-commands
 - Show equivalent cli commands when possible
