@@ -1,8 +1,11 @@
 module Ufo
   class TemplateScope
     attr_reader :helper
-    def initialize(helper=nil)
+    attr_reader :task_definition_name
+    def initialize(helper=nil, task_definition_name=nil)
       @helper = helper
+      @task_definition_name = task_definition_name # only available from task_definition
+        # not available from params
       load_variables_file("base")
       load_variables_file(Ufo.env)
     end
@@ -29,7 +32,7 @@ module Ufo
     #   Wasnt able to make local variables available.
     def load_variables_file(filename)
       path = "#{Ufo.root}/.ufo/variables/#{filename}.rb"
-      instance_eval(IO.read(path)) if File.exist?(path)
+      instance_eval(IO.read(path), path) if File.exist?(path)
     end
 
     def assign_instance_variables

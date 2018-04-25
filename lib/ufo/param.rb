@@ -17,8 +17,8 @@ module Ufo
     def data
       upgrade_message!
 
-      vars = Ufo::TemplateScope.new(helper).assign_instance_variables
-      result = RenderMePretty.result(@params_path, vars)
+      context = Ufo::TemplateScope.new(helper, nil)
+      result = RenderMePretty.result(@params_path, context: context)
       YAML.load(result)
     end
     memoize :data

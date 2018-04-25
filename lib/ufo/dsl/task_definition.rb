@@ -18,13 +18,12 @@ module Ufo
       end
 
       def template_scope
-        @template_scope ||= Ufo::TemplateScope.new(helper)
+        @template_scope ||= Ufo::TemplateScope.new(helper, @task_definition_name)
       end
 
       def build
         instance_eval(&@block)
-        vars = template_scope.assign_instance_variables
-        RenderMePretty.result(source_path, vars)
+        RenderMePretty.result(source_path, context: template_scope)
       end
 
       # at this point instance_eval has been called and source has possibly been called
