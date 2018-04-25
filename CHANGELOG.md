@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [3.5.1]
+- remove helper support for params files. erb still works.
+
 ## [3.5.0]
 - allow usage of template_definition_method in env variables files
 
