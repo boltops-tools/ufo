@@ -1,5 +1,5 @@
 <%%
-  # replace with actual values:
+  # replace with actual values if using fargate
   @subnets = ["subnet-111","subnet-222"]
   @security_groups = ["sg-111"]
 %>

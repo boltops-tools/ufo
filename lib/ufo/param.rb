@@ -9,16 +9,10 @@ module Ufo
       @params_path = "#{Ufo.root}/.ufo/params.yml"
     end
 
-    def helper
-      dsl = DSL.new("#{Ufo.root}/.ufo/task_definitions.rb", quiet: true, mute: true)
-      dsl.helper
-    end
-
     def data
       upgrade_message!
 
-      context = Ufo::TemplateScope.new(helper, nil)
-      result = RenderMePretty.result(@params_path, context: context)
+      result = RenderMePretty.result(@params_path)
       YAML.load(result)
     end
     memoize :data
