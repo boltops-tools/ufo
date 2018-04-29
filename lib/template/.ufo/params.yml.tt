@@ -9,6 +9,7 @@
 # Comments left in as examples.
 # Uncomment launch_type and network_configuration sections to enable fargate.
 #
+# More docs: http://ufoships.com/docs/params/
 
 create_service:
   deployment_configuration:
