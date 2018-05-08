@@ -4,7 +4,7 @@ title: FAQ
 
 **Q: Is AWS ECS Fargate supported?**
 
-Yes, Fargate is supported.  To use ufo with Fargate, the you should adjust the the template in `.ufo/templates` to use the Fargate structure.  If it's a brand new project. You can use `ufo init` with the `--launch_type fargate` option and it will generate a json file that has the right Fargate structure. Notable, it requires requiresCompatibilities, networkMode and executionRoleArn to be set.
+Yes, Fargate is supported.  To use ufo with Fargate, the you should adjust the the template in `.ufo/templates` to use the Fargate structure.  If it's a brand new project. You can use `ufo init` with the `--launch-type fargate` option and it will generate a json file that has the right Fargate structure. Notable, it requires requiresCompatibilities, networkMode and executionRoleArn to be set.
 
 ---
 
