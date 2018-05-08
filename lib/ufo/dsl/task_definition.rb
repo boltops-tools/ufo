@@ -68,11 +68,17 @@ module Ufo
 
       def variables(vars={})
         vars.each do |var,value|
-          if instance_variable_defined?("@#{var}")
+          # Warn when variable collides with internal variable, but dont warn
+          # template_scope variables collision.
+          if instance_variable_defined?("@#{var}") && !template_scope_instance_variable?(var)
             puts "WARNING: The instance variable @#{var} is already used internally with ufo.  Please name you variable another name!"
           end
           template_scope.instance_variable_set("@#{var}", value)
         end
+      end
+
+      def template_scope_instance_variable?(var)
+        template_scope.instance_variables.include?("@#{var}".to_sym)
       end
 
       def source_path
