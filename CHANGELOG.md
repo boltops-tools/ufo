@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
 ## [3.5.2]
+- Merge pull request #36 from tongueroo/fix-shared-variables-in-task-definitions
+- allow usage of shared variables in task_definition blocks again
+- dont warn of instance variable collision for template scope variables
+- improve builder error message
+- improve user error message when task definition block fails to evaluate
+
+## [3.5.2]
 - add docs link to params.yml template
 
 ## [3.5.1]
