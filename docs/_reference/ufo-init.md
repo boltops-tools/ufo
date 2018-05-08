@@ -71,7 +71,7 @@ For ECS Fargate, the ECS task definition structure is a bit different.  To initi
 
     ufo init --image tongueroo/hi --app hi --force --launch-type fargate
 
-You can also generate the init ufo files and bypass the prompt by providing the `----execution-role-arn` option upfront.
+You can also generate the init ufo files and bypass the prompt by providing the `--execution-role-arn` option upfront.
 
     ufo init --image tongueroo/hi --app hi --force --launch-type fargate --execution-role-arn arn:aws:iam::536766270177:role/ecsTaskExecutionRole
 
@@ -109,9 +109,9 @@ If you would like to use a local template that is not on GitHub, then created a 
 [--execution-role-arn=EXECUTION_ROLE_ARN]  # execution role arn used by tasks, required for fargate.
 [--template=TEMPLATE]                      # Custom template to use.
 [--template-mode=TEMPLATE_MODE]            # Template mode: replace or additive.
-[--verbose], [--no-verbose]                
-[--mute], [--no-mute]                      
-[--noop], [--no-noop]                      
+[--verbose], [--no-verbose]
+[--mute], [--no-mute]
+[--noop], [--no-noop]
 [--cluster=CLUSTER]                        # Cluster.  Overrides ufo/settings.yml.
 ```
 

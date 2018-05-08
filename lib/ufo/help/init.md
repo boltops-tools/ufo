@@ -58,7 +58,7 @@ For ECS Fargate, the ECS task definition structure is a bit different.  To initi
 
     ufo init --image tongueroo/hi --app hi --force --launch-type fargate
 
-You can also generate the init ufo files and bypass the prompt by providing the `----execution-role-arn` option upfront.
+You can also generate the init ufo files and bypass the prompt by providing the `--execution-role-arn` option upfront.
 
     ufo init --image tongueroo/hi --app hi --force --launch-type fargate --execution-role-arn arn:aws:iam::536766270177:role/ecsTaskExecutionRole
 
