@@ -22,13 +22,13 @@ module Ufo
       end
 
       def build
+        copy_instance_variables
         begin
           instance_eval(&@block)
         rescue Exception => e
           build_error_info(e)
           raise
         end
-
         RenderMePretty.result(source_path, context: template_scope)
       end
 
@@ -43,18 +43,42 @@ module Ufo
         puts "Filename: #{filename}".colorize(:red)
       end
 
-      # at this point instance_eval has been called and source has possibly been called
+
+      # Copy the instance variables from TemplateScope to TaskDefinition
+      # so that config/variables are available in the task_definition blocks also.
+      # Example:
+      #
+      #   task_definition "my-app" do
+      #     # make config/variables available here also
+      #   end
+      #
+      # This allows possible collision but think it is worth it to have
+      # variables available.
+      def copy_instance_variables
+        template_scope.instance_variables.each do |var|
+          val = template_scope.instance_variable_get(var)
+          instance_variable_set(var, val)
+        end
+      end
+
+      # At this point instance_eval has been called and source has been possibly called
       def source(name)
         @source = name
       end
 
       def variables(vars={})
         vars.each do |var,value|
-          if instance_variable_defined?("@#{var}")
+          # Warn when variable collides with internal variable, but dont warn
+          # template_scope variables collision.
+          if instance_variable_defined?("@#{var}") && !template_scope_instance_variable?(var)
             puts "WARNING: The instance variable @#{var} is already used internally with ufo.  Please name you variable another name!"
           end
           template_scope.instance_variable_set("@#{var}", value)
         end
+      end
+
+      def template_scope_instance_variable?(var)
+        template_scope.instance_variables.include?("@#{var}".to_sym)
       end
 
       def source_path
