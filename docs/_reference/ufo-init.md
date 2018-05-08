@@ -109,9 +109,9 @@ If you would like to use a local template that is not on GitHub, then created a 
 [--execution-role-arn=EXECUTION_ROLE_ARN]  # execution role arn used by tasks, required for fargate.
 [--template=TEMPLATE]                      # Custom template to use.
 [--template-mode=TEMPLATE_MODE]            # Template mode: replace or additive.
-[--verbose], [--no-verbose]
-[--mute], [--no-mute]
-[--noop], [--no-noop]
+[--verbose], [--no-verbose]                
+[--mute], [--no-mute]                      
+[--noop], [--no-noop]                      
 [--cluster=CLUSTER]                        # Cluster.  Overrides ufo/settings.yml.
 ```
 
