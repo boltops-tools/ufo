@@ -32,7 +32,11 @@ class Ufo::Docker
       command = "cd #{Ufo.root} && #{command}"
       success = execute(command, use_system: true)
       unless success
-        puts "ERROR: The docker image fail to build.  Are you sure the docker daemon is available?  Try running: docker version".colorize(:red)
+        docker_version_success = system("docker version > /dev/null 2>&1")
+        unless docker_version_success
+          docker_version_message = "  Are you sure the docker daemon is available?  Try running: docker version."
+        end
+        puts "ERROR: The docker image fail to build.#{docker_version_message}".colorize(:red)
         exit 1
       end
 
