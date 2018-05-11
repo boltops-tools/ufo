@@ -38,17 +38,6 @@ create_service:
 # to not add any options to update_service if you are using the ECS console
 # to update these settings often.
 update_service:
-  # force_new_deployment: true
-  # deployment_configuration:
-  #   maximum_percent: 200
-  #   minimum_healthy_percent: 100
-  # desired_count: 1
-  # launch_type: "FARGATE"
-  # network_configuration:
-  #   awsvpc_configuration:
-  #     subnets: ["subnet-0ea22ddeb59d13ecc","subnet-0215e12250b7404e7"] # required
-  #     security_groups: ["sg-0815f009d64fc4b2d"]
-  #     assign_public_ip: "ENABLED" # accepts ENABLED, DISABLED
 
 # ufo task calls run_tasks
 run_task:
