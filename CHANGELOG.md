@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [3.5.4]
+- Merge pull request #38 from tongueroo/docker-build-options
+- add ability to specify custom docker build options with env UFO_DOCKER_BUILD_OPTIONS variable
+- update faq
+
 ## [3.5.3]
 - Merge pull request #36 from tongueroo/fix-shared-variables-in-task-definitions
 - allow usage of shared variables in task_definition blocks again
