@@ -72,6 +72,16 @@ You should see it being pushed at the end:
 
 Note in order to push the image to a registry you will need to login into the registry.  If you are using DockerHub use the `docker login` command.  If you are using AWS ECR then you can use the `aws ecr get-login` command.
 
+## Docker Build Options
+
+You can specify docker build options with the `UFO_DOCKER_BUILD_OPTIONS` environment variable.  Example:
+
+    $ UFO_DOCKER_BUILD_OPTIONS="--build-arg RAILS_ENV=production" ufo docker build
+    Building docker image with:
+      docker build --build-arg RAILS_ENV=production -t tongueroo/hi:ufo-2018-05-19T11-52-16-6714713 -f Dockerfile .
+    ...
+    Docker image tongueroo/hi:ufo-2018-05-19T11-52-16-6714713 built.  Took 2s.
+
 
 ## Options
 
