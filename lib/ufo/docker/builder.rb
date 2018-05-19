@@ -25,7 +25,7 @@ class Ufo::Docker
 
       update_auth_token
 
-      command = "docker build -t #{full_image_name} -f #{@dockerfile} ."
+      command = "docker build #{build_options}-t #{full_image_name} -f #{@dockerfile} ."
       say "Building docker image with:".green
       say "  #{command}".green
       check_dockerfile_exists
@@ -42,6 +42,12 @@ class Ufo::Docker
 
       took = Time.now - start_time
       say "Docker image #{full_image_name} built.  " + "Took #{pretty_time(took)}.".green
+    end
+
+    def build_options
+      options = ENV['UFO_DOCKER_BUILD_OPTIONS']
+      options += " " if options
+      options
     end
 
     # Parse Dockerfile for FROM instruction. If the starting image is from an ECR
