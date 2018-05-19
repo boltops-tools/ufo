@@ -30,7 +30,12 @@ module Ufo
         display_params(task_options)
       end
       resp = ecs.run_task(task_options)
-      puts "Task ARN: #{resp.tasks[0].task_arn}" unless @options[:mute]
+      unless @options[:mute]
+        task_arn = resp.tasks[0].task_arn
+        puts "Task ARN: #{task_arn}"
+        puts "  aws ecs describe-tasks --tasks #{task_arn} --cluster #{@cluster}"
+        # todo: maybe add cw comand here also
+      end
     end
 
   private
