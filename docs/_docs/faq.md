@@ -10,6 +10,37 @@ The neat thing about Fargate is that can be an extremely cost-effective way to r
 
 ---
 
+**Q: Can I tell ufo to use specific docker build options?**
+
+Yes, you can do this with the environment variable `UFO_DOCKER_BUILD_OPTIONS`.  Example:
+
+```
+$ UFO_DOCKER_BUILD_OPTIONS="--build-arg RAILS_ENV=production" ufo docker build
+Building docker image with:
+  docker build --build-arg RAILS_ENV=production -t tongueroo/hi:ufo-2018-05-19T11-52-16-6714713 -f Dockerfile .
+...
+Docker image tongueroo/hi:ufo-2018-05-19T11-52-16-6714713 built.  Took 2s.
+```
+
+---
+
+**Q: Can you tell ufo to use a custom user-defined Docker tag name?**
+
+In short, no. There's some image cleanup logic that relies on the specific naming convention.  However, you can re-tag the build docker image with another tag after ufo is done building the image.  The key is using the `ufo docker name` command to get the last docker image name that was built by ufo. Example:
+
+```
+$ ufo docker build
+$ ufo docker name
+tongueroo/hi:ufo-2018-05-19T11-41-06-6714713
+$ docker tag $(ufo docker name) hi:mytag
+$ docker images | grep hi
+hi                                                     mytag                              5b01e38bd060        3 minutes ago       955MB
+tongueroo/hi                                           ufo-2018-05-19T11-41-06-6714713    5b01e38bd060        3 minutes ago       955MB
+$ docker push hi:mytag
+```
+
+---
+
 **Q: What's the difference between ufo vs ecs-deploy?**
 
 Some differences:
