@@ -8,7 +8,7 @@ A common task is to run database migrations with newer code before deploying the
 ufo task hi-web --command bundle exec rake db:migrate
 ```
 
-It nice to wrap the commands in a wrapper script in case you have to do things like the load the environment.
+It is nice to wrap the commands in a wrapper script in case you have to do things like to load the environment.
 
 ```sh
 ufo task hi-web --command bin/migrate
