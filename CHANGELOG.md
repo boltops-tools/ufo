@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [3.5.5]
+- Merge pull request #39 from hnatt/fix-docs
+- Merge pull request #41 from tongueroo/params-template-scope
+- add cloudwatch log info for the task command
+- pass template scope to params erb evaluation
+
 ## [3.5.4]
 - Merge pull request #38 from tongueroo/docker-build-options
 - add ability to specify custom docker build options with env UFO_DOCKER_BUILD_OPTIONS variable
