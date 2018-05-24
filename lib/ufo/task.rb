@@ -1,5 +1,9 @@
+require 'memoist'
+
 module Ufo
   class Task
+    extend Memoist
+
     include Util
     include AwsService
 
@@ -35,7 +39,7 @@ module Ufo
         task_arn = resp.tasks[0].task_arn
         puts "Task ARN: #{task_arn}"
         puts "  aws ecs describe-tasks --tasks #{task_arn} --cluster #{@cluster}"
-        # todo: maybe add cw comand here also
+        cloudwatch_info(task_arn)
       end
     end
 
@@ -52,10 +56,28 @@ module Ufo
     end
 
   private
+    def cloudwatch_info(task_arn)
+      config = original_container_definition[:log_configuration]
+      container_name = original_container_definition[:name]
+
+      return unless config && config[:log_driver] == "awslogs"
+
+      log_group = config[:options]["awslogs-group"]
+      log_stream_prefix = config[:options]["awslogs-stream-prefix"]
+      task_id = task_arn.split('/').last
+      log_stream = "#{log_stream_prefix}/#{container_name}/#{task_id}"
+      # website/web/d473440a-9a0e-4262-a53d-f9e345cf2b7e
+      region = `aws configure get region`.strip rescue 'us-east-1'
+      url = "https://#{region}.console.aws.amazon.com/cloudwatch/home?region=#{region}#logEventViewer:group=#{log_group};stream=#{log_stream}"
+
+      puts "To see the task output visit CloudWatch:\n  #{url}"
+      puts "NOTE: It will take some time for the log to show up because it takes time for the task to start. Run the `aws ecs describe-tasks` above for the task status."
+    end
+
     # only using the overrides to override the container command
     def overrides
       command = @options[:command] # Thor parser ensure this is always an array
-      container_definition = get_original_container_definition
+      container_definition = original_container_definition
       {
         container_overrides: [
           {
@@ -67,7 +89,7 @@ module Ufo
       }
     end
 
-    def get_original_container_definition
+    def original_container_definition
       resp = ecs.list_task_definitions(
         family_prefix: @task_definition,
         sort: "DESC"
@@ -78,5 +100,6 @@ module Ufo
       resp = ecs.describe_task_definition(task_definition: task_name)
       container_definition = resp.task_definition.container_definitions[0].to_h
     end
+    memoize :original_container_definition
   end
 end
