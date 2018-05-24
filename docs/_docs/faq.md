@@ -9,11 +9,7 @@ Yes, Fargate is supported.  To use ufo with Fargate, you will need to adjust the
 1. The task definition json. Notably, it has the `requiresCompatibilities`, `networkMode`, and `executionRoleArn` attributes. It also moves the `cpu` and `memory` outside of the `containerDefinitions` attributes to the root as top-level attributes. For details on how to adjust the task definition refer to [Task Definitions]({% link _docs/tutorial-ufo-tasks-build.md %}).
 2. The params that get sent to the `create_service` or  `run_task` api methods. For details on how to adjust the params refer to [Params]({% link _docs/params.md %})
 
-If it's a brand new project. You can use `ufo init` with the `--launch-type fargate` option and it will generate a starter JSON file that has the right Fargate structure. More info is available at [ufo init reference](/reference/ufo-init/#fargate-support).
-
-The neat thing about Fargate is that can be an extremely cost-effective way to run one-off tasks. This blog post [Heroku vs ECS Fargate vs EC2 On-Demand vs EC2 Spot Pricing Comparison](https://blog.boltops.com/2018/04/22/heroku-vs-ecs-fargate-vs-ec2-on-demand-vs-ec2-spot-pricing-comparison) provides a relative comparison of costs.
-
----
+If it's a brand new project, you can use `ufo init` with the `--launch-type fargate` option and it will generate a starter JSON file that has the right Fargate structure. More info is available at [ufo init reference](/reference/ufo-init/#fargate-support).
 
 **Q: Can I tell ufo to use specific docker build options?**
 
@@ -79,7 +75,7 @@ Yes, this is achieved with the `--template` and `--template-mode` options when c
 
 ---
 
-**Q: How can I used syslog instead of awslogs for logging?**
+**Q: How can I use syslog instead of awslogs for logging?**
 
 Open up `.ufo/templates/main.json.erb` - this gets created as part of the [ufo init](http://ufoships.com/reference/ufo-init/) command.  Then you can adjust the ecs template definition to something like this:
 
@@ -91,7 +87,7 @@ Open up `.ufo/templates/main.json.erb` - this gets created as part of the [ufo i
 
 Here's the specific aws docs section [Specifying a Log Configuration in your Task Definition](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/using_awslogs.html#specify-log-config)
 
-Also, you might have to enable the log driver by added it the ECS_AVAILABLE_LOGGING_DRIVERS variable to your `/etc/ecs/ecs.config`. Relevant docs:
+Also, you might have to enable the log driver by adding the ECS_AVAILABLE_LOGGING_DRIVERS variable to your `/etc/ecs/ecs.config`. Relevant docs:
 
 * [Using AWS Logs](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/using_awslogs.html#enable_awslogs)
 * [ECS Agent Install](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-agent-install.html)

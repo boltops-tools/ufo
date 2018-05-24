@@ -3,7 +3,7 @@ title: Setup Ufo
 ---
 
 The easiest way to create this ufo folder is by using the `ufo init` command.  For this tutorial we'll [tongueroo/hi](https://github.com/tongueroo/hi) which is a small test sinatra app.
-Let's run the command in our newly clone project.
+Let's run the command in our newly cloned project.
 
 ```sh
 git clone https://github.com/tongueroo/hi.git

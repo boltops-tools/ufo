@@ -1,4 +1,4 @@
-# Contributing to Lono
+# Contributing to ufo
 
 Contributing is welcomed and encouraged.  We love pull requests!
 

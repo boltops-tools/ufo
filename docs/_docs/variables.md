@@ -13,7 +13,7 @@ For example, given `variables/base.rb`:
 @environment = helper.env_file(".env")
 ```
 
-You can now use `@image` in your `.ufo/templates/main.json.erb` without having to explicitly declaring them in the `.ufo/task_definitions.rb` file.  Variables are automatically made available to all templates and the `task_definition.rb` file also.
+You can now use `@image` in your `.ufo/templates/main.json.erb` without having to explicitly declare them in the `.ufo/task_definitions.rb` file.  Variables are automatically made available to all templates and the `task_definition.rb` file also.
 
 ## Layering
 
@@ -28,7 +28,7 @@ Shared variables also support a concept called layering.  The `variables/base.rb
 @environment = helper.env_file(".env")
 ```
 
-When `ufo ship` is ran with `UFO_ENV=production` he `variables/production.rb` will be evaluated and layered on top of the variables defined in `base.rb`:
+When `ufo ship` is ran with `UFO_ENV=production` the `variables/production.rb` will be evaluated and layered on top of the variables defined in `base.rb`:
 
 `.ufo/variables/production.rb`:
 

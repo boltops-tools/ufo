@@ -55,9 +55,9 @@ Ufo provides 1st class citizen access to adjust the params sent to the aws-sdk c
 * update_service - `ufo ship` calls this when the ECS service already exists.
 * run_task - `ufo task` calls this.
 
-The parameters from this `params.yml` file gets merged with params ufo generates internally.  Here's an example of where the merging happens in the source code for the run task command [task.rb](https://github.com/tongueroo/ufo/blob/90f12df035843528770122deb328d150249a25e2/lib/ufo/task.rb#L20)  Also, here's the starter [params.yml source code](https://github.com/tongueroo/ufo/blob/master/lib/template/.ufo/params.yml) for reference.
+The parameters from this `params.yml` file get merged with params ufo generates internally.  Here's an example of where the merging happens in the source code for the run task command [task.rb](https://github.com/tongueroo/ufo/blob/90f12df035843528770122deb328d150249a25e2/lib/ufo/task.rb#L20).  Also, here's the starter [params.yml source code](https://github.com/tongueroo/ufo/blob/master/lib/template/.ufo/params.yml) for reference.
 
-ERB and [shared variables]({% link _docs/variables.md %}) are available in the params file.  Noticed how ERB is used at the top of the example file to set some subnets to prevent duplication.  You can also define the subnets in your config/variables and use them in them in the params.yml file.
+ERB and [shared variables]({% link _docs/variables.md %}) are available in the params file.  Notice how ERB is used at the top of the example file to set some subnets to prevent duplication. You can also define the subnets in your config/variables and use them in them in the params.yml file.
 
 NOTE: The params.yml file does not have access to the `task_definition_name` helper method. That is only available in the `task_definitions.rb` template_definition code blocks.
 
