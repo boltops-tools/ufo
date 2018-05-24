@@ -30,7 +30,7 @@ Update the service with the task definitions in `.ufo/output` untouched.
 ufo deploy hi-web
 ```
 
-Note if you use the `ufo deploy` you should ensure that you have already push the docker image to your docker registry.  Or else the task will not be able to spin up because the docker image does not exist.  This is one of the reasons it is recommended that you use `ufo ship`.
+Note if you use the `ufo deploy` you should ensure that you have already pushed the docker image to your docker registry.  Or else the task will not be able to spin up because the docker image does not exist.  This is one of the reasons it is recommended that you use `ufo ship`.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/auto-completion.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/single-task.md %}">Next Step</a>

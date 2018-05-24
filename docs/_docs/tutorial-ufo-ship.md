@@ -27,7 +27,7 @@ If the ECS service hi-web does not yet exist, ufo will create the service for yo
 
 NOTE: If you are relying on this tool to create the cluster, you still need to associate ECS Container Instances to the cluster yourself.
 
-By convention, if the service has a container name web, you'll get prompted to create an ELB and specify a target group arn.  The ELB and target group must already exist. You can bypass the prompt and specify the target group ARN as part of the ship command or with the `--no-target-group-prompt` option.  The elb target group only gets associated with the ECS service if the service is being created for the first time.  If the service already exists then the `--target-group` parameter just gets ignored and the ECS task simply gets updated.  Example:
+By convention, if the service has a container name web, you'll get prompted to create an ELB and specify a target group ARN.  The ELB and target group must already exist. You can bypass the prompt and specify the target group ARN as part of the ship command or with the `--no-target-group-prompt` option.  The ELB target group only gets associated with the ECS service if the service is being created for the first time.  If the service already exists then the `--target-group` parameter just gets ignored and the ECS task simply gets updated.  Example:
 
 
 ```bash
@@ -95,3 +95,6 @@ Normally you run everything together in one `ufo ship` command though.  Ufo take
 
 Congratulations 🎊 You have successfully built a Docker image, register it and deployed it to AWS ECS.
 
+<a id="prev" class="btn btn-basic" href="{% link _docs/tutorial-ufo-tasks-build.md %}">Back</a>
+<a id="next" class="btn btn-primary" href="{% link _docs/tutorial-ufo-ships.md %}">Next Step</a>
+<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>

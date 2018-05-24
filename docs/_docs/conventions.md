@@ -31,13 +31,13 @@ end
 
 ## Web Role Convention
 
-By convention, if the service has a container name web, you'll get prompted to create an ELB and specify a target group arn.  If you would like to name a service with the word "web" in it without having to use an ELB target group then you can use the `--no-target-group-prompt`.  Example:
+By convention, if the service has a container named "web", you'll get prompted to create an ELB and specify a target group ARN.  If you would like to name a service with the word "web" in it without having to use an ELB target group then you can use the `--no-target-group-prompt`.  Example:
 
 ```sh
 ufo ship hi-web --no-target-group-prompt
 ```
 
-You can also bypass the prompt by specifying the target group arn as part of the command upfront. The ELB and target group must already exist.  The elb target group only gets associated when the service gets created for the first time.  If the service already exists then the `--target-group` parameter just gets ignored and the ECS task simply gets updated.  Example:
+You can also bypass the prompt by specifying the target group ARN as part of the command upfront. The ELB and target group must already exist.  The ELB target group only gets associated when the service gets created for the first time.  If the service already exists then the `--target-group` parameter just gets ignored and the ECS task simply gets updated.  Example:
 
 ```bash
 ufo ship hi-web --target-group=arn:aws:elasticloadbalancing:us-east-1:12345689:targetgroup/hi-web/12345
