@@ -23,7 +23,7 @@ Prints words for TAB auto-completion.
     ufo completion ship
     ufo completion docker
 
-To enable TAB auto-completion add the following to your profile:
+To enable, TAB auto-completion add the following to your profile:
 
     eval $(ufo completion_script)
 

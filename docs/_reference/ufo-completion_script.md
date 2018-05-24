@@ -9,7 +9,7 @@ reference: true
 
 ## Description
 
-Generates a script that can be eval'ed to setup auto-completion.
+Generates a script that can be eval to setup auto-completion.
 
 To use, add the following to your ~/.bashrc or ~/.profile
 
