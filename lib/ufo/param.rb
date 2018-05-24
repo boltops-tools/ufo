@@ -12,10 +12,14 @@ module Ufo
     def data
       upgrade_message!
 
-      result = RenderMePretty.result(@params_path)
+      result = RenderMePretty.result(@params_path, context: template_scope)
       YAML.load(result)
     end
     memoize :data
+
+    def template_scope
+      @template_scope ||= Ufo::TemplateScope.new(Ufo::DSL::Helper.new, nil)
+    end
 
     # Ufo version 3.3 to 3.4 added a concept of a .ufo/params.yml file to support
     # fargate: https://github.com/tongueroo/ufo/pull/31

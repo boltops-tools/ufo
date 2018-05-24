@@ -29,12 +29,25 @@ module Ufo
         puts "Running task with params:"
         display_params(task_options)
       end
-      resp = ecs.run_task(task_options)
+
+      resp = run_task(task_options)
       unless @options[:mute]
         task_arn = resp.tasks[0].task_arn
         puts "Task ARN: #{task_arn}"
         puts "  aws ecs describe-tasks --tasks #{task_arn} --cluster #{@cluster}"
         # todo: maybe add cw comand here also
+      end
+    end
+
+    def run_task(options)
+      ecs.run_task(options)
+    rescue Aws::ECS::Errors::ClientException => e
+      if e.message =~ /ECS was unable to assume the role/
+        puts "ERROR: #{e.class} #{e.message}".colorize(:red)
+        puts "Please double check the executionRoleArn in your task definition."
+        exit 1
+      else
+        raise
       end
     end
 
