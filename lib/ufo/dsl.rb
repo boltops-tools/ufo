@@ -1,11 +1,11 @@
 require 'ostruct'
 
 module Ufo
-  autoload :TaskDefinition, 'ufo/dsl/task_definition'
-  autoload :Outputter, 'ufo/dsl/outputter'
-  autoload :Helper, 'ufo/dsl/helper'
-
   class DSL
+    autoload :TaskDefinition, 'ufo/dsl/task_definition'
+    autoload :Outputter, 'ufo/dsl/outputter'
+    autoload :Helper, 'ufo/dsl/helper'
+
     def initialize(template_definitions_path, options={})
       @template_definitions_path = template_definitions_path
       @options = options
