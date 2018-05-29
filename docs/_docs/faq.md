@@ -4,12 +4,12 @@ title: FAQ
 
 **Q: Is AWS ECS Fargate supported?**
 
-Yes, Fargate is supported.  To use ufo with Fargate, you will need to adjust the template in `.ufo/templates` to use a structure support by Fargate.  There are 2 key items to adjust:
+Yes, Fargate is supported.  To use ufo with Fargate, you will need to adjust the template in `.ufo/templates` to a structure supported by Fargate.  There are 2 key items to adjust:
 
-1. The task definition json. Notably, it has the `requiresCompatibilities`, `networkMode`, and `executionRoleArn` attributes. It also moves the `cpu` and `memory` outside of the `containerDefinitions` attributes to the root as top-level attributes. For details on how to adjust the task definition refer to [Task Definitions]({% link _docs/tutorial-ufo-tasks-build.md %}).
-2. The params that get sent to the `create_service` or  `run_task` api methods. For details on how to adjust the params refer to [Params]({% link _docs/params.md %})
+1. The task definition JSON. Notably, the JSON structure has the `requiresCompatibilities`, `networkMode`, and `executionRoleArn` attributes. The `cpu` and `memory` attributes also move outside of the `containerDefinitions` level to the top-level attributes. For details on how to adjust the task definition refer to [Task Definitions]({% link _docs/tutorial-ufo-tasks-build.md %}).
+2. The params that get sent to the `create_service` or  `run_task` API methods. For details on how to adjust the params refer to [Params]({% link _docs/params.md %})
 
-If it's a brand new project, you can use `ufo init` with the `--launch-type fargate` option and it will generate a starter JSON file that has the right Fargate structure. More info is available at [ufo init reference](/reference/ufo-init/#fargate-support).
+If it's a brand new project, you can use `ufo init` with the `--launch-type fargate` option and it will generate a starter task definition JSON file that has the right Fargate structure. More info is available at [ufo init reference](/reference/ufo-init/#fargate-support).
 
 **Q: Can I tell ufo to use specific docker build options?**
 
