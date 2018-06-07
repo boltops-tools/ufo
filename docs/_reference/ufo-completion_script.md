@@ -11,7 +11,7 @@ reference: true
 
 Generates a script that can be eval to setup auto-completion.
 
-To use, add the following to your ~/.bashrc or ~/.profile
+To use, add the following to your `~/.bashrc` or `~/.profile`
 
     eval $(ufo completion_script)
 
