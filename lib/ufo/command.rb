@@ -42,6 +42,41 @@ module Ufo
 
         super
       end
+
+      # Override command_help to include the description at the top of the
+      # long_description.
+      def command_help(shell, command_name)
+        meth = normalize_command_name(command_name)
+        command = all_commands[meth]
+        alter_command_description(command)
+        super
+      end
+
+      def alter_command_description(command)
+        return unless command
+
+        # Add description to beginning of long_description
+        long_desc = if command.long_description
+            "#{command.description}\n\n#{command.long_description}"
+          else
+            command.description
+          end
+
+        # add reference url to end of the long_description
+        unless website.empty?
+          full_command = [command.ancestor_name, command.name].compact.join('-')
+          url = "#{website}/reference/ufo-#{full_command}"
+          long_desc += "\n\nHelp also available at: #{url}"
+        end
+
+        command.long_description = long_desc
+      end
+      private :alter_command_description
+
+      # meant to be overriden
+      def website
+        "http://ufoships.com"
+      end
     end
   end
 end

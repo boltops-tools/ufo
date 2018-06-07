@@ -9,7 +9,6 @@ doc/
 InstalledFiles
 lib/bundler/man
 pkg
-pkg
 rdoc
 spec/fixtures/hi
 spec/fixtures/home
