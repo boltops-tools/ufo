@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [3.5.6]
+- upgrade ufo with cli-template, link cli help to website reference help
+
 ## [3.5.5]
 - Merge pull request #39 from hnatt/fix-docs
 - Merge pull request #41 from tongueroo/params-template-scope
