@@ -65,11 +65,26 @@ module Ufo
     end
 
     def upsert_gitignore
-      return unless File.exist?(".gitignore")
-      append_to_file ".gitignore", <<-EOL
+      text =<<-EOL
 .ufo/output
 .ufo/data
 EOL
+      if File.exist?(".gitignore")
+        append_to_file ".gitignore", text
+      else
+        create_file ".gitignore", text
+      end
+    end
+
+    def upsert_dockerignore
+      text =<<-EOL
+.ufo
+EOL
+      if File.exist?(".dockerignore")
+        append_to_file ".dockerignore", text
+      else
+        create_file ".dockerignore", text
+      end
     end
 
     def user_message

@@ -44,6 +44,8 @@ module Ufo
     end
 
     def run_task(options)
+      puts "Equivalent aws cli command:"
+      puts "  aws ecs run-task --cluster #{@cluster} --task-definition #{options[:task_definition]}".colorize(:green)
       ecs.run_task(options)
     rescue Aws::ECS::Errors::ClientException => e
       if e.message =~ /ECS was unable to assume the role/

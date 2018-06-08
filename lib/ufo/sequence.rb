@@ -21,6 +21,8 @@ module Ufo
 
       return unless @options[:launch_type] == "fargate"
       # execution role arn required for fargate
+      puts "For fargate ECS tasks an ECS Task Execution IAM Role is required. "
+      puts "More details here: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_execution_IAM_role.html"
       print "Please provide a execution role arn role for the ecs task: "
       @execution_role_arn = $stdin.gets.strip
     end

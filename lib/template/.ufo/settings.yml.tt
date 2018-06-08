@@ -9,7 +9,7 @@ base:
   # defaults when an new ECS service is created by ufo ship
 
 development:
-  # cluster: dev
+  # cluster: development
   # When you have AWS_PROFILE set to one of these values, ufo will switch to the desired
   # environment. This prevents you from switching AWS_PROFILE, forgetting to
   # also switch UFO_ENV, and accidentally deploying to production vs development.
@@ -18,6 +18,6 @@ development:
   #   - dev_profile2
 
 production:
-  # cluster: prod
+  # cluster: production
   # aws_profiles:
   #   - prod_profile
