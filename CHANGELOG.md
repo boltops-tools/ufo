@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [3.5.7]
+- display aws ecs run-task command
+- fix ufo init in help menu
+
 ## [3.5.6]
 - upgrade ufo with cli-template, link cli help to website reference help
 
