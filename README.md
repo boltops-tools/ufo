@@ -8,9 +8,7 @@
 [![Join the chat at https://gitter.im/tongueroo/ufo](https://badges.gitter.im/tongueroo/ufo.svg)](https://gitter.im/tongueroo/ufo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Support](https://img.shields.io/badge/get-support-blue.svg)](https://boltops.com?utm_source=badge&utm_medium=badge&utm_campaign=ufo)
 
-Ufo is an tool that eases the building and deployment of docker images to [AWS ECS](https://aws.amazon.com/ecs/) super easy.
-
-The main command is `ufo ship`.  Here's summary of what it does:
+Ufo is an tool that eases the building and deployment of docker images to [AWS ECS](https://aws.amazon.com/ecs/).  The main command is `ufo ship`.  Here's summary of what it does:
 
 1. Builds a docker image. 
 2. Generates and registers the ECS template definition. 
