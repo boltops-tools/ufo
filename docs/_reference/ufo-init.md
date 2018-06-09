@@ -5,7 +5,7 @@ reference: true
 
 ## Usage
 
-    ufo new --app=APP --image=IMAGE
+    ufo init --app=APP --image=IMAGE
 
 ## Description
 
