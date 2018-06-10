@@ -13,8 +13,8 @@ ufo ship hi-web
 By convention, ufo will ship the docker container to an ECS cluster with the same value as UFO_ENV, which defaults to development.  So the command above is the same as:
 
 ```sh
-ufo ship hi-web --cluster production
-UFO_ENV=production ufo ship hi-web --cluster prod
+ufo ship hi-web --cluster development
+UFO_ENV=development ufo ship hi-web
 ```
 
 When you run `ufo ship hi-web`:
