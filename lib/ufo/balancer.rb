@@ -5,7 +5,7 @@ module Ufo
     def self.cli_options
       [
         [:force, type: :boolean, desc: "Bypass overwrite are you sure prompt for existing files."],
-        [:defaults, type: :boolean, desc: "Flag to use default subnets and vpc"],
+        [:default_vpc, type: :boolean, desc: "Flag to use default vpc and subnets"],
         [:subnets, type: :array, default: ["subnet-REPLACE-ME"], desc: "Subnets"],
         [:security_groups, type: :array, default: [], desc: "Security groups"],
         [:vpc_id, default: "vpc-REPLACE-ME", desc: "Vpc id"],

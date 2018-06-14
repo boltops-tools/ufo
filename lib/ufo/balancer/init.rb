@@ -15,7 +15,7 @@ module Ufo
     end
 
     def handle_default_option
-      return unless @options[:defaults]
+      return unless @options[:default_vpc]
 
       resp = ec2.describe_vpcs(filters: [
         {name: "isDefault", values: ["true"]}
