@@ -6,6 +6,7 @@ require 'fileutils'
 require 'render_me_pretty'
 
 module Ufo
+  autoload :Balancer, 'ufo/balancer'
   autoload :Core, 'ufo/core'
   autoload :AwsService, 'ufo/aws_service'
   autoload :Command, 'ufo/command'

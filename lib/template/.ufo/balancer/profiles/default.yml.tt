@@ -1,0 +1,26 @@
+---
+# https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/ElasticLoadBalancingV2/Client.html
+# The keys correspond to methods called in the aws-sdk
+create_load_balancer:
+  subnets: # at least 2 subnets required
+<% options[:subnets].each do |subnet| -%>
+    - <%= subnet %>
+<% end -%>
+<% if options[:security_groups].empty? -%>
+  # security_groups:
+  #   - sg-example
+<% else -%>
+  security_groups: # optional thanks to the automatically created security
+<% options[:security_groups].each do |security_group| -%>
+    - <%= security_group %>
+<% end -%>
+<% end -%>
+create_target_group:
+  # vpc_id is required
+  vpc_id: <%= options[:vpc_id] %>
+  # name: ... # automatically named, matches the load balancer name. override here
+  protocol: HTTP # required
+  port: 80 # required
+create_listener:
+  protocol: HTTP # required
+  port: 80 # required

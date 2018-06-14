@@ -1,8 +1,5 @@
 module Ufo
   class Init < Sequence
-    add_runtime_options! # force, pretend, quiet, skip options
-      # https://github.com/erikhuda/thor/blob/master/lib/thor/actions.rb#L49
-
     # Ugly, this is how I can get the options from to match with this Thor::Group
     def self.cli_options
       [

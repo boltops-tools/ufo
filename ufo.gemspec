@@ -29,6 +29,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "plissken"
   spec.add_dependency "render_me_pretty"
   spec.add_dependency "thor"
+  spec.add_dependency "balancer"
 
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "byebug"
