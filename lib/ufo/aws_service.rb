@@ -6,6 +6,10 @@ require "aws-sdk-elasticloadbalancingv2"
 
 module Ufo
   module AwsService
+    def ec2
+      @ec2 ||= Aws::EC2::Client.new
+    end
+
     def ecs
       @ecs ||= Aws::ECS::Client.new
     end
