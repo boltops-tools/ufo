@@ -24,3 +24,5 @@ create_target_group:
 create_listener:
   protocol: HTTP # required
   port: 80 # required
+security_group: # can be overriden by --sg-cidr option
+  cidr: "0.0.0.0/0"

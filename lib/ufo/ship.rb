@@ -17,7 +17,6 @@ module Ufo
       @service = service
       @task_definition = task_definition
       @options = options
-      @target_group_prompt = @options[:target_group_prompt].nil? ? true : @options[:target_group_prompt]
       @cluster = @options[:cluster] || default_cluster
       @wait_for_deployment = @options[:wait].nil? ? true : @options[:wait]
       @stop_old_tasks = @options[:stop_old_tasks].nil? ? false : @options[:stop_old_tasks]
@@ -171,61 +170,6 @@ module Ufo
 
       file_path = "file://#{rel_path}"
       puts "  aws ecs #{action}-service --cli-input-json #{file_path}".colorize(:green)
-    end
-
-    # Returns the target_group.
-    # Will only allow an target_group and the service to use a load balancer
-    # if the container name is "web".
-    def target_group_prompt(container)
-      return if @options[:noop]
-      # If a target_group is provided at the CLI return it right away.
-      return @options[:target_group] if @options[:target_group]
-      # Allows skipping the target group prompt.
-      return unless @target_group_prompt
-
-      # If the container name is web then it is assume that this is a web service that
-      # needs a target group/elb.
-      return unless container[:name] == 'web'
-
-      puts "Would you like this service to be associated with an Application Load Balancer?"
-      puts "If yes, please provide the Application Load Balancer Target Group ARN."
-      puts "If no, simply press enter."
-      print "Target Group ARN: "
-
-      arn = $stdin.gets.strip
-      until arn == '' or validate_target_group(arn)
-        puts "You have provided an invalid Application Load Balancer Target Group ARN: #{arn}."
-        puts "It should be in the form: arn:aws:elasticloadbalancing:us-east-1:123456789:targetgroup/target-name/2378947392743"
-        puts "Please try again or skip adding a Target Group by just pressing enter."
-        print "Target Group ARN: "
-        arn = $stdin.gets.strip
-      end
-      arn
-    end
-
-    def validate_target_group(arn)
-      elb.describe_target_groups(target_group_arns: [arn])
-      true
-    rescue Aws::ElasticLoadBalancingV2::Errors::ValidationError
-      false
-    end
-
-    # assume only 1 container_definition
-    # assume only 1 port mapping in that container_defintion
-    def container_info(task_definition)
-      Ufo.check_task_definition!(task_definition)
-      task_definition_path = ".ufo/output/#{task_definition}.json"
-      task_definition = JSON.load(IO.read(task_definition_path))
-      container_def = task_definition["containerDefinitions"].first
-      mappings = container_def["portMappings"]
-      if mappings
-        map = mappings.first
-        port = map["containerPort"]
-      end
-      {
-        name: container_def["name"],
-        port: port
-      }
     end
 
     def find_ecs_service

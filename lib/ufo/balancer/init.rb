@@ -11,7 +11,7 @@ module Ufo
       class_option *o
     end
     def self.source_paths
-      [File.expand_path("../../../template/.ufo/balancer", __FILE__)]
+      [File.expand_path("../../../template/.ufo/.balancer", __FILE__)]
     end
 
     def handle_default_option
@@ -32,7 +32,7 @@ module Ufo
     end
 
     def starter_files
-      directory ".", ".ufo/balancer"
+      directory ".", ".ufo/.balancer"
     end
   end
 end

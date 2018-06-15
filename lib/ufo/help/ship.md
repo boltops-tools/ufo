@@ -24,7 +24,29 @@ The command has a decent amount of options, you can see the options available wi
 
 As you can see there are plenty of options for `ufo ship`.  Let's demonstrate usage of them in a few examples.
 
-### Load Balancer Target Group
+### Load Balancer
+
+ECS services can be assocaited with an Load Balancer upon creation. Ufo can automatically create a load balancer for you if you'd like.  The options:
+
+1. ufo automatically creates the ELB
+2. you provide an target group from an existing ELB
+3. no ELB is created and associated
+
+Here are examples for each of them:
+
+    # Use the .ufo/balancer/profiles/default.yml profile
+    # to create the ELB
+    ufo ship hi-web --elb=default
+
+    # use target group from pre-created ELB
+    ufo ship hi-web --target-group=arn:aws:elasticloadbalancing:us-east-1:123456789:targetgroup/target-name/2378947392743
+
+    # Disable creating elb
+    ufo ship hi-web --elb=false
+
+By convention if the container name is 'web' in the task definition, then it will automatically prompt you to create an elb. Otherwise, you must specific the `--elb` option to create a ELB.
+
+### Load Balancer Existing Target Group
 
 When you are deploying to a service with the word 'web' in it, ufo assumes that this is a web service that uses a load balancer in front of it.  This is also covered a in the [Conventions]({% link _docs/conventions.md %}) page.  The deploy will prompt you for the ELB `--target-group`  if the ECS does not yet exist.  For non-web container the `--target-group` option gets ignored.  The prommpt can be bypassed by specifying a valid `--target-group` option or specifying the `---no-target-group-prompt` option.
 
