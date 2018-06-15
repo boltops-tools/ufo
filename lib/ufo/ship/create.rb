@@ -42,7 +42,7 @@ class Ufo::Ship
         }
         options = options.merge(default_params[:create_service])
         unless target_group.nil? || target_group.empty?
-          add_load_balancer!(container, options, target_group)
+          add_load_existing_balancer!(container, options, target_group)
         end
 
         puts "Creating ECS service with params:"
@@ -59,7 +59,7 @@ class Ufo::Ship
     # Only support Application Load Balancer
     # Think there is an AWS bug that complains about not having the LB
     # name but you cannot pass both a LB Name and a Target Group.
-    def add_load_balancer!(container, options, target_group)
+    def add_load_existing_balancer!(container, options, target_group)
       options.merge!(
         load_balancers: [
           {
