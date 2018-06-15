@@ -47,6 +47,13 @@ module Ufo
         service: @service
       )
       puts "#{@service} service has been scaled down to 0 and destroyed." unless @options[:mute]
+
+      destroy_load_balancer
+    end
+
+    def destroy_load_balancer
+      balancer = ::Balancer::Destroy.new(name: @service)
+      balancer.run
     end
 
     def are_you_sure?
