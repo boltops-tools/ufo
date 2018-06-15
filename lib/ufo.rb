@@ -5,6 +5,10 @@ require 'colorize'
 require 'fileutils'
 require 'render_me_pretty'
 
+# adding balancer as submodule for now
+$:.unshift(File.expand_path('../../vendor/balancer/lib', __FILE__))
+require 'balancer'
+
 module Ufo
   autoload :Balancer, 'ufo/balancer'
   autoload :Core, 'ufo/core'
