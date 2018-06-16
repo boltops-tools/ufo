@@ -43,10 +43,13 @@ class Ufo::Ship
         }
         options = options.merge(default_params[:create_service])
 
-
         unless target_group.nil? || target_group.empty?
           add_load_existing_balancer!(container, options, target_group)
         end
+
+        # auto created security group
+        security_group.create
+        options = security_group.add_security_group_option(options)
 
         puts "Creating ECS service with params:"
         display_params(options)

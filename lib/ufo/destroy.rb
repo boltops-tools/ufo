@@ -2,6 +2,7 @@ module Ufo
   class Destroy
     include Util
     include AwsService
+    include SecurityGroup::Helper
 
     def initialize(service, options={})
       @service = service
@@ -49,11 +50,18 @@ module Ufo
       puts "#{@service} service has been scaled down to 0 and destroyed." unless @options[:mute]
 
       destroy_load_balancer
+
+      destroy_security_group
     end
 
     def destroy_load_balancer
       balancer = ::Balancer::Destroy.new(name: @service)
       balancer.run
+    end
+
+    def destroy_security_group
+      # auto created security group
+      security_group.destroy
     end
 
     def are_you_sure?

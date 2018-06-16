@@ -57,7 +57,7 @@ module Ufo
       if @options[:fargate_security_groups] && !@options[:fargate_security_groups].empty?
         @fargate_security_groups = @options[:fargate_security_groups]
       else
-        @fargate_security_groups = [network.security_group_id]
+        @fargate_security_groups = ["auto"]
       end
     end
 
