@@ -47,17 +47,7 @@ Here are examples for each of them:
     # Disable creating elb:
     ufo ship hi-web --elb=false
 
-### Load Balancer Conventions
-
-By convention, if the container name is 'web' in the task definition. If the ECS service does not yet exist, the deploy will prompt you for the ELB target group. This is also covered a in the [Conventions]({% link _docs/conventions.md %}) page.  Otherwise, you must specify the `--elb` option to create an ELB.
-
-For non-web container the `--elb` option gets ignored.  The prompt can be bypassed with `--elb=false`.
-
-    ufo ship hi-web --elb=false
-
-Or if you would like to specify the target-group in a non-prompt mode you can use the `--elb` option to bypass the prompt.
-
-    ufo ship hi-web --elb=arn:aws:elasticloadbalancing:us-east-1:12345689:targetgroup/hi-web/12345
+More info available at the [load balancer docs](https://ufoships.com/docs/load-balancer/).
 
 ### Deploying Task Definition without Docker Build
 
