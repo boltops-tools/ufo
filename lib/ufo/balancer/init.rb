@@ -7,7 +7,7 @@ module Ufo
       # https://github.com/erikhuda/thor/blob/master/lib/thor/actions.rb#L49
 
     # Interesting, when defining the options in this class it screws up the ufo balance -h menu
-    Ufo::Balancer.cli_options.each do |o|
+    Balancer.cli_options.each do |o|
       class_option *o
     end
     def self.source_paths

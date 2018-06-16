@@ -30,7 +30,7 @@ class Ufo::Ship
       puts "This service #{@service.colorize(:green)} does not yet exist in the #{@cluster.colorize(:green)} cluster.  This deploy will create it."
       container = container_info(@task_definition)
 
-     target_group = target_group_prompt(container)
+     target_group = determine_target_group(container)
 
       message = "#{@service} service created on #{@cluster} cluster"
       if @options[:noop]
@@ -80,11 +80,11 @@ class Ufo::Ship
     # Returns the target_group.
     # Will only allow an target_group and the service to use a load balancer
     # if the container name is "web".
-    def target_group_prompt(container)
+    def determine_target_group(container)
       return if @options[:noop]
       # If a target_group is provided at the CLI return it right away.
       return @options[:target_group] if @options[:target_group]
-      # Allows skipping the target group prompt.
+      # Allows skipping the target group prompt. Wont use or create a load balancer.
       prompt = @options[:target_group_prompt].nil? ? true : @options[:target_group_prompt]
       return unless prompt
 

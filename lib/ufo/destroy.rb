@@ -13,24 +13,30 @@ module Ufo
     def bye
       unless are_you_sure?
         puts "Phew, that was close"
-        exit
+        return
       end
 
+      destroy_ecs_service
+      destroy_load_balancer
+      destroy_security_group
+    end
+
+    def destroy_ecs_service
       clusters = ecs.describe_clusters(clusters: [@cluster]).clusters
       if clusters.size < 1
         puts "The #{@cluster} cluster does not exist so there can be no service on that cluster to delete."
-        exit
+        return
       end
 
       services = ecs.describe_services(cluster: @cluster, services: [@service]).services
       service = services.first
       if service.nil?
         puts "Unable to find #{@service} service to delete it."
-        exit
+        return
       end
       if service.status != "ACTIVE"
         puts "The #{@service} service is not ACTIVE so no need to delete it."
-        exit
+        return
       end
 
       # changes desired size to 0
@@ -48,10 +54,6 @@ module Ufo
         service: @service
       )
       puts "#{@service} service has been scaled down to 0 and destroyed." unless @options[:mute]
-
-      destroy_load_balancer
-
-      destroy_security_group
     end
 
     def destroy_load_balancer

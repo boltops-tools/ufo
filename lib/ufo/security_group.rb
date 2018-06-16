@@ -13,7 +13,7 @@ module Ufo
 
     # delegate to Balancer SecurityGroup when possible to leverage common code
     def balancer_security_group
-      ::Balancer::SecurityGroup.new(@options.dup.merge(mute: false, name: @service))
+      ::Balancer::SecurityGroup.new(@options.dup.merge(mute: true, name: @service))
     end
     memoize :balancer_security_group
 
