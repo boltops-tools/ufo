@@ -3,6 +3,7 @@ title: CLI Reference
 ---
 {% include reference.md %}
 
+* [ufo balancer]({% link _reference/ufo-balancer.md %})
 * [ufo completion]({% link _reference/ufo-completion.md %})
 * [ufo completion_script]({% link _reference/ufo-completion_script.md %})
 * [ufo deploy]({% link _reference/ufo-deploy.md %})

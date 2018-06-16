@@ -38,7 +38,7 @@ For this example we will use [tongueroo/hi](https://github.com/tongueroo/hi) whi
     ufo init --image 123456789012.dkr.ecr.us-west-2.amazonaws.com/myimage --app demo
     ufo init --image tongueroo/hi --app hi --launch-type fargate --execution-role-arn arn:aws:iam::123456789012:role/ecsTaskExecutionRole
 
-## Options: app and image
+## Important options
 
 The `app` is that application name that you want to show up on the ECS dashboard.  It is encouraged to have the app name be a single word.
 
@@ -47,6 +47,11 @@ The `image` is the base portion of image name that will be pushed to the docker 
     tongueroo/hi => tongueroo/hi:ufo-2018-02-08T21-04-02-3c86158
 
 The generated `tongueroo/hi:ufo-2018-02-08T21-04-02-3c86158` image name gets pushed to the docker registry.
+
+The `--vpc-id` option is optional but very useful. If not specified then ufo will use the default vpc for the network settings like subnets and security groups.
+
+* .ufo/.balancer/profiles/default.yml
+* .ufo/params.yml
 
 ## Directory Structure
 
@@ -109,9 +114,11 @@ If you would like to use a local template that is not on GitHub, then created a 
 [--execution-role-arn=EXECUTION_ROLE_ARN]  # execution role arn used by tasks, required for fargate.
 [--template=TEMPLATE]                      # Custom template to use.
 [--template-mode=TEMPLATE_MODE]            # Template mode: replace or additive.
-[--verbose], [--no-verbose]
-[--mute], [--no-mute]
-[--noop], [--no-noop]
+[--vpc-id=VPC_ID]                          # Vpc id: for fargate params.yml and elb balancer profile.
+[--fargate-security-groups=one two three]  # Fargate security groups.
+[--verbose], [--no-verbose]                
+[--mute], [--no-mute]                      
+[--noop], [--no-noop]                      
 [--cluster=CLUSTER]                        # Cluster.  Overrides ufo/settings.yml.
 ```
 

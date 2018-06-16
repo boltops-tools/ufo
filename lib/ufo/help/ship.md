@@ -26,35 +26,38 @@ As you can see there are plenty of options for `ufo ship`.  Let's demonstrate us
 
 ### Load Balancer
 
-ECS services can be assocaited with an Load Balancer upon creation. Ufo can automatically create a load balancer for you if you'd like.  The options:
+ECS services can be associated with a Load Balancer upon creation. Ufo can automatically create a load balancer.  The options:
 
-1. ufo automatically creates the ELB
-2. you provide an target group from an existing ELB
-3. no ELB is created and associated
+1. Automatically create the ELB.
+2. Provide a target group from an existing ELB.
+3. No ELB is created and associated.
 
 Here are examples for each of them:
 
-    # Use the .ufo/balancer/profiles/default.yml profile
-    # to create the ELB
+    # Use different profiles to create the ELB:
+    #  .ufo/balancer/profiles/default.yml
+    #  .ufo/balancer/profiles/production.yml
     ufo ship hi-web --elb=default
+    ufo ship hi-web --elb=production
 
-    # use target group from pre-created ELB
-    ufo ship hi-web --target-group=arn:aws:elasticloadbalancing:us-east-1:123456789:targetgroup/target-name/2378947392743
+    # Use existing target group from pre-created ELB:
+    ufo ship hi-web --elb=arn:aws:elasticloadbalancing:us-east-1:123456789:targetgroup/target-name/2378947392743
+    ufo ship hi-web --target-group=arn:aws:elasticloadbalancing:us-east-1:123456789:targetgroup/target-name/2378947392743 # legacy, currently works
 
-    # Disable creating elb
+    # Disable creating elb:
     ufo ship hi-web --elb=false
 
-By convention if the container name is 'web' in the task definition, then it will automatically prompt you to create an elb. Otherwise, you must specific the `--elb` option to create a ELB.
+### Load Balancer Conventions
 
-### Load Balancer Existing Target Group
+By convention, if the container name is 'web' in the task definition. If the ECS service does not yet exist, the deploy will prompt you for the ELB target group. This is also covered a in the [Conventions]({% link _docs/conventions.md %}) page.  Otherwise, you must specify the `--elb` option to create an ELB.
 
-When you are deploying to a service with the word 'web' in it, ufo assumes that this is a web service that uses a load balancer in front of it.  This is also covered a in the [Conventions]({% link _docs/conventions.md %}) page.  The deploy will prompt you for the ELB `--target-group`  if the ECS does not yet exist.  For non-web container the `--target-group` option gets ignored.  The prommpt can be bypassed by specifying a valid `--target-group` option or specifying the `---no-target-group-prompt` option.
+For non-web container the `--elb` option gets ignored.  The prompt can be bypassed with `--elb=false`.
 
-    ufo ship hi-web --no-target-group-prompt
+    ufo ship hi-web --elb=false
 
-Or if you would like to specify the target-group upfront and not be bother with the prompted later you can use the `--target-group` option.
+Or if you would like to specify the target-group in a non-prompt mode you can use the `--elb` option to bypass the prompt.
 
-    ufo ship hi-web --target-group=arn:aws:elasticloadbalancing:us-east-1:12345689:targetgroup/hi-web/12345
+    ufo ship hi-web --elb=arn:aws:elasticloadbalancing:us-east-1:12345689:targetgroup/hi-web/12345
 
 ### Deploying Task Definition without Docker Build
 

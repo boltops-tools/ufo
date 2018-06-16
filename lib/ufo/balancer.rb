@@ -5,10 +5,10 @@ module Ufo
     def self.cli_options
       [
         [:force, type: :boolean, desc: "Bypass overwrite are you sure prompt for existing files."],
-        [:default_vpc, type: :boolean, desc: "Flag to use default vpc and subnets"],
-        [:subnets, type: :array, default: ["subnet-REPLACE-ME"], desc: "Subnets"],
-        [:security_groups, type: :array, default: [], desc: "Security groups"],
-        [:vpc_id, default: "vpc-REPLACE-ME", desc: "Vpc id"],
+        [:launch_type, desc: "Launch type: ec2 or fargate."],
+        [:subnets, type: :array, desc: "Subnets"],
+        [:security_groups, type: :array, desc: "Security groups"],
+        [:vpc_id, desc: "Vpc id"],
       ]
     end
 
@@ -16,7 +16,7 @@ module Ufo
       option *o
     end
 
-    desc "init", "Creates balancer starter files."
+    desc "init", "Creates balancer starter file."
     long_desc Help.text("balancer:init")
     def init
       Init.start

@@ -30,6 +30,7 @@ module Ufo
   autoload :Param, 'ufo/param'
   autoload :TemplateScope, 'ufo/template_scope'
   autoload :SecurityGroup, 'ufo/security_group'
+  autoload :NetworkSetting, 'ufo/network_setting'
 
   autoload :Docker, 'ufo/docker'
   autoload :Ecr, 'ufo/ecr'
@@ -42,4 +43,6 @@ module Ufo
   extend Core
 end
 
-Balancer.set_profile(Ufo.settings["balancer_profile"]) unless ENV['BALANCER_PROFILE']
+if File.exist?("#{Ufo.root}/.ufo/settings.yml") && !ENV['BALANCER_PROFILE']
+  Balancer.set_profile(Ufo.settings["balancer_profile"])
+end

@@ -115,7 +115,7 @@ For #3, type 'no'
       case answer
       when '', 'yes' # default is to create an ELB
         arn = create_load_balancer # returns target_group_arn
-      when 'none', 'no'
+      when 'none', 'no', 'false'
         return nil
       when /arn:aws:elasticloadbalancing/
         arn = answer

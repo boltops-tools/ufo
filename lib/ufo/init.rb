@@ -1,5 +1,7 @@
 module Ufo
   class Init < Sequence
+    include NetworkSetting
+
     # Ugly, this is how I can get the options from to match with this Thor::Group
     def self.cli_options
       [
@@ -47,18 +49,8 @@ module Ufo
       FileUtils.cd(dest)
     end
 
-    # for balancer default profile
     def set_network_options
-      network = ::Balancer::Network.new(@options[:vpc_id])
-      @options = @options.dup
-      @options[:vpc_id] = network.vpc_id
-      @options[:subnets] = network.subnet_ids
-      @options[:security_groups] = [network.security_group_id] # used in balancer profile and params.yml for fargate
-      if @options[:fargate_security_groups] && !@options[:fargate_security_groups].empty?
-        @fargate_security_groups = @options[:fargate_security_groups]
-      else
-        @fargate_security_groups = ["auto"]
-      end
+      configure_network_settings
     end
 
     def init_files

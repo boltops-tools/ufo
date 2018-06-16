@@ -1,7 +1,10 @@
 ## Examples
 
-    ufo balancer init
-    ufo balancer init --subnets subnet-aaa subnet-bbb --vpc-id vpc-123
-    ufo balancer init --default-vpc
+    ufo balancer init # will use default vpc and subnets
+    ufo balancer init --vpc-id vpc-123
+    ufo balancer init --vpc-id vpc-123 --subnets subnet-aaa subnet-bbb
+    ufo balancer init --launch-type fargate
 
-The `--default-vpc` option will set the `--subnets` and `--vpc-id` option to the default of the region you are in.  This spares you from having to look up the default values manually.
+If the `--vpc-id` option but the `--subnets` is not, then ufo generates files with subnets from the specified vpc id.
+
+The `--launch-type fargate` option generates files with the proper fargate parameters.

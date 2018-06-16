@@ -42,16 +42,7 @@ Congratulations, you have successfully used ufo to deploy to an ECS service.
 
 ## Load Balancer Support
 
-Ufo can also create a load balancer as part of creating the ECS service if you wish. Example:
-
-    ufo ship hi-web --elb=default
-    ufo ship hi-web --elb=profile2
-
-Underneath the hood, ufo uses the [balancer](https://github.com/tongueroo/balancer) gem, to create the load balancer.  You can run `ufo balancer init` to initialize a balancer `.ufo/balancer/profiles/default.yml` profile like so:
-
-    ufo balancer init --subnets subnet-aaa subnet-bbb --vpc-id vpc-123
-
-Ufo uses this profile to create the elb.
+Ufo can also create a load balancer as part of creating the ECS service if you wish. Underneath the hood, ufo uses the [balancer](https://github.com/tongueroo/balancer) gem, to create the load balancer.  More information can be found at the [load balancer support docs](http://ufoships.com/docs/load-balancer/).
 
 ## Articles
 
