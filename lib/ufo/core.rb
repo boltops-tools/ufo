@@ -3,6 +3,8 @@ require 'yaml'
 
 module Ufo
   module Core
+    extend Memoist
+
     def check_task_definition!(task_definition)
       task_definition_path = "#{Ufo.root}/.ufo/output/#{task_definition}.json"
       unless File.exist?(task_definition_path)
@@ -25,6 +27,11 @@ module Ufo
       ufo_env = ENV['UFO_ENV'] if ENV['UFO_ENV'] # highest precedence
       @@env = ufo_env
     end
+
+    def settings
+      Setting.new.data
+    end
+    memoize :settings
 
     private
     # Do not use the Setting class to load the profile because it can cause an

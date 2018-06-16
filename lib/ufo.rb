@@ -42,3 +42,4 @@ module Ufo
   extend Core
 end
 
+Balancer.set_profile(Ufo.settings["balancer_profile"]) unless ENV['BALANCER_PROFILE']
