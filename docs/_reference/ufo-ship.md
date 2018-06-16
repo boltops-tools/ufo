@@ -57,7 +57,7 @@ Here are examples for each of them:
     ufo ship hi-web --elb=arn:aws:elasticloadbalancing:us-east-1:123456789:targetgroup/target-name/2378947392743
     ufo ship hi-web --target-group=arn:aws:elasticloadbalancing:us-east-1:123456789:targetgroup/target-name/2378947392743 # legacy, currently works
 
-    # Disable creating elb:
+    # Disable creating elb and prompt:
     ufo ship hi-web --elb=false
 
 More info available at the [load balancer docs](http://ufoships.com/docs/load-balancer/).
@@ -108,9 +108,9 @@ If you are using DockerHub or another registry, ufo does not automatically clean
 [--stop-old-tasks], [--no-stop-old-tasks]            # Stop old tasks after waiting for deploying to complete
 [--ecr-keep=N]                                       # ECR specific cleanup of old images.  Specifies how many images to keep.  Only runs if the images are ECR images. Defaults keeps all images.
 [--elb=ELB]                                          # ELB balancer profile to use
-[--verbose], [--no-verbose]                          
-[--mute], [--no-mute]                                
-[--noop], [--no-noop]                                
+[--verbose], [--no-verbose]
+[--mute], [--no-mute]
+[--noop], [--no-noop]
 [--cluster=CLUSTER]                                  # Cluster.  Overrides ufo/settings.yml.
 ```
 

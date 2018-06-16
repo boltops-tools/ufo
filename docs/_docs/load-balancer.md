@@ -22,7 +22,7 @@ Here are examples for each of them:
     ufo ship hi-web --elb=arn:aws:elasticloadbalancing:us-east-1:123456789:targetgroup/target-name/2378947392743
     ufo ship hi-web --target-group=arn:aws:elasticloadbalancing:us-east-1:123456789:targetgroup/target-name/2378947392743 # legacy, currently works
 
-    # Disable creating elb:
+    # Disable creating elb and prompt:
     ufo ship hi-web --elb=false
 
 ## Balancer Profiles
