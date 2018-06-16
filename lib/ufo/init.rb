@@ -10,6 +10,8 @@ module Ufo
         [:execution_role_arn, desc: "execution role arn used by tasks, required for fargate."],
         [:template, desc: "Custom template to use."],
         [:template_mode, desc: "Template mode: replace or additive."],
+        [:vpc_id, desc: "Vpc id: for fargate params.yml and elb balancer profile."],
+        [:fargate_security_groups, type: :array, desc: "Fargate security groups."],
       ]
     end
     cli_options.each do |args|
@@ -43,6 +45,20 @@ module Ufo
       FileUtils.rm_rf(dest) && FileUtils.mkdir_p(dest)
       self.destination_root = dest
       FileUtils.cd(dest)
+    end
+
+    # for balancer default profile
+    def set_network_options
+      network = ::Balancer::Network.new(@options[:vpc_id])
+      @options = @options.dup
+      @options[:vpc_id] = network.vpc_id
+      @options[:subnets] = network.subnet_ids
+      @options[:security_groups] = [network.security_group_id] # used in balancer profile and params.yml for fargate
+      if @options[:fargate_security_groups] && !@options[:fargate_security_groups].empty?
+        @fargate_security_groups = @options[:fargate_security_groups]
+      else
+        @fargate_security_groups = [network.security_group_id]
+      end
     end
 
     def init_files
@@ -88,9 +104,17 @@ EOL
       puts "Starter ufo files created."
       puts <<-EOL
 #{"="*64}
-Congrats 🎉 You have successfully set up ufo for your project. To deploy to ECS:
+Congrats 🎉 You have successfully set up ufo for your project.
+
+## Load Balancer Config
+
+Ufo creates load balancer a using a starter profile file has been generated at: .ufo/.balancer/profiles/default.yml  The ELB settings are defaults that can be adjusted.  For more information about how to configure ufo for load balancer create, refer to: http://ufoships.com/docs/load-balancers/
+
+To deploy to ECS:
 
   ufo ship #{@app}-web
+
+## More customization
 
 If you need to customize the ECS task definition to configure things like memory and cpu allocation. You can do this by adjusting the files the .ufo/variables folder. These variables get applied to the .ufo/templates/main.json.erb task definition json that is passed to the ECS register task definition api.
 

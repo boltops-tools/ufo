@@ -1,7 +1,8 @@
 <%%
-  # replace with actual values if using fargate
-  @subnets = ["subnet-111","subnet-222"]
-  @security_groups = ["sg-111"]
+  # Default values provided, replace to fit your needs.
+  # These settings are required for fargate.
+  @subnets = <%= @options[:subnets].inspect %>
+  @security_groups = <%= @fargate_security_groups.inspect %>
 %>
 # These params are passsed to the corresponding aws-sdk ecs client methods.
 # AWS Docs example: https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/ECS/Client.html#run_task-instance_method

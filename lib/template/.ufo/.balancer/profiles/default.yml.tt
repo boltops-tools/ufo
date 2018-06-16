@@ -1,28 +1,43 @@
 ---
 # https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/ElasticLoadBalancingV2/Client.html
-# The keys correspond to methods called in the aws-sdk
+# Most of the keys correspond to methods called in the aws-sdk
 create_load_balancer:
   subnets: # at least 2 subnets required
-<% options[:subnets].each do |subnet| -%>
+<% @options[:subnets].each do |subnet| -%>
     - <%= subnet %>
 <% end -%>
-<% if options[:security_groups].empty? -%>
-  # security_groups:
-  #   - sg-example
-<% else -%>
-  security_groups: # optional thanks to the automatically created security
-<% options[:security_groups].each do |security_group| -%>
-    - <%= security_group %>
+  # security_groups: optional thanks to the automatically created security
+<% @options[:security_groups].each do |security_group| -%>
+  #  - <%= security_group %>
 <% end -%>
-<% end -%>
+
 create_target_group:
   # vpc_id is required
-  vpc_id: <%= options[:vpc_id] %>
+  vpc_id: <%= @options[:vpc_id] %>
   # name: ... # automatically named, matches the load balancer name. override here
   protocol: HTTP # required
   port: 80 # required
+<% if @options[:launch_type] == "fargate" -%>
+  target_type: ip # must be ip if ecs network is awsvpc which fargate uses
+<% else -%>
+  # target_type: instance # instance or ip, must be ip if ecs network is awsvpc
+# security group key is for the automatically created security group.
+<% end -%>
+
+modify_target_group_attributes:
+  attributes:
+    - key: deregistration_delay.timeout_seconds
+      value: "0" # speeds up deployment, expected type is String
+    # - key: stickiness.enabled
+    #   value: false
+    # - key: stickiness.type
+    #   value: lb_cookie
+    # - key: stickiness.lb_cookie.duration_seconds
+    #   value: 86400
+
 create_listener:
   protocol: HTTP # required
   port: 80 # required
-security_group: # can be overriden by --sg-cidr option
+
+security_group:
   cidr: "0.0.0.0/0"
