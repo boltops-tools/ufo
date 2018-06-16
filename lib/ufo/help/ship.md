@@ -47,7 +47,7 @@ Here are examples for each of them:
     # Disable creating elb:
     ufo ship hi-web --elb=false
 
-More info available at the [load balancer docs](https://ufoships.com/docs/load-balancer/).
+More info available at the [load balancer docs](http://ufoships.com/docs/load-balancer/).
 
 ### Deploying Task Definition without Docker Build
 
