@@ -1,0 +1,56 @@
+# https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-elasticloadbalancingv2-loadbalancer.html
+# https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-elasticloadbalancingv2-listener.html
+# https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-elasticloadbalancingv2-targetgroup.html
+Resources:
+  Elb:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Scheme: internet-facing # or internal
+      Subnets:
+      - subnet-29e75925
+      - subnet-3fb1875a
+      # LoadBalancerAttributes:
+      # - Key: deletion_protection.enabled
+      #   Value: "false"
+      # - Key: access_logs.s3.enabled
+      #   Value: "false"
+      # - Key: idle_timeout.timeout_seconds
+      #   Value: "1"
+      # - Key: access_logs.s3.prefix
+      #   Value: "hi-web"
+      # - Key: access_logs.s3.bucket
+      #   Value: "my-bucket"
+      SecurityGroups: # optional thanks to the automatically created security
+      - sg-32a30579 # test-elb
+      Tags:
+      - Key: Name
+        Value: <%= @stack_name %>
+      - Key: ufo
+        Value: <%= @stack_name %>
+  TargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      HealthCheckIntervalSeconds: 60
+      UnhealthyThresholdCount: 10
+      HealthCheckPath: /
+      # Name: "my-elb"
+      Port: 80
+      Protocol: HTTP
+      VpcId: vpc-d79753ae
+  Listener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      # Certificates:
+      #   - Certificate
+      DefaultActions:
+      - Type: forward
+        TargetGroupArn:
+          Ref: TargetGroup
+      LoadBalancerArn:
+        Ref: Elb
+      Port: 80
+      Protocol: HTTP
+Outputs:
+ Dns:
+    Description: Elb Dns
+    Value: !GetAtt Elb.DNSName

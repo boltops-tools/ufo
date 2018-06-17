@@ -31,6 +31,7 @@ module Ufo
   autoload :TemplateScope, 'ufo/template_scope'
   autoload :SecurityGroup, 'ufo/security_group'
   autoload :NetworkSetting, 'ufo/network_setting'
+  autoload :Stack, 'ufo/stack'
 
   autoload :Docker, 'ufo/docker'
   autoload :Ecr, 'ufo/ecr'

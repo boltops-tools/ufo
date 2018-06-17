@@ -24,7 +24,7 @@ module Ufo
     end
 
     def deploy
-      message = "Shipping #{@service}..."
+      message = "Deploying #{@service}..."
       unless @options[:mute]
         if @options[:noop]
           puts "NOOP: #{message}"
@@ -34,8 +34,9 @@ module Ufo
         end
       end
 
-      ensure_log_group_exist
-      ensure_cluster_exist
+      # TODO: COMMENT OUT FOR TESTING
+      # ensure_log_group_exist
+      # ensure_cluster_exist
       process_deployment
 
       puts "Software shipped!" unless @options[:mute]
@@ -46,17 +47,19 @@ module Ufo
     end
 
     def process_deployment
-      ecs_service = find_ecs_service
-      deployed_service = if ecs_service
-                           # update all existing service
-                           update_service(ecs_service)
-                         else
-                           # create service on the first cluster
-                           create_service
-                         end
+      stack = Stack.new(@options.merge(stack_name: @service))
+      stack.launch
+      # ecs_service = find_ecs_service
+      # deployed_service = if ecs_service
+      #                      # update all existing service
+      #                      update_service(ecs_service)
+      #                    else
+      #                      # create service on the first cluster
+      #                      create_service
+      #                    end
 
-      wait_for_deployment(deployed_service) if @wait_for_deployment && !@options[:noop]
-      stop_old_task(deployed_service) if @stop_old_tasks
+      # wait_for_deployment(deployed_service) if @wait_for_deployment && !@options[:noop]
+      # stop_old_task(deployed_service) if @stop_old_tasks
     end
 
     def service_tasks(cluster, service)

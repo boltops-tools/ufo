@@ -43,7 +43,8 @@ module Ufo
     ship_options.call
     def deploy(service)
       task_definition = options[:task] || service # convention
-      Tasks::Register.register(task_definition, options)
+      # TODO: COMMENT OUT FOR TESTING
+      # Tasks::Register.register(task_definition, options)
       ship = Ship.new(service, task_definition, options)
       ship.deploy
     end

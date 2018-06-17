@@ -35,14 +35,11 @@ module Ufo
       instance_eval(IO.read(path), path) if File.exist?(path)
     end
 
-    def assign_instance_variables
-      # copy over the instance variables to make available in RenderMePretty's scope
-      hash = {}
-      instance_variables.each do |var|
-        key = var.to_s.sub('@','') # rid of the leading @
-        hash[key.to_sym] = instance_variable_get(var)
+    # Add additional instance variables to template_scope
+    def assign_instance_variables(vars)
+      vars.each do |k,v|
+        instance_variable_set("@#{k}".to_sym, v)
       end
-      hash
     end
   end
 end
