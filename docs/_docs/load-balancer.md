@@ -32,7 +32,7 @@ Underneath the hood, ufo uses the [balancer](https://github.com/tongueroo/balanc
     ufo balancer init --subnets subnet-aaa subnet-bbb --vpc-id vpc-123
     ufo balancer init # use default vpc and subnet network settings
 
-## Settings
+The load balance profile values mainly control the creation of the load balancer. Currently, ufo does not update the load balancer settings. To update load balancer settings, use the AWS console.
 
 You can override the `balance_profile` in the `.ufo/settings.yml` file to use profile files other than the `default.yml`.
 
@@ -44,7 +44,7 @@ production:
   balancer_profile: production
 ```
 
-## Load Balancer Conventions
+## Conventions
 
 By convention, if the container name is 'web' in the task definition. If the ECS service does not yet exist, the deploy will prompt you for the ELB target group. This is also covered a in the [Conventions]({% link _docs/conventions.md %}) page.  Otherwise, you must specify the `--elb` option to create an ELB.
 

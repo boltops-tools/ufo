@@ -1,6 +1,10 @@
 ---
 # https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/ElasticLoadBalancingV2/Client.html
 # Most of the keys correspond to methods called in the aws-sdk
+#
+# To change load balancer settings use the AWS console. Ufo currently only supports
+# the iniital creation of the load balancer.
+#
 create_load_balancer:
   subnets: # at least 2 subnets required
 <% @options[:subnets].each do |subnet| -%>

@@ -134,9 +134,12 @@ For #3, type 'no'
 
     # all options controlled by balancer profile to keep ufo interface simple
     def create_load_balancer
+      puts "Creating load balancer..."
       balancer = Balancer::Create.new(name: @service)
       balancer.run
-      balancer.target_group_arn
+      arn = balancer.target_group_arn
+      puts "Created load balancer."
+      arn
     end
 
     def validate_target_group(arn)
