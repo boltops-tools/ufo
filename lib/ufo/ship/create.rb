@@ -30,7 +30,7 @@ class Ufo::Ship
       puts "This service #{@service.colorize(:green)} does not yet exist in the #{@cluster.colorize(:green)} cluster.  This deploy will create it."
       container = container_info(@task_definition)
 
-     target_group = determine_target_group(container)
+      target_group = determine_target_group(container)
 
       message = "#{@service} service created on #{@cluster} cluster"
       if @options[:noop]

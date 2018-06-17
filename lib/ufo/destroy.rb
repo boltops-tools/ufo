@@ -17,6 +17,9 @@ module Ufo
       end
 
       destroy_ecs_service
+      # Circular dependency: need to remove ELB but need to also remove security group which depends on the ELB's security group.
+      # So will revoke security group to remove circular dependency to delete it.
+      revoke_security_group
       destroy_load_balancer
       destroy_security_group
     end
@@ -59,6 +62,10 @@ module Ufo
     def destroy_load_balancer
       balancer = ::Balancer::Destroy.new(name: @service)
       balancer.run
+    end
+
+    def revoke_security_group
+      security_group.revoke
     end
 
     def destroy_security_group

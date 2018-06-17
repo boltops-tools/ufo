@@ -13,7 +13,7 @@ module Ufo
 
     # delegate to Balancer SecurityGroup when possible to leverage common code
     def balancer_security_group
-      ::Balancer::SecurityGroup.new(@options.dup.merge(mute: true, name: @service))
+      ::Balancer::SecurityGroup.new(@options.merge(name: @service))
     end
     memoize :balancer_security_group
 
@@ -45,13 +45,34 @@ module Ufo
     end
 
     def destroy
-      # remove known dependencies in security group first
-      puts "Removing known dependencies in security group first."
-      destroy_fargate_security_group
-      balancer_security_group.destroy
+      sg = balancer_security_group.find_security_group(@service)
+      return unless sg
+
+      retries = 0
+      begin
+        ec2.delete_security_group(group_id: sg.group_id)
+        say "Deleted security group: #{sg.group_id}"
+      rescue Aws::EC2::Errors::DependencyViolation => e
+        # retry because it takes some time for the load balancer to be deleted
+        # and that can cause a DependencyViolation exception
+        retries += 1
+        if retries <= 5
+          if retries == 1
+            say "WARN: #{e.class} #{e.message}"
+            say "Unable to delete the security group because it's still in use by another resource. This might be the ELB which can take a little time to delete. Backing off expondentially and will try to delete again."
+          end
+          seconds = 2**retries
+          say "Retry: #{retries+1} Delay: #{seconds}s"
+          sleep seconds
+          retry
+        else
+          say "WARN: #{e.class} #{e.message}"
+          say "Unable to delete the security group because it's still in use by another resource. Leaving the security group behind: #{sg.group_id}"
+        end
+      end
     end
 
-    def destroy_fargate_security_group
+    def revoke
       sg = balancer_security_group.find_security_group(@service)
       return unless sg
 
@@ -90,9 +111,9 @@ module Ufo
         group_id: sg.group_id,
         ip_permissions: [permission]
       }
-      ec2.revoke_security_group_ingress(params) if permission
 
-      ec2.delete_security_group(group_id: sg.group_id)
+      # Must revoke the elb security group dependency first
+      ec2.revoke_security_group_ingress(params) if permission
     end
 
     # Add the security option to params for the create_service call
@@ -110,6 +131,10 @@ module Ufo
       end
 
       options
+    end
+
+    def say(text=nil)
+      puts text unless ::Balancer.log_level == :warn
     end
   end
 end
