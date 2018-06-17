@@ -42,6 +42,8 @@ modify_target_group_attributes:
 create_listener:
   protocol: HTTP # required
   port: 80 # required
+  # certificates: # required if using HTTPS
+  #   - certificate_arn: xxx
 
 security_group:
   cidr: "0.0.0.0/0"
