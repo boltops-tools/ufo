@@ -5,7 +5,10 @@ module Ufo
 
     def initialize(options)
       @options = options
-      @stack_name = @options[:stack_name] || raise("stack_name required")
+      @stack_name = options[:stack_name] || raise("stack_name required")
+      @service = options[:service]
+      @task_definition = options[:task_definition]
+      @cluster = options[:cluster]
     end
 
     # CloudFormation status codes, full list:
@@ -94,6 +97,8 @@ module Ufo
       scope.assign_instance_variables(
         options: @options,
         stack_name: @stack_name,
+        service: @service,
+        container_info: container_info(@task_definition),
       )
       scope
     end
@@ -109,5 +114,23 @@ module Ufo
     def updatable?(stack)
       stack.stack_status =~ /_COMPLETE$/
     end
+
+    # Assume only first container_definition to get the info.
+    def container_info(task_definition)
+      Ufo.check_task_definition!(task_definition)
+      task_definition_path = ".ufo/output/#{task_definition}.json"
+      task_definition = JSON.load(IO.read(task_definition_path))
+      container_def = task_definition["containerDefinitions"].first
+      mappings = container_def["portMappings"]
+      if mappings
+        map = mappings.first
+        port = map["containerPort"]
+      end
+      {
+        name: container_def["name"],
+        port: port
+      }
+    end
+    memoize :container_info
   end
 end

@@ -27,6 +27,14 @@ Parameters:
     Description: Create elb
     Type: String
     Default: true
+  EcsDesiredCount:
+    Description: EcsDesiredCount
+    Type: String
+    Default: 1
+  EcsTaskDefinition:
+    Description: EcsTaskDefinition
+    Type: String
+    Default: arn:aws:ecs:us-east-1:160619113767:task-definition/hi-web:191
 Conditions:
   CreateElbIsTrue: !Equals [ !Ref CreateElb, true ]
   ElbTargetGroupIsBlank: !Equals [ !Ref ElbTargetGroup, '' ]
@@ -51,12 +59,12 @@ Resources:
       #   Value: "hi-web"
       # - Key: access_logs.s3.bucket
       #   Value: "my-bucket"
-      SecurityGroups: !Ref ElbSecurityGroups
+      SecurityGroups: [!Ref ElbSecurityGroup]
       Tags:
       - Key: Name
-        Value: <%= @stack_name %>-<%= (rand.round(2) * 100).to_i.to_s %>
+        Value: <%= @service %>-<%= (rand.round(2) * 100).to_i.to_s %>
       - Key: ufo
-        Value: <%= @stack_name %>
+        Value: <%= @service %>
   TargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Condition: CreateTargetGroupIsTrue
@@ -68,6 +76,8 @@ Resources:
       Port: 80
       Protocol: HTTP
       VpcId: !Ref Vpc
+      # TODO: required for fargate or awsvpc network mode
+      TargetType: ip
   Listener:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Condition: CreateElbIsTrue
@@ -81,6 +91,74 @@ Resources:
       LoadBalancerArn: !Ref Elb
       Port: 80
       Protocol: HTTP
+  ElbSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow http to client host
+      VpcId: !Ref Vpc
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: '80'
+        ToPort: '80'
+        CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+      - IpProtocol: tcp
+        FromPort: '0'
+        ToPort: '65535'
+        CidrIp: 0.0.0.0/0
+      Tags:
+      - Key: Name
+        Value: <%= @service %>-elb
+      - Key: ufo
+        Value: <%= @service %>
+
+  # Allow all traffic from ELB SG to ECS SG
+  InboundRule:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      IpProtocol: tcp
+      FromPort: '0'
+      ToPort: '65535'
+      SourceSecurityGroupId: !GetAtt [ElbSecurityGroup, GroupId]
+      GroupId: !GetAtt [EcsSecurityGroup, GroupId]
+
+  EcsService:
+    Type: "AWS::ECS::Service"
+    # TODO: see what happens if create a cluster that is already existing
+    Properties:
+      Cluster: "development"
+      DesiredCount: !Ref EcsDesiredCount
+      TaskDefinition: !Ref EcsTaskDefinition
+      # ServiceName: <%= @service %>
+      # TODO: required for fargate
+      LaunchType: FARGATE
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          Subnets: !Ref Subnets # required
+          # SecurityGroups: [""]
+          SecurityGroups: [!Ref EcsSecurityGroup]
+          AssignPublicIp: ENABLED # accepts ENABLED, DISABLED
+      LoadBalancers:
+      - ContainerName: <%= @container_info[:name] %>
+        ContainerPort: <%= @container_info[:port] %>
+        TargetGroupArn: !Ref TargetGroup
+  EcsSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow http to client host
+      VpcId: !Ref Vpc
+      # instance needs access to internet to pull down image or else get CannotPullContainerError
+      SecurityGroupEgress:
+      - IpProtocol: tcp
+        FromPort: '0'
+        ToPort: '65535'
+        CidrIp: 0.0.0.0/0
+      Tags:
+      - Key: Name
+        Value: <%= @service %>
+      - Key: ufo
+        Value: <%= @service %>
+
 Outputs:
  Dns:
     Description: Elb Dns

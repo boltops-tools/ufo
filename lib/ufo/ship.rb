@@ -47,7 +47,13 @@ module Ufo
     end
 
     def process_deployment
-      stack = Stack.new(@options.merge(stack_name: @service))
+      options = @options.merge(
+        stack_name: @service,
+        service: @service,
+        task_definition: @task_definition,
+        cluster: @cluster,
+      )
+      stack = Stack.new(options)
       stack.launch
       # ecs_service = find_ecs_service
       # deployed_service = if ecs_service
