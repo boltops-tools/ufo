@@ -8,12 +8,14 @@ Parameters:
   # ECSSecurityGroups:
   #   Description: Existig ecs security group ids
   #   Type: List<AWS::EC2::SecurityGroup::Id>
-  # Subnets:
-  #   Description: Existing subnet ids
-  #   Type: List<AWS::EC2::Subnet::Id>
-  # Vpc:
-  #   Description: Existing vpc id
-  #   Type: AWS::EC2::VPC::Id
+  Subnets:
+    Description: Existing subnet ids
+    Type: List<AWS::EC2::Subnet::Id>
+    Default: subnet-29e75925,subnet-3fb1875a
+  Vpc:
+    Description: Existing vpc id
+    Type: AWS::EC2::VPC::Id
+    Default: vpc-d79753ae
   ElbTargetGroup:
     Description: Existing target group
     Type: String
@@ -36,9 +38,7 @@ Resources:
     Condition: CreateElbIsTrue
     Properties:
       Scheme: internet-facing # or internal
-      Subnets:
-      - subnet-29e75925
-      - subnet-3fb1875a
+      Subnets: !Ref Subnets
       # LoadBalancerAttributes:
       # - Key: deletion_protection.enabled
       #   Value: "false"
@@ -67,7 +67,7 @@ Resources:
       # Name: "my-elb"
       Port: 80
       Protocol: HTTP
-      VpcId: vpc-d79753ae
+      VpcId: !Ref Vpc
   Listener:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Condition: CreateElbIsTrue
