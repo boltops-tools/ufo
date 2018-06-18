@@ -99,7 +99,7 @@ module Ufo
     end
     memoize :template_scope
 
-    def exit_message(stack)
+    def exit_with_message(stack)
       url = "http://example-url"
       puts "The stack state is in: #{stack.stack_status}."
       puts "Here's the CloudFormation url to check for more details #{url}"

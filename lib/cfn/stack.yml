@@ -1,9 +1,39 @@
 # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-elasticloadbalancingv2-loadbalancer.html
 # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-elasticloadbalancingv2-listener.html
 # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-elasticloadbalancingv2-targetgroup.html
+Parameters:
+  # ElbSecurityGroups:
+  #   Description: Existing elb security group ids
+  #   Type: List<AWS::EC2::SecurityGroup::Id>
+  # ECSSecurityGroups:
+  #   Description: Existig ecs security group ids
+  #   Type: List<AWS::EC2::SecurityGroup::Id>
+  # Subnets:
+  #   Description: Existing subnet ids
+  #   Type: List<AWS::EC2::Subnet::Id>
+  # Vpc:
+  #   Description: Existing vpc id
+  #   Type: AWS::EC2::VPC::Id
+  ElbTargetGroup:
+    Description: Existing target group
+    Type: String
+    Default: '' # when blank the automatically created TargetGroup is used
+    # TESTING:
+    # Default: 'arn:aws:elasticloadbalancing:us-east-1:160619113767:targetgroup/test-target-group/4ac7e3d667fb713f'
+  CreateElb:
+    Description: Create elb
+    Type: String
+    Default: true
+Conditions:
+  CreateElbIsTrue: !Equals [ !Ref CreateElb, true ]
+  ElbTargetGroupIsBlank: !Equals [ !Ref ElbTargetGroup, '' ]
+  CreateTargetGroupIsTrue: !And
+  - !Condition CreateElbIsTrue
+  - !Condition ElbTargetGroupIsBlank
 Resources:
   Elb:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Condition: CreateElbIsTrue
     Properties:
       Scheme: internet-facing # or internal
       Subnets:
@@ -24,11 +54,12 @@ Resources:
       - sg-32a30579 # test-elb
       Tags:
       - Key: Name
-        Value: <%= @stack_name %>
+        Value: <%= @stack_name %>-<%= (rand.round(2) * 100).to_i.to_s %>
       - Key: ufo
         Value: <%= @stack_name %>
   TargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Condition: CreateTargetGroupIsTrue
     Properties:
       HealthCheckIntervalSeconds: 60
       UnhealthyThresholdCount: 10
@@ -39,18 +70,19 @@ Resources:
       VpcId: vpc-d79753ae
   Listener:
     Type: AWS::ElasticLoadBalancingV2::Listener
+    Condition: CreateElbIsTrue
     Properties:
       # Certificates:
       #   - Certificate
       DefaultActions:
       - Type: forward
         TargetGroupArn:
-          Ref: TargetGroup
-      LoadBalancerArn:
-        Ref: Elb
+          !If [ElbTargetGroupIsBlank, !Ref TargetGroup, !Ref ElbTargetGroup]
+      LoadBalancerArn: !Ref Elb
       Port: 80
       Protocol: HTTP
 Outputs:
  Dns:
     Description: Elb Dns
+    Condition: CreateElbIsTrue
     Value: !GetAtt Elb.DNSName
