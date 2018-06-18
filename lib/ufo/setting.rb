@@ -2,6 +2,8 @@ require 'yaml'
 
 module Ufo
   class Setting
+    autoload :Network, "ufo/setting/network"
+
     def initialize(check_ufo_project=true)
       @check_ufo_project = check_ufo_project
     end

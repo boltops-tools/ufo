@@ -1,22 +1,25 @@
 # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-elasticloadbalancingv2-loadbalancer.html
 # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-elasticloadbalancingv2-listener.html
 # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-elasticloadbalancingv2-targetgroup.html
+Description: "Ufo ECS stack <%= @service %>"
 Parameters:
   # ECSSecurityGroups:
-  #   Description: Existig ecs security group ids
+  #   Description: Existing ecs security group ids
   #   Type: List<AWS::EC2::SecurityGroup::Id>
+  #   Default: ''
   ElbSecurityGroups:
-    Description: Existing elb security group ids
-    Type: List<AWS::EC2::SecurityGroup::Id>
-    Default: sg-32a30579
+    Description: Existing elb security group ids. List with commas.
+    Type: String
+    Default: ''
+
+  # required
   Subnets:
     Description: Existing subnet ids
     Type: List<AWS::EC2::Subnet::Id>
-    Default: subnet-29e75925,subnet-3fb1875a
   Vpc:
     Description: Existing vpc id
     Type: AWS::EC2::VPC::Id
-    Default: vpc-d79753ae
+
   ElbTargetGroup:
     Description: Existing target group
     Type: String
@@ -34,13 +37,13 @@ Parameters:
   EcsTaskDefinition:
     Description: EcsTaskDefinition
     Type: String
-    Default: arn:aws:ecs:us-east-1:160619113767:task-definition/hi-web:191
 Conditions:
   CreateElbIsTrue: !Equals [ !Ref CreateElb, true ]
   ElbTargetGroupIsBlank: !Equals [ !Ref ElbTargetGroup, '' ]
   CreateTargetGroupIsTrue: !And
   - !Condition CreateElbIsTrue
   - !Condition ElbTargetGroupIsBlank
+  ElbSecurityGroupsIsBlank: !Equals [ !Ref ElbSecurityGroups, '' ]
 Resources:
   Elb:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
@@ -59,7 +62,13 @@ Resources:
       #   Value: "hi-web"
       # - Key: access_logs.s3.bucket
       #   Value: "my-bucket"
-      SecurityGroups: [!Ref ElbSecurityGroup]
+      # Add additional extra security groups if param
+      SecurityGroups: !Split
+        - ','
+        - !If
+          - ElbSecurityGroupsIsBlank
+          - !Ref ElbSecurityGroup
+          - !Join [',', [!Ref ElbSecurityGroups, !Ref ElbSecurityGroup]]
       Tags:
       - Key: Name
         Value: <%= @service %>-<%= (rand.round(2) * 100).to_i.to_s %>
@@ -68,6 +77,7 @@ Resources:
   TargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Condition: CreateTargetGroupIsTrue
+    # Condition: CreateElbIsTrue
     Properties:
       HealthCheckIntervalSeconds: 60
       UnhealthyThresholdCount: 10
@@ -91,8 +101,10 @@ Resources:
       LoadBalancerArn: !Ref Elb
       Port: 80
       Protocol: HTTP
+
   ElbSecurityGroup:
     Type: AWS::EC2::SecurityGroup
+    Condition: CreateElbIsTrue
     Properties:
       GroupDescription: Allow http to client host
       VpcId: !Ref Vpc
@@ -115,6 +127,7 @@ Resources:
   # Allow all traffic from ELB SG to ECS SG
   InboundRule:
     Type: AWS::EC2::SecurityGroupIngress
+    Condition: CreateElbIsTrue
     Properties:
       IpProtocol: tcp
       FromPort: '0'
@@ -138,10 +151,12 @@ Resources:
           # SecurityGroups: [""]
           SecurityGroups: [!Ref EcsSecurityGroup]
           AssignPublicIp: ENABLED # accepts ENABLED, DISABLED
-      LoadBalancers:
+      LoadBalancers: !If
+      - CreateTargetGroupIsTrue
       - ContainerName: <%= @container_info[:name] %>
         ContainerPort: <%= @container_info[:port] %>
         TargetGroupArn: !Ref TargetGroup
+      - []
   EcsSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:

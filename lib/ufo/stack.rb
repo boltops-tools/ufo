@@ -38,7 +38,6 @@ module Ufo
       stack = find_stack(@stack_name)
       exit_with_message(stack) if stack && !updatable?(stack)
       stack ? update_stack : create_stack
-
       # wait...
     end
 
@@ -64,11 +63,55 @@ module Ufo
       puts "Updating stack..."
       begin
         puts template_body
-        cloudformation.update_stack(stack_name: @stack_name, template_body: template_body)
+        parameters
+        puts "EXIT EARLY 1"
+        cloudformation.update_stack(
+          stack_name: @stack_name,
+          template_body: template_body,
+          parameters: parameters
+        )
       rescue Aws::CloudFormation::Errors::ValidationError => e
         handle_update_stack_error(e)
       end
       puts "Updated stack."
+    end
+
+    def parameters
+      network = Setting::Network.new('default').data
+      pp network
+
+      ecs_task_definition = 'arn:aws:ecs:us-east-1:160619113767:task-definition/hi-web:191'
+
+      # target_group = "auto"
+      target_group = ""
+
+      if target_group == "auto"
+        create_elb = "true"
+        elb_target_group = ""
+      elsif target_group == ""
+        create_elb = "false"
+        elb_target_group = ""
+      else target_group =~ /arn/
+        create_elb = "false"
+        elb_target_group = "existing..."
+      end
+
+      hash = {
+        ElbSecurityGroups: network[:elb_security_groups].join(','),
+
+        Subnets: network[:subnets].join(','),
+        Vpc: network[:vpc],
+
+        # CreateElb: create_elb,
+        # ElbTargetGroup: elb_target_group,
+        CreateElb: "false",
+        ElbTargetGroup: "",
+        EcsDesiredCount: "1",
+        EcsTaskDefinition: ecs_task_definition,
+      }
+      hash.map do |k,v|
+        { parameter_key: k, parameter_value: v }
+      end
     end
 
     # Stack:arn:aws:cloudformation:... is in ROLLBACK_COMPLETE state and can not be updated.

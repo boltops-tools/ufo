@@ -43,8 +43,3 @@ module Ufo
 
   extend Core
 end
-
-if File.exist?("#{Ufo.root}/.ufo/settings.yml") && !ENV['BALANCER_PROFILE']
-  Balancer.set_profile(Ufo.settings["balancer_profile"])
-  Balancer.log_level = :info
-end
