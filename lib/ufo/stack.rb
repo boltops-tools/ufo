@@ -53,23 +53,28 @@ module Ufo
       end
     end
 
+    def stack_options
+      puts template_body
+      puts "parameters: "
+      pp parameters
+      # puts "EXIT EARLY 1"
+      {
+        parameters: parameters,
+        stack_name: @stack_name,
+        template_body: template_body,
+      }
+    end
+
     def create_stack
       puts "Creating stack #{@stack_name}..."
-      cloudformation.create_stack(stack_name: @stack_name, template_body: template_body)
+      cloudformation.create_stack(stack_options)
       puts "Created stack."
     end
 
     def update_stack
       puts "Updating stack..."
       begin
-        puts template_body
-        parameters
-        puts "EXIT EARLY 1"
-        cloudformation.update_stack(
-          stack_name: @stack_name,
-          template_body: template_body,
-          parameters: parameters
-        )
+        cloudformation.update_stack(stack_options)
       rescue Aws::CloudFormation::Errors::ValidationError => e
         handle_update_stack_error(e)
       end
@@ -78,34 +83,34 @@ module Ufo
 
     def parameters
       network = Setting::Network.new('default').data
-      pp network
-
       ecs_task_definition = 'arn:aws:ecs:us-east-1:160619113767:task-definition/hi-web:191'
 
-      # target_group = "auto"
-      target_group = ""
-
-      if target_group == "auto"
+      # --elb ''
+      # --elb 'auto'
+      # --elb arn
+      case @options[:elb]
+      when "auto"
         create_elb = "true"
         elb_target_group = ""
-      elsif target_group == ""
+      when ""
         create_elb = "false"
         elb_target_group = ""
-      else target_group =~ /arn/
+      when /^arn:aws:elasticloadbalancing.*targetgroup/
         create_elb = "false"
-        elb_target_group = "existing..."
+        elb_target_group = @options[:elb]
+      else
+        raise "Invalid elb option provided: #{@options[:elb].inspect}"
       end
 
       hash = {
         ElbSecurityGroups: network[:elb_security_groups].join(','),
+        EcsSecurityGroups: network[:ecs_security_groups].join(','),
 
         Subnets: network[:subnets].join(','),
         Vpc: network[:vpc],
 
-        # CreateElb: create_elb,
-        # ElbTargetGroup: elb_target_group,
-        CreateElb: "false",
-        ElbTargetGroup: "",
+        CreateElb: create_elb,
+        ElbTargetGroup: elb_target_group,
         EcsDesiredCount: "1",
         EcsTaskDefinition: ecs_task_definition,
       }
@@ -129,7 +134,7 @@ module Ufo
 
     def template_body
       path = File.expand_path("../cfn/stack.yml", File.dirname(__FILE__))
-      RenderMePretty.result(path, context: template_scope)
+      text = RenderMePretty.result(path, context: template_scope)
     end
     memoize :template_body
 

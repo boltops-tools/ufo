@@ -3,10 +3,10 @@
 # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-elasticloadbalancingv2-targetgroup.html
 Description: "Ufo ECS stack <%= @service %>"
 Parameters:
-  # ECSSecurityGroups:
-  #   Description: Existing ecs security group ids
-  #   Type: List<AWS::EC2::SecurityGroup::Id>
-  #   Default: ''
+  EcsSecurityGroups:
+    Description: Existing ecs security group ids
+    Type: String
+    Default: ''
   ElbSecurityGroups:
     Description: Existing elb security group ids. List with commas.
     Type: String
@@ -24,8 +24,6 @@ Parameters:
     Description: Existing target group
     Type: String
     Default: '' # when blank the automatically created TargetGroup is used
-    # TESTING:
-    # Default: 'arn:aws:elasticloadbalancing:us-east-1:160619113767:targetgroup/test-target-group/4ac7e3d667fb713f'
   CreateElb:
     Description: Create elb
     Type: String
@@ -44,6 +42,7 @@ Conditions:
   - !Condition CreateElbIsTrue
   - !Condition ElbTargetGroupIsBlank
   ElbSecurityGroupsIsBlank: !Equals [ !Ref ElbSecurityGroups, '' ]
+  EcsSecurityGroupsIsBlank: !Equals [ !Ref EcsSecurityGroups, '' ]
 Resources:
   Elb:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
@@ -77,7 +76,8 @@ Resources:
   TargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Condition: CreateTargetGroupIsTrue
-    # Condition: CreateElbIsTrue
+    DependsOn:
+      - Elb
     Properties:
       HealthCheckIntervalSeconds: 60
       UnhealthyThresholdCount: 10
@@ -88,6 +88,9 @@ Resources:
       VpcId: !Ref Vpc
       # TODO: required for fargate or awsvpc network mode
       TargetType: ip
+      TargetGroupAttributes:
+      - Key: deregistration_delay.timeout_seconds
+        Value: 0
   Listener:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Condition: CreateElbIsTrue
@@ -125,16 +128,6 @@ Resources:
         Value: <%= @service %>
 
   # Allow all traffic from ELB SG to ECS SG
-  InboundRule:
-    Type: AWS::EC2::SecurityGroupIngress
-    Condition: CreateElbIsTrue
-    Properties:
-      IpProtocol: tcp
-      FromPort: '0'
-      ToPort: '65535'
-      SourceSecurityGroupId: !GetAtt ElbSecurityGroup.GroupId
-      GroupId: !GetAtt EcsSecurityGroup.GroupId
-
   EcsService:
     Type: "AWS::ECS::Service"
     # TODO: see what happens if create a cluster that is already existing
@@ -142,27 +135,48 @@ Resources:
       Cluster: "development"
       DesiredCount: !Ref EcsDesiredCount
       TaskDefinition: !Ref EcsTaskDefinition
-      # ServiceName: <%= @service %>
+#<% unless ENV['RANDOM_NAME'] -%>
+#      ServiceName: <%= @service %>
+#<% end -%>
       # TODO: required for fargate
       LaunchType: FARGATE
       NetworkConfiguration:
         AwsvpcConfiguration:
           Subnets: !Ref Subnets # required
-          # SecurityGroups: [""]
-          SecurityGroups: [!Ref EcsSecurityGroup]
+
+          # SecurityGroups: [!Ref EcsSecurityGroup]
+          SecurityGroups: !Split
+            - ','
+            - !If
+              - EcsSecurityGroupsIsBlank
+              - !Ref EcsSecurityGroup
+              - !Join [',', [!Ref EcsSecurityGroups, !Ref EcsSecurityGroup]]
+
           AssignPublicIp: ENABLED # accepts ENABLED, DISABLED
+
+      # LoadBalancers:
+      # - ContainerName: <%= @container_info[:name] %>
+      #   ContainerPort: <%= @container_info[:port] %>
+      #   TargetGroupArn: !Ref TargetGroup
+
       LoadBalancers: !If
       - CreateTargetGroupIsTrue
-      - ContainerName: <%= @container_info[:name] %>
-        ContainerPort: <%= @container_info[:port] %>
-        TargetGroupArn: !Ref TargetGroup
-      - []
+      - - ContainerName: <%= @container_info[:name] %>
+          ContainerPort: <%= @container_info[:port] %>
+          TargetGroupArn: !Ref TargetGroup
+      - !If
+        - ElbTargetGroupIsBlank
+        - []
+        - - ContainerName: <%= @container_info[:name] %>
+            ContainerPort: <%= @container_info[:port] %>
+            TargetGroupArn: !Ref ElbTargetGroup
   EcsSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: Allow http to client host
       VpcId: !Ref Vpc
-      # instance needs access to internet to pull down image or else get CannotPullContainerError
+      # Outbound access: instance needs access to internet to pull down image
+      # or else get CannotPullContainerError
       SecurityGroupEgress:
       - IpProtocol: tcp
         FromPort: '0'
@@ -173,6 +187,16 @@ Resources:
         Value: <%= @service %>
       - Key: ufo
         Value: <%= @service %>
+  EcsCrossSecurityGroupRule:
+    Type: AWS::EC2::SecurityGroupIngress
+    Condition: CreateElbIsTrue
+    Properties:
+      IpProtocol: tcp
+      FromPort: '0'
+      ToPort: '65535'
+      SourceSecurityGroupId: !GetAtt ElbSecurityGroup.GroupId
+      GroupId: !GetAtt EcsSecurityGroup.GroupId
+
 
 Outputs:
  Dns:
