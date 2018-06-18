@@ -5,14 +5,19 @@ module Ufo
   class ShipmentOverridden < UfoError; end
 
   class Ship
+    autoload :Create, "ufo/ship/create"
+    autoload :Update, "ufo/ship/update"
+
     include AwsService
     include Util
+    include Create
+    include Update
+    include SecurityGroup::Helper
 
     def initialize(service, task_definition, options={})
       @service = service
       @task_definition = task_definition
       @options = options
-      @target_group_prompt = @options[:target_group_prompt].nil? ? true : @options[:target_group_prompt]
       @cluster = @options[:cluster] || default_cluster
       @wait_for_deployment = @options[:wait].nil? ? true : @options[:wait]
       @stop_old_tasks = @options[:stop_old_tasks].nil? ? false : @options[:stop_old_tasks]
@@ -151,62 +156,6 @@ module Ufo
        deployment.desired_count == deployment.running_count)
     end
 
-    # $ aws ecs create-service --generate-cli-skeleton
-    # {
-    #     "cluster": "",
-    #     "serviceName": "",
-    #     "taskDefinition": "",
-    #     "desiredCount": 0,
-    #     "loadBalancers": [
-    #         {
-    #             "targetGroupArn": "",
-    #             "containerName": "",
-    #             "containerPort": 0
-    #         }
-    #     ],
-    #     "role": "",
-    #     "clientToken": "",
-    #     "deploymentConfiguration": {
-    #         "maximumPercent": 0,
-    #         "minimumHealthyPercent": 0
-    #     }
-    # }
-    #
-    # If the service needs to be created it will get created with some default settings.
-    # When does a normal deploy where an update happens only the only thing that ufo
-    # will update is the task_definition.  The other settings should normally be updated with
-    # the ECS console.  `ufo scale` will allow you to updated the desired_count from the
-    # CLI though.
-    def create_service
-      puts "This service #{@service.colorize(:green)} does not yet exist in the #{@cluster.colorize(:green)} cluster.  This deploy will create it."
-      container = container_info(@task_definition)
-      target_group = target_group_prompt(container)
-
-      message = "#{@service} service created on #{@cluster} cluster"
-      if @options[:noop]
-        message = "NOOP #{message}"
-      else
-        options = {
-          cluster: @cluster,
-          service_name: @service,
-          task_definition: @task_definition
-        }
-        options = options.merge(default_params[:create_service])
-        unless target_group.nil? || target_group.empty?
-          add_load_balancer!(container, options, target_group)
-        end
-
-        puts "Creating ECS service with params:"
-        display_params(options)
-        show_aws_cli_command(:create, options)
-        response = ecs.create_service(options)
-        service = response.service # must set service here since this might never be called if @wait_for_deployment is false
-      end
-
-      puts message unless @options[:mute]
-      service
-    end
-
     def show_aws_cli_command(action, params)
       puts "Equivalent aws cli command:"
       # Use .ufo/data instead of .ufo/output because output files all get looped
@@ -222,113 +171,6 @@ module Ufo
 
       file_path = "file://#{rel_path}"
       puts "  aws ecs #{action}-service --cli-input-json #{file_path}".colorize(:green)
-    end
-
-    # $ aws ecs update-service --generate-cli-skeleton
-    # {
-    #     "cluster": "",
-    #     "service": "",
-    #     "taskDefinition": "",
-    #     "desiredCount": 0,
-    #     "deploymentConfiguration": {
-    #         "maximumPercent": 0,
-    #         "minimumHealthyPercent": 0
-    #     }
-    # }
-    # Only thing we want to change is the task-definition
-    def update_service(ecs_service)
-      message = "#{ecs_service.service_name} service updated on #{ecs_service.cluster_name} cluster with task #{@task_definition}"
-      if @options[:noop]
-        message = "NOOP #{message}"
-      else
-        params = {
-          cluster: ecs_service.cluster_arn, # can use the cluster name also since it is unique
-          service: ecs_service.service_arn, # can use the service name also since it is unique
-          task_definition: @task_definition
-        }
-        params = params.merge(default_params[:update_service] || {})
-        puts "Updating ECS service with params:"
-        display_params(params)
-        show_aws_cli_command(:update, params)
-
-        unless @options[:noop]
-          response = ecs.update_service(params)
-          service = response.service # must set service here since this might never be called if @wait_for_deployment is false
-        end
-      end
-
-      puts message unless @options[:mute]
-      service
-    end
-
-    # Only support Application Load Balancer
-    # Think there is an AWS bug that complains about not having the LB
-    # name but you cannot pass both a LB Name and a Target Group.
-    def add_load_balancer!(container, options, target_group)
-      options.merge!(
-        load_balancers: [
-          {
-            container_name: container[:name],
-            container_port: container[:port],
-            target_group_arn: target_group,
-          }
-        ]
-      )
-    end
-
-    # Returns the target_group.
-    # Will only allow an target_group and the service to use a load balancer
-    # if the container name is "web".
-    def target_group_prompt(container)
-      return if @options[:noop]
-      # If a target_group is provided at the CLI return it right away.
-      return @options[:target_group] if @options[:target_group]
-      # Allows skipping the target group prompt.
-      return unless @target_group_prompt
-
-      # If the container name is web then it is assume that this is a web service that
-      # needs a target group/elb.
-      return unless container[:name] == 'web'
-
-      puts "Would you like this service to be associated with an Application Load Balancer?"
-      puts "If yes, please provide the Application Load Balancer Target Group ARN."
-      puts "If no, simply press enter."
-      print "Target Group ARN: "
-
-      arn = $stdin.gets.strip
-      until arn == '' or validate_target_group(arn)
-        puts "You have provided an invalid Application Load Balancer Target Group ARN: #{arn}."
-        puts "It should be in the form: arn:aws:elasticloadbalancing:us-east-1:123456789:targetgroup/target-name/2378947392743"
-        puts "Please try again or skip adding a Target Group by just pressing enter."
-        print "Target Group ARN: "
-        arn = $stdin.gets.strip
-      end
-      arn
-    end
-
-    def validate_target_group(arn)
-      elb.describe_target_groups(target_group_arns: [arn])
-      true
-    rescue Aws::ElasticLoadBalancingV2::Errors::ValidationError
-      false
-    end
-
-    # assume only 1 container_definition
-    # assume only 1 port mapping in that container_defintion
-    def container_info(task_definition)
-      Ufo.check_task_definition!(task_definition)
-      task_definition_path = ".ufo/output/#{task_definition}.json"
-      task_definition = JSON.load(IO.read(task_definition_path))
-      container_def = task_definition["containerDefinitions"].first
-      mappings = container_def["portMappings"]
-      if mappings
-        map = mappings.first
-        port = map["containerPort"]
-      end
-      {
-        name: container_def["name"],
-        port: port
-      }
     end
 
     def find_ecs_service

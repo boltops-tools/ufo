@@ -6,7 +6,7 @@ base:
   image: <%= @image %>
   # clean_keep: 30
   # ecr_keep: 30
-  # defaults when an new ECS service is created by ufo ship
+  balancer_profile: default # .ufo/.balancer/profiles/default.yml
 
 development:
   # cluster: development

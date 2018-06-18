@@ -12,7 +12,7 @@ module Ufo
 
     # Keys are strings for simplicity.
     def settings
-      @settings ||= Setting.new.data
+      @settings ||= Ufo.settings
     end
 
     # Naming it default_params because params is too commonly used in ufo.

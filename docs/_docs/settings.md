@@ -15,6 +15,7 @@ base:
   image: tongueroo/hi
   # clean_keep: 30 # cleans up docker images on your docker server.
   # ecr_keep: 30 # cleans up images on ECR and keeps this remaining amount. Defaults to keep all.
+  balancer_profile: default
 
 development:
   # cluster: dev # uncomment if you want the cluster name be other than the default
@@ -106,6 +107,6 @@ AWS_PROFILE=prod-profile => UFO_ENV=production
 This behavior prevents you from switching `AWS_PROFILE`s and then accidentally deploying a production based docker image to development and vice versa because you forgot to also switch `UFO_ENV` to its respective environment.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/structure.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/params.md %}">Next Step</a>
+<a id="next" class="btn btn-primary" href="{% link _docs/load-balancer.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
 

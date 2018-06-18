@@ -1,7 +1,10 @@
 <%%
-  # replace with actual values if using fargate
-  @subnets = ["subnet-111","subnet-222"]
-  @security_groups = ["sg-111"]
+  # Default values provided, replace to fit your needs.
+  # These settings are required for fargate.
+  # Note: I noticed that the network settings don't get applied unless you destroy and
+  # recreate the service.
+  @subnets = <%= @options[:subnets].inspect %>
+  @security_groups = <%= @fargate_security_groups.inspect %> # auto is special value that tells ufo to create a security group automatically. Useful when using fargate or awsvpc mode.
 %>
 # These params are passsed to the corresponding aws-sdk ecs client methods.
 # AWS Docs example: https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/ECS/Client.html#run_task-instance_method
@@ -64,3 +67,4 @@ run_task:
   #     security_groups: <%%= @security_groups.inspect %>
   #     assign_public_ip: "ENABLED" # accepts ENABLED, DISABLED
 <% end -%>
+

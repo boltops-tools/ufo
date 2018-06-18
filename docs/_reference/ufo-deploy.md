@@ -51,6 +51,7 @@ The `ufo ships`, `ufo ship`, `ufo deploy` command support the same options. The 
                                                      # Default: true
 [--stop-old-tasks], [--no-stop-old-tasks]            # Stop old tasks after waiting for deploying to complete
 [--ecr-keep=N]                                       # ECR specific cleanup of old images.  Specifies how many images to keep.  Only runs if the images are ECR images. Defaults keeps all images.
+[--elb=ELB]                                          # ELB balancer profile to use
 [--verbose], [--no-verbose]                          
 [--mute], [--no-mute]                                
 [--noop], [--no-noop]                                

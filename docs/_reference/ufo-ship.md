@@ -37,15 +37,30 @@ The command has a decent amount of options, you can see the options available wi
 
 As you can see there are plenty of options for `ufo ship`.  Let's demonstrate usage of them in a few examples.
 
-### Load Balancer Target Group
+### Load Balancer
 
-When you are deploying to a service with the word 'web' in it, ufo assumes that this is a web service that uses a load balancer in front of it.  This is also covered a in the [Conventions]({% link _docs/conventions.md %}) page.  The deploy will prompt you for the ELB `--target-group`  if the ECS does not yet exist.  For non-web container the `--target-group` option gets ignored.  The prommpt can be bypassed by specifying a valid `--target-group` option or specifying the `---no-target-group-prompt` option.
+ECS services can be associated with a Load Balancer upon creation. Ufo can automatically create a load balancer.  The options:
 
-    ufo ship hi-web --no-target-group-prompt
+1. Automatically create the ELB.
+2. Provide a target group from an existing ELB.
+3. No ELB is created and associated.
 
-Or if you would like to specify the target-group upfront and not be bother with the prompted later you can use the `--target-group` option.
+Here are examples for each of them:
 
-    ufo ship hi-web --target-group=arn:aws:elasticloadbalancing:us-east-1:12345689:targetgroup/hi-web/12345
+    # Use different profiles to create the ELB:
+    #  .ufo/balancer/profiles/default.yml
+    #  .ufo/balancer/profiles/production.yml
+    ufo ship hi-web --elb=default
+    ufo ship hi-web --elb=production
+
+    # Use existing target group from pre-created ELB:
+    ufo ship hi-web --elb=arn:aws:elasticloadbalancing:us-east-1:123456789:targetgroup/target-name/2378947392743
+    ufo ship hi-web --target-group=arn:aws:elasticloadbalancing:us-east-1:123456789:targetgroup/target-name/2378947392743 # legacy, currently works
+
+    # Disable creating elb and prompt:
+    ufo ship hi-web --elb=false
+
+More info available at the [load balancer docs](http://ufoships.com/docs/load-balancer/).
 
 ### Deploying Task Definition without Docker Build
 
@@ -92,9 +107,10 @@ If you are using DockerHub or another registry, ufo does not automatically clean
                                                      # Default: true
 [--stop-old-tasks], [--no-stop-old-tasks]            # Stop old tasks after waiting for deploying to complete
 [--ecr-keep=N]                                       # ECR specific cleanup of old images.  Specifies how many images to keep.  Only runs if the images are ECR images. Defaults keeps all images.
-[--verbose], [--no-verbose]                          
-[--mute], [--no-mute]                                
-[--noop], [--no-noop]                                
+[--elb=ELB]                                          # ELB balancer profile to use
+[--verbose], [--no-verbose]
+[--mute], [--no-mute]
+[--noop], [--no-noop]
 [--cluster=CLUSTER]                                  # Cluster.  Overrides ufo/settings.yml.
 ```
 

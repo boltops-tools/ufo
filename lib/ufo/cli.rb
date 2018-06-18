@@ -8,6 +8,10 @@ module Ufo
     class_option :noop, type: :boolean
     class_option :cluster, desc: "Cluster.  Overrides ufo/settings.yml."
 
+    desc "balancer SUBCOMMAND", "balancer subcommands"
+    long_desc Help.text(:balancer)
+    subcommand "balancer", Balancer
+
     desc "docker SUBCOMMAND", "docker subcommands"
     long_desc Help.text(:docker)
     subcommand "docker", Docker
@@ -31,6 +35,7 @@ module Ufo
       option :pretty, type: :boolean, default: true, desc: "Pretty format the json for the task definitions"
       option :stop_old_tasks, type: :boolean, default: false, desc: "Stop old tasks after waiting for deploying to complete"
       option :ecr_keep, type: :numeric, desc: "ECR specific cleanup of old images.  Specifies how many images to keep.  Only runs if the images are ECR images. Defaults keeps all images."
+      option :elb, desc: "ELB balancer profile to use"
     end
 
     desc "deploy SERVICE", "Deploy task definition to ECS service without re-building the definition."
