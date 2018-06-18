@@ -119,8 +119,8 @@ Resources:
       IpProtocol: tcp
       FromPort: '0'
       ToPort: '65535'
-      SourceSecurityGroupId: !GetAtt [ElbSecurityGroup, GroupId]
-      GroupId: !GetAtt [EcsSecurityGroup, GroupId]
+      SourceSecurityGroupId: !GetAtt ElbSecurityGroup.GroupId
+      GroupId: !GetAtt EcsSecurityGroup.GroupId
 
   EcsService:
     Type: "AWS::ECS::Service"
