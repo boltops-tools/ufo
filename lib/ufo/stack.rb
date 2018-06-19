@@ -1,5 +1,7 @@
 module Ufo
   class Stack
+    autoload :Status, "ufo/stack/status"
+
     include AwsService
     extend Memoist
 
@@ -35,10 +37,16 @@ module Ufo
     #   UPDATE_ROLLBACK_IN_PROGRESS
     #
     def launch
+      # resp = cloudformation.describe_stack_events(stack_name: @stack_name)
+      # IO.write("/tmp/stack-events.json", JSON.pretty_generate(resp.to_h))
+      # puts "EXIT EARLY"
+      # exit 1
+
       stack = find_stack(@stack_name)
       exit_with_message(stack) if stack && !updatable?(stack)
       stack ? update_stack : create_stack
-      # wait...
+      wait_for_stack
+      puts "Finished stack."
     end
 
     def find_stack(stack_name)
@@ -54,9 +62,9 @@ module Ufo
     end
 
     def stack_options
-      puts template_body
-      puts "parameters: "
-      pp parameters
+      # puts template_body
+      # puts "parameters: "
+      # pp parameters
       # puts "EXIT EARLY 1"
       {
         parameters: parameters,
@@ -68,7 +76,6 @@ module Ufo
     def create_stack
       puts "Creating stack #{@stack_name}..."
       cloudformation.create_stack(stack_options)
-      puts "Created stack."
     end
 
     def update_stack
@@ -78,7 +85,6 @@ module Ufo
       rescue Aws::CloudFormation::Errors::ValidationError => e
         handle_update_stack_error(e)
       end
-      puts "Updated stack."
     end
 
     def parameters
@@ -121,11 +127,15 @@ module Ufo
 
     # Stack:arn:aws:cloudformation:... is in ROLLBACK_COMPLETE state and can not be updated.
     def handle_update_stack_error(e)
-      if e.message =~ /is in ROLLBACK_COMPLETE state and can not be updated/
+      case e.message
+      when /is in ROLLBACK_COMPLETE state and can not be updated/
         puts "The #{@stack_name} stack is in #{"ROLLBACK_COMPLETE".colorize(:red)} and cannot be updated. Deleted the stack and try again."
         # TODO: fix aws cloudformation console url
         url = "https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/"
         puts "Here's the CloudFormation console url: "
+        exit 1
+      when /No updates are to be performed/
+        puts "There are no updates to be performed. Exiting.".colorize(:yellow)
         exit 1
       else
         raise
@@ -153,10 +163,15 @@ module Ufo
     memoize :template_scope
 
     def exit_with_message(stack)
-      url = "http://example-url"
+      region = `aws configure get region`.strip rescue "us-east-1"
+      url = "https://console.aws.amazon.com/cloudformation/home?region=#{region}#/stacks"
       puts "The stack state is in: #{stack.stack_status}."
       puts "Here's the CloudFormation url to check for more details #{url}"
       exit 1
+    end
+
+    def wait_for_stack
+      Status.new(@stack_name).wait
     end
 
     def updatable?(stack)

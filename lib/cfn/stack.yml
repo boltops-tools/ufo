@@ -70,7 +70,7 @@ Resources:
           - !Join [',', [!Ref ElbSecurityGroups, !Ref ElbSecurityGroup]]
       Tags:
       - Key: Name
-        Value: <%= @service %>-<%= (rand.round(2) * 100).to_i.to_s %>
+        Value: <%= @service %>
       - Key: ufo
         Value: <%= @service %>
   TargetGroup:
@@ -184,7 +184,7 @@ Resources:
         CidrIp: 0.0.0.0/0
       Tags:
       - Key: Name
-        Value: <%= @service %>
+        Value: <%= @service %>-<%= (rand.round(2) * 100).to_i.to_s %>
       - Key: ufo
         Value: <%= @service %>
   EcsCrossSecurityGroupRule:
