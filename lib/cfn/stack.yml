@@ -135,9 +135,9 @@ Resources:
       Cluster: "development"
       DesiredCount: !Ref EcsDesiredCount
       TaskDefinition: !Ref EcsTaskDefinition
-#<% unless ENV['RANDOM_NAME'] -%>
-#      ServiceName: <%= @service %>
-#<% end -%>
+<% unless ENV['DYNAMIC_NAME'] -%>
+     ServiceName: <%= @service %>
+<% end -%>
       # TODO: required for fargate
       LaunchType: FARGATE
       NetworkConfiguration:
