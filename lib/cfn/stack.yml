@@ -136,7 +136,7 @@ Resources:
       DesiredCount: !Ref EcsDesiredCount
       TaskDefinition: !Ref EcsTaskDefinition
 <% unless ENV['DYNAMIC_NAME'] -%>
-     ServiceName: <%= @service %>
+      ServiceName: <%= @service %>
 <% end -%>
       # TODO: required for fargate
       LaunchType: FARGATE
