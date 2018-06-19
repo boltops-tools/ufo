@@ -119,29 +119,5 @@ class Ufo::Stack
         event["event_id"] == @last_shown_event_id
       end
     end
-
-    def rolled_back
-      @events[0]["resource_status"] == "UPDATE_ROLLBACK_COMPLETE"
-    end
-
-    def update_complete?
-      @events[0]["resource_status"] == "UPDATE_COMPLETE"
-    end
-
-    # @events might be cut off so most events again
-    def requires_rename
-      resp = cloudformation.describe_stack_events(stack_name: @stack_name)
-      events = resp["stack_events"]
-      # find last
-      i = events.find_index do |event|
-        event["resource_type"] == "AWS::CloudFormation::Stack" &&
-        event["resource_status_reason"] == "User Initiated"
-      end
-
-      events[0..i].reverse.detect do |e|
-        e["resource_status"] == "UPDATE_FAILED" &&
-        e["resource_status_reason"] =~ /CloudFormation cannot update a stack when a custom-named resource requires replacing/
-      end
-    end
   end
 end

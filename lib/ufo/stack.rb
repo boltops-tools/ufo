@@ -45,35 +45,10 @@ module Ufo
       stack = find_stack(@stack_name)
       exit_with_message(stack) if stack && !updatable?(stack)
 
-      # replace_stack_with_rename
-
       stack ? update_stack : create_stack
       status.wait
-      replace_stack_with_rename if requires_rename?
 
       puts "Finished stack."
-    end
-
-    # CloudFormation cannot update a stack when a custom-named resource requires replacing
-    def requires_rename?
-      status.rolled_back && status.requires_rename
-    end
-
-    # updates it 2 more times
-    # 1. with a dynamic random name
-    # 2. with a static custom-name
-    def replace_stack_with_rename
-      puts "The stack rolled back with an error because the ECS service requires a dynamic name to update. Automatically updating the stack with a temporary name and then will update again with the original static name.".colorize(:yellow)
-      @dynamic_name = true
-      update_stack
-      status.wait
-
-      # If there's another failure, no point in continuing
-      return unless status.update_complete?
-
-      @dynamic_name = false
-      update_stack
-      status.wait
     end
 
     def find_stack(stack_name)

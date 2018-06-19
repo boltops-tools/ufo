@@ -45,7 +45,7 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Condition: CreateElbIsTrue
     Properties:
-<% unless dynamic_name? -%>
+<% if settings["static_name"] -%>
       Name: <%= @service %>
 <% end -%>
       Scheme: internet-facing # or internal
@@ -82,7 +82,7 @@ Resources:
       HealthCheckIntervalSeconds: 60
       UnhealthyThresholdCount: 10
       HealthCheckPath: /
-<% unless dynamic_name? -%>
+<% if settings["static_name"] -%>
       Name: <%= @service %>
 <% end -%>
       Port: <%= network[:target_group][:port] %>
@@ -132,14 +132,14 @@ Resources:
         Value: <%= @service %>
 
   # Allow all traffic from ELB SG to ECS SG
-  EcsService:
+  Ecs:
     Type: "AWS::ECS::Service"
     # TODO: see what happens if create a cluster that is already existing
     Properties:
       Cluster: "development"
       DesiredCount: !Ref EcsDesiredCount
       TaskDefinition: !Ref EcsTaskDefinition
-<% unless dynamic_name? -%>
+<% if settings["static_name"] -%>
       ServiceName: <%= @service %>
 <% end -%>
       # TODO: required for fargate

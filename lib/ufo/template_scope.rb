@@ -52,14 +52,5 @@ module Ufo
     def settings
       Ufo.settings
     end
-
-    def dynamic_name?
-      x = ENV['DYNAMIC_NAME'] || @dynamic_name || settings["dynamic_name"]
-      puts "ENV['DYNAMIC_NAME'] #{ENV['DYNAMIC_NAME'].inspect}"
-      puts "x #{x.inspect}"
-      puts "@dynamic_name #{@dynamic_name.inspect}"
-      puts "settings[\"dynamic_name\"] #{settings["dynamic_name"].inspect}"
-      x
-    end
   end
 end
