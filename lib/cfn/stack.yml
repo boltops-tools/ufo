@@ -59,9 +59,9 @@ Resources:
           - !Join [',', [!Ref ElbSecurityGroups, !Ref ElbSecurityGroup]]
       Tags:
       - Key: Name
-        Value: <%= @service %>
+        Value: <%= @stack_name %>
       - Key: ufo
-        Value: <%= @service %>
+        Value: <%= @stack_name %>
 <%= custom_properties(:Elb) %>
   TargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
@@ -78,8 +78,9 @@ Resources:
       Port: <%= network[:target_group][:port] %>
       Protocol: <%= network[:target_group][:protocol].upcase %>
       VpcId: !Ref Vpc
-      # TODO: required for fargate or awsvpc network mode
+<% if @container_info[:fargate] -%>
       TargetType: ip
+<% end -%>
       TargetGroupAttributes:
       - Key: deregistration_delay.timeout_seconds
         Value: 0
@@ -119,14 +120,18 @@ Resources:
         CidrIp: 0.0.0.0/0
       Tags:
       - Key: Name
-        Value: <%= @service %>-elb
+        Value: <%= @stack_name %>-elb
       - Key: ufo
-        Value: <%= @service %>
+        Value: <%= @stack_name %>-elb
 <%= custom_properties(:ElbSecurityGroup) %>
 
   # Allow all traffic from ELB SG to ECS SG
   Ecs:
     Type: "AWS::ECS::Service"
+<% if @options[:elb] == "auto" -%>
+    DependsOn:
+      - Listener
+<% end -%>
     Properties:
       Cluster: "development"
       DesiredCount: !Ref EcsDesiredCount
@@ -134,8 +139,9 @@ Resources:
 <% if settings["static_name"] -%>
       ServiceName: <%= @service %>
 <% end -%>
-      # TODO: required for fargate
+<% if @container_info[:fargate] -%>
       LaunchType: FARGATE
+<% end -%>
       NetworkConfiguration:
         AwsvpcConfiguration:
           Subnets: !Ref Subnets # required
@@ -175,9 +181,9 @@ Resources:
         CidrIp: 0.0.0.0/0
       Tags:
       - Key: Name
-        Value: <%= @service %>-<%= (rand.round(2) * 100).to_i.to_s %>
+        Value: <%= @stack_name %>-<%= (rand.round(2) * 100).to_i.to_s %>
       - Key: ufo
-        Value: <%= @service %>
+        Value: <%= @stack_name %>
 <%= custom_properties(:EcsSecurityGroup) %>
   EcsCrossSecurityGroupRule:
     Type: AWS::EC2::SecurityGroupIngress

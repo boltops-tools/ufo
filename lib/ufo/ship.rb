@@ -51,7 +51,6 @@ module Ufo
         stack_name: @service,
         service: @service,
         task_definition: @task_definition,
-        cluster: @cluster,
       )
       stack = Stack.new(options)
       stack.launch

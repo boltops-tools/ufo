@@ -7,10 +7,14 @@ module Ufo
 
     def initialize(options)
       @options = options
-      @stack_name = options[:stack_name] || raise("stack_name required")
+      @stack_name = adjust_stack_name(options[:stack_name])
       @service = options[:service]
       @task_definition = options[:task_definition]
-      @cluster = options[:cluster]
+    end
+
+    def adjust_stack_name(stack_name)
+      stack_name || raise("stack_name required")
+      [stack_name, ENV['UFO_ENV_EXTRA']].compact.join('-')
     end
 
     # CloudFormation status codes, full list:
@@ -37,6 +41,7 @@ module Ufo
     #   UPDATE_ROLLBACK_IN_PROGRESS
     #
     def launch
+      IO.write("/tmp/ufo-cfn-template.yml", template_body)
       # resp = cloudformation.describe_stack_events(stack_name: @stack_name)
       # IO.write("/tmp/stack-events.json", JSON.pretty_generate(resp.to_h))
       # puts "EXIT EARLY"
@@ -53,7 +58,7 @@ module Ufo
 
     def find_stack(stack_name)
       resp = cloudformation.describe_stacks(stack_name: stack_name)
-      stack = resp.stacks.first
+      resp.stacks.first
     rescue Aws::CloudFormation::Errors::ValidationError => e
       # example: Stack with id hi-web does not exist
       if e.message =~ /Stack with/ && e.message =~ /does not exist/
@@ -70,6 +75,8 @@ module Ufo
       # puts "EXIT EARLY 1"
       # exit 1
 
+      # Store template in tmp in case for debugging
+      IO.write("/tmp/ufo-cfn-template.yml", template_body)
       {
         parameters: parameters,
         stack_name: @stack_name,
@@ -92,9 +99,6 @@ module Ufo
     end
 
     def parameters
-      network = Setting::Network.new('default').data
-      ecs_task_definition = 'arn:aws:ecs:us-east-1:160619113767:task-definition/hi-web:191'
-
       # --elb ''
       # --elb 'auto'
       # --elb arn
@@ -102,7 +106,7 @@ module Ufo
       when "auto"
         create_elb = "true"
         elb_target_group = ""
-      when ""
+      when "", nil
         create_elb = "false"
         elb_target_group = ""
       when /^arn:aws:elasticloadbalancing.*targetgroup/
@@ -112,6 +116,7 @@ module Ufo
         raise "Invalid elb option provided: #{@options[:elb].inspect}"
       end
 
+      network = Setting::Network.new('default').data
       hash = {
         ElbSecurityGroups: network[:elb_security_groups].join(','),
         EcsSecurityGroups: network[:ecs_security_groups].join(','),
@@ -122,7 +127,7 @@ module Ufo
         CreateElb: create_elb,
         ElbTargetGroup: elb_target_group,
         EcsDesiredCount: "1",
-        EcsTaskDefinition: ecs_task_definition,
+        EcsTaskDefinition: "arn:aws:ecs:us-east-1:160619113767:task-definition/hi-web:191", # @task_definition,
       }
       hash.map do |k,v|
         { parameter_key: k, parameter_value: v }
@@ -158,8 +163,8 @@ module Ufo
       # Dirties the scope but needed here.
       scope.assign_instance_variables(
         options: @options,
-        stack_name: @stack_name,
         service: @service,
+        stack_name: @stack_name,
         container_info: container_info(@task_definition),
         dynamic_name: @dynamic_name,
       )
@@ -195,9 +200,12 @@ module Ufo
         map = mappings.first
         port = map["containerPort"]
       end
+      fargate = task_definition["requiresCompatibilities"] && task_definition["requiresCompatibilities"] == ["FARGATE"]
+
       {
         name: container_def["name"],
-        port: port
+        port: port,
+        fargate: fargate,
       }
     end
     memoize :container_info
