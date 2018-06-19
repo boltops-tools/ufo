@@ -41,12 +41,12 @@ class Ufo::Stack
       end
 
       if last_event_status =~ /_FAILED/
-        puts "Stack status: #{last_event_status}".colorize(:red)
+        puts "Stack failed: #{last_event_status}".colorize(:red)
         puts "Stack reason #{@events[0]["resource_status_reason"]}".colorize(:red)
       elsif last_event_status =~ /_ROLLBACK_/
-        puts "Stack status: #{last_event_status}".colorize(:red)
+        puts "Stack rolled back: #{last_event_status}".colorize(:red)
       else # success
-        puts "Stack status: #{last_event_status}".colorize(:green)
+        puts "Stack success status: #{last_event_status}".colorize(:green)
       end
     end
 

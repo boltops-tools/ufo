@@ -50,22 +50,16 @@ module Ufo
       stack = find_stack(@stack_name)
       exit_with_message(stack) if stack && !updatable?(stack)
 
-      stack ? update_stack : create_stack
+      stack ? perform(:update) : perform(:create)
       status.wait
-
-      puts "Finished stack."
     end
 
-    def find_stack(stack_name)
-      resp = cloudformation.describe_stacks(stack_name: stack_name)
-      resp.stacks.first
+    def perform(action)
+      puts "#{action[0..-2].capitalize}ing stack #{@stack_name.colorize(:green)}..."
+      # Example: cloudformation.send("update_stack", stack_options)
+      cloudformation.send("#{action}_stack", stack_options)
     rescue Aws::CloudFormation::Errors::ValidationError => e
-      # example: Stack with id hi-web does not exist
-      if e.message =~ /Stack with/ && e.message =~ /does not exist/
-        nil
-      else
-        raise
-      end
+      handle_stack_error(e)
     end
 
     def stack_options
@@ -81,31 +75,6 @@ module Ufo
         stack_name: @stack_name,
         template_body: template_body,
       }
-    end
-
-    # Store template in tmp in case for debugging
-    def save_template
-      FileUtils.mkdir_p("/tmp/ufo")
-      IO.write("/tmp/ufo/cfn.yml", template_body)
-    end
-
-    def create_stack
-      puts "Creating stack #{@stack_name}..."
-      cloudformation.create_stack(stack_options)
-    end
-
-    def update_stack
-      puts "Updating stack..."
-      begin
-        cloudformation.update_stack(stack_options)
-      rescue Aws::CloudFormation::Errors::ValidationError => e
-        handle_stack_error(e)
-      end
-    end
-
-    def perform(action)
-      puts "#{action[0..-2].captialize}ing stack #{@stack_name}"
-      cloudformation.send("#{action}_stack", stack_options)
     end
 
     def parameters
@@ -137,11 +106,36 @@ module Ufo
         CreateElb: create_elb,
         ElbTargetGroup: elb_target_group,
         EcsDesiredCount: "1",
-        EcsTaskDefinition: "arn:aws:ecs:us-east-1:160619113767:task-definition/hi-web:191", # @task_definition,
+        EcsTaskDefinition: task_definition_arn,
+        # EcsTaskDefinition: "arn:aws:ecs:us-east-1:160619113767:task-definition/hi-web:191",
       }
       hash.map do |k,v|
         { parameter_key: k, parameter_value: v }
       end
+    end
+
+    def task_definition_arn
+      resp = ecs.describe_task_definition(task_definition: @task_definition)
+      resp.task_definition.task_definition_arn
+    end
+    memoize :task_definition_arn
+
+    def find_stack(stack_name)
+      resp = cloudformation.describe_stacks(stack_name: stack_name)
+      resp.stacks.first
+    rescue Aws::CloudFormation::Errors::ValidationError => e
+      # example: Stack with id hi-web does not exist
+      if e.message =~ /Stack with/ && e.message =~ /does not exist/
+        nil
+      else
+        raise
+      end
+    end
+
+    # Store template in tmp in case for debugging
+    def save_template
+      FileUtils.mkdir_p("/tmp/ufo")
+      IO.write("/tmp/ufo/cfn.yml", template_body)
     end
 
     # Stack:arn:aws:cloudformation:... is in ROLLBACK_COMPLETE state and can not be updated.
