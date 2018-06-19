@@ -50,17 +50,6 @@ Resources:
 <% end -%>
       Scheme: internet-facing # or internal
       Subnets: !Ref Subnets
-      # LoadBalancerAttributes:
-      # - Key: deletion_protection.enabled
-      #   Value: "false"
-      # - Key: idle_timeout.timeout_seconds
-      #   Value: "1"
-      # - Key: access_logs.s3.enabled
-      #   Value: "false"
-      # - Key: access_logs.s3.prefix
-      #   Value: "hi-web"
-      # - Key: access_logs.s3.bucket
-      #   Value: "my-bucket"
       # Add additional extra security groups if param
       SecurityGroups: !Split
         - ','
@@ -73,6 +62,7 @@ Resources:
         Value: <%= @service %>
       - Key: ufo
         Value: <%= @service %>
+<%= custom_properties(:Elb) %>
   TargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Condition: CreateTargetGroupIsTrue
@@ -93,6 +83,7 @@ Resources:
       TargetGroupAttributes:
       - Key: deregistration_delay.timeout_seconds
         Value: 0
+<%= custom_properties(:TargetGroup) %>
   Listener:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Condition: CreateElbIsTrue
@@ -108,6 +99,7 @@ Resources:
       LoadBalancerArn: !Ref Elb
       Port: <%= network[:elb][:port] %>
       Protocol: <%= network[:elb][:protocol].upcase %>
+<%= custom_properties(:Listener) %>
 
   ElbSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -130,11 +122,11 @@ Resources:
         Value: <%= @service %>-elb
       - Key: ufo
         Value: <%= @service %>
+<%= custom_properties(:ElbSecurityGroup) %>
 
   # Allow all traffic from ELB SG to ECS SG
   Ecs:
     Type: "AWS::ECS::Service"
-    # TODO: see what happens if create a cluster that is already existing
     Properties:
       Cluster: "development"
       DesiredCount: !Ref EcsDesiredCount
@@ -168,6 +160,7 @@ Resources:
         - - ContainerName: <%= @container_info[:name] %>
             ContainerPort: <%= @container_info[:port] %>
             TargetGroupArn: !Ref ElbTargetGroup
+<%= custom_properties(:Ecs) %>
   EcsSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -185,6 +178,7 @@ Resources:
         Value: <%= @service %>-<%= (rand.round(2) * 100).to_i.to_s %>
       - Key: ufo
         Value: <%= @service %>
+<%= custom_properties(:EcsSecurityGroup) %>
   EcsCrossSecurityGroupRule:
     Type: AWS::EC2::SecurityGroupIngress
     Condition: CreateElbIsTrue
@@ -194,6 +188,7 @@ Resources:
       ToPort: '65535'
       SourceSecurityGroupId: !GetAtt ElbSecurityGroup.GroupId
       GroupId: !GetAtt EcsSecurityGroup.GroupId
+<%= custom_properties(:EcsCrossSecurityGroupRule) %>
 
 Outputs:
  Dns:

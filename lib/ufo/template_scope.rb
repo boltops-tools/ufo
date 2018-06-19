@@ -52,5 +52,15 @@ module Ufo
     def settings
       Ufo.settings
     end
+
+    def custom_properties(resource)
+      path = "#{Ufo.root}/.ufo/settings/cfn/#{resource}.yml"
+      if File.exist?(path)
+        text = RenderMePretty.result(path, context: self)
+        text.split("\n").map do |line|
+          "      #{line}"
+        end.join("\n") + "\n"
+      end
+    end
   end
 end

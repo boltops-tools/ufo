@@ -64,7 +64,7 @@ module Ufo
     end
 
     def stack_options
-      puts template_body
+      # puts template_body
       # puts "parameters: "
       # pp parameters
       # puts "EXIT EARLY 1"
