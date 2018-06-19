@@ -1,8 +1,13 @@
-# https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-elasticloadbalancingv2-loadbalancer.html
-# https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-elasticloadbalancingv2-listener.html
-# https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-elasticloadbalancingv2-targetgroup.html
 Description: "Ufo ECS stack <%= @service %>"
 Parameters:
+  # required
+  Subnets:
+    Description: Existing subnet ids
+    Type: List<AWS::EC2::Subnet::Id>
+  Vpc:
+    Description: Existing vpc id
+    Type: AWS::EC2::VPC::Id
+
   EcsSecurityGroups:
     Description: Existing ecs security group ids
     Type: String
@@ -11,14 +16,6 @@ Parameters:
     Description: Existing elb security group ids. List with commas.
     Type: String
     Default: ''
-
-  # required
-  Subnets:
-    Description: Existing subnet ids
-    Type: List<AWS::EC2::Subnet::Id>
-  Vpc:
-    Description: Existing vpc id
-    Type: AWS::EC2::VPC::Id
 
   ElbTargetGroup:
     Description: Existing target group
@@ -48,15 +45,18 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Condition: CreateElbIsTrue
     Properties:
+<% unless dynamic_name? -%>
+      Name: <%= @service %>
+<% end -%>
       Scheme: internet-facing # or internal
       Subnets: !Ref Subnets
       # LoadBalancerAttributes:
       # - Key: deletion_protection.enabled
       #   Value: "false"
-      # - Key: access_logs.s3.enabled
-      #   Value: "false"
       # - Key: idle_timeout.timeout_seconds
       #   Value: "1"
+      # - Key: access_logs.s3.enabled
+      #   Value: "false"
       # - Key: access_logs.s3.prefix
       #   Value: "hi-web"
       # - Key: access_logs.s3.bucket
@@ -82,9 +82,11 @@ Resources:
       HealthCheckIntervalSeconds: 60
       UnhealthyThresholdCount: 10
       HealthCheckPath: /
-      # Name: "my-elb"
-      Port: 80
-      Protocol: HTTP
+<% unless dynamic_name? -%>
+      Name: <%= @service %>
+<% end -%>
+      Port: <%= network[:target_group][:port] %>
+      Protocol: <%= network[:target_group][:protocol].upcase %>
       VpcId: !Ref Vpc
       # TODO: required for fargate or awsvpc network mode
       TargetType: ip
@@ -95,15 +97,17 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Condition: CreateElbIsTrue
     Properties:
-      # Certificates:
-      #   - Certificate
+<% if network[:elb][:certificate] -%>
+      Certificates:
+        - CertificateArn: <%= network[:elb][:certificate] %>
+<% end -%>
       DefaultActions:
       - Type: forward
         TargetGroupArn:
           !If [ElbTargetGroupIsBlank, !Ref TargetGroup, !Ref ElbTargetGroup]
       LoadBalancerArn: !Ref Elb
-      Port: 80
-      Protocol: HTTP
+      Port: <%= network[:elb][:port] %>
+      Protocol: <%= network[:elb][:protocol].upcase %>
 
   ElbSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -113,8 +117,8 @@ Resources:
       VpcId: !Ref Vpc
       SecurityGroupIngress:
       - IpProtocol: tcp
-        FromPort: '80'
-        ToPort: '80'
+        FromPort: '<%= network[:elb][:port] %>'
+        ToPort: '<%= network[:elb][:port] %>'
         CidrIp: 0.0.0.0/0
       SecurityGroupEgress:
       - IpProtocol: tcp
@@ -135,7 +139,7 @@ Resources:
       Cluster: "development"
       DesiredCount: !Ref EcsDesiredCount
       TaskDefinition: !Ref EcsTaskDefinition
-<% unless ENV['DYNAMIC_NAME'] -%>
+<% unless dynamic_name? -%>
       ServiceName: <%= @service %>
 <% end -%>
       # TODO: required for fargate
@@ -153,12 +157,6 @@ Resources:
               - !Join [',', [!Ref EcsSecurityGroups, !Ref EcsSecurityGroup]]
 
           AssignPublicIp: ENABLED # accepts ENABLED, DISABLED
-
-      # LoadBalancers:
-      # - ContainerName: <%= @container_info[:name] %>
-      #   ContainerPort: <%= @container_info[:port] %>
-      #   TargetGroupArn: !Ref TargetGroup
-
       LoadBalancers: !If
       - CreateTargetGroupIsTrue
       - - ContainerName: <%= @container_info[:name] %>
@@ -196,7 +194,6 @@ Resources:
       ToPort: '65535'
       SourceSecurityGroupId: !GetAtt ElbSecurityGroup.GroupId
       GroupId: !GetAtt EcsSecurityGroup.GroupId
-
 
 Outputs:
  Dns:

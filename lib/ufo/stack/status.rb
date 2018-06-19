@@ -30,6 +30,7 @@ class Ufo::Stack
     attr_reader :events
     def initialize(stack_name)
       @stack_name = stack_name
+      @events = [] # constantly replaced with recent events
     end
 
     # check for /(_COMPLETE|_FAILED)$/ status
@@ -42,7 +43,9 @@ class Ufo::Stack
       if last_event_status =~ /_FAILED/
         puts "Stack status: #{last_event_status}".colorize(:red)
         puts "Stack reason #{@events[0]["resource_status_reason"]}".colorize(:red)
-      else
+      elsif last_event_status =~ /_ROLLBACK_/
+        puts "Stack status: #{last_event_status}".colorize(:red)
+      else # success
         puts "Stack status: #{last_event_status}".colorize(:green)
       end
     end
@@ -114,6 +117,30 @@ class Ufo::Stack
     def last_shown_index
       @events.find_index do |event|
         event["event_id"] == @last_shown_event_id
+      end
+    end
+
+    def rolled_back
+      @events[0]["resource_status"] == "UPDATE_ROLLBACK_COMPLETE"
+    end
+
+    def update_complete?
+      @events[0]["resource_status"] == "UPDATE_COMPLETE"
+    end
+
+    # @events might be cut off so most events again
+    def requires_rename
+      resp = cloudformation.describe_stack_events(stack_name: @stack_name)
+      events = resp["stack_events"]
+      # find last
+      i = events.find_index do |event|
+        event["resource_type"] == "AWS::CloudFormation::Stack" &&
+        event["resource_status_reason"] == "User Initiated"
+      end
+
+      events[0..i].reverse.detect do |e|
+        e["resource_status"] == "UPDATE_FAILED" &&
+        e["resource_status_reason"] =~ /CloudFormation cannot update a stack when a custom-named resource requires replacing/
       end
     end
   end

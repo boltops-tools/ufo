@@ -1,5 +1,7 @@
 module Ufo
   class TemplateScope
+    extend Memoist
+
     attr_reader :helper
     attr_reader :task_definition_name
     def initialize(helper=nil, task_definition_name=nil)
@@ -40,6 +42,24 @@ module Ufo
       vars.each do |k,v|
         instance_variable_set("@#{k}".to_sym, v)
       end
+    end
+
+    def network
+      Ufo::Setting::Network.new.data
+    end
+    memoize :network
+
+    def settings
+      Ufo.settings
+    end
+
+    def dynamic_name?
+      x = ENV['DYNAMIC_NAME'] || @dynamic_name || settings["dynamic_name"]
+      puts "ENV['DYNAMIC_NAME'] #{ENV['DYNAMIC_NAME'].inspect}"
+      puts "x #{x.inspect}"
+      puts "@dynamic_name #{@dynamic_name.inspect}"
+      puts "settings[\"dynamic_name\"] #{settings["dynamic_name"].inspect}"
+      x
     end
   end
 end

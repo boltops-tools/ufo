@@ -44,9 +44,36 @@ module Ufo
 
       stack = find_stack(@stack_name)
       exit_with_message(stack) if stack && !updatable?(stack)
+
+      # replace_stack_with_rename
+
       stack ? update_stack : create_stack
-      wait_for_stack
+      status.wait
+      replace_stack_with_rename if requires_rename?
+
       puts "Finished stack."
+    end
+
+    # CloudFormation cannot update a stack when a custom-named resource requires replacing
+    def requires_rename?
+      status.rolled_back && status.requires_rename
+    end
+
+    # updates it 2 more times
+    # 1. with a dynamic random name
+    # 2. with a static custom-name
+    def replace_stack_with_rename
+      puts "The stack rolled back with an error because the ECS service requires a dynamic name to update. Automatically updating the stack with a temporary name and then will update again with the original static name.".colorize(:yellow)
+      @dynamic_name = true
+      update_stack
+      status.wait
+
+      # If there's another failure, no point in continuing
+      return unless status.update_complete?
+
+      @dynamic_name = false
+      update_stack
+      status.wait
     end
 
     def find_stack(stack_name)
@@ -62,10 +89,12 @@ module Ufo
     end
 
     def stack_options
-      # puts template_body
+      puts template_body
       # puts "parameters: "
       # pp parameters
       # puts "EXIT EARLY 1"
+      # exit 1
+
       {
         parameters: parameters,
         stack_name: @stack_name,
@@ -142,11 +171,11 @@ module Ufo
       end
     end
 
+    # do not memoize template_body it can change for a rename retry
     def template_body
       path = File.expand_path("../cfn/stack.yml", File.dirname(__FILE__))
-      text = RenderMePretty.result(path, context: template_scope)
+      RenderMePretty.result(path, context: template_scope)
     end
-    memoize :template_body
 
     def template_scope
       scope = Ufo::TemplateScope.new(Ufo::DSL::Helper.new, nil)
@@ -157,6 +186,7 @@ module Ufo
         stack_name: @stack_name,
         service: @service,
         container_info: container_info(@task_definition),
+        dynamic_name: @dynamic_name,
       )
       scope
     end
@@ -170,9 +200,10 @@ module Ufo
       exit 1
     end
 
-    def wait_for_stack
-      Status.new(@stack_name).wait
+    def status
+      Status.new(@stack_name)
     end
+    memoize :status
 
     def updatable?(stack)
       stack.stack_status =~ /_COMPLETE$/
