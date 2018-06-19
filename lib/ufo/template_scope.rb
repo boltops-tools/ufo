@@ -62,5 +62,9 @@ module Ufo
         end.join("\n") + "\n"
       end
     end
+
+    def static_name?
+      ENV["STATIC_NAME"] || settings["static_name"]
+    end
   end
 end

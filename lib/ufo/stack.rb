@@ -75,13 +75,18 @@ module Ufo
       # puts "EXIT EARLY 1"
       # exit 1
 
-      # Store template in tmp in case for debugging
-      IO.write("/tmp/ufo-cfn-template.yml", template_body)
+      save_template
       {
         parameters: parameters,
         stack_name: @stack_name,
         template_body: template_body,
       }
+    end
+
+    # Store template in tmp in case for debugging
+    def save_template
+      FileUtils.mkdir_p("/tmp/ufo")
+      IO.write("/tmp/ufo/cfn.yml", template_body)
     end
 
     def create_stack
@@ -94,8 +99,13 @@ module Ufo
       begin
         cloudformation.update_stack(stack_options)
       rescue Aws::CloudFormation::Errors::ValidationError => e
-        handle_update_stack_error(e)
+        handle_stack_error(e)
       end
+    end
+
+    def perform(action)
+      puts "#{action[0..-2].captialize}ing stack #{@stack_name}"
+      cloudformation.send("#{action}_stack", stack_options)
     end
 
     def parameters
@@ -135,7 +145,7 @@ module Ufo
     end
 
     # Stack:arn:aws:cloudformation:... is in ROLLBACK_COMPLETE state and can not be updated.
-    def handle_update_stack_error(e)
+    def handle_stack_error(e)
       case e.message
       when /is in ROLLBACK_COMPLETE state and can not be updated/
         puts "The #{@stack_name} stack is in #{"ROLLBACK_COMPLETE".colorize(:red)} and cannot be updated. Deleted the stack and try again."
@@ -153,7 +163,13 @@ module Ufo
 
     # do not memoize template_body it can change for a rename retry
     def template_body
-      path = File.expand_path("../cfn/stack.yml", File.dirname(__FILE__))
+      custom_template = "#{Ufo.root}/.ufo/settings/cfn.yml"
+      path = if File.exist?(custom_template)
+               custom_template
+             else
+               # built-in default
+               File.expand_path("../cfn/stack.yml", File.dirname(__FILE__))
+             end
       RenderMePretty.result(path, context: template_scope)
     end
 

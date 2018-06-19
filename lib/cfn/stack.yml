@@ -1,4 +1,4 @@
-Description: "Ufo ECS stack <%= @service %>"
+Description: "Ufo ECS stack <%= @stack_name %>"
 Parameters:
   # required
   Subnets:
@@ -45,8 +45,8 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Condition: CreateElbIsTrue
     Properties:
-<% if settings["static_name"] -%>
-      Name: <%= @service %>
+<% if static_name? -%>
+      Name: <%= @stack_name %>
 <% end -%>
       Scheme: internet-facing # or internal
       Subnets: !Ref Subnets
@@ -72,8 +72,8 @@ Resources:
       HealthCheckIntervalSeconds: 60
       UnhealthyThresholdCount: 10
       HealthCheckPath: /
-<% if settings["static_name"] -%>
-      Name: <%= @service %>
+<% if static_name? -%>
+      Name: <%= @stack_name %>
 <% end -%>
       Port: <%= network[:target_group][:port] %>
       Protocol: <%= network[:target_group][:protocol].upcase %>
@@ -136,8 +136,8 @@ Resources:
       Cluster: "development"
       DesiredCount: !Ref EcsDesiredCount
       TaskDefinition: !Ref EcsTaskDefinition
-<% if settings["static_name"] -%>
-      ServiceName: <%= @service %>
+<% if static_name? -%>
+      ServiceName: <%= @stack_name %>
 <% end -%>
 <% if @container_info[:fargate] -%>
       LaunchType: FARGATE
