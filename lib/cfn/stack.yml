@@ -63,13 +63,11 @@ Resources:
   TargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Condition: CreateTargetGroupIsTrue
-    DependsOn:
-      - Elb
+    DependsOn: Elb
     Properties:
       HealthCheckIntervalSeconds: 60
       UnhealthyThresholdCount: 10
       HealthCheckPath: /
-      Name: <%= @full_service_name %>
       Port: <%= network[:target_group][:port] %>
       Protocol: <%= network[:target_group][:protocol].upcase %>
       VpcId: !Ref Vpc
@@ -118,12 +116,10 @@ Resources:
         Value: <%= @full_service_name %>-elb
 <%= custom_properties(:ElbSecurityGroup) %>
 
-  # Allow all traffic from ELB SG to ECS SG
   Ecs:
     Type: AWS::ECS::Service
-<% if @options[:elb] == "auto" -%>
-    DependsOn:
-      - Listener
+<% if @create_elb -%>
+    DependsOn: Listener
 <% end -%>
     Properties:
       Cluster: <%= @cluster %>
@@ -179,6 +175,7 @@ Resources:
       - Key: Name
         Value: <%= @full_service_name %>-<%= (rand.round(2) * 100).to_i.to_s %>
 <%= custom_properties(:EcsSecurityGroup) %>
+  # Allow all traffic from ELB SG to ECS SG
   EcsCrossSecurityGroupRule:
     Type: AWS::EC2::SecurityGroupIngress
     Condition: CreateElbIsTrue

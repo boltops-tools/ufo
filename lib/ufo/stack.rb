@@ -200,6 +200,8 @@ module Ufo
       scope = Ufo::TemplateScope.new(Ufo::DSL::Helper.new, nil)
       # Add additional variable to scope for CloudFormation template.
       # Dirties the scope but needed here.
+      create_elb, _ = elb_options
+      create_elb = create_elb == "true"
       scope.assign_instance_variables(
         options: @options,
         service: @service,
@@ -208,6 +210,7 @@ module Ufo
         full_service_name: Ufo.full_sevice_name(@service),
         container_info: container_info,
         dynamic_name: @dynamic_name,
+        create_elb: create_elb, # for edge case when ecs service is created before the listener has finished. Sets DependsOn during compile phase.
       )
       scope
     end
