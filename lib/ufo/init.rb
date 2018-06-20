@@ -71,8 +71,9 @@ module Ufo
 
     def upsert_gitignore
       text =<<-EOL
-.ufo/output
+.ufo/current
 .ufo/data
+.ufo/output
 EOL
       if File.exist?(".gitignore")
         append_to_file ".gitignore", text

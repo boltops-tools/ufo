@@ -1,33 +1,33 @@
 module Ufo
-  class Scale
-    include Util
-    include AwsService
+  class Scale < Base
+    delegate :service, to: :info
 
     def initialize(service, count, options={})
-      @service = service
+      super(service, options)
       @count = count
-      @options = options
-      @cluster = @options[:cluster] || default_cluster
     end
 
+    def info
+      Info.new(@service, @options)
+    end
+    memoize :info
+
     def update
+      service_name = Ufo.full_sevice_name(@service)
       unless service_exists?
-        puts "Unable to find the #{@service} service on #{@cluster} cluster."
+        puts "Unable to find the #{service_name.colorize(:green)} service on the #{@cluster.colorize(:green)} cluster."
         puts "Are you sure you are trying to scale the right service on the right cluster?"
         exit
       end
       ecs.update_service(
-        service: @service,
+        service: service.service_name,
         cluster: @cluster,
         desired_count: @count
       )
-      puts "Scale #{@service} service in #{@cluster} cluster to #{@count}" unless @options[:mute]
+      puts "Scale #{service_name.colorize(:green)} service in #{@cluster.colorize(:green)} cluster to #{@count}" unless @options[:mute]
     end
 
     def service_exists?
-      cluster = ecs.describe_clusters(clusters: [@cluster]).clusters.first
-      return false unless cluster
-      service = ecs.describe_services(services: [@service], cluster: @cluster).services.first
       !!service
     end
   end

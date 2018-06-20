@@ -1,19 +1,10 @@
 module Ufo
-  class Info
-    include AwsService
-    include Stack::Helper
-    include Util
-    extend Memoist
-
-    def initialize(service, options)
-      @service = service
-      @options = options
-      @cluster = @options[:cluster] || default_cluster
-      @stack_name = adjust_stack_name(@cluster, service)
-    end
-
+  class Info < Base
     def run
+      puts "@service #{@service.inspect}"
       service_name = Ufo.full_sevice_name(@service)
+      puts "service_name #{service_name.inspect}"
+      # exit
       unless service
         puts "No #{service_name.colorize(:green)} found."
         puts "No CloudFormation stack named #{@stack_name} found."

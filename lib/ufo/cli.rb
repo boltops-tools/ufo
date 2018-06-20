@@ -98,6 +98,13 @@ module Ufo
       Cancel.new(service, options).run
     end
 
+    desc "current SERVICE", "Switch the current service. Saves to .ufo/current"
+    long_desc Help.text(:current)
+    option :unset, type: :boolean, desc: "Unset current service to nothing. Removes .ufo/current"
+    def current(service=nil)
+      Current.new(service, options).run
+    end
+
     desc "destroy SERVICE", "Destroy the ECS service."
     long_desc Help.text(:destroy)
     option :sure, type: :boolean, desc: "By pass are you sure prompt."
@@ -108,13 +115,13 @@ module Ufo
 
     desc "info SERVICE", "Info about the ECS service."
     long_desc Help.text(:info)
-    def info(service)
+    def info(service=:current)
       Info.new(service, options).run
     end
 
     desc "scale SERVICE COUNT", "Scale the ECS service."
     long_desc Help.text(:scale)
-    def scale(service, count)
+    def scale(service=:current, count)
       Scale.new(service, count, options).update
     end
 
