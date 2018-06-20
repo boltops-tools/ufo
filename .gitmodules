@@ -1,3 +1,0 @@
-[submodule "vendor/balancer"]
-	path = vendor/balancer
-	url = git@github.com:tongueroo/balancer.git
