@@ -1,11 +1,11 @@
 ---
-title: ufo balancer help
+title: ufo network help
 reference: true
 ---
 
 ## Usage
 
-    ufo balancer help [COMMAND]
+    ufo network help [COMMAND]
 
 ## Description
 

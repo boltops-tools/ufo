@@ -1,5 +1,3 @@
-require 'memoist'
-
 module Ufo
   class Task
     extend Memoist

@@ -27,10 +27,10 @@ Here are examples for each of them:
 
 ## Balancer Profiles
 
-Underneath the hood, ufo uses the [balancer](https://github.com/tongueroo/balancer) gem, to create the load balancer.  Balancer uses profile files. The `ufo init` generates initial default `.ufo/balancer/profiles/default.yml` and `.ufo/settings.yml` files.  Edit these files and configure it to your needs. You can regenerate the `default.yml` profile file with `ufo balancer init`. Example:
+Underneath the hood, ufo uses the [balancer](https://github.com/tongueroo/balancer) gem, to create the load balancer.  Balancer uses profile files. The `ufo init` generates initial default `.ufo/balancer/profiles/default.yml` and `.ufo/settings.yml` files.  Edit these files and configure it to your needs. You can regenerate the `default.yml` profile file with `ufo network init`. Example:
 
-    ufo balancer init --subnets subnet-aaa subnet-bbb --vpc-id vpc-123
-    ufo balancer init # use default vpc and subnet network settings
+    ufo network init --subnets subnet-aaa subnet-bbb --vpc-id vpc-123
+    ufo network init # use default vpc and subnet network settings
 
 The load balance profile values mainly control the creation of the load balancer. Currently, ufo does not update the load balancer settings. To update load balancer settings, use the AWS console.
 

@@ -5,7 +5,7 @@ reference: true
 
 ## Usage
 
-    ufo balancer SUBCOMMAND
+    ufo network SUBCOMMAND
 
 ## Description
 
@@ -13,18 +13,18 @@ balancer subcommands
 
 ## Examples
 
-    ufo balancer init
+    ufo network init
 
 ## Subcommands
 
-* [ufo balancer init]({% link _reference/ufo-balancer-init.md %}) - Creates balancer starter file.
+* [ufo network init]({% link _reference/ufo-balancer-init.md %}) - Creates balancer starter file.
 
 ## Options
 
 ```
-[--verbose], [--no-verbose]  
-[--mute], [--no-mute]        
-[--noop], [--no-noop]        
+[--verbose], [--no-verbose]
+[--mute], [--no-mute]
+[--noop], [--no-noop]
 [--cluster=CLUSTER]          # Cluster.  Overrides ufo/settings.yml.
 ```
 

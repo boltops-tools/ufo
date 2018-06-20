@@ -33,6 +33,10 @@ module Ufo
     end
     memoize :settings
 
+    def cfn_profile
+      settings["cfn_profile"] || "default"
+    end
+
     private
     # Do not use the Setting class to load the profile because it can cause an
     # infinite loop then if we decide to use Ufo.env from within settings class.

@@ -8,9 +8,9 @@ module Ufo
     class_option :noop, type: :boolean
     class_option :cluster, desc: "Cluster.  Overrides ufo/settings.yml."
 
-    desc "balancer SUBCOMMAND", "balancer subcommands"
-    long_desc Help.text(:balancer)
-    subcommand "balancer", Balancer
+    desc "network SUBCOMMAND", "network subcommands"
+    long_desc Help.text(:network)
+    subcommand "network", Network
 
     desc "docker SUBCOMMAND", "docker subcommands"
     long_desc Help.text(:docker)

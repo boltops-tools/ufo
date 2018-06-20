@@ -14,50 +14,13 @@
 #
 # More docs: http://ufoships.com/docs/params/
 
-create_service:
-  deployment_configuration:
-    maximum_percent: 200
-    minimum_healthy_percent: 100
-  desired_count: 1
-<% if @options[:launch_type] == "fargate" -%>
-  launch_type: "FARGATE"
-  network_configuration:
-    awsvpc_configuration:
-      subnets: <%%= @subnets.inspect %> # required
-      security_groups: <%%= @security_groups.inspect %>
-      assign_public_ip: "ENABLED" # accepts ENABLED, DISABLED
-<% else -%>
-  # launch_type: "FARGATE"
-  # network_configuration:
-  #   awsvpc_configuration:
-  #     subnets: <%%= @subnets.inspect %> # required
-  #     security_groups: <%%= @security_groups.inspect %>
-  #     assign_public_ip: "ENABLED" # accepts ENABLED, DISABLED
-<% end -%>
-
-# update service is provide as an example below.  Though it is probably better
-# to not add any options to update_service if you are using the ECS console
-# to update these settings often.
-update_service:
-  # force_new_deployment: true
-  # deployment_configuration:
-  #   maximum_percent: 200
-  #   minimum_healthy_percent: 100
-  # desired_count: 1
-  # launch_type: "FARGATE"
-  # network_configuration:
-  #   awsvpc_configuration:
-  #     subnets: <%%= @subnets.inspect %> # required
-  #     security_groups: <%%= @security_groups.inspect %>
-  #     assign_public_ip: "ENABLED" # accepts ENABLED, DISABLED
-
 run_task:
 <% if @options[:launch_type] == "fargate" -%>
   launch_type: "FARGATE"
   network_configuration:
     awsvpc_configuration:
-      subnets: <%%= @subnets.inspect %> # required
-      security_groups: <%%= @security_groups.inspect %>
+      subnets: <%%= network.subnets.inspect %> # required
+      security_groups: <%%= network.ecs_security_groups.inspect %>
       assign_public_ip: "ENABLED" # accepts ENABLED, DISABLED
 <% else -%>
   # launch_type: "FARGATE"
@@ -67,4 +30,3 @@ run_task:
   #     security_groups: <%%= @security_groups.inspect %>
   #     assign_public_ip: "ENABLED" # accepts ENABLED, DISABLED
 <% end -%>
-

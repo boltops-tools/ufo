@@ -1,14 +1,15 @@
 module Ufo
-  class Balancer < Command
-    autoload :Init, "ufo/balancer/init"
+  class Network < Command
+    autoload :Init, "ufo/network/init"
+    autoload :Helper, "ufo/network/helper"
+    autoload :Setting, "ufo/network/setting"
 
     def self.cli_options
       [
         [:force, type: :boolean, desc: "Bypass overwrite are you sure prompt for existing files."],
-        [:launch_type, desc: "Launch type: ec2 or fargate."],
         [:subnets, type: :array, desc: "Subnets"],
-        [:security_groups, type: :array, desc: "Security groups"],
         [:vpc_id, desc: "Vpc id"],
+        [:profile_name, default: "default", desc: "Name of the profile file to create."],
       ]
     end
 
@@ -16,8 +17,8 @@ module Ufo
       option *o
     end
 
-    desc "init", "Creates balancer starter file."
-    long_desc Help.text("balancer:init")
+    desc "init", "Creates network starter settings file."
+    long_desc Help.text("network:init")
     def init
       Init.start
     end

@@ -1,3 +1,3 @@
 ## Examples
 
-  ufo balancer init
+  ufo network init

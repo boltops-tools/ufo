@@ -1,5 +1,4 @@
 require 'yaml'
-require 'memoist'
 
 module Ufo
   class Param

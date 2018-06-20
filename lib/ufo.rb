@@ -4,13 +4,9 @@ require 'deep_merge'
 require 'colorize'
 require 'fileutils'
 require 'render_me_pretty'
-
-# adding balancer as submodule for now
-$:.unshift(File.expand_path('../../vendor/balancer/lib', __FILE__))
-require 'balancer'
+require 'memoist'
 
 module Ufo
-  autoload :Balancer, 'ufo/balancer'
   autoload :Core, 'ufo/core'
   autoload :AwsService, 'ufo/aws_service'
   autoload :Command, 'ufo/command'
@@ -30,7 +26,7 @@ module Ufo
   autoload :Param, 'ufo/param'
   autoload :TemplateScope, 'ufo/template_scope'
   autoload :SecurityGroup, 'ufo/security_group'
-  autoload :NetworkSetting, 'ufo/network_setting'
+  autoload :Network, 'ufo/network'
   autoload :Stack, 'ufo/stack'
 
   autoload :Docker, 'ufo/docker'

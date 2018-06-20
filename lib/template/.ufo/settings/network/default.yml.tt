@@ -1,0 +1,26 @@
+---
+subnets: # at least 2 subnets required
+<% @options[:subnets].each do |subnet| -%>
+  - <%= subnet %>
+<% end -%>
+vpc: <%= @options[:vpc_id] %>
+
+# Optional additional existing security group ids to add on top of the ones created
+# by ufo.
+# elb_security_groups:
+#   - sg-aaa
+# ecs_security_groups:
+#   - sg-bbb
+#   - sg-ccc
+
+elb:
+  port: 80
+  protocol: http
+  # certificate: arn:aws:acm:us-east-1:111111111111:certificate/11111111-2222-3333-4444-555555555555
+
+# When using SSL and 443, the target group protocol is usually http still.
+# This is because for most apps SSL termination is handled at the ELB and the app
+# serves regular http.  This is not always the case but is usually common.
+target_group:
+  port: 80 # doesnt matter with ECS
+  protocol: http

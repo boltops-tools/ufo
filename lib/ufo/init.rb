@@ -1,6 +1,6 @@
 module Ufo
   class Init < Sequence
-    include NetworkSetting
+    include Network::Helper
 
     # Ugly, this is how I can get the options from to match with this Thor::Group
     def self.cli_options
@@ -12,7 +12,7 @@ module Ufo
         [:execution_role_arn, desc: "execution role arn used by tasks, required for fargate."],
         [:template, desc: "Custom template to use."],
         [:template_mode, desc: "Template mode: replace or additive."],
-        [:vpc_id, desc: "Vpc id: for fargate params.yml and elb balancer profile."],
+        [:vpc_id, desc: "Vpc id: for settings/network/default.yml."],
         [:fargate_security_groups, type: :array, desc: "Fargate security groups."],
       ]
     end

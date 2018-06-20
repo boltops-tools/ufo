@@ -157,7 +157,7 @@ module Ufo
 
     # do not memoize template_body it can change for a rename retry
     def template_body
-      custom_template = "#{Ufo.root}/.ufo/settings/cfn.yml"
+      custom_template = "#{Ufo.root}/.ufo/settings/cfn/default/cfn.yml"
       path = if File.exist?(custom_template)
                custom_template
              else

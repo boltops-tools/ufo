@@ -6,7 +6,13 @@ base:
   image: <%= @image %>
   # clean_keep: 30
   # ecr_keep: 30
-  balancer_profile: default # .ufo/.balancer/profiles/default.yml
+  network_profile: default # .ufo/settings/network/default.yml file
+  cfn_profile: default # .ufo/settings/cfn/default folder
+  # If you want to have prettier static names for resources set static_name to true.
+  # There are some cavaets with this. Updating properties on resources that require
+  # replacment might not work. For example, adding and removing a load balancer.
+  # In these cases, you must delete the entire ecs service and recreate it.
+  static_name: false
 
 development:
   # cluster: development
