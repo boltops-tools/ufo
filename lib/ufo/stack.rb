@@ -1,8 +1,9 @@
 module Ufo
   class Stack
     autoload :Status, "ufo/stack/status"
-
+    autoload :Helper, "ufo/stack/helper"
     include AwsService
+    include Helper
     extend Memoist
 
     def initialize(options)
@@ -10,11 +11,6 @@ module Ufo
       @stack_name = adjust_stack_name(options[:stack_name])
       @service = options[:service]
       @task_definition = options[:task_definition]
-    end
-
-    def adjust_stack_name(stack_name)
-      stack_name || raise("stack_name required")
-      [stack_name, ENV['UFO_ENV_EXTRA']].compact.join('-')
     end
 
     # CloudFormation status codes, full list:
@@ -189,11 +185,6 @@ module Ufo
       puts "Here's the CloudFormation url to check for more details #{url}"
       exit 1
     end
-
-    def status
-      Status.new(@stack_name)
-    end
-    memoize :status
 
     def updatable?(stack)
       stack.stack_status =~ /_COMPLETE$/

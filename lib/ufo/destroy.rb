@@ -3,10 +3,12 @@ module Ufo
     include Util
     include AwsService
     include SecurityGroup::Helper
+    include Stack::Helper
 
     def initialize(service, options={})
       @service = service
       @options = options
+      @stack_name = adjust_stack_name(service)
       @cluster = @options[:cluster] || default_cluster
     end
 
@@ -16,65 +18,9 @@ module Ufo
         return
       end
 
-      destroy_ecs_service
-      # Circular dependency: need to remove ELB but need to also remove security group which depends on the ELB's security group.
-      # So will revoke security group to remove circular dependency to delete it.
-      puts "Destroying related resources..."
-      revoke_security_group
-      destroy_load_balancer
-      destroy_security_group
-      puts "Destroyed related resources."
-    end
-
-    def destroy_ecs_service
-      clusters = ecs.describe_clusters(clusters: [@cluster]).clusters
-      if clusters.size < 1
-        puts "The #{@cluster} cluster does not exist so there can be no service on that cluster to delete."
-        return
-      end
-
-      services = ecs.describe_services(cluster: @cluster, services: [@service]).services
-      service = services.first
-      if service.nil?
-        puts "Unable to find #{@service} service to delete it."
-        return
-      end
-      if service.status != "ACTIVE"
-        puts "The #{@service} service is not ACTIVE so no need to delete it."
-        return
-      end
-
-      # changes desired size to 0
-      ecs.update_service(
-        desired_count: 0,
-        cluster: @cluster,
-        service: @service
-      )
-      # Cannot find all tasks scoped to a service.  Only scoped to a cluster.
-      # So will not try to stop the tasks.
-      # ask to stop them
-      #
-      resp = ecs.delete_service(
-        cluster: @cluster,
-        service: @service
-      )
-      puts "#{@service} service has been scaled down to 0 and destroyed." unless @options[:mute]
-    end
-
-    def destroy_load_balancer
-      puts "Destroying load balancer..."
-      balancer = ::Balancer::Destroy.new(name: @service)
-      balancer.run
-    end
-
-    def revoke_security_group
-      security_group.revoke
-    end
-
-    def destroy_security_group
-      # auto created security group
-      puts "Destroying security group..."
-      security_group.destroy
+      cloudformation.delete_stack(stack_name: @stack_name)
+      puts "Deleting CloudFormation stack with ECS resources: #{@stack_name}."
+      status.wait
     end
 
     def are_you_sure?
