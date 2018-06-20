@@ -27,6 +27,7 @@ module Ufo
   autoload :LogGroup, 'ufo/log_group'
   autoload :Network, 'ufo/network'
   autoload :Param, 'ufo/param'
+  autoload :Ps, 'ufo/ps'
   autoload :Scale, 'ufo/scale'
   autoload :Sequence, 'ufo/sequence'
   autoload :Setting, 'ufo/setting'

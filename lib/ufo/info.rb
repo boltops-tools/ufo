@@ -2,9 +2,7 @@ module Ufo
   class Info < Base
     def run
       unless service
-        puts "No #{@full_service_name.colorize(:green)} found."
-        puts "No CloudFormation stack named #{@stack_name} found."
-        puts "Are sure it exists?"
+        puts no_service_message
         return
       end
 

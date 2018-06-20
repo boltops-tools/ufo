@@ -15,5 +15,18 @@ module Ufo
     def switch_current(service)
       Current.service!(service)
     end
+
+    def info
+      Info.new(@service, @options)
+    end
+    memoize :info
+
+    def no_service_message
+      <<-EOL
+No #{@full_service_name.colorize(:green)} found.
+No CloudFormation stack named #{@stack_name} found.
+Are sure it exists?
+      EOL
+    end
   end
 end

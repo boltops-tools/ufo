@@ -219,7 +219,7 @@ module Ufo
     def exit_with_message(stack)
       region = `aws configure get region`.strip rescue "us-east-1"
       url = "https://console.aws.amazon.com/cloudformation/home?region=#{region}#/stacks"
-      puts "The stack is in a state that is not updateable: #{stack.stack_status.colorize(:yellow)}."
+      puts "The stack is not in an updateable state: #{stack.stack_status.colorize(:yellow)}."
       puts "Here's the CloudFormation url to check for more details #{url}"
       exit 1
     end

@@ -7,11 +7,6 @@ module Ufo
       @count = count
     end
 
-    def info
-      Info.new(@service, @options)
-    end
-    memoize :info
-
     def update
       unless service_exists?
         puts "Unable to find the #{@full_service_name.colorize(:green)} service on the #{@cluster.colorize(:green)} cluster."

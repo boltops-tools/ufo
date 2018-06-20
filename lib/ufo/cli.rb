@@ -126,6 +126,12 @@ module Ufo
       Scale.new(service, count, options).update
     end
 
+    desc "ps SERVICE", "Show process info on ECS service."
+    long_desc Help.text(:ps)
+    def ps(service=:current)
+      Ps.new(service, options).run
+    end
+
     desc "completion *PARAMS", "Prints words for auto-completion."
     long_desc Help.text("completion")
     def completion(*params)
