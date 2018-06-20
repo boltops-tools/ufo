@@ -30,14 +30,24 @@ class Ufo::Stack
     attr_reader :events
     def initialize(stack_name)
       @stack_name = stack_name
+      reset
+    end
+
+    def reset
       @events = [] # constantly replaced with recent events
+      @last_shown_event_id = nil
+      @stack_deletion_completed = nil
     end
 
     # check for /(_COMPLETE|_FAILED)$/ status
     def wait
       refresh_events
-      until completed
+      until completed || @stack_deletion_completed
         show_events
+      end
+      if @stack_deletion_completed
+        puts "Stack #{@stack_name} deleted."
+        return
       end
 
       if last_event_status =~ /_FAILED/
@@ -101,6 +111,12 @@ class Ufo::Stack
     def refresh_events
       resp = cloudformation.describe_stack_events(stack_name: @stack_name)
       @events = resp["stack_events"]
+    rescue Aws::CloudFormation::Errors::ValidationError => e
+      if e.message =~ /Stack .* does not exis/
+        @stack_deletion_completed = true
+      else
+        raise
+      end
     end
 
     def find_index(name)

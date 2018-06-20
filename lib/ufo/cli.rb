@@ -90,6 +90,14 @@ module Ufo
       Task.new(task_definition, options).run
     end
 
+    desc "cancel SERVICE", "Cancel creation or update of the ECS service."
+    long_desc Help.text(:cancel)
+    option :sure, type: :boolean, desc: "By pass are you sure prompt."
+    def cancel(service)
+      task_definition = options[:task] || service # convention
+      Cancel.new(service, options).run
+    end
+
     desc "destroy SERVICE", "Destroy the ECS service."
     long_desc Help.text(:destroy)
     option :sure, type: :boolean, desc: "By pass are you sure prompt."

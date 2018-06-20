@@ -12,7 +12,6 @@ module Ufo
     include Util
     include Create
     include Update
-    include SecurityGroup::Helper
 
     def initialize(service, task_definition, options={})
       @service = service
@@ -48,7 +47,6 @@ module Ufo
 
     def process_deployment
       options = @options.merge(
-        stack_name: @service,
         service: @service,
         task_definition: @task_definition,
       )

@@ -2,20 +2,25 @@ module Ufo
   class Destroy
     include Util
     include AwsService
-    include SecurityGroup::Helper
     include Stack::Helper
 
     def initialize(service, options={})
       @service = service
       @options = options
-      @stack_name = adjust_stack_name(service)
       @cluster = @options[:cluster] || default_cluster
+      @stack_name = adjust_stack_name(@cluster, service)
     end
 
     def bye
       unless are_you_sure?
         puts "Phew, that was close"
         return
+      end
+
+      stack = find_stack(@stack_name)
+      unless stack
+        puts "Stack #{@stack_name} does not exit"
+        exit
       end
 
       cloudformation.delete_stack(stack_name: @stack_name)

@@ -2,15 +2,15 @@ module Ufo
   class Stack
     autoload :Status, "ufo/stack/status"
     autoload :Helper, "ufo/stack/helper"
-    include AwsService
     include Helper
     extend Memoist
 
     def initialize(options)
       @options = options
-      @stack_name = adjust_stack_name(options[:stack_name])
-      @service = options[:service]
       @task_definition = options[:task_definition]
+      @service = options[:service]
+      @cluster = @options[:cluster] || default_cluster
+      @stack_name = adjust_stack_name(@cluster, options[:service])
     end
 
     # CloudFormation status codes, full list:
@@ -44,10 +44,25 @@ module Ufo
       # exit 1
 
       stack = find_stack(@stack_name)
+      if stack && rollback_complete?(stack)
+        puts "Existing stack in ROLLBACK_COMPLETE state. Deleting stack before continuing."
+        cloudformation.delete_stack(stack_name: @stack_name)
+        status.wait
+        status.reset
+        stack = nil # at this point stack has been deleted
+      end
       exit_with_message(stack) if stack && !updatable?(stack)
 
       stack ? perform(:update) : perform(:create)
       status.wait
+    end
+
+    def rollback_complete?(stack)
+      stack.stack_status == 'ROLLBACK_COMPLETE'
+    end
+
+    def updatable?(stack)
+      stack.stack_status =~ /_COMPLETE$/
     end
 
     def perform(action)
@@ -60,10 +75,10 @@ module Ufo
 
     def stack_options
       # puts template_body
-      # puts "parameters: "
-      # pp parameters
-      # puts "EXIT EARLY 1"
-      # exit 1
+      puts "parameters: "
+      pp parameters
+      puts "template_scope: #{template_scope.inspect}"
+      # puts "EXIT EARLY 1" ; exit 1
 
       save_template
       {
@@ -93,9 +108,6 @@ module Ufo
 
       network = Setting::Network.new('default').data
       hash = {
-        ElbSecurityGroups: network[:elb_security_groups].join(','),
-        EcsSecurityGroups: network[:ecs_security_groups].join(','),
-
         Subnets: network[:subnets].join(','),
         Vpc: network[:vpc],
 
@@ -105,6 +117,9 @@ module Ufo
         EcsTaskDefinition: task_definition_arn,
         # EcsTaskDefinition: "arn:aws:ecs:us-east-1:160619113767:task-definition/hi-web:191",
       }
+      hash[:ElbSecurityGroups] = network[:elb_security_groups].join(',') if network[:elb_security_groups]
+      hash[:EcsSecurityGroups] = network[:ecs_security_groups].join(',') if network[:ecs_security_groups]
+
       hash.map do |k,v|
         { parameter_key: k, parameter_value: v }
       end
@@ -116,22 +131,12 @@ module Ufo
     end
     memoize :task_definition_arn
 
-    def find_stack(stack_name)
-      resp = cloudformation.describe_stacks(stack_name: stack_name)
-      resp.stacks.first
-    rescue Aws::CloudFormation::Errors::ValidationError => e
-      # example: Stack with id hi-web does not exist
-      if e.message =~ /Stack with/ && e.message =~ /does not exist/
-        nil
-      else
-        raise
-      end
-    end
-
     # Store template in tmp in case for debugging
     def save_template
-      FileUtils.mkdir_p("/tmp/ufo")
-      IO.write("/tmp/ufo/cfn.yml", template_body)
+      path = "/tmp/ufo/cfn.yml"
+      FileUtils.mkdir_p(File.dirname(path))
+      IO.write(path, template_body)
+      puts "Template saved at: #{path}"
     end
 
     # Stack:arn:aws:cloudformation:... is in ROLLBACK_COMPLETE state and can not be updated.
@@ -140,8 +145,9 @@ module Ufo
       when /is in ROLLBACK_COMPLETE state and can not be updated/
         puts "The #{@stack_name} stack is in #{"ROLLBACK_COMPLETE".colorize(:red)} and cannot be updated. Deleted the stack and try again."
         # TODO: fix aws cloudformation console url
-        url = "https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/"
-        puts "Here's the CloudFormation console url: "
+        region = `aws configure get region`.strip rescue 'us-east-1'
+        url = "https://console.aws.amazon.com/cloudformation/home?region=#{region}"
+        puts "Here's the CloudFormation console url: #{url}"
         exit 1
       when /No updates are to be performed/
         puts "There are no updates to be performed. Exiting.".colorize(:yellow)
@@ -181,13 +187,9 @@ module Ufo
     def exit_with_message(stack)
       region = `aws configure get region`.strip rescue "us-east-1"
       url = "https://console.aws.amazon.com/cloudformation/home?region=#{region}#/stacks"
-      puts "The stack state is in: #{stack.stack_status}."
+      puts "The stack is in a state that is not updateable: #{stack.stack_status.colorize(:yellow)}."
       puts "Here's the CloudFormation url to check for more details #{url}"
       exit 1
-    end
-
-    def updatable?(stack)
-      stack.stack_status =~ /_COMPLETE$/
     end
 
     # Assume only first container_definition to get the info.

@@ -25,9 +25,9 @@ module Ufo
   autoload :ECS, 'ufo/ecs'
   autoload :Param, 'ufo/param'
   autoload :TemplateScope, 'ufo/template_scope'
-  autoload :SecurityGroup, 'ufo/security_group'
   autoload :Network, 'ufo/network'
   autoload :Stack, 'ufo/stack'
+  autoload :Cancel, 'ufo/cancel'
 
   autoload :Docker, 'ufo/docker'
   autoload :Ecr, 'ufo/ecr'

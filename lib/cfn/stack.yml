@@ -141,7 +141,6 @@ Resources:
 <% end -%>
 <% if @container_info[:fargate] -%>
       LaunchType: FARGATE
-<% end -%>
       NetworkConfiguration:
         AwsvpcConfiguration:
           Subnets: !Ref Subnets # required
@@ -155,6 +154,7 @@ Resources:
               - !Join [',', [!Ref EcsSecurityGroups, !Ref EcsSecurityGroup]]
 
           AssignPublicIp: ENABLED # accepts ENABLED, DISABLED
+<% end -%>
       LoadBalancers: !If
       - CreateTargetGroupIsTrue
       - - ContainerName: <%= @container_info[:name] %>
