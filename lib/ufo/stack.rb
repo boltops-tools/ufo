@@ -51,6 +51,11 @@ module Ufo
 
       stack ? perform(:update) : perform(:create)
       status.wait
+
+      if status.rename_rollback_error
+        puts status.rename_rollback_error
+        puts "A workaround is to run ufo again with STATIC_NAME=0 and to switch to dynamic names for resources. Then run ufo again with STATIC_NAME=1 to get back to statically name resources. Note, please refer to cavaets with the workaround: https://ufoships.com/docs/rename-rollback-error"
+      end
     end
 
     def rollback_complete?(stack)

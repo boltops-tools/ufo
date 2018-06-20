@@ -46,9 +46,7 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Condition: CreateElbIsTrue
     Properties:
-<% if static_name? -%>
       Name: <%= @full_service_name %>
-<% end -%>
       Scheme: internet-facing # or internal
       Subnets: !Ref Subnets
       # Add additional extra security groups if param
@@ -71,9 +69,7 @@ Resources:
       HealthCheckIntervalSeconds: 60
       UnhealthyThresholdCount: 10
       HealthCheckPath: /
-<% if static_name? -%>
       Name: <%= @full_service_name %>
-<% end -%>
       Port: <%= network[:target_group][:port] %>
       Protocol: <%= network[:target_group][:protocol].upcase %>
       VpcId: !Ref Vpc
