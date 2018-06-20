@@ -42,9 +42,10 @@ module Ufo
     end
 
     def check_ufo_project!
-      unless File.exist?("#{Ufo.root}/.ufo/settings.yml")
-        puts "It doesnt look like the current folder is a ufo project."
-        puts "Please double check that you are in a ufo project."
+      check_path = "#{Ufo.root}/.ufo/settings.yml"
+      unless File.exist?(check_path)
+        puts "ERROR: No settings file at #{check_path}.  Are you sure you are in a project with ufo setup?".colorize(:red)
+        puts "If you want to set up ufo for this prjoect, please create a settings file via: ufo init"
         exit 1 unless ENV['TEST']
       end
     end

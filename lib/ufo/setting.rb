@@ -14,9 +14,7 @@ module Ufo
       return @data if @data
 
       if @check_ufo_project && !File.exist?(project_settings_path)
-        puts "ERROR: No settings file at #{project_settings_path}.  Are you sure you are in a project with ufo setup?"
-        puts "If you want to set up ufo for this prjoect, please create a settings file via: ufo init"
-        exit 1
+        Ufo.check_ufo_project!
       end
 
       # project based settings files
