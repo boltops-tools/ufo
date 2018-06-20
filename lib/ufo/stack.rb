@@ -84,25 +84,39 @@ module Ufo
       }
     end
 
-    def parameters
-      # --elb ''
-      # --elb 'auto'
-      # --elb arn
+    # if --elb is not set at all, so it's nil. Thhen it defaults to creating the
+    # load balancer if the ecs service has a container name "web".
+    #
+    # --elb '' - wont crete an elb
+    # --elb 'auto' - creates an elb
+    # --elb arn:... - wont create elb and use the existing target group
+    #
+    def elb_options
       case @options[:elb]
       when "auto", "true"
         create_elb = "true"
         elb_target_group = ""
-      when "", "false", "0", nil
+      when "", "false", "0"
         create_elb = "false"
         elb_target_group = ""
       when /^arn:aws:elasticloadbalancing.*targetgroup/
         create_elb = "false"
         elb_target_group = @options[:elb]
+      when nil
+        # default is to create the load balancer is if container name is web
+        # and no --elb option is provided
+        create_elb = "true" if container_info[:name] == "web"
+        elb_target_group = ""
       else
         puts "Invalid --elb option provided: #{@options[:elb].inspect}".colorize(:red)
         puts "Exiting."
         exit 1
       end
+      [create_elb, elb_target_group]
+    end
+
+    def parameters
+      create_elb, elb_target_group = elb_options
 
       network = Setting::Network.new('default').data
       hash = {
@@ -187,7 +201,7 @@ module Ufo
         cluster: @cluster,
         stack_name: @stack_name,
         full_service_name: Ufo.full_sevice_name(@service),
-        container_info: container_info(@task_definition),
+        container_info: container_info,
         dynamic_name: @dynamic_name,
       )
       scope
@@ -203,9 +217,9 @@ module Ufo
     end
 
     # Assume only first container_definition to get the info.
-    def container_info(task_definition)
-      Ufo.check_task_definition!(task_definition)
-      task_definition_path = ".ufo/output/#{task_definition}.json"
+    def container_info
+      Ufo.check_task_definition!(@task_definition)
+      task_definition_path = ".ufo/output/#{@task_definition}.json"
       task_definition = JSON.load(IO.read(task_definition_path))
       container_def = task_definition["containerDefinitions"].first
       mappings = container_def["portMappings"]

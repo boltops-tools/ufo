@@ -45,6 +45,8 @@ class Ufo::Stack
       until completed || @stack_deletion_completed
         show_events
       end
+      show_events(true) # show the final event
+
       if @stack_deletion_completed
         puts "Stack #{@stack_name} deleted."
         return
@@ -70,7 +72,7 @@ class Ufo::Stack
     end
 
     # Only shows new events
-    def show_events
+    def show_events(final=false)
       if @last_shown_event_id.nil?
         i = find_index(:start)
         print_events(i)
@@ -80,6 +82,7 @@ class Ufo::Stack
         print_events(i-1) unless i == 0
       end
 
+      return if final
       sleep 5
       refresh_events
     end
@@ -93,13 +96,15 @@ class Ufo::Stack
     end
 
     def print_event(e)
-      puts [
+      message = [
         pretty_time(e["timestamp"]),
         e["resource_status"],
         e["resource_type"],
         e["logical_resource_id"],
         e["resource_status_reason"]
       ].join(" ")
+      message = message.colorize(:red) if e["resource_status"] =~ /_FAILED/
+      puts message
     end
 
     # https://stackoverflow.com/questions/18000432/rails-12-hour-am-pm-range-for-a-day

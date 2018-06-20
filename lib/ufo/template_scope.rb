@@ -64,7 +64,12 @@ module Ufo
     end
 
     def static_name?
-      ENV["STATIC_NAME"] || settings["static_name"]
+      # env variable takes highest precedence
+      if ENV["STATIC_NAME"]
+        ENV["STATIC_NAME"] != "0"
+      else
+        settings["static_name"]
+      end
     end
   end
 end
