@@ -14,7 +14,14 @@ module Ufo
 
     def run
       service_name = Ufo.full_sevice_name(@service)
-      puts "Service: #{service_name}"
+      unless service
+        puts "No #{service_name.colorize(:green)} found."
+        puts "No CloudFormation stack named #{@stack_name} found."
+        puts "Are sure it exists?"
+        return
+      end
+
+      puts "Service: #{service_name.colorize(:green)}"
       puts "Service name: #{service.service_name}"
       puts "Status: #{service.status}"
       puts "Running count: #{service.running_count}"
