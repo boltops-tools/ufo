@@ -37,12 +37,6 @@ module Ufo
     #   UPDATE_ROLLBACK_IN_PROGRESS
     #
     def launch
-      IO.write("/tmp/ufo-cfn-template.yml", template_body)
-      # resp = cloudformation.describe_stack_events(stack_name: @stack_name)
-      # IO.write("/tmp/stack-events.json", JSON.pretty_generate(resp.to_h))
-      # puts "EXIT EARLY"
-      # exit 1
-
       stack = find_stack(@stack_name)
       if stack && rollback_complete?(stack)
         puts "Existing stack in ROLLBACK_COMPLETE state. Deleting stack before continuing."
@@ -75,9 +69,9 @@ module Ufo
 
     def stack_options
       # puts template_body
-      puts "parameters: "
-      pp parameters
-      puts "template_scope: #{template_scope.inspect}"
+      # puts "parameters: "
+      # pp parameters
+      # puts "template_scope: #{template_scope.inspect}"
       # puts "EXIT EARLY 1" ; exit 1
 
       save_template
@@ -133,10 +127,10 @@ module Ufo
 
     # Store template in tmp in case for debugging
     def save_template
-      path = "/tmp/ufo/cfn.yml"
+      path = "/tmp/ufo/stack.yml"
       FileUtils.mkdir_p(File.dirname(path))
       IO.write(path, template_body)
-      puts "Template saved at: #{path}"
+      puts "Generated template saved at: #{path}"
     end
 
     # Stack:arn:aws:cloudformation:... is in ROLLBACK_COMPLETE state and can not be updated.
@@ -159,7 +153,7 @@ module Ufo
 
     # do not memoize template_body it can change for a rename retry
     def template_body
-      custom_template = "#{Ufo.root}/.ufo/settings/cfn/default/cfn.yml"
+      custom_template = "#{Ufo.root}/.ufo/settings/cfn/default/stack.yml"
       path = if File.exist?(custom_template)
                custom_template
              else
@@ -176,6 +170,7 @@ module Ufo
       scope.assign_instance_variables(
         options: @options,
         service: @service,
+        cluster: @cluster,
         stack_name: @stack_name,
         container_info: container_info(@task_definition),
         dynamic_name: @dynamic_name,

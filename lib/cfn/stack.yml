@@ -127,13 +127,13 @@ Resources:
 
   # Allow all traffic from ELB SG to ECS SG
   Ecs:
-    Type: "AWS::ECS::Service"
+    Type: AWS::ECS::Service
 <% if @options[:elb] == "auto" -%>
     DependsOn:
       - Listener
 <% end -%>
     Properties:
-      Cluster: "development"
+      Cluster: <%= @cluster %>
       DesiredCount: !Ref EcsDesiredCount
       TaskDefinition: !Ref EcsTaskDefinition
 <% if static_name? -%>
