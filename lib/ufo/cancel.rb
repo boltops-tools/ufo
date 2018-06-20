@@ -1,21 +1,14 @@
 module Ufo
-  class Cancel
-    include Stack::Helper
-
-    def initialize(service, options)
-      @service = service
-      @options = options
-      @cluster = @options[:cluster] || default_cluster
-      @stack_name = adjust_stack_name(@cluster, @service)
-    end
-
+  class Cancel < Base
     def run
       stack = find_stack(@stack_name)
       unless stack
-        return "No #{@stack_name} stack to cancel. Exiting"
+        puts "No #{@full_service_name} service to cancel."
+        puts "No #{@stack_name} stack to cancel. Exiting"
         exit
       end
 
+      puts "Canceling updates to #{@full_service_name}."
       if stack.stack_status == "CREATE_IN_PROGRESS"
         cloudformation.delete_stack(stack_name: @stack_name)
         puts "Canceling stack creation."

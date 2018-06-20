@@ -1,16 +1,5 @@
 module Ufo
-  class Destroy
-    include AwsService
-    include Stack::Helper
-    include Util
-
-    def initialize(service, options={})
-      @service = service
-      @options = options
-      @cluster = @options[:cluster] || default_cluster
-      @stack_name = adjust_stack_name(@cluster, service)
-    end
-
+  class Destroy < Base
     def bye
       unless are_you_sure?
         puts "Phew, that was close"
@@ -30,7 +19,7 @@ module Ufo
 
     def are_you_sure?
       return true if @options[:sure]
-      puts "You are about to destroy #{@service.colorize(:green)} service on the #{@cluster.colorize(:green)} cluster."
+      puts "You are about to destroy #{@full_service_name.colorize(:green)} service on the #{@cluster.colorize(:green)} cluster."
       print "Are you sure you want to do this? (y/n) "
       answer = $stdin.gets.strip
       answer =~ /^y/

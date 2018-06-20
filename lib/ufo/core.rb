@@ -41,6 +41,14 @@ module Ufo
       [service, ENV['UFO_ENV_EXTRA']].reject {|x| x==''}.compact.join('-')
     end
 
+    def check_ufo_project!
+      unless File.exist?("#{Ufo.root}/.ufo/settings.yml")
+        puts "It doesnt look like the current folder is a ufo project."
+        puts "Please double check that you are in a ufo project."
+        exit 1 unless ENV['TEST']
+      end
+    end
+
     private
     # Do not use the Setting class to load the profile because it can cause an
     # infinite loop then if we decide to use Ufo.env from within settings class.

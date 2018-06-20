@@ -4,20 +4,15 @@ module Ufo
   class UfoError < RuntimeError; end
   class ShipmentOverridden < UfoError; end
 
-  class Ship
+  class Ship < Base
     autoload :Create, "ufo/ship/create"
     autoload :Update, "ufo/ship/update"
-
-    include AwsService
-    include Util
     include Create
     include Update
 
-    def initialize(service, task_definition, options={})
-      @service = service
-      @task_definition = task_definition
-      @options = options
-      @cluster = @options[:cluster] || default_cluster
+    def initialize(service, options={})
+      super
+      @task_definition = options[:task_definition]
       @wait_for_deployment = @options[:wait].nil? ? true : @options[:wait]
       @stop_old_tasks = @options[:stop_old_tasks].nil? ? false : @options[:stop_old_tasks]
     end
@@ -52,16 +47,6 @@ module Ufo
       )
       stack = Stack.new(options)
       stack.launch
-      # ecs_service = find_ecs_service
-      # deployed_service = if ecs_service
-      #                      # update all existing service
-      #                      update_service(ecs_service)
-      #                    else
-      #                      # create service on the first cluster
-      #                      create_service
-      #                    end
-
-      # wait_for_deployment(deployed_service) if @wait_for_deployment && !@options[:noop]
       # stop_old_task(deployed_service) if @stop_old_tasks
     end
 
@@ -179,36 +164,6 @@ module Ufo
       puts "  aws ecs #{action}-service --cli-input-json #{file_path}".colorize(:green)
     end
 
-    def find_ecs_service
-      find_all_ecs_services.find { |ecs_service| ecs_service.service_name == @service }
-    end
-
-    # find all services on a cluster
-    # yields Ufo::ECS::Service object
-    def find_all_ecs_services
-      ecs_services = []
-      service_arns.each do |service_arn|
-        ecs_service = Ufo::ECS::Service.new(cluster_arn, service_arn)
-        yield(ecs_service) if block_given?
-        ecs_services << ecs_service
-      end
-      ecs_services
-    end
-
-    def service_arns
-      services = ecs.list_services(cluster: @cluster)
-      list_service_arns = services.service_arns
-      while services.next_token != nil
-        services = ecs.list_services(cluster: @cluster, next_token: services.next_token)
-        list_service_arns += services.service_arns
-      end
-      list_service_arns
-    end
-
-    def cluster_arn
-      @cluster_arn ||= ecs_clusters.first.cluster_arn
-    end
-
     def ensure_cluster_exist
       cluster = ecs_clusters.first
       unless cluster && cluster.status == "ACTIVE"
@@ -217,7 +172,7 @@ module Ufo
           message = "NOOP #{message}"
         else
           ecs.create_cluster(cluster_name: @cluster)
-          # TODO: Aad Waiter logic, sometimes the cluster does not exist by the time
+          # TODO: Add Waiter logic, sometimes the cluster does not exist by the time
           # we create the service
         end
 

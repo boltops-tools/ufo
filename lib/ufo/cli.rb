@@ -41,23 +41,24 @@ module Ufo
     desc "deploy SERVICE", "Deploy task definition to ECS service without re-building the definition."
     long_desc Help.text(:deploy)
     ship_options.call
-    def deploy(service)
+    def deploy(service=:current)
+      service = service == :current ? Current.service! : service
       task_definition = options[:task] || service # convention
-      # TODO: COMMENT OUT FOR TESTING
-      # Tasks::Register.register(task_definition, options)
-      ship = Ship.new(service, task_definition, options)
+      Tasks::Register.register(task_definition, options)
+      ship = Ship.new(service, options.merge(task_definition: task_definition))
       ship.deploy
     end
 
     desc "ship SERVICE", "Builds and ships container image to the ECS service."
     long_desc Help.text(:ship)
     ship_options.call
-    def ship(service)
+    def ship(service=:current)
       builder = build_docker
 
+      service = service == :current ? Current.service! : service
       task_definition = options[:task] || service # convention
       Tasks::Builder.ship(task_definition, options)
-      ship = Ship.new(service, task_definition, options)
+      ship = Ship.new(service, options.merge(task_definition: task_definition))
       ship.deploy
 
       cleanup(builder.image_name)
@@ -73,7 +74,7 @@ module Ufo
         service_name, task_definition_name = service.split(':')
         task_definition = task_definition_name || service_name # convention
         Tasks::Builder.ship(task_definition, options)
-        ship = Ship.new(service, task_definition, options)
+        ship = Ship.new(service, options.merge(task_definition: task_definition))
         ship.deploy
       end
 
@@ -93,7 +94,7 @@ module Ufo
     desc "cancel SERVICE", "Cancel creation or update of the ECS service."
     long_desc Help.text(:cancel)
     option :sure, type: :boolean, desc: "By pass are you sure prompt."
-    def cancel(service)
+    def cancel(service=:current)
       task_definition = options[:task] || service # convention
       Cancel.new(service, options).run
     end
@@ -108,7 +109,7 @@ module Ufo
     desc "destroy SERVICE", "Destroy the ECS service."
     long_desc Help.text(:destroy)
     option :sure, type: :boolean, desc: "By pass are you sure prompt."
-    def destroy(service)
+    def destroy(service=:current)
       task_definition = options[:task] || service # convention
       Destroy.new(service, options).bye
     end

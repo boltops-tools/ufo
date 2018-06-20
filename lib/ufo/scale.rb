@@ -13,9 +13,8 @@ module Ufo
     memoize :info
 
     def update
-      service_name = Ufo.full_sevice_name(@service)
       unless service_exists?
-        puts "Unable to find the #{service_name.colorize(:green)} service on the #{@cluster.colorize(:green)} cluster."
+        puts "Unable to find the #{@full_service_name.colorize(:green)} service on the #{@cluster.colorize(:green)} cluster."
         puts "Are you sure you are trying to scale the right service on the right cluster?"
         exit
       end
@@ -24,7 +23,7 @@ module Ufo
         cluster: @cluster,
         desired_count: @count
       )
-      puts "Scale #{service_name.colorize(:green)} service in #{@cluster.colorize(:green)} cluster to #{@count}" unless @options[:mute]
+      puts "Scale #{@full_service_name.colorize(:green)} service in #{@cluster.colorize(:green)} cluster to #{@count}" unless @options[:mute]
     end
 
     def service_exists?

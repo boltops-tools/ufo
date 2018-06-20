@@ -3,6 +3,7 @@ require 'fileutils'
 module Ufo
   class Current
     def initialize(service=nil, options={})
+      Ufo.check_ufo_project!
       @service = service
       @options = options
       @file = ".ufo/current"
@@ -38,8 +39,29 @@ module Ufo
       end
     end
 
+    # reads service, returns nil if not set
     def self.service
       Current.new.service
+    end
+
+    # reads service, will exit if current service not set
+    def self.service!(service=:current)
+      return service if service != :current
+
+      service = Current.service
+      return service if service
+
+      puts caller
+
+      puts <<-EOL
+ERROR: service must be specified at the cli:
+    ufo #{ARGV.first} SERVICE
+Or you can set a current service must be set with:
+    ufo current SERVICE
+EOL
+      exit 1
+      # if want to display full help menu:
+      # Ufo::CLI.start(ARGV + ["-h"])
     end
   end
 end
