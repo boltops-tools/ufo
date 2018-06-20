@@ -28,6 +28,7 @@ module Ufo
   autoload :Network, 'ufo/network'
   autoload :Stack, 'ufo/stack'
   autoload :Cancel, 'ufo/cancel'
+  autoload :Info, 'ufo/info'
 
   autoload :Docker, 'ufo/docker'
   autoload :Ecr, 'ufo/ecr'

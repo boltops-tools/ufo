@@ -17,7 +17,7 @@ class Ufo::Stack
     end
 
     def adjust_stack_name(cluster, service)
-      [cluster, service, ENV['UFO_ENV_EXTRA']].compact.join('-')
+      [cluster, Ufo.full_sevice_name(service)].compact.join('-')
     end
 
     def status

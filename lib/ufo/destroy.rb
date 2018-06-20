@@ -1,8 +1,8 @@
 module Ufo
   class Destroy
-    include Util
     include AwsService
     include Stack::Helper
+    include Util
 
     def initialize(service, options={})
       @service = service

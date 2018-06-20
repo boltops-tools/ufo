@@ -45,6 +45,8 @@ module Ufo
         status.reset
         stack = nil # at this point stack has been deleted
       end
+
+      @new_stack = true unless stack
       exit_with_message(stack) if stack && !updatable?(stack)
 
       stack ? perform(:update) : perform(:create)
@@ -97,7 +99,9 @@ module Ufo
         create_elb = "false"
         elb_target_group = @options[:elb]
       else
-        raise "Invalid elb option provided: #{@options[:elb].inspect}"
+        puts "Invalid --elb option provided: #{@options[:elb].inspect}".colorize(:red)
+        puts "Exiting."
+        exit 1
       end
 
       network = Setting::Network.new('default').data
@@ -107,7 +111,7 @@ module Ufo
 
         CreateElb: create_elb,
         ElbTargetGroup: elb_target_group,
-        EcsDesiredCount: "1",
+        EcsDesiredCount: current_desired_count,
         EcsTaskDefinition: task_definition_arn,
         # EcsTaskDefinition: "arn:aws:ecs:us-east-1:160619113767:task-definition/hi-web:191",
       }
@@ -116,6 +120,16 @@ module Ufo
 
       hash.map do |k,v|
         { parameter_key: k, parameter_value: v }
+      end
+    end
+
+    def current_desired_count
+      info = Info.new(@service, @options)
+      service = info.service
+      if service
+        service.desired_count.to_s
+      else
+        "1" # new service
       end
     end
 
@@ -172,6 +186,7 @@ module Ufo
         service: @service,
         cluster: @cluster,
         stack_name: @stack_name,
+        full_service_name: Ufo.full_sevice_name(@service),
         container_info: container_info(@task_definition),
         dynamic_name: @dynamic_name,
       )

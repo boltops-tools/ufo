@@ -1,4 +1,4 @@
-Description: "Ufo ECS stack <%= @stack_name %>"
+Description: "Ufo ECS stack <%= @full_service_name %>"
 Parameters:
   # required
   Subnets:
@@ -40,13 +40,14 @@ Conditions:
   - !Condition ElbTargetGroupIsBlank
   ElbSecurityGroupsIsBlank: !Equals [ !Ref ElbSecurityGroups, '' ]
   EcsSecurityGroupsIsBlank: !Equals [ !Ref EcsSecurityGroups, '' ]
+  EcsDesiredCountIsBlank: !Equals [ !Ref EcsDesiredCount, '' ]
 Resources:
   Elb:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Condition: CreateElbIsTrue
     Properties:
 <% if static_name? -%>
-      Name: <%= @stack_name %>
+      Name: <%= @full_service_name %>
 <% end -%>
       Scheme: internet-facing # or internal
       Subnets: !Ref Subnets
@@ -59,9 +60,7 @@ Resources:
           - !Join [',', [!Ref ElbSecurityGroups, !Ref ElbSecurityGroup]]
       Tags:
       - Key: Name
-        Value: <%= @stack_name %>
-      - Key: ufo
-        Value: <%= @stack_name %>
+        Value: <%= @full_service_name %>
 <%= custom_properties(:Elb) %>
   TargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
@@ -73,7 +72,7 @@ Resources:
       UnhealthyThresholdCount: 10
       HealthCheckPath: /
 <% if static_name? -%>
-      Name: <%= @stack_name %>
+      Name: <%= @full_service_name %>
 <% end -%>
       Port: <%= network[:target_group][:port] %>
       Protocol: <%= network[:target_group][:protocol].upcase %>
@@ -120,9 +119,7 @@ Resources:
         CidrIp: 0.0.0.0/0
       Tags:
       - Key: Name
-        Value: <%= @stack_name %>-elb
-      - Key: ufo
-        Value: <%= @stack_name %>-elb
+        Value: <%= @full_service_name %>-elb
 <%= custom_properties(:ElbSecurityGroup) %>
 
   # Allow all traffic from ELB SG to ECS SG
@@ -134,10 +131,13 @@ Resources:
 <% end -%>
     Properties:
       Cluster: <%= @cluster %>
-      DesiredCount: !Ref EcsDesiredCount
+      DesiredCount: !If
+      - EcsDesiredCountIsBlank
+      - !Ref AWS::NoValue
+      - !Ref EcsDesiredCount
       TaskDefinition: !Ref EcsTaskDefinition
 <% if static_name? -%>
-      ServiceName: <%= @stack_name %>
+      ServiceName: <%= @full_service_name %>
 <% end -%>
 <% if @container_info[:fargate] -%>
       LaunchType: FARGATE
@@ -181,9 +181,7 @@ Resources:
         CidrIp: 0.0.0.0/0
       Tags:
       - Key: Name
-        Value: <%= @stack_name %>-<%= (rand.round(2) * 100).to_i.to_s %>
-      - Key: ufo
-        Value: <%= @stack_name %>
+        Value: <%= @full_service_name %>-<%= (rand.round(2) * 100).to_i.to_s %>
 <%= custom_properties(:EcsSecurityGroup) %>
   EcsCrossSecurityGroupRule:
     Type: AWS::EC2::SecurityGroupIngress

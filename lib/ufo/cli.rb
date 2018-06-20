@@ -106,6 +106,12 @@ module Ufo
       Destroy.new(service, options).bye
     end
 
+    desc "info SERVICE", "Info about the ECS service."
+    long_desc Help.text(:info)
+    def info(service)
+      Info.new(service, options).run
+    end
+
     desc "scale SERVICE COUNT", "Scale the ECS service."
     long_desc Help.text(:scale)
     def scale(service, count)

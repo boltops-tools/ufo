@@ -37,6 +37,10 @@ module Ufo
       settings["cfn_profile"] || "default"
     end
 
+    def full_sevice_name(service)
+      [service, ENV['UFO_ENV_EXTRA']].reject {|x| x==''}.compact.join('-')
+    end
+
     private
     # Do not use the Setting class to load the profile because it can cause an
     # infinite loop then if we decide to use Ufo.env from within settings class.
