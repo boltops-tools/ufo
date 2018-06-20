@@ -98,10 +98,10 @@ module Ufo
     #
     def elb_options
       case @options[:elb]
-      when "auto", "true"
+      when "auto", "true", "yes"
         create_elb = "true"
         elb_target_group = ""
-      when "", "false", "0"
+      when "", "false", "0", "no"
         create_elb = "false"
         elb_target_group = ""
       when /^arn:aws:elasticloadbalancing.*targetgroup/

@@ -51,8 +51,6 @@ module Ufo
       service = Current.service
       return service if service
 
-      puts caller
-
       puts <<-EOL
 ERROR: service must be specified at the cli:
     ufo #{ARGV.first} SERVICE

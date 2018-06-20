@@ -53,9 +53,9 @@ module Ufo
     long_desc Help.text(:ship)
     ship_options.call
     def ship(service=:current)
+      service = service == :current ? Current.service! : service
       builder = build_docker
 
-      service = service == :current ? Current.service! : service
       task_definition = options[:task] || service # convention
       Tasks::Builder.ship(task_definition, options)
       ship = Ship.new(service, options.merge(task_definition: task_definition))
