@@ -1,10 +1,10 @@
 {
   "tasks": [
     {
-      "task_arn": "arn:aws:ecs:us-east-1:160619113767:task/f39dcfd4-06ec-4cce-9824-58c23654b3f3",
-      "cluster_arn": "arn:aws:ecs:us-east-1:160619113767:cluster/dev",
-      "task_definition_arn": "arn:aws:ecs:us-east-1:160619113767:task-definition/hi-web:259",
-      "container_instance_arn": "arn:aws:ecs:us-east-1:160619113767:container-instance/79529589-9d86-40c2-a205-b49ff88da5cc",
+      "task_arn": "arn:aws:ecs:us-east-1:111111111111:task/f39dcfd4-06ec-4cce-9824-58c23654b3f3",
+      "cluster_arn": "arn:aws:ecs:us-east-1:111111111111:cluster/dev",
+      "task_definition_arn": "arn:aws:ecs:us-east-1:111111111111:task-definition/hi-web:259",
+      "container_instance_arn": "arn:aws:ecs:us-east-1:111111111111:container-instance/79529589-9d86-40c2-a205-b49ff88da5cc",
       "overrides": {
         "container_overrides": [
           {
@@ -18,8 +18,8 @@
       "memory": "256",
       "containers": [
         {
-          "container_arn": "arn:aws:ecs:us-east-1:160619113767:container/25ce9c62-1766-46d7-8cee-4693e3595990",
-          "task_arn": "arn:aws:ecs:us-east-1:160619113767:task/f39dcfd4-06ec-4cce-9824-58c23654b3f3",
+          "container_arn": "arn:aws:ecs:us-east-1:111111111111:container/25ce9c62-1766-46d7-8cee-4693e3595990",
+          "task_arn": "arn:aws:ecs:us-east-1:111111111111:task/f39dcfd4-06ec-4cce-9824-58c23654b3f3",
           "name": "web",
           "last_status": "RUNNING",
           "network_bindings": [

@@ -132,7 +132,7 @@ module Ufo
         ElbTargetGroup: elb_target_group,
         EcsDesiredCount: current_desired_count,
         EcsTaskDefinition: task_definition_arn,
-        # EcsTaskDefinition: "arn:aws:ecs:us-east-1:160619113767:task-definition/hi-web:191",
+        # EcsTaskDefinition: "arn:aws:ecs:us-east-1:111111111111:task-definition/hi-web:191",
       }
       hash[:ElbSecurityGroups] = network[:elb_security_groups].join(',') if network[:elb_security_groups]
       hash[:EcsSecurityGroups] = network[:ecs_security_groups].join(',') if network[:ecs_security_groups]
