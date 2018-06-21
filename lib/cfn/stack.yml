@@ -1,4 +1,4 @@
-Description: "Ufo ECS stack <%= @full_service_name %>"
+Description: "Ufo ECS stack <%= @pretty_service_name %>"
 Parameters:
   # required
   Subnets:
@@ -57,7 +57,7 @@ Resources:
           - !Join [',', [!Ref ElbSecurityGroups, !Ref ElbSecurityGroup]]
       Tags:
       - Key: Name
-        Value: <%= @full_service_name %>
+        Value: <%= @pretty_service_name %>
 <%= custom_properties(:Elb) %>
   TargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
@@ -112,7 +112,7 @@ Resources:
         CidrIp: 0.0.0.0/0
       Tags:
       - Key: Name
-        Value: <%= @full_service_name %>-elb
+        Value: <%= @pretty_service_name %>-elb
 <%= custom_properties(:ElbSecurityGroup) %>
 
   Ecs:
@@ -128,7 +128,7 @@ Resources:
       - !Ref EcsDesiredCount
       TaskDefinition: !Ref EcsTaskDefinition
 <% if static_name? -%>
-      ServiceName: <%= @full_service_name %>
+      ServiceName: <%= @pretty_service_name %>
 <% end -%>
 <% if @container_info[:fargate] -%>
       LaunchType: FARGATE
@@ -171,7 +171,7 @@ Resources:
         CidrIp: 0.0.0.0/0
       Tags:
       - Key: Name
-        Value: <%= @full_service_name %>-<%= (rand.round(2) * 100).to_i.to_s %>
+        Value: <%= @pretty_service_name %>-<%= (rand.round(2) * 100).to_i.to_s %>
 <%= custom_properties(:EcsSecurityGroup) %>
   # Allow all traffic from ELB SG to ECS SG
   EcsCrossSecurityGroupRule:

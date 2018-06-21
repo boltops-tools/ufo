@@ -224,7 +224,7 @@ module Ufo
         service: @service,
         cluster: @cluster,
         stack_name: @stack_name,
-        full_service_name: Ufo.full_sevice_name(@service),
+        pretty_service_name: Ufo.pretty_service_name(@service),
         container_info: container_info,
         dynamic_name: @dynamic_name,
         create_elb: create_elb, # for edge case when ecs service is created before the listener has finished. Sets DependsOn during compile phase.

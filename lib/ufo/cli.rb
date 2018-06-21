@@ -138,6 +138,12 @@ module Ufo
       Ps.new(service, options).run
     end
 
+    desc "releases SERVICE", "Show possible 'releases' or task definitions for the service."
+    long_desc Help.text(:releases)
+    def releases(service=:current)
+      Releases.new(service, options).list
+    end
+
     desc "completion *PARAMS", "Prints words for auto-completion."
     long_desc Help.text("completion")
     def completion(*params)

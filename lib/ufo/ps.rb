@@ -10,7 +10,7 @@ module Ufo
         return
       end
 
-      puts "=> Service: #{@full_service_name}"
+      puts "=> Service: #{@pretty_service_name}"
       puts "   Service name: #{service.service_name}"
       puts "   Status: #{service.status}"
       puts "   Running count: #{service.running_count}"

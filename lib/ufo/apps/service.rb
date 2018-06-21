@@ -29,12 +29,12 @@ class Ufo::Apps
     end
 
     def name
-      full_service_name = @service["service_name"]
-      pretty_name = cfn_map[full_service_name]
+      pretty_service_name = @service["service_name"]
+      pretty_name = cfn_map[pretty_service_name]
       if pretty_name
-        "#{full_service_name} (#{pretty_name})"
+        "#{pretty_service_name} (#{pretty_name})"
       else
-        full_service_name
+        pretty_service_name
       end
     end
 
