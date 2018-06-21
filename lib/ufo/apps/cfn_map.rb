@@ -46,15 +46,19 @@ class Ufo::Apps
     memoize :summaries
 
     def populate_map!
+      threads = []
       summaries.each do |summary|
-        resp = cloudformation.describe_stack_resources(stack_name: summary.stack_name)
-        ecs_resource = resp.stack_resources.find do |resource|
-          resource.logical_resource_id == "Ecs"
+        threads << Thread.new do
+          resp = cloudformation.describe_stack_resources(stack_name: summary.stack_name)
+          ecs_resource = resp.stack_resources.find do |resource|
+            resource.logical_resource_id == "Ecs"
+          end
+          # Example: "PhysicalResourceId": "arn:aws:ecs:us-east-1:160619113767:service/dev-hi-web-Ecs-1HRL8Y9F4D1CR"
+          ecs_service_name = ecs_resource.physical_resource_id.split('/').last
+          @map[ecs_service_name] = stack_name_to_service_name(summary.stack_name)
         end
-        # Example: "PhysicalResourceId": "arn:aws:ecs:us-east-1:160619113767:service/dev-hi-web-Ecs-1HRL8Y9F4D1CR"
-        ecs_service_name = ecs_resource.physical_resource_id.split('/').last
-        @map[ecs_service_name] = stack_name_to_service_name(summary.stack_name)
       end
+      threads.map(&:join)
     end
 
     def stack_name_to_service_name(stack_name)
