@@ -45,6 +45,8 @@ module Ufo
         table.rows << Task.new(t).info
       end
       puts table
+
+      pp service["events"][0..3]
     end
 
     class Task

@@ -45,7 +45,7 @@ module Ufo
     end
 
     def network
-      Ufo::Setting::Network.new.data
+      Ufo::Setting::Network.new(settings["network_profile"]).data
     end
     memoize :network
 

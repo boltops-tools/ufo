@@ -46,7 +46,6 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Condition: CreateElbIsTrue
     Properties:
-      Name: <%= @full_service_name %>
       Scheme: internet-facing # or internal
       Subnets: !Ref Subnets
       # Add additional extra security groups if param
@@ -62,8 +61,8 @@ Resources:
 <%= custom_properties(:Elb) %>
   TargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
-    Condition: CreateTargetGroupIsTrue
     DependsOn: Elb
+    Condition: CreateTargetGroupIsTrue
     Properties:
       HealthCheckIntervalSeconds: 60
       UnhealthyThresholdCount: 10

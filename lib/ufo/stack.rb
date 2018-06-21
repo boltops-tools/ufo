@@ -123,7 +123,7 @@ module Ufo
     def parameters
       create_elb, elb_target_group = elb_options
 
-      network = Setting::Network.new('default').data
+      network = Setting::Network.new(settings["network_profile"]).data
       hash = {
         Subnets: network[:subnets].join(','),
         Vpc: network[:vpc],
