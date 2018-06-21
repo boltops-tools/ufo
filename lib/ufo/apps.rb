@@ -22,8 +22,9 @@ module Ufo
       end
       arns = resp.service_arns
 
+      puts "Listing ECS services in the #{@cluster.colorize(:green)} cluster."
       if arns.empty?
-        puts "No ecs services found in the #{@cluster.colorize(:green)} cluster."
+        puts "No ECS services found in the #{@cluster.colorize(:green)} cluster."
         return
       end
 

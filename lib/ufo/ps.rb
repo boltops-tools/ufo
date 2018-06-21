@@ -24,8 +24,22 @@ module Ufo
 
       resp = ecs.describe_tasks(tasks: task_arns, cluster: @cluster)
       display_info(resp)
+      display_scale_help
+    end
 
-      pp service["events"][0..3]
+    # If the running count less than the desired account yet, check the events
+    # and show a message with helpful debugging information.
+    def display_scale_help
+      return if service.running_count >= service.desired_count
+
+      events = service["events"][0..3] # only check most recent 4 messages
+      error_event = events.find do |e|
+        e.message =~ /was unable to place a task because no container instance met all of its requirements/
+      end
+      return unless error_event
+
+      puts "There is an issue scaling the #{@service.colorize(:green)} service to #{service.desired_count}.  Here's the error:"
+      puts error_event.message.colorize(:red)
     end
 
     def display_info(resp)
