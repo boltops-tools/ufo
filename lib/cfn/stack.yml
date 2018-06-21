@@ -46,7 +46,7 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Condition: CreateElbIsTrue
     Properties:
-      Scheme: internet-facing # or internal
+      Scheme: <%= network[:elb][:scheme] || "internet-facing" %> # or internal
       Subnets: !Ref Subnets
       # Add additional extra security groups if param
       SecurityGroups: !Split
@@ -64,9 +64,9 @@ Resources:
     DependsOn: Elb
     Condition: CreateTargetGroupIsTrue
     Properties:
-      HealthCheckIntervalSeconds: 60
-      UnhealthyThresholdCount: 10
-      HealthCheckPath: /
+      HealthCheckIntervalSeconds: <%= network[:target_group][:health_check_interval_seconds] || 60 %>
+      UnhealthyThresholdCount: <%= network[:target_group][:unhealthy_threshold_count] || 10 %>
+      HealthCheckPath: <%= network[:target_group][:health_check_path] || '/' %>
       Port: <%= network[:target_group][:port] %>
       Protocol: <%= network[:target_group][:protocol].upcase %>
       VpcId: !Ref Vpc
@@ -135,8 +135,6 @@ Resources:
       NetworkConfiguration:
         AwsvpcConfiguration:
           Subnets: !Ref Subnets # required
-
-          # SecurityGroups: [!Ref EcsSecurityGroup]
           SecurityGroups: !Split
             - ','
             - !If
