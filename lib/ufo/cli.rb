@@ -114,6 +114,12 @@ module Ufo
       Destroy.new(service, options).bye
     end
 
+    desc "apps", "List apps."
+    long_desc Help.text(:apps)
+    def apps
+      Apps.new(options).list
+    end
+
     desc "info SERVICE", "Info about the ECS service."
     long_desc Help.text(:info)
     def info(service=:current)

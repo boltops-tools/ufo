@@ -9,7 +9,7 @@ module Ufo
         [:force, type: :boolean, desc: "Bypass overwrite are you sure prompt for existing files."],
         [:subnets, type: :array, desc: "Subnets"],
         [:vpc_id, desc: "Vpc id"],
-        [:profile_name, default: "default", desc: "Name of the profile file to create."],
+        [:filename, default: "default", desc: "Name of the settings file to create w/o extension."],
       ]
     end
 

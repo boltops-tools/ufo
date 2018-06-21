@@ -7,6 +7,7 @@ require 'render_me_pretty'
 require 'memoist'
 
 module Ufo
+  autoload :Apps, 'ufo/apps'
   autoload :AwsService, 'ufo/aws_service'
   autoload :Base, 'ufo/base'
   autoload :Cancel, 'ufo/cancel'

@@ -3,7 +3,7 @@ module Ufo
     extend Memoist
     include Stack::Helper
 
-    def initialize(service, options)
+    def initialize(service, options={})
       @service = switch_current(service)
       @options = options
 

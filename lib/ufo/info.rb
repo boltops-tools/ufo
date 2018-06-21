@@ -13,12 +13,8 @@ module Ufo
       puts "Desired count: #{service.desired_count}"
       puts "Launch type: #{service.launch_type}"
       puts "Task definition: #{service.task_definition.split('/').last}"
-      # not the same response structure as describe_load_balancers
-      data = service.load_balancers.first # assume first only
-      if data
-        load_balancer = load_balancer_info(data.target_group_arn)
-        puts "Dns: #{load_balancer.dns_name}"
-      end
+      dns = load_balancer_dns(service)
+      puts "Dns: #{dns}" if dns
 
       puts
       puts "Resources:"
@@ -29,14 +25,22 @@ module Ufo
       end
     end
 
-    def load_balancer_info(target_group_arn)
-      resp = elb.describe_target_groups(target_group_arns: [target_group_arn])
+    # Passing in service so method can be used else where.
+    def load_balancer_dns(service)
+      load_balancer = service.load_balancers.first
+      return unless load_balancer
+
+      resp = elb.describe_target_groups(
+        target_group_arns: [load_balancer.target_group_arn]
+      )
       target_group = resp.target_groups.first
       load_balancer_arn = target_group.load_balancer_arns.first # assume first only
 
       resp = elb.describe_load_balancers(load_balancer_arns: [load_balancer_arn])
-      resp.load_balancers.first
+      load_balancer = resp.load_balancers.first
+      load_balancer.dns_name
     end
+    memoize :load_balancer_dns
 
     def service
       stack = find_stack(@stack_name)

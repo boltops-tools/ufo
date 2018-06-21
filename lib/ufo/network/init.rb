@@ -19,8 +19,8 @@ module Ufo
     end
 
     def starter_files
-      profile_name = @options[:profile_name] || "default"
-      template "default.yml", ".ufo/settings/network/#{profile_name}.yml"
+      filename = @options[:filename] || "default"
+      template "default.yml", ".ufo/settings/network/#{filename}.yml"
     end
   end
 end

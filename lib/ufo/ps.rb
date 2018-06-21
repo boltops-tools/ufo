@@ -19,10 +19,22 @@ module Ufo
       puts "   Task definition: #{service.task_definition.split('/').last}"
       if task_arns.empty?
         puts "There are 0 running tasks."
-      else
-        resp = ecs.describe_tasks(tasks: task_arns, cluster: @cluster)
-        display_info(resp)
+        return
       end
+
+      resp = ecs.describe_tasks(tasks: task_arns, cluster: @cluster)
+      display_info(resp)
+
+      pp service["events"][0..3]
+    end
+
+    def display_info(resp)
+      table = Text::Table.new
+      table.head = %w[Id Name Release Started Status]
+      resp["tasks"].each do |t|
+        table.rows << Task.new(t).to_a
+      end
+      puts table
     end
 
     def task_arns
@@ -38,23 +50,12 @@ module Ufo
       results.values.flatten.uniq
     end
 
-    def display_info(resp)
-      table = Text::Table.new
-      table.head = %w[ID NAME RELEASE STARTED STATUS]
-      resp["tasks"].each do |t|
-        table.rows << Task.new(t).info
-      end
-      puts table
-
-      pp service["events"][0..3]
-    end
-
     class Task
       def initialize(task)
         @task = task
       end
 
-      def info
+      def to_a
         [id, name, release, started, status]
       end
 
