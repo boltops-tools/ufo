@@ -70,7 +70,7 @@ Resources:
       Port: <%= network[:target_group][:port] %>
       Protocol: <%= network[:target_group][:protocol].upcase %>
       VpcId: !Ref Vpc
-<% if @container_info[:fargate] -%>
+<% if @container_info[:network_mode] == "awsvpc" -%>
       TargetType: ip
 <% end -%>
       TargetGroupAttributes:
@@ -132,6 +132,8 @@ Resources:
 <% end -%>
 <% if @container_info[:fargate] -%>
       LaunchType: FARGATE
+<% end -%>
+<% if @container_info[:network_mode] == "awsvpc" -%>
       NetworkConfiguration:
         AwsvpcConfiguration:
           Subnets: !Ref Subnets # required
@@ -141,9 +143,8 @@ Resources:
               - EcsSecurityGroupsIsBlank
               - !Ref EcsSecurityGroup
               - !Join [',', [!Ref EcsSecurityGroups, !Ref EcsSecurityGroup]]
-
-          AssignPublicIp: ENABLED # accepts ENABLED, DISABLED
 <% end -%>
+          # AssignPublicIp: ENABLED # Works with fargate but doesnt seem to work with non-fargate
       LoadBalancers: !If
       - CreateTargetGroupIsTrue
       - - ContainerName: <%= @container_info[:name] %>

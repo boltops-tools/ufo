@@ -236,11 +236,13 @@ module Ufo
         port = map["containerPort"]
       end
       fargate = task_definition["requiresCompatibilities"] && task_definition["requiresCompatibilities"] == ["FARGATE"]
+      network_mode = task_definition["networkMode"]
 
       {
         name: container_def["name"],
         port: port,
         fargate: fargate,
+        network_mode: network_mode,
       }
     end
     memoize :container_info
