@@ -1,3 +1,26 @@
+# CloudFormation status codes, full list:
+#   https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-describing-stacks.html
+#
+#   CREATE_COMPLETE
+#   ROLLBACK_COMPLETE
+#   DELETE_COMPLETE
+#   UPDATE_COMPLETE
+#   UPDATE_ROLLBACK_COMPLETE
+#
+#   CREATE_FAILED
+#   DELETE_FAILED
+#   ROLLBACK_FAILED
+#   UPDATE_ROLLBACK_FAILED
+#
+#   CREATE_IN_PROGRESS
+#   DELETE_IN_PROGRESS
+#   REVIEW_IN_PROGRESS
+#   ROLLBACK_IN_PROGRESS
+#   UPDATE_COMPLETE_CLEANUP_IN_PROGRESS
+#   UPDATE_IN_PROGRESS
+#   UPDATE_ROLLBACK_COMPLETE_CLEANUP_IN_PROGRESS
+#   UPDATE_ROLLBACK_IN_PROGRESS
+#
 module Ufo
   class Stack
     autoload :Status, "ufo/stack/status"
@@ -13,31 +36,10 @@ module Ufo
       @stack_name = adjust_stack_name(@cluster, options[:service])
     end
 
-    # CloudFormation status codes, full list:
-    #   https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-describing-stacks.html
-    #
-    #   CREATE_COMPLETE
-    #   ROLLBACK_COMPLETE
-    #   DELETE_COMPLETE
-    #   UPDATE_COMPLETE
-    #   UPDATE_ROLLBACK_COMPLETE
-    #
-    #   CREATE_FAILED
-    #   DELETE_FAILED
-    #   ROLLBACK_FAILED
-    #   UPDATE_ROLLBACK_FAILED
-    #
-    #   CREATE_IN_PROGRESS
-    #   DELETE_IN_PROGRESS
-    #   REVIEW_IN_PROGRESS
-    #   ROLLBACK_IN_PROGRESS
-    #   UPDATE_COMPLETE_CLEANUP_IN_PROGRESS
-    #   UPDATE_IN_PROGRESS
-    #   UPDATE_ROLLBACK_COMPLETE_CLEANUP_IN_PROGRESS
-    #   UPDATE_ROLLBACK_IN_PROGRESS
-    #
     def launch
       stack = find_stack(@stack_name)
+      @found_stack = !!stack
+
       if stack && rollback_complete?(stack)
         puts "Existing stack in ROLLBACK_COMPLETE state. Deleting stack before continuing."
         cloudformation.delete_stack(stack_name: @stack_name)
@@ -101,22 +103,33 @@ module Ufo
       when "auto", "true", "yes"
         create_elb = "true"
         elb_target_group = ""
-      when "", "false", "0", "no"
+      when "false", "0", "no"
         create_elb = "false"
         elb_target_group = ""
       when /^arn:aws:elasticloadbalancing.*targetgroup/
         create_elb = "false"
         elb_target_group = @options[:elb]
-      when nil
-        # default is to create the load balancer is if container name is web
-        # and no --elb option is provided
-        create_elb = "true" if container_info[:name] == "web"
-        elb_target_group = ""
+      when "", nil
+        create_elb, elb_target_group = default_elb_options
       else
         puts "Invalid --elb option provided: #{@options[:elb].inspect}".colorize(:red)
         puts "Exiting."
         exit 1
       end
+      [create_elb, elb_target_group]
+    end
+
+    def default_elb_options
+      if @found_stack
+        create_elb = :use_previous_value
+        elb_target_group = :use_previous_value
+        return [create_elb, elb_target_group]
+      end
+
+      # default is to create the load balancer is if container name is web
+      # and no --elb option is provided
+      create_elb = "true" if container_info[:name] == "web"
+      elb_target_group = ""
       [create_elb, elb_target_group]
     end
 
@@ -138,7 +151,11 @@ module Ufo
       hash[:EcsSecurityGroups] = network[:ecs_security_groups].join(',') if network[:ecs_security_groups]
 
       hash.map do |k,v|
-        { parameter_key: k, parameter_value: v }
+        if v == :use_previous_value
+          { parameter_key: k, use_previous_value: true }
+        else
+          { parameter_key: k, parameter_value: v }
+        end
       end
     end
 
