@@ -46,7 +46,8 @@ module Ufo
       table = Text::Table.new
       table.head = %w[Id Name Release Started Status]
       resp["tasks"].each do |t|
-        table.rows << Task.new(t).to_a
+        task = Task.new(t)
+        table.rows << task.to_a unless task.hide?
       end
       puts table
     end
@@ -92,6 +93,17 @@ module Ufo
         relative_time(started)
       rescue ArgumentError
         "PENDING"
+      end
+
+      def started_at
+        Time.parse(@task["started_at"].to_s)
+      rescue ArgumentError
+        nil
+      end
+
+      # hide stopped tasks that are older than 10 minutes
+      def hide?
+        status == "STOPPED" && started_at < Time.now - 60 * 10
       end
 
       def status
