@@ -66,6 +66,18 @@ module Ufo
       handle_stack_error(e)
     end
 
+    # do not memoize template_body it can change for a rename retry
+    def template_body
+      custom_template = "#{Ufo.root}/.ufo/settings/cfn/default/stack.yml"
+      path = if File.exist?(custom_template)
+               custom_template
+             else
+               # built-in default
+               File.expand_path("../cfn/stack.yml", File.dirname(__FILE__))
+             end
+      RenderMePretty.result(path, context: template_scope)
+    end
+
     def stack_options
       # puts template_body
       # puts "parameters: "
@@ -107,37 +119,42 @@ module Ufo
       end
     end
 
-    # do not memoize template_body it can change for a rename retry
-    def template_body
-      custom_template = "#{Ufo.root}/.ufo/settings/cfn/default/stack.yml"
-      path = if File.exist?(custom_template)
-               custom_template
-             else
-               # built-in default
-               File.expand_path("../cfn/stack.yml", File.dirname(__FILE__))
-             end
-      RenderMePretty.result(path, context: template_scope)
-    end
-
     def template_scope
       scope = Ufo::TemplateScope.new(Ufo::DSL::Helper.new, nil)
       # Add additional variable to scope for CloudFormation template.
-      # Dirties the scope but needed here.
-      create_target_group = create_elb && @options[:elb].blank?
-
+      # Dirties the scope but needed.
       scope.assign_instance_variables(
-        options: @options,
-        service: @service,
         cluster: @cluster,
-        stack_name: @stack_name,
         pretty_service_name: Ufo.pretty_service_name(@service),
         container_info: container_info,
-        dynamic_name: @dynamic_name,
-        create_elb: create_elb, # for edge case when ecs service is created before the listener has finished. Sets DependsOn during compile phase.
+        # elb options remember their 'state'
+        create_elb: create_elb, # helps set Ecs DependsOn
+        elb_type: elb_type,
       )
       scope
     end
     memoize :template_scope
+
+    def elb_type
+      return @options[:elb_type] if @new_stack
+
+      resp = cloudformation.describe_stack_resources(stack_name: @stack_name)
+      resources = resp.stack_resources
+      elb_resource = resources.find do |resource|
+        resource.logical_resource_id == "Elb"
+      end
+
+      # In the case when stack exists and there is no elb resource, the elb type
+      # doesnt really matter because the elb wont be created since the CreateElb
+      # parameter is set to false. The elb type only needs to be set fro the
+      # template to validate.
+      return "application" unless elb_resource
+
+      resp = elb.describe_load_balancers(load_balancer_arns: [elb_resource.physical_resource_id])
+      load_balancer = resp.load_balancers.first
+      load_balancer.type
+    end
+    memoize :elb_type
 
     def create_elb
       create_elb, _ = elb_options
@@ -260,7 +277,6 @@ module Ufo
       case e.message
       when /is in ROLLBACK_COMPLETE state and can not be updated/
         puts "The #{@stack_name} stack is in #{"ROLLBACK_COMPLETE".colorize(:red)} and cannot be updated. Deleted the stack and try again."
-        # TODO: fix aws cloudformation console url
         region = `aws configure get region`.strip rescue 'us-east-1'
         url = "https://console.aws.amazon.com/cloudformation/home?region=#{region}"
         puts "Here's the CloudFormation console url: #{url}"

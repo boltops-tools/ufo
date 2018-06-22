@@ -71,5 +71,13 @@ module Ufo
         settings["static_name"]
       end
     end
+
+    def default_target_group_protocol
+      default_elb_protocol
+    end
+
+    def default_elb_protocol
+      @elb_type == "application" ? "HTTP" : "TCP"
+    end
   end
 end

@@ -10,13 +10,7 @@ module Ufo
         return
       end
 
-      puts "=> Service: #{@pretty_service_name}"
-      puts "   Service name: #{service.service_name}"
-      puts "   Status: #{service.status}"
-      puts "   Running count: #{service.running_count}"
-      puts "   Desired count: #{service.desired_count}"
-      puts "   Launch type: #{service.launch_type}"
-      puts "   Task definition: #{service.task_definition.split('/').last}"
+      summary
       if task_arns.empty?
         puts "There are 0 running tasks."
         return
@@ -25,6 +19,19 @@ module Ufo
       resp = ecs.describe_tasks(tasks: task_arns, cluster: @cluster)
       display_info(resp)
       display_scale_help
+    end
+
+    def summary
+      return unless @options[:summary]
+      puts "=> Service: #{@pretty_service_name}"
+      puts "   Service name: #{service.service_name}"
+      puts "   Status: #{service.status}"
+      puts "   Running count: #{service.running_count}"
+      puts "   Desired count: #{service.desired_count}"
+      puts "   Launch type: #{service.launch_type}"
+      puts "   Task definition: #{service.task_definition.split('/').last}"
+      dns = info.load_balancer_dns(service)
+      puts "   Dns: #{dns}" if dns
     end
 
     # If the running count less than the desired account yet, check the events

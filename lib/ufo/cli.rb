@@ -35,7 +35,9 @@ module Ufo
       option :pretty, type: :boolean, default: true, desc: "Pretty format the json for the task definitions"
       option :stop_old_tasks, type: :boolean, default: false, desc: "Stop old tasks after waiting for deploying to complete"
       option :ecr_keep, type: :numeric, desc: "ECR specific cleanup of old images.  Specifies how many images to keep.  Only runs if the images are ECR images. Defaults keeps all images."
-      option :elb, desc: "ELB balancer profile to use"
+      # All elb options remember their 'state'
+      option :elb, desc: "Decides to create elb, not create elb or use existing target group."
+      option :elb_type, default: "application", desc: "ELB type: application or network"
     end
 
     desc "deploy SERVICE", "Deploy task definition to ECS service without re-building the definition."
@@ -128,9 +130,9 @@ module Ufo
       Apps.new(options).list
     end
 
-    desc "info SERVICE", "Info about the ECS service."
-    long_desc Help.text(:info)
-    def info(service=:current)
+    desc "resources SERVICE", "The ECS service resources."
+    long_desc Help.text(:resources)
+    def resources(service=:current)
       Info.new(service, options).run
     end
 
@@ -142,6 +144,7 @@ module Ufo
 
     desc "ps SERVICE", "Show process info on ECS service."
     long_desc Help.text(:ps)
+    option :summary, type: :boolean, default: true, desc: "Display summary header info."
     def ps(service=:current)
       Ps.new(service, options).run
     end

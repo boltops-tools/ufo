@@ -48,8 +48,16 @@ Resources:
     Properties:
       Scheme: <%= network[:elb][:scheme] || "internet-facing" %> # or internal
       Subnets: !Ref Subnets
-      # Add additional extra security groups if param
-      Type: network
+      # Add additional extra security groups if parameters set
+<% if @elb_type == "application" -%>
+      SecurityGroups: !Split
+        - ','
+        - !If
+          - ElbSecurityGroupsIsBlank
+          - !Ref ElbSecurityGroup
+          - !Join [',', [!Ref ElbSecurityGroups, !Ref ElbSecurityGroup]]
+<% end -%>
+      Type: <%= @elb_type %>
       Tags:
       - Key: Name
         Value: <%= @pretty_service_name %>
@@ -59,10 +67,12 @@ Resources:
     Condition: CreateTargetGroupIsTrue
     Properties:
       HealthCheckIntervalSeconds: <%= network[:target_group][:health_check_interval_seconds] || 30 %>
-      # UnhealthyThresholdCount: <%= network[:target_group][:unhealthy_threshold_count] || 10 %>
-      # HealthCheckPath: <%= network[:target_group][:health_check_path] || '/' %>
+<% if @elb_type == "application" -%>
+      UnhealthyThresholdCount: <%= network[:target_group][:unhealthy_threshold_count] || 10 %>
+      HealthCheckPath: <%= network[:target_group][:health_check_path] || '/' %>
+<% end -%>
       Port: <%= network[:target_group][:port] %>
-      Protocol: <%= network[:target_group][:protocol].upcase %>
+      Protocol: <%= default_target_group_protocol %>
       VpcId: !Ref Vpc
 <% if @container_info[:network_mode] == "awsvpc" -%>
       TargetType: ip
@@ -85,7 +95,7 @@ Resources:
           !If [ElbTargetGroupIsBlank, !Ref TargetGroup, !Ref ElbTargetGroup]
       LoadBalancerArn: !Ref Elb
       Port: <%= network[:elb][:port] %>
-      Protocol: <%= network[:elb][:protocol].upcase %>
+      Protocol: <%= default_elb_protocol %>
 <%= custom_properties(:Listener) %>
 
   ElbSecurityGroup:

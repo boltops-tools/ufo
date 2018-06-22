@@ -2,16 +2,7 @@ Displays information about the service.
 
 ## Examples
 
-    $ ufo info hi-web
-    Service: hi-web
-    Service name: dev-hi-web-Ecs-KN8OVQ7L2N40
-    Status: ACTIVE
-    Running count: 1
-    Desired count: 1
-    Launch type: EC2
-    Task definition: hi-web:215
-    Dns: dev-hi-Elb-1KEVRDILLSUC9-848165266.us-east-1.elb.amazonaws.com
-
+    $ ufo resources hi-web
     Resources:
     Ecs - AWS::ECS::Service:
       arn:aws:ecs:us-east-1:111111111111:service/dev-hi-web-Ecs-KN8OVQ7L2N40

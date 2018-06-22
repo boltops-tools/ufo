@@ -5,22 +5,10 @@ module Ufo
         puts no_service_message
         return
       end
-
-      puts "Service: #{@pretty_service_name.colorize(:green)}"
-      puts "Service name: #{service.service_name}"
-      puts "Status: #{service.status}"
-      puts "Running count: #{service.running_count}"
-      puts "Desired count: #{service.desired_count}"
-      puts "Launch type: #{service.launch_type}"
-      puts "Task definition: #{service.task_definition.split('/').last}"
-      dns = load_balancer_dns(service)
-      puts "Dns: #{dns}" if dns
-
-      puts
       puts "Resources:"
       stack_resources.each do |r|
         # pp r
-        puts "#{r.logical_resource_id} - #{r.resource_type}:"
+        puts "#{r.logical_resource_id} - #{r.resource_type}:".colorize(:green)
         puts "  #{r.physical_resource_id}"
       end
     end
