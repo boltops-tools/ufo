@@ -67,6 +67,11 @@ Resources:
     Condition: CreateTargetGroupIsTrue
     Properties:
       HealthCheckIntervalSeconds: <%= network[:target_group][:health_check_interval_seconds] || 30 %>
+<% if @elb_type == "network" && @network_mode == "awsvpc" -%>
+      # target groups with network load balancers need to check the container
+      # port dirtectly and will be using
+      HealthCheckPort: <%= @container[:port] %>
+<% end -%>
 <% if @elb_type == "application" -%>
       UnhealthyThresholdCount: <%= network[:target_group][:unhealthy_threshold_count] || 10 %>
       HealthCheckPath: <%= network[:target_group][:health_check_path] || '/' %>
@@ -74,7 +79,7 @@ Resources:
       Port: <%= network[:target_group][:port] %>
       Protocol: <%= default_target_group_protocol %>
       VpcId: !Ref Vpc
-<% if @container_info[:network_mode] == "awsvpc" -%>
+<% if @container[:network_mode] == "awsvpc" -%>
       TargetType: ip
 <% end -%>
       TargetGroupAttributes:
@@ -134,10 +139,10 @@ Resources:
 <% if static_name? -%>
       ServiceName: <%= @pretty_service_name %>
 <% end -%>
-<% if @container_info[:fargate] -%>
+<% if @container[:fargate] -%>
       LaunchType: FARGATE
 <% end -%>
-<% if @container_info[:network_mode] == "awsvpc" -%>
+<% if @container[:network_mode] == "awsvpc" -%>
       NetworkConfiguration:
         AwsvpcConfiguration:
           Subnets: !Ref Subnets # required
@@ -147,18 +152,20 @@ Resources:
               - EcsSecurityGroupsIsBlank
               - !Ref EcsSecurityGroup
               - !Join [',', [!Ref EcsSecurityGroups, !Ref EcsSecurityGroup]]
+<% if @container[:fargate] -%>
+          AssignPublicIp: ENABLED # Works with fargate but doesnt seem to work with non-fargate
 <% end -%>
-          # AssignPublicIp: ENABLED # Works with fargate but doesnt seem to work with non-fargate
+<% end -%>
       LoadBalancers: !If
       - CreateTargetGroupIsTrue
-      - - ContainerName: <%= @container_info[:name] %>
-          ContainerPort: <%= @container_info[:port] %>
+      - - ContainerName: <%= @container[:name] %>
+          ContainerPort: <%= @container[:port] %>
           TargetGroupArn: !Ref TargetGroup
       - !If
         - ElbTargetGroupIsBlank
         - []
-        - - ContainerName: <%= @container_info[:name] %>
-            ContainerPort: <%= @container_info[:port] %>
+        - - ContainerName: <%= @container[:name] %>
+            ContainerPort: <%= @container[:port] %>
             TargetGroupArn: !Ref ElbTargetGroup
 <%= custom_properties(:Ecs) %>
   EcsSecurityGroup:
@@ -166,25 +173,27 @@ Resources:
     Properties:
       GroupDescription: Allow http to client host
       VpcId: !Ref Vpc
-      # Outbound access: instance needs access to internet to pull down image
-      # or else get CannotPullContainerError
 <% if @elb_type == "network" -%>
-      # https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_PortMapping.html
       SecurityGroupIngress:
       - IpProtocol: tcp
-        FromPort: '32768'
-        ToPort: '65535'
+        FromPort: '<%= @container[:port] %>'
+        ToPort: '<%= @container[:port] %>'
         CidrIp: 0.0.0.0/0
+        Description: docker ephemeral port range for network elb
 <% end -%>
+      # Outbound access: instance needs access to internet to pull down image
+      # or else get CannotPullContainerError
       SecurityGroupEgress:
       - IpProtocol: tcp
         FromPort: '0'
         ToPort: '65535'
         CidrIp: 0.0.0.0/0
+        Description: outbound traffic
       Tags:
       - Key: Name
         Value: <%= @pretty_service_name %>
 <%= custom_properties(:EcsSecurityGroup) %>
+<% if @elb_type == "application" -%>
   # Allow all traffic from ELB SG to ECS SG
   EcsCrossSecurityGroupRule:
     Type: AWS::EC2::SecurityGroupIngress
@@ -195,7 +204,9 @@ Resources:
       ToPort: '65535'
       SourceSecurityGroupId: !GetAtt ElbSecurityGroup.GroupId
       GroupId: !GetAtt EcsSecurityGroup.GroupId
+      Description: elb access to ecs
 <%= custom_properties(:EcsCrossSecurityGroupRule) %>
+<% end -%>
 
 Outputs:
  Dns:

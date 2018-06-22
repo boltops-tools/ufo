@@ -126,7 +126,7 @@ module Ufo
       scope.assign_instance_variables(
         cluster: @cluster,
         pretty_service_name: Ufo.pretty_service_name(@service),
-        container_info: container_info,
+        container: container,
         # elb options remember their 'state'
         create_elb: create_elb, # helps set Ecs DependsOn
         elb_type: elb_type,
@@ -205,7 +205,7 @@ module Ufo
 
       # default is to create the load balancer is if container name is web
       # and no --elb option is provided
-      create_elb = "true" if container_info[:name] == "web"
+      create_elb = "true" if container[:name] == "web"
       elb_target_group = ""
       [create_elb, elb_target_group]
     end
@@ -253,8 +253,8 @@ module Ufo
       exit 1
     end
 
-    # Assume only first container_definition to get the info.
-    def container_info
+    # Assume only first container_definition to get the container info.
+    def container
       resp = ecs.describe_task_definition(task_definition: @task_definition)
       task_definition = resp.task_definition
 
@@ -275,7 +275,7 @@ module Ufo
         network_mode: network_mode,
       }
     end
-    memoize :container_info
+    memoize :container
 
     # Stack:arn:aws:cloudformation:... is in ROLLBACK_COMPLETE state and can not be updated.
     def handle_stack_error(e)
