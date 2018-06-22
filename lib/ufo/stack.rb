@@ -37,19 +37,19 @@ module Ufo
     end
 
     def launch
-      stack = find_stack(@stack_name)
-      if stack && rollback_complete?(stack)
+      @stack = find_stack(@stack_name)
+      if @stack && rollback_complete?(@stack)
         puts "Existing stack in ROLLBACK_COMPLETE state. Deleting stack before continuing."
         cloudformation.delete_stack(stack_name: @stack_name)
-        status.wait
-        status.reset
-        stack = nil # at this point stack has been deleted
+        @status.wait
+        @status.reset
+        @stack = nil # at this point stack has been deleted
       end
 
-      @new_stack = true unless stack
-      exit_with_message(stack) if stack && !updatable?(stack)
+      @new_stack = true unless @stack
+      exit_with_message(@stack) if @stack && !updatable?(@stack)
 
-      stack ? perform(:update) : perform(:create)
+      @stack ? perform(:update) : perform(:create)
       status.wait
 
       if status.rename_rollback_error
@@ -123,8 +123,6 @@ module Ufo
       scope = Ufo::TemplateScope.new(Ufo::DSL::Helper.new, nil)
       # Add additional variable to scope for CloudFormation template.
       # Dirties the scope but needed here.
-      create_elb, _ = elb_options
-      create_elb = create_elb == "true"
       create_target_group = create_elb && @options[:elb].blank?
 
       scope.assign_instance_variables(
@@ -136,11 +134,15 @@ module Ufo
         container_info: container_info,
         dynamic_name: @dynamic_name,
         create_elb: create_elb, # for edge case when ecs service is created before the listener has finished. Sets DependsOn during compile phase.
-        create_target_group: create_target_group, # helps DependsOn for Listener
       )
       scope
     end
     memoize :template_scope
+
+    def create_elb
+      create_elb, _ = elb_options
+      create_elb == "true" # convert to boolean
+    end
 
     # if --elb is not set at all, so it's nil. Thhen it defaults to creating the
     # load balancer if the ecs service has a container name "web".
@@ -171,9 +173,11 @@ module Ufo
     end
 
     def default_elb_options
+      # cannot use :use_previous_value because need to know the create_elb value to
+      # compile a template with the right DependsOn for the Ecs service
       unless @new_stack
-        create_elb = :use_previous_value
-        elb_target_group = :use_previous_value
+        create_elb = get_parameter_value(@stack, "CreateElb")
+        elb_target_group = get_parameter_value(@stack, "ElbTargetGroup")
         return [create_elb, elb_target_group]
       end
 
@@ -182,6 +186,13 @@ module Ufo
       create_elb = "true" if container_info[:name] == "web"
       elb_target_group = ""
       [create_elb, elb_target_group]
+    end
+
+    def get_parameter_value(stack, key)
+      param = stack.parameters.find do |p|
+        p.parameter_key == key
+      end
+      param.parameter_value
     end
 
     def current_desired_count

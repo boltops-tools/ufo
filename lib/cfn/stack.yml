@@ -74,11 +74,6 @@ Resources:
   Listener:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Condition: CreateElbIsTrue
-    DependsOn:
-    - Elb
-<% if @create_target_group -%>
-    - TargetGroup
-<% end -%>
     Properties:
 <% if network[:elb][:certificate] -%>
       Certificates:
