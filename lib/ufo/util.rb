@@ -49,5 +49,18 @@ module Ufo
     def display_params(options)
       puts YAML.dump(options.deep_stringify_keys)
     end
+
+    def task_definition_arns(service, max_items=10)
+      resp = ecs.list_task_definitions(
+        family_prefix: service,
+        sort: "DESC",
+      )
+      arns = resp.task_definition_arns
+      arns = arns.select do |arn|
+        task_definition = arn.split('/').last.split(':').first
+        task_definition == service
+      end
+      arns[0..max_items]
+    end
   end
 end
