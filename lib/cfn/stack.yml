@@ -168,6 +168,14 @@ Resources:
       VpcId: !Ref Vpc
       # Outbound access: instance needs access to internet to pull down image
       # or else get CannotPullContainerError
+<% if @elb_type == "network" -%>
+      # https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_PortMapping.html
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: '32768'
+        ToPort: '65535'
+        CidrIp: 0.0.0.0/0
+<% end -%>
       SecurityGroupEgress:
       - IpProtocol: tcp
         FromPort: '0'
@@ -175,7 +183,7 @@ Resources:
         CidrIp: 0.0.0.0/0
       Tags:
       - Key: Name
-        Value: <%= @pretty_service_name %>-<%= (rand.round(2) * 100).to_i.to_s %>
+        Value: <%= @pretty_service_name %>
 <%= custom_properties(:EcsSecurityGroup) %>
   # Allow all traffic from ELB SG to ECS SG
   EcsCrossSecurityGroupRule:

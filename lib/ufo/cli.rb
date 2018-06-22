@@ -37,7 +37,7 @@ module Ufo
       option :ecr_keep, type: :numeric, desc: "ECR specific cleanup of old images.  Specifies how many images to keep.  Only runs if the images are ECR images. Defaults keeps all images."
       # All elb options remember their 'state'
       option :elb, desc: "Decides to create elb, not create elb or use existing target group."
-      option :elb_type, default: "application", desc: "ELB type: application or network"
+      option :elb_type, desc: "ELB type: application or network. Keep current deployed elb type when not specified."
     end
 
     desc "deploy SERVICE", "Deploy task definition to ECS service without re-building the definition."

@@ -30,22 +30,19 @@ ECS services can be associated with a Load Balancer upon creation. Ufo can autom
 
 1. Automatically create the ELB.
 2. Provide a target group from an existing ELB.
-3. No ELB is created and associated.
+3. No ELB is created.
 
 Here are examples for each of them:
 
-    # Use different profiles to create the ELB:
-    #  .ufo/balancer/profiles/default.yml
-    #  .ufo/balancer/profiles/production.yml
-    ufo ship hi-web --elb=default
-    ufo ship hi-web --elb=production
+    ufo ship hi-web --elb=true
 
     # Use existing target group from pre-created ELB:
     ufo ship hi-web --elb=arn:aws:elasticloadbalancing:us-east-1:123456789:targetgroup/target-name/2378947392743
-    ufo ship hi-web --target-group=arn:aws:elasticloadbalancing:us-east-1:123456789:targetgroup/target-name/2378947392743 # legacy, currently works
 
     # Disable creating elb and prompt:
     ufo ship hi-web --elb=false
+
+Note, if the docker container's name is web then the `--elb` flag defaults to true automatically.
 
 More info available at the [load balancer docs](http://ufoships.com/docs/load-balancer/).
 

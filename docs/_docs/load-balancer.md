@@ -6,17 +6,13 @@ ECS services can be associated with a Load Balancer upon creation. Ufo can autom
 
 1. Automatically create the ELB.
 2. Provide a target group from an existing ELB.
-3. No ELB is created and associated.
+3. No ELB is created.
 
 ## Examples
 
 Here are examples for each of them:
 
-    # Use different profiles to create the ELB:
-    #  .ufo/balancer/profiles/default.yml
-    #  .ufo/balancer/profiles/production.yml
-    ufo ship hi-web --elb=default
-    ufo ship hi-web --elb=production
+    ufo ship hi-web --elb=true
 
     # Use existing target group from pre-created ELB:
     ufo ship hi-web --elb=arn:aws:elasticloadbalancing:us-east-1:123456789:targetgroup/target-name/2378947392743
@@ -25,36 +21,28 @@ Here are examples for each of them:
     # Disable creating elb and prompt:
     ufo ship hi-web --elb=false
 
-## Balancer Profiles
+## ELB Retained
 
-Underneath the hood, ufo uses the [balancer](https://github.com/tongueroo/balancer) gem, to create the load balancer.  Balancer uses profile files. The `ufo init` generates initial default `.ufo/balancer/profiles/default.yml` and `.ufo/settings.yml` files.  Edit these files and configure it to your needs. You can regenerate the `default.yml` profile file with `ufo network init`. Example:
+Ufo works to retain the ELB setting.  So future `ufo ship` commands will not suddenly remove the load balancer.  If you need to change the elb setting, then you can explicitly set a new `--elb` value.
 
-    ufo network init --subnets subnet-aaa subnet-bbb --vpc-id vpc-123
-    ufo network init # use default vpc and subnet network settings
+Important: When adding and removing load balancers also results in the dns changing.  This is why ufo retains the elb setting by default. Please take pre-caution using the elb options.
 
-The load balance profile values mainly control the creation of the load balancer. Currently, ufo does not update the load balancer settings. To update load balancer settings, use the AWS console.
+### ELB Types: Application and Network
 
-You can override the `balance_profile` in the `.ufo/settings.yml` file to use profile files other than the `default.yml`.
+Ufo supports application and network load balancer types.  To specify the type use `--elb-type`.  Examples:
 
-```yaml
-development:
-  balancer_profile: default
+    ufo ship hi-web --elb-type network
+    ufo ship hi-web --elb-type application # default
 
-production:
-  balancer_profile: production
-```
+Important: whenever the elb type is changed the load balancer gets replaced and the dns record will be **different**.
 
 ## Conventions
 
-By convention, if the container name is 'web' in the task definition. If the ECS service does not yet exist, the deploy will prompt you for the ELB target group. This is also covered a in the [Conventions]({% link _docs/conventions.md %}) page.  Otherwise, you must specify the `--elb` option to create an ELB.
-
-For non-web container the `--elb` option gets ignored.  The prompt can be bypassed with `--elb=false` for web containers.
+By convention, if the container name is 'web' in the task definition. If the ECS service does not yet exist, the deploy automatically create a load balancer.  The prompt can be bypassed with `--elb=false` for web containers.
 
     ufo ship hi-web --elb=false
 
-Or if you would like to specify the target-group in a non-prompt mode you can use the `--elb` option to bypass the prompt.
-
-    ufo ship hi-web --elb=arn:aws:elasticloadbalancing:us-east-1:12345689:targetgroup/hi-web/12345
+For non-web container the `--elb` option must be explicitly set to `--elb=true` if you want a load balancer to be created.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/settings.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/params.md %}">Next Step</a>

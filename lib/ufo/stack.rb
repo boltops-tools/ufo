@@ -136,8 +136,13 @@ module Ufo
     memoize :template_scope
 
     def elb_type
-      return @options[:elb_type] if @new_stack
+      # if option explicitly specified then change the elb type
+      return @options[:elb_type] if @options[:elb_type]
 
+      # if not explicitly set, then it depends if its a new stack
+      return "application" if @new_stack # default for new stack
+
+      # use existing load balancer type
       resp = cloudformation.describe_stack_resources(stack_name: @stack_name)
       resources = resp.stack_resources
       elb_resource = resources.find do |resource|
@@ -146,7 +151,7 @@ module Ufo
 
       # In the case when stack exists and there is no elb resource, the elb type
       # doesnt really matter because the elb wont be created since the CreateElb
-      # parameter is set to false. The elb type only needs to be set fro the
+      # parameter is set to false. The elb type only needs to be set for the
       # template to validate.
       return "application" unless elb_resource
 
