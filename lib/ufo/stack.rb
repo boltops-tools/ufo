@@ -38,8 +38,6 @@ module Ufo
 
     def launch
       stack = find_stack(@stack_name)
-      @found_stack = !!stack
-
       if stack && rollback_complete?(stack)
         puts "Existing stack in ROLLBACK_COMPLETE state. Deleting stack before continuing."
         cloudformation.delete_stack(stack_name: @stack_name)
@@ -120,7 +118,7 @@ module Ufo
     end
 
     def default_elb_options
-      if @found_stack
+      unless @new_stack
         create_elb = :use_previous_value
         elb_target_group = :use_previous_value
         return [create_elb, elb_target_group]
@@ -181,6 +179,10 @@ module Ufo
       FileUtils.mkdir_p(File.dirname(path))
       IO.write(path, template_body)
       puts "Generated template saved at: #{path}"
+
+      path = "/tmp/ufo/parameters.yml"
+      IO.write(path, JSON.pretty_generate(parameters))
+      puts "Generated parameters saved at: #{path}"
     end
 
     # Stack:arn:aws:cloudformation:... is in ROLLBACK_COMPLETE state and can not be updated.
