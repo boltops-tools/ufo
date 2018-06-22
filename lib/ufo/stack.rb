@@ -243,17 +243,18 @@ module Ufo
 
     # Assume only first container_definition to get the info.
     def container_info
-      Ufo.check_task_definition!(@task_definition)
-      task_definition_path = ".ufo/output/#{@task_definition}.json"
-      task_definition = JSON.load(IO.read(task_definition_path))
-      container_def = task_definition["containerDefinitions"].first
-      mappings = container_def["portMappings"]
+      resp = ecs.describe_task_definition(task_definition: @task_definition)
+      task_definition = resp.task_definition
+
+      container_def = task_definition["container_definitions"].first
+      mappings = container_def["port_mappings"]
       if mappings
         map = mappings.first
-        port = map["containerPort"]
+        port = map["container_port"]
       end
-      fargate = task_definition["requiresCompatibilities"] && task_definition["requiresCompatibilities"] == ["FARGATE"]
-      network_mode = task_definition["networkMode"]
+      requires_compatibilities = task_definition["requires_compatibilities"]
+      fargate = requires_compatibilities && requires_compatibilities == ["FARGATE"]
+      network_mode = task_definition["network_mode"]
 
       {
         name: container_def["name"],

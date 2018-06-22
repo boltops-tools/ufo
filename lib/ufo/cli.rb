@@ -64,6 +64,14 @@ module Ufo
       cleanup(builder.image_name)
     end
 
+    desc "rollback SERVICE VERSION", "Rollbacks to older task definition ECS service."
+    long_desc Help.text(:rollback)
+    def rollback(service=:current, version)
+      service = service == :current ? Current.service! : service
+      rollback = Rollback.new(service, options.merge(version: version))
+      rollback.deploy
+    end
+
     desc "ships [LIST_OF_SERVICES]", "Builds and ships same container image to multiple ECS services."
     long_desc Help.text(:ships)
     ship_options.call

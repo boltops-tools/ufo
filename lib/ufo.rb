@@ -30,6 +30,7 @@ module Ufo
   autoload :Param, 'ufo/param'
   autoload :Ps, 'ufo/ps'
   autoload :Releases, 'ufo/releases'
+  autoload :Rollback, 'ufo/rollback'
   autoload :Scale, 'ufo/scale'
   autoload :Sequence, 'ufo/sequence'
   autoload :Setting, 'ufo/setting'

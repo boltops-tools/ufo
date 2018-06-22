@@ -28,7 +28,7 @@ module Ufo
         end
       end
 
-      # TODO: COMMENT OUT FOR TESTING
+      # TODO: COMMENT OUT FOR TESTING, ADD BACK IN
       # ensure_log_group_exist
       # ensure_cluster_exist
       process_deployment
