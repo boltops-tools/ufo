@@ -142,7 +142,12 @@ class Ufo::Stack
     end
 
     def rename_rollback_error
-      resp = cloudformation.describe_stack_events(stack_name: @stack_name)
+      begin
+        resp = cloudformation.describe_stack_events(stack_name: @stack_name)
+      rescue Aws::CloudFormation::Errors::ValidationError => e
+        e.message =~ /does not exist/ ? return : raise
+      end
+
       events = resp["stack_events"]
       return unless events[0]["resource_status"] == "UPDATE_ROLLBACK_COMPLETE"
 

@@ -49,24 +49,18 @@ Resources:
       Scheme: <%= network[:elb][:scheme] || "internet-facing" %> # or internal
       Subnets: !Ref Subnets
       # Add additional extra security groups if param
-      SecurityGroups: !Split
-        - ','
-        - !If
-          - ElbSecurityGroupsIsBlank
-          - !Ref ElbSecurityGroup
-          - !Join [',', [!Ref ElbSecurityGroups, !Ref ElbSecurityGroup]]
+      Type: network
       Tags:
       - Key: Name
         Value: <%= @pretty_service_name %>
 <%= custom_properties(:Elb) %>
   TargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
-    DependsOn: Elb
     Condition: CreateTargetGroupIsTrue
     Properties:
-      HealthCheckIntervalSeconds: <%= network[:target_group][:health_check_interval_seconds] || 60 %>
-      UnhealthyThresholdCount: <%= network[:target_group][:unhealthy_threshold_count] || 10 %>
-      HealthCheckPath: <%= network[:target_group][:health_check_path] || '/' %>
+      HealthCheckIntervalSeconds: <%= network[:target_group][:health_check_interval_seconds] || 30 %>
+      # UnhealthyThresholdCount: <%= network[:target_group][:unhealthy_threshold_count] || 10 %>
+      # HealthCheckPath: <%= network[:target_group][:health_check_path] || '/' %>
       Port: <%= network[:target_group][:port] %>
       Protocol: <%= network[:target_group][:protocol].upcase %>
       VpcId: !Ref Vpc
@@ -80,6 +74,11 @@ Resources:
   Listener:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Condition: CreateElbIsTrue
+    DependsOn:
+    - Elb
+<% if @create_target_group -%>
+    - TargetGroup
+<% end -%>
     Properties:
 <% if network[:elb][:certificate] -%>
       Certificates:
