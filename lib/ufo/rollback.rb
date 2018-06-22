@@ -35,9 +35,10 @@ module Ufo
           break
         end
         print '.'
+        @final_newline
       end
 
-      puts
+      puts '' if @final_newline
       unless task_definition
         puts "Unable to find a task definition with a image with: #{version}"
       end

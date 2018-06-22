@@ -34,7 +34,7 @@ module Ufo
 
       events = service["events"][0..3] # only check most recent 4 messages
       error_event = events.find do |e|
-        e.message =~ /was unable to place a task because no container instance met all of its requirements/
+        e.message =~ /was unable to place a task/
       end
       return unless error_event
 
