@@ -8,7 +8,7 @@ class Ufo::Apps
     end
 
     def to_a
-      [name, task_definition, running, launch_type, dns, ufo?]
+      [name, task_definition, running, launch_type, ufo?]
     end
 
     def task_definition
@@ -38,13 +38,13 @@ class Ufo::Apps
       end
     end
 
+    def running
+      @service["running_count"]
+    end
+
     def dns
       return 'dns' if ENV['TEST']
       info.load_balancer_dns(@service)
-    end
-
-    def running
-      @service["running_count"]
     end
 
     def info

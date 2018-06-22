@@ -6,7 +6,7 @@ module Ufo
     class_option :verbose, type: :boolean
     class_option :mute, type: :boolean
     class_option :noop, type: :boolean
-    class_option :cluster, desc: "Cluster.  Overrides ufo/settings.yml."
+    class_option :cluster, desc: "Cluster.  Overrides .ufo/settings.yml."
 
     desc "network SUBCOMMAND", "network subcommands"
     long_desc Help.text(:network)
@@ -66,7 +66,7 @@ module Ufo
       cleanup(builder.image_name)
     end
 
-    desc "rollback SERVICE VERSION", "Rollbacks to older task definition ECS service."
+    desc "rollback SERVICE VERSION", "Rolls back to older task definition."
     long_desc Help.text(:rollback)
     def rollback(service=:current, version)
       service = service == :current ? Current.service! : service

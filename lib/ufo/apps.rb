@@ -34,7 +34,7 @@ module Ufo
 
     def display_info(resp)
       table = Text::Table.new
-      table.head = ["Service Name", "Task Definition", "Running", "Launch type", "Dns", "Ufo?"]
+      table.head = ["Service Name", "Task Definition", "Running", "Launch type", "Ufo?"]
       resp["services"].each do |s|
         table.rows << Service.new(s, @options).to_a
       end
