@@ -2,7 +2,7 @@ module Ufo
   class Network < Command
     autoload :Init, "ufo/network/init"
     autoload :Helper, "ufo/network/helper"
-    autoload :Setting, "ufo/network/setting"
+    autoload :Fetch, "ufo/network/fetch"
 
     def self.cli_options
       [
@@ -13,9 +13,7 @@ module Ufo
       ]
     end
 
-    cli_options.each do |o|
-      option *o
-    end
+    cli_options.each { |o| option(*o) }
 
     desc "init", "Creates network starter settings file."
     long_desc Help.text("network:init")

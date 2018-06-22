@@ -18,7 +18,7 @@ module Ufo
     # Naming it default_params because params is too commonly used in ufo.
     # Param keys must be symbols for the aws-sdk calls.
     def default_params
-      @default_params ||= Param.new.data.deep_symbolize_keys
+      @default_params ||= Param.new.data
     end
 
     def execute(command, local_options={})

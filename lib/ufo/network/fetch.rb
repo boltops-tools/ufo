@@ -1,7 +1,7 @@
 # Provides access to default network settings for a vpc: subnets and security_group
 # If no @vpc_id is provided to the initializer then the default vpc is used.
 class Ufo::Network
-  class Setting
+  class Fetch
     include Ufo::AwsService
     extend Memoist
 
@@ -19,6 +19,7 @@ class Ufo::Network
     end
     memoize :vpc_id
 
+    # all subnets
     def subnet_ids
       resp = ec2.describe_subnets(filters: [
         {name: "vpc-id", values: [vpc_id]}
@@ -27,6 +28,7 @@ class Ufo::Network
     end
     memoize :subnet_ids
 
+    # default security group
     def security_group_id
       resp = ec2.describe_security_groups(filters: [
         {name: "vpc-id", values: [vpc_id]},

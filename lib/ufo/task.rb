@@ -1,5 +1,5 @@
 module Ufo
-  class Task
+  class Task < Base
     extend Memoist
 
     include Util
@@ -20,6 +20,7 @@ module Ufo
         task_definition: @task_definition
       }
       task_options = task_options.merge(default_params[:run_task] || {})
+      task_options = add_security_group(task_options)
 
       if @options[:command]
         task_options.merge!(overrides: overrides)
@@ -53,9 +54,44 @@ module Ufo
       else
         raise
       end
+    rescue Aws::ECS::Errors::InvalidParameterException => e
+      if e.message =~ /Network Configuration must be provided when networkMode 'awsvpc' is specified/
+        puts "ERROR: #{e.class} #{e.message}".colorize(:red)
+        puts "Please double check .ufo/params.yml and make sure that network_configuration is set."
+        puts "Or run change the task definition template in .ufo/templates so it does not use vpcmode."
+        exit 1
+      else
+        raise
+      end
     end
 
   private
+    # add default security group to option if not already set
+    def add_security_group(options)
+      network_conf = options[:network_configuration]
+      return options unless network_conf
+
+      awsvpc_conf = network_conf[:awsvpc_configuration]
+      return options unless awsvpc_conf
+
+      if [nil, '', 'nil'].include?(awsvpc_conf[:security_groups])
+        awsvpc_conf[:security_groups] = []
+      end
+      # add the default security group security_groups is empty
+      if awsvpc_conf[:security_groups].empty?
+        settings = Ufo.settings
+        network = Setting::Network.new(settings["network_profile"]).data
+        fetch = Network::Fetch.new(network[:vpc])
+        sg = fetch.security_group_id
+        awsvpc_conf[:security_groups] << sg
+        awsvpc_conf[:security_groups].uniq!
+      end
+
+      # override security group
+      options[:network_configuration][:awsvpc_configuration][:security_groups] = awsvpc_conf[:security_groups]
+      options
+    end
+
     def cloudwatch_info(task_arn)
       config = original_container_definition[:log_configuration]
       container_name = original_container_definition[:name]
@@ -90,12 +126,9 @@ module Ufo
     end
 
     def original_container_definition
-      resp = ecs.list_task_definitions(
-        family_prefix: @task_definition,
-        sort: "DESC"
-      )
+      arns = task_definition_arns(@task_definition)
       # "arn:aws:ecs:us-east-1:<aws_account_id>:task-definition/wordpress:6",
-      last_definition_arn = resp.task_definition_arns.first
+      last_definition_arn = arns.first
       task_name = last_definition_arn.split("/").last
       resp = ecs.describe_task_definition(task_definition: task_name)
       container_definition = resp.task_definition.container_definitions[0].to_h

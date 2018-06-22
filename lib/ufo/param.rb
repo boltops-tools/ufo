@@ -12,7 +12,7 @@ module Ufo
       upgrade_message!
 
       result = RenderMePretty.result(@params_path, context: template_scope)
-      YAML.load(result)
+      YAML.load(result).deep_symbolize_keys
     end
     memoize :data
 
