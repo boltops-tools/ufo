@@ -13,7 +13,7 @@ describe Ufo::Stack::Status do
 
   context "in progress" do
     let(:stack_status) { "UPDATE_IN_PROGRESS" }
-    let(:stack_events) { JSON.load(IO.read("spec/fixtures/cfn-responses/stack-events-in-progress.json")) }
+    let(:stack_events) { JSON.load(IO.read("spec/fixtures/cfn/stack-events-in-progress.json")) }
     it "lists events since user initiated event" do
       status.refresh_events
       i = status.find_index(:start)
@@ -48,11 +48,27 @@ describe Ufo::Stack::Status do
 
   context "complete" do
     let(:stack_status) { "UPDATE_COMPLETE" }
-    let(:stack_events) { JSON.load(IO.read("spec/fixtures/cfn-responses/stack-events-complete.json")) }
+    let(:stack_events) { JSON.load(IO.read("spec/fixtures/cfn/stack-events-complete.json")) }
     it "lists events all the way to completion" do
       status.refresh_events
       i = status.find_index(:start)
       expect(i).to eq 17
+      # uncomment to view and debug
+      # status.show_events
+    end
+  end
+
+  context "update_rollback" do
+    let(:stack_status) { "UPDATE_ROLLBACK_COMPLETE" }
+    let(:stack_events) { JSON.load(IO.read("spec/fixtures/cfn/stack-events-update-rollback-complete.json")) }
+    it "lists events all the way to update rollback complete" do
+      status.refresh_events
+      expect(status.success?).to be false
+      expect(status.update_rollback?).to be true
+      expect(status.rollback_error_message).to include("STATIC_NAME")
+
+      # i = status.find_index(:start)
+      # expect(i).to eq 17
       # uncomment to view and debug
       # status.show_events
     end

@@ -24,9 +24,14 @@ module Ufo
       # TODO: COMMENT OUT FOR TESTING, ADD BACK IN
       # ensure_log_group_exist
       # ensure_cluster_exist
-      deploy_stack
+      success = deploy_stack
 
-      puts "Software shipped!" unless @options[:mute]
+      return if @options[:mute]
+      if success
+        puts "Software shipped!"
+      else
+        puts "Software fail to ship."
+      end
     end
 
     def ensure_log_group_exist

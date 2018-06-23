@@ -89,7 +89,7 @@ class Ufo::Stack
       end
 
       return if final
-      sleep 5
+      sleep 5 unless ENV['TEST']
       refresh_events
     end
 
@@ -147,27 +147,52 @@ class Ufo::Stack
       end
     end
 
-    def rename_rollback_error
-      begin
-        resp = cloudformation.describe_stack_events(stack_name: @stack_name)
-      rescue Aws::CloudFormation::Errors::ValidationError => e
-        e.message =~ /does not exist/ ? return : raise
+    def success?
+      resource_status = @events[0]["resource_status"]
+      %w[CREATE_COMPLETE UPDATE_COMPLETE].include?(resource_status)
+    end
+
+    def update_rollback?
+      unless ENV['TEST']
+        IO.write("/tmp/ufo/events.json", JSON.pretty_generate(@events.map(&:to_h)))
+        puts "/tmp/ufo/events.json created"
       end
+      @events[0]["resource_status"] == "UPDATE_ROLLBACK_COMPLETE"
+    end
 
-      events = resp["stack_events"]
-      return unless events[0]["resource_status"] == "UPDATE_ROLLBACK_COMPLETE"
-
-      # find last User Initiated event
-      i = events.find_index do |event|
+    def find_update_failed_event
+      i = @events.find_index do |event|
         event["resource_type"] == "AWS::CloudFormation::Stack" &&
         event["resource_status_reason"] == "User Initiated"
       end
 
-      found = events[0..i].reverse.find do |e|
-        e["resource_status"] == "UPDATE_FAILED" &&
-        e["resource_status_reason"] =~ /CloudFormation cannot update a stack when a custom-named resource requires replacing/
+      @events[0..i].reverse.find do |e|
+        e["resource_status"] == "UPDATE_FAILED"
       end
-      found["resource_status_reason"] if found
     end
+
+    def rollback_error_message
+      return unless update_rollback?
+
+      event = find_update_failed_event
+      return unless event
+
+      reason = event["resource_status_reason"]
+      messages_map.each do |pattern, message|
+        if reason =~ pattern
+          return "#{message} Refer to https://ufoships.com/docs/rollback-errors for more info."
+        end
+      end
+
+      reason # default message is original reason if not found in messages map
+    end
+
+    def messages_map
+      {
+        /CloudFormation cannot update a stack when a custom-named resource requires replacing/ => "A workaround is to run ufo again with STATIC_NAME=0 and to switch to dynamic names for resources. Then run ufo again with STATIC_NAME=1 to get back to statically name resources. Note, there are caveats with the workaround.",
+        /cannot be associated with more than one load balancer/ => "There's was an issue updating the stack. Target groups can only be associated with one load balancer at a time. The workaround for this is to use UFO_FORCE_TARGET_GROUP=1 and run the command again. This will force the recreation of the target group resource.",
+      }
+    end
+
   end
 end
