@@ -102,7 +102,7 @@ class Ufo::Stack
 
     def print_event(e)
       message = [
-        pretty_time(e["timestamp"]),
+        event_time(e["timestamp"]),
         e["resource_status"],
         e["resource_type"],
         e["logical_resource_id"],
@@ -113,7 +113,7 @@ class Ufo::Stack
     end
 
     # https://stackoverflow.com/questions/18000432/rails-12-hour-am-pm-range-for-a-day
-    def pretty_time(timestamp)
+    def event_time(timestamp)
       Time.parse(timestamp.to_s).localtime.strftime("%I:%M:%S%p")
     end
 

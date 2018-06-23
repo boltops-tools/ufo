@@ -28,8 +28,8 @@ class Ufo::Stack
         elb_type: elb_type,
         subnet_mappings: subnet_mappings,
       }
-      puts "vars:".colorize(:cyan)
-      pp vars
+      # puts "vars:".colorize(:cyan)
+      # pp vars
       scope.assign_instance_variables(vars)
       scope
     end
