@@ -39,8 +39,7 @@ module Ufo
   autoload :Task, 'ufo/task'
   autoload :Tasks, 'ufo/tasks'
   autoload :TemplateScope, 'ufo/template_scope'
-  autoload :Upgrade3, "ufo/upgrade3"
-  autoload :Upgrade33_to_34, "ufo/upgrade33_to_34"
+  autoload :Upgrade, "ufo/upgrade"
   autoload :Util, 'ufo/util'
 
   extend Core
