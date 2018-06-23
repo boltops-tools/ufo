@@ -26,6 +26,7 @@ require 'time'
 class Ufo::Stack
   class Status
     include Ufo::AwsService
+    include Ufo::Util
 
     attr_reader :events
     def initialize(stack_name)
