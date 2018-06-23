@@ -153,10 +153,6 @@ class Ufo::Stack
     end
 
     def update_rollback?
-      unless ENV['TEST']
-        IO.write("/tmp/ufo/events.json", JSON.pretty_generate(@events.map(&:to_h)))
-        puts "/tmp/ufo/events.json created"
-      end
       @events[0]["resource_status"] == "UPDATE_ROLLBACK_COMPLETE"
     end
 

@@ -21,12 +21,12 @@ module Ufo
         end
       end
 
-      # TODO: COMMENT OUT FOR TESTING, ADD BACK IN
-      # ensure_log_group_exist
-      # ensure_cluster_exist
+      ensure_log_group_exist
+      ensure_cluster_exist
       success = deploy_stack
 
       return if @options[:mute]
+
       if success
         puts "Software shipped!"
       else
@@ -45,7 +45,6 @@ module Ufo
       )
       stack = Stack.new(options)
       stack.deploy
-      stop_old_task(deployed_service) if @stop_old_tasks
     end
 
     def show_aws_cli_command(action, params)

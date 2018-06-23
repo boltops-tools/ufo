@@ -6,7 +6,6 @@ module Ufo
     extend Memoist
 
     def check_task_definition!(task_definition)
-      puts caller
       task_definition_path = "#{Ufo.root}/.ufo/output/#{task_definition}.json"
       unless File.exist?(task_definition_path)
         puts "ERROR: Unable to find the task definition at #{task_definition_path}.".colorize(:red)
@@ -31,6 +30,7 @@ module Ufo
     def env_extra
       env_extra = Current.env_extra
       env_extra = ENV['UFO_ENV_EXTRA'] if ENV['UFO_ENV_EXTRA'] # highest precedence
+      return if env_extra&.empty?
       env_extra
     end
     memoize :env_extra

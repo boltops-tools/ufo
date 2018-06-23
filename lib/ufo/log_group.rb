@@ -9,7 +9,7 @@ module Ufo
     end
 
     def create
-      puts "Ensuring log group for #{@task_definition} exists"
+      puts "Ensuring log group for #{@task_definition.colorize(:green)} task definition exists"
       return if @options[:noop]
 
       Ufo.check_task_definition!(@task_definition)
@@ -17,6 +17,7 @@ module Ufo
       task_def["containerDefinitions"].each do |container_def|
         begin
           log_group_name = container_def["logConfiguration"]["options"]["awslogs-group"]
+          puts "Log group name: #{log_group_name}"
         rescue NoMethodError
           # silence when the logConfiguration is not specified
         end
