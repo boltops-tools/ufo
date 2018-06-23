@@ -81,6 +81,9 @@ module Ufo
     def ships(*services)
       builder = build_docker
 
+      if services.empty? && !Current.services&.empty?
+        services = Current.services
+      end
       services.each_with_index do |service|
         service_name, task_definition_name = service.split(':')
         task_definition = task_definition_name || service_name # convention
@@ -114,6 +117,7 @@ module Ufo
     long_desc Help.text(:current)
     option :rm, type: :boolean, desc: "Remove all current settings. Removes .ufo/current"
     option :service, desc: "Sets service as a current setting."
+    option :services, type: :array, desc: "Sets services as a current setting. This is used for ufo ships."
     option :env_extra, desc: "Sets UFO_ENV_EXTRA as a current setting."
     def current
       Current.new(options).run

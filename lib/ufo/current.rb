@@ -24,7 +24,9 @@ module Ufo
         show
       else
         d = data # assign data to d to create local variable for merge to work
-        d = d.merge(@options).delete_if { |_,v| v&.empty? }
+        d = d.merge(@options).delete_if do |_,v|
+          v&.empty? || v == ['']
+        end
         text = YAML.dump(d)
         IO.write(@path, text)
         puts "Current settings saved in .ufo/current"
@@ -34,7 +36,7 @@ module Ufo
 
     def show
       data.each do |key, value|
-        puts "Current #{key} is set to: #{value}"
+        puts "Current #{key}: #{value}"
       end
     end
 
@@ -49,6 +51,15 @@ module Ufo
 
     def self.env_extra
       Current.new.env_extra
+    end
+
+    def services
+      return data["services"] || []
+    end
+
+    # reads services, returns [] if not set
+    def self.services
+      Current.new.services
     end
 
     def service

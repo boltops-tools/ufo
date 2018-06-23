@@ -13,7 +13,7 @@ To set current service:
 To view current service, run `ufo current` without any arguments.
 
     $ ufo current
-    Current service is set to: hi-web
+    Current service: hi-web
 
 To remove current service:
 
@@ -32,8 +32,8 @@ To also set a current UFO_ENV_EXTRA.
 The extra env setting will be reflected:
 
     $ ufo current
-    Current service is set to: hi-web
-    Current ufo_env_extra is set to: 1
+    Current service: hi-web
+    Current env_extra: 1
 
 To unset:
 
