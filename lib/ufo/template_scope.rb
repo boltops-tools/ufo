@@ -45,7 +45,9 @@ module Ufo
     end
 
     def network
-      Ufo::Setting::Network.new(settings[:network_profile]).data
+      n = Ufo::Setting::Network.new(settings[:network_profile]).data
+      # pp n
+      n
     end
     memoize :network
 
@@ -54,13 +56,25 @@ module Ufo
     end
 
     def custom_properties(resource)
-      path = "#{Ufo.root}/.ufo/settings/cfn/#{Ufo.cfn_profile}/#{resource}.yml"
-      if File.exist?(path)
-        text = RenderMePretty.result(path, context: self)
-        text.split("\n").map do |line|
-          "      #{line}"
-        end.join("\n") + "\n"
-      end
+      resource = resource.to_s.underscore
+      properties = network[resource.to_sym]
+      return unless properties
+
+      # camelize keys
+      properties = properties.deep_transform_keys { |key| key.to_s.camelize }
+      yaml = YAML.dump(properties)
+      # add spaces in front on each line
+      yaml.split("\n")[1..-1].map do |line|
+        "      #{line}"
+      end.join("\n") + "\n"
+    end
+
+    def default_target_group_protocol
+      default_elb_protocol
+    end
+
+    def default_elb_protocol
+      @elb_type == "application" ? "HTTP" : "TCP"
     end
 
     def static_name?
@@ -70,14 +84,6 @@ module Ufo
       else
         settings[:static_name]
       end
-    end
-
-    def default_target_group_protocol
-      default_elb_protocol
-    end
-
-    def default_elb_protocol
-      @elb_type == "application" ? "HTTP" : "TCP"
     end
   end
 end

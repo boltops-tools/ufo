@@ -65,7 +65,7 @@ class Ufo::Stack
       end
 
       took = Time.now - start_time
-      puts "Took for stack deployment: #{pretty_time(took).green}."
+      puts "Time took for stack deployment: #{pretty_time(took).green}."
     end
 
     def completed

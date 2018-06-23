@@ -52,8 +52,10 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Condition: CreateElbIsTrue
     Properties:
-      Scheme: <%= network[:elb][:scheme] || "internet-facing" %> # or internal
       Type: <%= @elb_type %>
+      Tags:
+      - Key: Name
+        Value: <%= @pretty_service_name %>
 <% if @elb_type == "application" -%>
       # Add additional extra security groups if parameters set
       SecurityGroups: !Split
@@ -72,49 +74,42 @@ Resources:
 <% else -%>
       Subnets: !Ref Subnets
 <% end -%>
-      Tags:
-      - Key: Name
-        Value: <%= @pretty_service_name %>
 <%= custom_properties(:Elb) %>
+
   TargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Condition: CreateTargetGroupIsTrue
     Properties:
-      HealthCheckIntervalSeconds: <%= network[:target_group][:health_check_interval_seconds] || 30 %>
+      VpcId: !Ref Vpc
+<% if @elb_type == "application" -%>
+      Protocol: HTTP
+<% else -%>
+      Protocol: TCP
+<% end -%>
+<% if @container[:network_mode] == "awsvpc" -%>
+      TargetType: ip
+<% end -%>
 <% if @elb_type == "network" && @network_mode == "awsvpc" -%>
       # target groups with network load balancers need to check the container
       # port dirtectly and will be using
       HealthCheckPort: <%= @container[:port] %>
 <% end -%>
-<% if @elb_type == "application" -%>
-      UnhealthyThresholdCount: <%= network[:target_group][:unhealthy_threshold_count] || 10 %>
-      HealthCheckPath: <%= network[:target_group][:health_check_path] || '/' %>
-<% end -%>
-      Port: <%= network[:target_group][:port] %>
-      Protocol: <%= default_target_group_protocol %>
-      VpcId: !Ref Vpc
-<% if @container[:network_mode] == "awsvpc" -%>
-      TargetType: ip
-<% end -%>
-      TargetGroupAttributes:
-      - Key: deregistration_delay.timeout_seconds
-        Value: 0
 <%= custom_properties(:TargetGroup) %>
+
   Listener:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Condition: CreateElbIsTrue
     Properties:
-<% if network[:elb][:certificate] -%>
-      Certificates:
-        - CertificateArn: <%= network[:elb][:certificate] %>
-<% end -%>
       DefaultActions:
       - Type: forward
         TargetGroupArn:
           !If [ElbTargetGroupIsBlank, !Ref TargetGroup, !Ref ElbTargetGroup]
       LoadBalancerArn: !Ref Elb
-      Port: <%= network[:elb][:port] %>
-      Protocol: <%= default_elb_protocol %>
+<% if @elb_type == "application" -%>
+      Protocol: HTTP
+<% else -%>
+      Protocol: TCP
+<% end -%>
 <%= custom_properties(:Listener) %>
 
   ElbSecurityGroup:
@@ -125,8 +120,8 @@ Resources:
       VpcId: !Ref Vpc
       SecurityGroupIngress:
       - IpProtocol: tcp
-        FromPort: '<%= network[:elb][:port] %>'
-        ToPort: '<%= network[:elb][:port] %>'
+        FromPort: '<%= network[:listener][:port] %>'
+        ToPort: '<%= network[:listener][:port] %>'
         CidrIp: 0.0.0.0/0
       SecurityGroupEgress:
       - IpProtocol: tcp
@@ -182,6 +177,7 @@ Resources:
             ContainerPort: <%= @container[:port] %>
             TargetGroupArn: !Ref ElbTargetGroup
 <%= custom_properties(:Ecs) %>
+
   EcsSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -207,6 +203,7 @@ Resources:
       - Key: Name
         Value: <%= @pretty_service_name %>
 <%= custom_properties(:EcsSecurityGroup) %>
+
 <% if @elb_type == "application" -%>
   # Allow all traffic from ELB SG to ECS SG
   EcsCrossSecurityGroupRule:
