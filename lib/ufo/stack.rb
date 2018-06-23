@@ -50,6 +50,8 @@ module Ufo
       exit_with_message(@stack) if @stack && !updatable?(@stack)
 
       @stack ? perform(:update) : perform(:create)
+
+      return unless @options[:wait]
       status.wait
 
       if status.rename_rollback_error
@@ -79,12 +81,8 @@ module Ufo
     end
 
     def stack_options
-      # puts template_body
-      # puts "parameters: "
-      # pp parameters
-      # puts "scope: #{scope.inspect}"
-
       save_template
+      # puts "EARLY EXIT"; exit 1
       {
         parameters: parameters,
         stack_name: @stack_name,
@@ -94,18 +92,21 @@ module Ufo
 
     def parameters
       create_elb, elb_target_group = context.elb_options
+      elb_eip_ids = context.elb_eip_ids
 
-      network = Setting::Network.new(settings["network_profile"]).data
+      network = Setting::Network.new(settings[:network_profile]).data
       hash = {
         Subnets: network[:subnets].join(','),
         Vpc: network[:vpc],
 
         CreateElb: create_elb,
         ElbTargetGroup: elb_target_group,
+        ElbEipIds: elb_eip_ids,
+
         EcsDesiredCount: current_desired_count,
         EcsTaskDefinition: task_definition_arn,
-        # EcsTaskDefinition: "arn:aws:ecs:us-east-1:111111111111:task-definition/hi-web:191",
       }
+
       hash[:ElbSecurityGroups] = network[:elb_security_groups].join(',') if network[:elb_security_groups]
       hash[:EcsSecurityGroups] = network[:ecs_security_groups].join(',') if network[:ecs_security_groups]
 

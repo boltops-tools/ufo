@@ -41,6 +41,8 @@ class Ufo::Stack
 
     # check for /(_COMPLETE|_FAILED)$/ status
     def wait
+      start_time = Time.now
+
       refresh_events
       until completed || @stack_deletion_completed
         show_events
@@ -60,6 +62,9 @@ class Ufo::Stack
       else # success
         puts "Stack success status: #{last_event_status}".colorize(:green)
       end
+
+      took = Time.now - start_time
+      puts "Took for stack deployment: #{pretty_time(took).green}."
     end
 
     def completed

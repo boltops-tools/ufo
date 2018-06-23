@@ -45,7 +45,7 @@ module Ufo
     end
 
     def network
-      Ufo::Setting::Network.new(settings["network_profile"]).data
+      Ufo::Setting::Network.new(settings[:network_profile]).data
     end
     memoize :network
 
@@ -68,7 +68,7 @@ module Ufo
       if ENV["STATIC_NAME"]
         ENV["STATIC_NAME"] != "0"
       else
-        settings["static_name"]
+        settings[:static_name]
       end
     end
 

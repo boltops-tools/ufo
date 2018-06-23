@@ -80,7 +80,7 @@ module Ufo
       # add the default security group security_groups is empty
       if awsvpc_conf[:security_groups].empty?
         settings = Ufo.settings
-        network = Setting::Network.new(settings["network_profile"]).data
+        network = Setting::Network.new(settings[:network_profile]).data
         fetch = Network::Fetch.new(network[:vpc])
         sg = fetch.security_group_id
         awsvpc_conf[:security_groups] << sg

@@ -26,12 +26,18 @@ Parameters:
     Type: String
     Default: true
   EcsDesiredCount:
-    Description: EcsDesiredCount
+    Description: Ecs desired count
     Type: String
     Default: 1
   EcsTaskDefinition:
-    Description: EcsTaskDefinition
+    Description: Ecs task definition arn
     Type: String
+
+  # Using to keep state
+  ElbEipIds:
+    Description: ELB EIP Allocation ids to use for network load balancer
+    Type: String
+    Default: ''
 Conditions:
   CreateElbIsTrue: !Equals [ !Ref CreateElb, true ]
   ElbTargetGroupIsBlank: !Equals [ !Ref ElbTargetGroup, '' ]
@@ -217,7 +223,7 @@ Resources:
 <% end -%>
 
 Outputs:
- Dns:
+  Dns:
     Description: Elb Dns
     Condition: CreateElbIsTrue
     Value: !GetAtt Elb.DNSName

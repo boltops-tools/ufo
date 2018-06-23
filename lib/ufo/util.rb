@@ -7,7 +7,7 @@ module Ufo
     #
     # More info: http://ufoships.com/docs/settings/
     def default_cluster
-      settings["cluster"] || Ufo.env
+      settings[:cluster] || Ufo.env
     end
 
     # Keys are strings for simplicity.

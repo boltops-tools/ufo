@@ -31,14 +31,14 @@ module Ufo
       option :task, desc: "ECS task name, to override the task name convention."
       option :target_group, desc: "ELB Target Group ARN."
       option :target_group_prompt, type: :boolean, desc: "Enable Target Group ARN prompt", default: true
-      option :wait, type: :boolean, desc: "Wait for deployment to complete", default: false
+      option :wait, type: :boolean, desc: "Wait for deployment to complete", default: true
       option :pretty, type: :boolean, default: true, desc: "Pretty format the json for the task definitions"
       option :stop_old_tasks, type: :boolean, default: false, desc: "Stop old tasks after waiting for deploying to complete"
       option :ecr_keep, type: :numeric, desc: "ECR specific cleanup of old images.  Specifies how many images to keep.  Only runs if the images are ECR images. Defaults keeps all images."
       # All elb options remember their 'state'
       option :elb, desc: "Decides to create elb, not create elb or use existing target group."
       option :elb_type, desc: "ELB type: application or network. Keep current deployed elb type when not specified."
-      option :elb_eips, type: :array, desc: "Pre-allocated EIPs to use for network load balancer."
+      option :elb_eip_ids, type: :array, desc: "EIP Allocation ids to use for network load balancer."
     end
 
     desc "deploy SERVICE", "Deploy task definition to ECS service without re-building the definition."
@@ -120,6 +120,7 @@ module Ufo
     desc "destroy SERVICE", "Destroy the ECS service."
     long_desc Help.text(:destroy)
     option :sure, type: :boolean, desc: "By pass are you sure prompt."
+    option :wait, type: :boolean, desc: "Wait for completion", default: true
     def destroy(service=:current)
       task_definition = options[:task] || service # convention
       Destroy.new(service, options).bye

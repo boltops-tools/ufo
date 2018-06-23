@@ -19,17 +19,21 @@ class Ufo::Stack
       scope = Ufo::TemplateScope.new(Ufo::DSL::Helper.new, nil)
       # Add additional variable to scope for CloudFormation template.
       # Dirties the scope but needed.
-      scope.assign_instance_variables(
+      vars = {
         cluster: @cluster,
         pretty_service_name: Ufo.pretty_service_name(@service),
         container: container,
-        # elb options remember their 'state'
+        # elb options remember that their 'state'
         create_elb: create_elb?, # helps set Ecs DependsOn
         elb_type: elb_type,
         subnet_mappings: subnet_mappings,
-      )
+      }
+      puts "vars:".colorize(:cyan)
+      pp vars
+      scope.assign_instance_variables(vars)
       scope
     end
+    memoize :scope
 
     def container
       resp = ecs.describe_task_definition(task_definition: @task_definition)
@@ -111,36 +115,64 @@ class Ufo::Stack
     end
 
     def subnet_mappings
-      if @new_stack
+      elb_eip_ids = @options[:elb_eip_ids] || []
+      elb_eip_ids.uniq!
+      return build_subnet_mappings(elb_eip_ids) unless elb_eip_ids.empty?
 
-      else
+      unless @new_stack
+        elb_eip_ids = get_parameter_value(@stack, "ElbEipIds").split(',')
+        build_subnet_mappings!(elb_eip_ids)
       end
-      [
-        # allocation id, subnet_id
-        ["eipalloc-a8de9ca0", "subnet-77d3bf3d"],
-        ["eipalloc-6f064667", "subnet-b0c0298e"],
-      ]
+    end
+
+    def elb_eip_ids
+      elb_eip_ids = @options[:elb_eip_ids] || []
+      elb_eip_ids.uniq!
+      return elb_eip_ids.join(',') unless elb_eip_ids.empty?
+
+      unless @new_stack
+        return get_parameter_value(@stack, "ElbEipIds")
+      end
+
+      ''
+    end
+
+    def build_subnet_mappings!(allocations)
+      unless allocations.size == network[:subnets].size
+        puts caller
+        puts "ERROR: The allocation_ids must match in length to the subnets.".colorize(:red)
+        puts "Please double check that .ufo/settings/network/#{settings[:network_profile]} has the same number of subnets as the eip allocation ids are you specifying."
+        subnets = network[:subnets]
+        puts "Conigured subnets: #{subnets.inspect}"
+        puts "Specified allocation ids: #{allocations.inspect}"
+        exit 1
+      end
+
+      build_subnet_mappings(allocations)
     end
 
     def build_subnet_mappings(allocations)
-      unless allocations.size == network[:subnets].size
-        puts "ERROR: The allocation_ids must match in length to the subnets.".colorize(:error)
-        puts "Please double check your .ufo/settings/network/#{settings[]}"
-        exit 1
+      mappings = []
+      allocations.sort.each_with_index do |allocation_id, i|
+        mappings << [allocation_id, network[:subnets][i]]
       end
-      network[:subnets].sort.map do |subnet_id|
-        []
-      end
+      mappings
     end
 
     def elb_type
       # if option explicitly specified then change the elb type
       return @options[:elb_type] if @options[:elb_type]
+      # user is trying to create a network load balancer if --elb-eip-ids is used
+      if @options[:elb_eip_ids] && !@options[:elb_eip_ids].empty?
+        return "network"
+      end
 
-      # if not explicitly set, then it depends if its a new stack
-      return "application" if @new_stack # default for new stack
+      # if not explicitly set, new stack will defeault to application load balancer
+      if @new_stack # default for new stack
+        return "application"
+      end
 
-      # use existing load balancer type
+      # find existing load balancer for type
       resp = cloudformation.describe_stack_resources(stack_name: @stack_name)
       resources = resp.stack_resources
       elb_resource = resources.find do |resource|
@@ -160,7 +192,7 @@ class Ufo::Stack
     memoize :elb_type
 
     def network
-      Ufo::Setting::Network.new(settings["network_profile"]).data
+      Ufo::Setting::Network.new(settings[:network_profile]).data
     end
     memoize :network
 

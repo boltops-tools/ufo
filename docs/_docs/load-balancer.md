@@ -21,6 +21,8 @@ Here are examples for each of them:
     # Disable creating elb and prompt:
     ufo ship hi-web --elb=false
 
+Important: whenever the `--elb` value is explicitly set and changed, the load balancer gets replaced and the dns record will be **different**.
+
 ## ELB Retained
 
 Ufo works to retain the ELB setting.  So future `ufo ship` commands will not suddenly remove the load balancer.  If you need to change the elb setting, then you can explicitly set a new `--elb` value.
@@ -34,7 +36,13 @@ Ufo supports application and network load balancer types.  To specify the type u
     ufo ship hi-web --elb-type network
     ufo ship hi-web --elb-type application # default
 
-Important: whenever the elb type is changed the load balancer gets replaced and the dns record will be **different**.
+## ELB Static IP addresses for Network Load Balancers
+
+Network load balancers support static EIP address. You can create a network load balancer pre-allocated EIP address with the the `--elb-eip-ids` option. Example:
+
+    ufo deploy hi-web --elb-eip-ids eipalloc-a8de9ca0 eipalloc-a8de9ca0 --elb-type network
+
+When specifying the `--elb-eip-ids` option, the list must be the same length as the number of subnets configured in your `.ufo/network/settings/*.yml` profile.  The `--elb-eip-ids` setting is optional. If you do not specify it, a network load balancer wil be created with IP addresses, but will change if you ever delete the load balancer.
 
 ## Conventions
 

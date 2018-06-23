@@ -7,7 +7,7 @@ module Ufo
       # Example: 123456789.dkr.ecr.us-east-1.amazonaws.com/image
       @docker_image_name = docker_image_name
       @options = options
-      @keep = options[:keep] || settings["clean_keep"] || 3
+      @keep = options[:keep] || settings[:clean_keep] || 3
       @tag_prefix = options[:tag_prefix] || "ufo"
     end
 

@@ -45,7 +45,7 @@ class Ufo::Docker
 
     # full_image - does not include the tag
     def image_name
-      settings["image"]
+      settings[:image]
     end
   end
 end

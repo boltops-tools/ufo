@@ -35,7 +35,7 @@ module Ufo
     memoize :settings
 
     def cfn_profile
-      settings["cfn_profile"] || "default"
+      settings[:cfn_profile] || "default"
     end
 
     def pretty_service_name(service)

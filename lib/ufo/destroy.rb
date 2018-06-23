@@ -14,6 +14,7 @@ module Ufo
 
       cloudformation.delete_stack(stack_name: @stack_name)
       puts "Deleting CloudFormation stack with ECS resources: #{@stack_name}."
+      return unless @options[:wait]
       status.wait
     end
 
