@@ -5,16 +5,9 @@ module Ufo
   class ShipmentOverridden < UfoError; end
 
   class Ship < Base
-    autoload :Create, "ufo/ship/create"
-    autoload :Update, "ufo/ship/update"
-    include Create
-    include Update
-
     def initialize(service, options={})
       super
       @task_definition = options[:task_definition]
-      @wait_for_deployment = @options[:wait].nil? ? true : @options[:wait]
-      @stop_old_tasks = @options[:stop_old_tasks].nil? ? false : @options[:stop_old_tasks]
     end
 
     def deploy
@@ -31,7 +24,7 @@ module Ufo
       # TODO: COMMENT OUT FOR TESTING, ADD BACK IN
       # ensure_log_group_exist
       # ensure_cluster_exist
-      process_deployment
+      deploy_stack
 
       puts "Software shipped!" unless @options[:mute]
     end
@@ -40,111 +33,14 @@ module Ufo
       LogGroup.new(@task_definition, @options).create
     end
 
-    def process_deployment
+    def deploy_stack
       options = @options.merge(
         service: @service,
         task_definition: @task_definition,
       )
       stack = Stack.new(options)
-      stack.launch
-      # stop_old_task(deployed_service) if @stop_old_tasks
-    end
-
-    def service_tasks(cluster, service)
-      all_task_arns = ecs.list_tasks(cluster: cluster, service_name: service).task_arns
-      return [] if all_task_arns.empty?
-      ecs.describe_tasks(cluster: cluster, tasks: all_task_arns).tasks
-    end
-
-    def old_task?(deployed_task_definition_arn, task_definition_arn)
-      puts "deployed_task_definition_arn: #{deployed_task_definition_arn.inspect}"
-      puts "task_definition_arn: #{task_definition_arn.inspect}"
-      deployed_version = deployed_task_definition_arn.split(':').last.to_i
-      version = task_definition_arn.split(':').last.to_i
-      puts "deployed_version #{deployed_version.inspect}"
-      puts "version #{version.inspect}"
-      is_old = version < deployed_version
-      puts "is_old #{is_old.inspect}"
-      is_old
-    end
-
-    def stop_old_tasks(services)
-      services.each do |service|
-        stop_old_task(service)
-      end
-    end
-
-    # aws ecs list-tasks --cluster prod-hi --service-name gr-web-prod
-    # aws ecs describe-tasks --tasks arn:aws:ecs:us-east-1:467446852200:task/09038fd2-f989-4903-a8c6-1bc41761f93f --cluster prod-hi
-    def stop_old_task(deployed_service)
-      deployed_task_definition_arn = deployed_service.task_definition
-      puts "deployed_task_definition_arn #{deployed_task_definition_arn.inspect}"
-
-      # cannot use @serivce because of multiple mode
-      all_tasks = service_tasks(@cluster, deployed_service.service_name)
-      old_tasks = all_tasks.select do |task|
-        old_task?(deployed_task_definition_arn, task.task_definition_arn)
-      end
-
-      reason = "Ufo #{Ufo::VERSION} has deployed new code and waited until the newer code is running."
-      puts reason
-      # Stopping old tasks after we have confirmed that the new task definition has the same
-      # number of desired_count and running_count speeds up clean up and ensure that we
-      # dont have any stale code being served.  It seems to take a long time for the
-      # ELB to drain the register container otherwise. This might cut off some requests but
-      # providing this as an option that can be turned of beause I've seen deploys go way too
-      # slow.
-      old_tasks.each do |task|
-        puts "stopping task.task_definition_arn #{task.task_definition_arn.inspect}"
-        ecs.stop_task(cluster: @cluster, task: task.task_arn, reason: reason)
-      end if @options[:stop_old_tasks]
-    end
-
-    # service is the returned object from aws-sdk not the @service which is just a String.
-    # Returns [service_name, time_took]
-    def wait_for_deployment(deployed_service, quiet=false)
-      start_time = Time.now
-      deployed_task_name = task_name(deployed_service.task_definition)
-      puts "Waiting for deployment of task definition #{deployed_task_name.green} to complete" unless quiet
-      begin
-        until deployment_complete(deployed_service)
-          print '.'
-          sleep 5
-        end
-      rescue ShipmentOverridden => e
-        puts "This deployed was overridden by another deploy"
-        puts e.message
-      end
-      puts '' unless quiet
-      took = Time.now - start_time
-      puts "Time waiting for ECS deployment: #{pretty_time(took).green}." unless quiet
-      [deployed_service.service_name, took]
-    end
-
-    # used for polling
-    # must pass in a service and cannot use @service for the case of multi_services mode
-    def find_updated_service(service)
-      ecs.describe_services(services: [service.service_name], cluster: @cluster).services.first
-    end
-
-    # aws ecs describe-services --services hi-web-prod --cluster prod-hi
-    # Passing in the service because we need to capture the deployed task_definition
-    # that was actually deployed.   We use it to pull the describe_services
-    # until all the paramters we expect upon a completed deployment are updated.
-    #
-    def deployment_complete(deployed_service)
-      deployed_task_definition = deployed_service.task_definition # want the stale task_definition out of the wa
-      service = find_updated_service(deployed_service) # polling
-      deployment = service.deployments.first
-      # Edge case when another deploy superseds this deploy in this case break out of this loop
-      deployed_task_version = task_version(deployed_task_definition)
-      current_task_version = task_version(service.task_definition)
-      if current_task_version > deployed_task_version
-        raise ShipmentOverridden.new("deployed_task_version was #{deployed_task_version} but task_version is now #{current_task_version}")
-      end
-
-      (deployment.task_definition == deployed_task_definition &&
-       deployment.desired_count == deployment.running_count)
+      stack.deploy
+      stop_old_task(deployed_service) if @stop_old_tasks
     end
 
     def show_aws_cli_command(action, params)
@@ -182,18 +78,6 @@ module Ufo
 
     def ecs_clusters
       ecs.describe_clusters(clusters: [@cluster]).clusters
-    end
-
-    def task_name(task_definition)
-      # "arn:aws:ecs:us-east-1:123456789:task-definition/hi-web-prod:72"
-      #   ->
-      # "task-definition/hi-web-prod:72"
-      task_definition.split('/').last
-    end
-
-    def task_version(task_definition)
-      # "task-definition/hi-web-prod:72" -> 72
-      task_name(task_definition).split(':').last.to_i
     end
   end
 end

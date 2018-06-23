@@ -37,7 +37,7 @@ module Ufo
       @stack_name = adjust_stack_name(@cluster, options[:service])
     end
 
-    def launch
+    def deploy
       @stack = find_stack(@stack_name)
       if @stack && rollback_complete?(@stack)
         puts "Existing stack in ROLLBACK_COMPLETE state. Deleting stack before continuing."
