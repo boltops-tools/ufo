@@ -81,6 +81,15 @@ Resources:
     Condition: CreateTargetGroupIsTrue
     Properties:
       VpcId: !Ref Vpc
+# When adding and removing EIPs
+# Error: TargetGroup cannot be associated with more than one load balancer
+# Solution: https://forums.aws.amazon.com/thread.jspa?threadID=254544
+<% if ENV['UFO_FORCE_TARGET_GROUP'] -%>
+      Name: !Join
+      - '-'
+      - - <%= @pretty_service_name %>
+        - !Select [ 2, !Split [ '-', !GetAtt Elb.LoadBalancerName]]
+<% end -%>
 <% if @elb_type == "application" -%>
       Protocol: HTTP
 <% else -%>

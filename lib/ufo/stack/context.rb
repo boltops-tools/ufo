@@ -28,8 +28,8 @@ class Ufo::Stack
         elb_type: elb_type,
         subnet_mappings: subnet_mappings,
       }
-      # puts "vars:".colorize(:cyan)
-      # pp vars
+      puts "vars:".colorize(:cyan)
+      pp vars
       scope.assign_instance_variables(vars)
       scope
     end
@@ -114,9 +114,15 @@ class Ufo::Stack
       param.parameter_value
     end
 
+    def reset_empty_eip_ids?
+      # reset and remove eip allocation ids check
+      @options[:elb_eip_ids] && @options[:elb_eip_ids].detect { |x| [' ', 'empty'].include?(x) }
+    end
+
     def subnet_mappings
-      elb_eip_ids = @options[:elb_eip_ids] || []
-      elb_eip_ids.uniq!
+      return [] if reset_empty_eip_ids?
+
+      elb_eip_ids = normalize_elb_eip_ids
       return build_subnet_mappings(elb_eip_ids) unless elb_eip_ids.empty?
 
       unless @new_stack
@@ -125,9 +131,17 @@ class Ufo::Stack
       end
     end
 
-    def elb_eip_ids
+    def normalize_elb_eip_ids
       elb_eip_ids = @options[:elb_eip_ids] || []
       elb_eip_ids.uniq!
+      elb_eip_ids
+    end
+
+    # Returns string, used as CloudFormation parameter.
+    def elb_eip_ids
+      return '' if reset_empty_eip_ids?
+
+      elb_eip_ids = normalize_elb_eip_ids
       return elb_eip_ids.join(',') unless elb_eip_ids.empty?
 
       unless @new_stack
@@ -163,7 +177,8 @@ class Ufo::Stack
       # if option explicitly specified then change the elb type
       return @options[:elb_type] if @options[:elb_type]
       # user is trying to create a network load balancer if --elb-eip-ids is used
-      if @options[:elb_eip_ids] && !@options[:elb_eip_ids].empty?
+      elb_eip_ids = normalize_elb_eip_ids
+      if elb_eip_ids.empty?
         return "network"
       end
 
