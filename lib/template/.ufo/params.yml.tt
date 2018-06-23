@@ -10,4 +10,9 @@ run_task:
     awsvpc_configuration:
       subnets: <%%= network[:subnets].inspect %> # required
       security_groups: <%%= network[:ecs_security_groups].inspect %>
+<% if @options[:launch_type] == "fargate" -%>
+      assign_public_ip: "ENABLED" # accepts ENABLED, DISABLED
+<% else -%>
+      # for fargate use: assign_public_ip: "ENABLED"
       # assign_public_ip: "ENABLED" # accepts ENABLED, DISABLED
+<% end -%>

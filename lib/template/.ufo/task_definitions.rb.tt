@@ -11,8 +11,9 @@
 #
 # More info: http://ufoships.com/docs/helpers/
 #
+<% source_name = @options[:launch_type] == "fargate" ? "fargate" : "main" -%>
 task_definition "<%= @app %>-web" do
-  source "main" # will use ufo/templates/main.json.erb
+  source "<%= source_name %>" # will use ufo/templates/<%= source_name %>.json.erb
   variables(
     family: task_definition_name,
     name: "web",
@@ -34,7 +35,7 @@ task_definition "<%= @app %>-web" do
 end
 
 task_definition "<%= @app %>-worker" do
-  source "main" # will use ufo/templates/main.json.erb
+  source "<%= source_name %>" # will use ufo/templates/<%= source_name %>.json.erb
   variables(
     family: task_definition_name,
     name: "worker",
@@ -47,7 +48,7 @@ task_definition "<%= @app %>-worker" do
 end
 
 task_definition "<%= @app %>-clock" do
-  source "main" # will use ufo/templates/main.json.erb
+  source "<%= source_name %>" # will use ufo/templates/<%= source_name %>.json.erb
   variables(
     family: task_definition_name,
     name: "clock",

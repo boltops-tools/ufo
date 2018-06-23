@@ -123,11 +123,11 @@ class Ufo::Stack
       return [] if reset_empty_eip_ids?
 
       elb_eip_ids = normalize_elb_eip_ids
-      return build_subnet_mappings(elb_eip_ids) unless elb_eip_ids.empty?
+      return build_subnet_mappings!(elb_eip_ids) unless elb_eip_ids.empty?
 
       unless @new_stack
         elb_eip_ids = get_parameter_value(@stack, "ElbEipIds").split(',')
-        build_subnet_mappings!(elb_eip_ids)
+        build_subnet_mappings(elb_eip_ids)
       end
     end
 
@@ -153,6 +153,7 @@ class Ufo::Stack
 
     def build_subnet_mappings!(allocations)
       unless allocations.size == network[:subnets].size
+        puts "caller:".colorize(:cyan)
         puts caller
         puts "ERROR: The allocation_ids must match in length to the subnets.".colorize(:red)
         puts "Please double check that .ufo/settings/network/#{settings[:network_profile]} has the same number of subnets as the eip allocation ids are you specifying."
@@ -178,7 +179,7 @@ class Ufo::Stack
       return @options[:elb_type] if @options[:elb_type]
       # user is trying to create a network load balancer if --elb-eip-ids is used
       elb_eip_ids = normalize_elb_eip_ids
-      if elb_eip_ids.empty?
+      if !elb_eip_ids.empty?
         return "network"
       end
 

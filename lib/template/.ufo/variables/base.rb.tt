@@ -12,4 +12,7 @@
 
 <% if @execution_role_arn_input -%>
 @execution_role_arn = "<%= @execution_role_arn_input %>"
+<% else -%>
+# required for fargate
+# @execution_role_arn = "..."
 <% end -%>

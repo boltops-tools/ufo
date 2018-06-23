@@ -16,9 +16,7 @@ module Ufo
         [:fargate_security_groups, type: :array, desc: "Fargate security groups."],
       ]
     end
-    cli_options.each do |args|
-      class_option *args
-    end
+    cli_options.each { |o| class_option(*o) }
 
     def setup_template_repo
       return unless @options[:template]&.include?('/')
@@ -60,13 +58,7 @@ module Ufo
       @execution_role_arn_input = get_execution_role_arn_input
       # copy the files
       puts "Setting up ufo project..."
-      directory ".", exclude_pattern: /(\.git|templates)/
-
-      if @options[:launch_type] == "fargate"
-        copy_file ".ufo/templates/fargate.json.erb", ".ufo/templates/main.json.erb"
-      else
-        copy_file ".ufo/templates/main.json.erb"
-      end
+      directory ".", exclude_pattern: /(\.git)/
     end
 
     def upsert_gitignore
