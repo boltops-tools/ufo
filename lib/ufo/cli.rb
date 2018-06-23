@@ -38,6 +38,7 @@ module Ufo
       # All elb options remember their 'state'
       option :elb, desc: "Decides to create elb, not create elb or use existing target group."
       option :elb_type, desc: "ELB type: application or network. Keep current deployed elb type when not specified."
+      option :elb_eips, type: :array, desc: "Pre-allocated EIPs to use for network load balancer."
     end
 
     desc "deploy SERVICE", "Deploy task definition to ECS service without re-building the definition."
