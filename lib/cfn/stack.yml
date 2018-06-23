@@ -228,6 +228,18 @@ Resources:
 <%= custom_properties(:EcsCrossSecurityGroupRule) %>
 <% end -%>
 
+<% if @create_elb && network[:dns] && network[:dns][:name] -%>
+  Dns:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      Comment: cname to load balancer
+      Type: CNAME
+      TTL: '60' # ttl has special casing
+      ResourceRecords:
+      - !GetAtt Elb.DNSName
+<%= custom_properties(:Dns) %>
+<% end -%>
+
 Outputs:
   Dns:
     Description: Elb Dns

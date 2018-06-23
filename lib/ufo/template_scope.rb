@@ -60,8 +60,29 @@ module Ufo
       properties = network[resource.to_sym]
       return unless properties
 
-      # camelize keys
-      properties = properties.deep_transform_keys { |key| key.to_s.camelize }
+      # transform keys: camelize
+      properties = properties.deep_stringify_keys.deep_transform_keys do |key|
+        if key == key.upcase # trying to generalize special rule for dns.TTL
+          key # leave key alone if key is already in all upcase
+        else
+          key.camelize
+        end
+      end
+
+      # transform keys: values
+      # https://stackoverflow.com/questions/34595142/process-nested-hash-to-convert-all-values-to-strings
+      #
+      # Examples:
+      #   "{stack_name}.stag.boltops.com." => development-hi-web.stag.boltops.com.
+      #   "{stack_name}.stag.boltops.com." => dev-hi-web-2.stag.boltops.com.
+      properties.deep_merge(properties) do |_,_,v|
+        if v.is_a?(String)
+          v.sub!('{stack_name}', @stack_name) # unsure why need shebang, but it works
+        else
+          v
+        end
+      end
+
       yaml = YAML.dump(properties)
       # add spaces in front on each line
       yaml.split("\n")[1..-1].map do |line|

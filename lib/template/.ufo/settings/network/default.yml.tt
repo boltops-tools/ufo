@@ -52,3 +52,10 @@ listener:
                   # so we can keep this commented out, unless we need HTTPS at elb level
   # certificates:
   # - certificate: arn:aws:acm:us-east-1:111111111111:certificate/11111111-2222-3333-4444-555555555555
+
+# Configure dns to automatically be associated with the ELB dns name.
+# Note, the route53 record set for the domain name must already exist.
+# dns:
+#   name: "{stack_name}.yourdomain."
+#   hosted_zone_name: yourdomain. # dont forget the trailing period
+#   TTL: '60' # ttl has special upcase casing

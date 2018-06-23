@@ -69,6 +69,16 @@ You should see output similar to this:
     Time waiting for ECS deployment: 31s.
     Software shipped!
 
+### Route 53 DNS Support
+
+Ufo can automatically create a "pretty" route53 record an set it to the created ELB dns name. This is done in by configuring the `.ufo/settings/network/[profile].yml` file. Example:
+
+    dns:
+      name: "{stack_name}.mydomain.com."
+      hosted_zone_name: mydomain.com. # dont forget the trailing period
+
+Refer to [Route53 Support](http://ufoships.com/docs/route53-support/) for more info.
+
 ### Cleaning up Docker Images Automatically
 
 Since ufo builds the Docker image every time there's a deployment you will end up with a long list of docker images.  Ufo automatically cleans up older docker images at the end of the deploy process if you are using AWS ECR.  By default ufo keeps the most recent 30 Docker images. This can be adjust with the `--ecr-keep` option.

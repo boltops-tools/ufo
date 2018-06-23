@@ -14,6 +14,8 @@ class Ufo::Setting
       end
 
       text = RenderMePretty.result(path)
+      # puts "text:".colorize(:cyan)
+      # puts text
       YAML.load(text).deep_symbolize_keys
     end
     memoize :data
