@@ -1,42 +1,59 @@
 require 'fileutils'
+require 'yaml'
 
 module Ufo
   class Current
-    def initialize(service=nil, options={})
+    def initialize(options={})
       Ufo.check_ufo_project!
-      @service = service
       @options = options
       @file = ".ufo/current"
       @path = "#{Ufo.root}/#{@file}"
     end
 
     def run
-      @options[:unset] ? unset : set
+      @options[:rm] ? rm : set
     end
 
-    def unset
+    def rm
       FileUtils.rm_f(@path)
-      puts "Current service is unset. Removed #{@file}"
+      puts "Current settings have been removed. Removed #{@file}"
     end
 
     def set
-      if @service
-        IO.write(@path, @service)
-        puts "Current service saved as #{@service} in #{@file}"
+      if @options.empty?
+        show
       else
-        if service
-          puts "Current service is set to: #{service}"
-        else
-          puts "No current service set."
-        end
+        d = data # assign data to d to create local variable for merge to work
+        d = d.merge(@options).delete_if { |_,v| v&.empty? }
+        text = YAML.dump(d)
+        IO.write(@path, text)
+        puts "Current settings saved in .ufo/current"
+        show
       end
     end
 
-    def service
-      if File.exist?(@path)
-        current = IO.read(@path).strip
-        return current unless current.empty?
+    def show
+      data.each do |key, value|
+        puts "Current #{key} is set to: #{value}"
       end
+    end
+
+    def data
+      YAML.load(IO.read(@path)) rescue {}
+    end
+
+    def env_extra
+      current = data["env_extra"]
+      return current unless current&.empty?
+    end
+
+    def self.env_extra
+      Current.new.env_extra
+    end
+
+    def service
+      current = data["service"]
+      return current unless current&.empty?
     end
 
     # reads service, returns nil if not set

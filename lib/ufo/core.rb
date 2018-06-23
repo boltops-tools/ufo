@@ -21,13 +21,19 @@ module Ufo
       Pathname.new(path)
     end
 
-    @@env = nil
     def env
-      return @@env if @@env
       ufo_env = env_from_profile(ENV['AWS_PROFILE']) || 'development'
       ufo_env = ENV['UFO_ENV'] if ENV['UFO_ENV'] # highest precedence
-      @@env = ufo_env
+      ufo_env
     end
+    memoize :env
+
+    def env_extra
+      env_extra = Current.env_extra
+      env_extra = ENV['UFO_ENV_EXTRA'] if ENV['UFO_ENV_EXTRA'] # highest precedence
+      env_extra
+    end
+    memoize :env_extra
 
     def settings
       Setting.new.data
@@ -39,7 +45,7 @@ module Ufo
     end
 
     def pretty_service_name(service)
-      [service, ENV['UFO_ENV_EXTRA']].reject {|x| x==''}.compact.join('-')
+      [service, Ufo.env_extra].reject {|x| x==''}.compact.join('-')
     end
 
     def check_ufo_project!

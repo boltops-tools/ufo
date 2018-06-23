@@ -112,9 +112,11 @@ module Ufo
 
     desc "current SERVICE", "Switch the current service. Saves to .ufo/current"
     long_desc Help.text(:current)
-    option :unset, type: :boolean, desc: "Unset current service to nothing. Removes .ufo/current"
-    def current(service=nil)
-      Current.new(service, options).run
+    option :rm, type: :boolean, desc: "Remove all current settings. Removes .ufo/current"
+    option :service, desc: "Sets service as a current setting."
+    option :env_extra, desc: "Sets UFO_ENV_EXTRA as a current setting."
+    def current
+      Current.new(options).run
     end
 
     desc "destroy SERVICE", "Destroy the ECS service."

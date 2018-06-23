@@ -154,8 +154,8 @@ class Ufo::Stack
 
     def build_subnet_mappings!(allocations)
       unless allocations.size == network[:subnets].size
-        puts "caller:".colorize(:cyan)
-        puts caller
+        # puts "caller:".colorize(:cyan)
+        # puts caller
         puts "ERROR: The allocation_ids must match in length to the subnets.".colorize(:red)
         puts "Please double check that .ufo/settings/network/#{settings[:network_profile]} has the same number of subnets as the eip allocation ids are you specifying."
         subnets = network[:subnets]

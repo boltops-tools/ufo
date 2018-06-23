@@ -6,15 +6,35 @@ Simply writes to a `.ufo/current` file with the service specified.
 
 To set current service:
 
-    ufo current hi-web
-    ufo current hi-worker
-    ufo current demo-web
+    ufo current --service hi-web
+    ufo current --service hi-worker
+    ufo current --service demo-web
 
 To view current service, run `ufo current` without any arguments.
 
     $ ufo current
     Current service is set to: hi-web
 
-To unset the current environment use the `--unset` option.
+To remove current service:
 
-    ufo current --unset
+    ufo current --service ''
+
+To remove all current settings use the `--rm` option.
+
+    ufo current --rm
+
+### UFO_ENV_EXTRA
+
+To also set a current UFO_ENV_EXTRA.
+
+    ufo current --env-extra 1
+
+The extra env setting will be reflected:
+
+    $ ufo current
+    Current service is set to: hi-web
+    Current ufo_env_extra is set to: 1
+
+To unset:
+
+    ufo current --env-extra ''
