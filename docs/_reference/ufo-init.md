@@ -114,11 +114,11 @@ If you would like to use a local template that is not on GitHub, then created a 
 [--execution-role-arn=EXECUTION_ROLE_ARN]  # execution role arn used by tasks, required for fargate.
 [--template=TEMPLATE]                      # Custom template to use.
 [--template-mode=TEMPLATE_MODE]            # Template mode: replace or additive.
-[--vpc-id=VPC_ID]                          # Vpc id: for fargate params.yml and elb balancer profile.
+[--vpc-id=VPC_ID]                          # Vpc id: for settings/network/default.yml.
 [--fargate-security-groups=one two three]  # Fargate security groups.
 [--verbose], [--no-verbose]                
 [--mute], [--no-mute]                      
 [--noop], [--no-noop]                      
-[--cluster=CLUSTER]                        # Cluster.  Overrides ufo/settings.yml.
+[--cluster=CLUSTER]                        # Cluster.  Overrides .ufo/settings.yml.
 ```
 

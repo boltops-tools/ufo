@@ -25,6 +25,6 @@ While scaling via this method is quick and convenient the [ECS Service AutoScali
 [--verbose], [--no-verbose]  
 [--mute], [--no-mute]        
 [--noop], [--no-noop]        
-[--cluster=CLUSTER]          # Cluster.  Overrides ufo/settings.yml.
+[--cluster=CLUSTER]          # Cluster.  Overrides .ufo/settings.yml.
 ```
 

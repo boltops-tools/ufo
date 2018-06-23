@@ -30,6 +30,6 @@ Note all the existing ufo/output generated task defintions are wiped out.
 [--verbose], [--no-verbose]  
 [--mute], [--no-mute]        
 [--noop], [--no-noop]        
-[--cluster=CLUSTER]          # Cluster.  Overrides ufo/settings.yml.
+[--cluster=CLUSTER]          # Cluster.  Overrides .ufo/settings.yml.
 ```
 

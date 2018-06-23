@@ -1,16 +1,19 @@
 ---
-title: ufo version
+title: ufo network
 reference: true
 ---
 
 ## Usage
 
-    ufo version
+    ufo network SUBCOMMAND
 
 ## Description
 
-Prints version number of installed ufo.
+network subcommands
 
+## Subcommands
+
+* [ufo network init]({% link _reference/ufo-network-init.md %}) - Creates network starter settings file.
 
 ## Options
 

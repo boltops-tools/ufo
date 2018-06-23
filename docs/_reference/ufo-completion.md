@@ -41,6 +41,6 @@ Auto-completion example usage:
 [--verbose], [--no-verbose]  
 [--mute], [--no-mute]        
 [--noop], [--no-noop]        
-[--cluster=CLUSTER]          # Cluster.  Overrides ufo/settings.yml.
+[--cluster=CLUSTER]          # Cluster.  Overrides .ufo/settings.yml.
 ```
 

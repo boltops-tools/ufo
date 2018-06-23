@@ -113,9 +113,9 @@ module Ufo
       Cancel.new(service, options).run
     end
 
-    desc "current SERVICE", "Switch the current service. Saves to .ufo/current"
+    desc "current SERVICE", "Switch the current service. Saves to `.ufo/current`"
     long_desc Help.text(:current)
-    option :rm, type: :boolean, desc: "Remove all current settings. Removes .ufo/current"
+    option :rm, type: :boolean, desc: "Remove all current settings. Removes `.ufo/current`"
     option :service, desc: "Sets service as a current setting."
     option :services, type: :array, desc: "Sets services as a current setting. This is used for ufo ships."
     option :env_extra, desc: "Sets UFO_ENV_EXTRA as a current setting."

@@ -39,6 +39,6 @@ c, [--command=one two three]     # Override the command used for the container
     [--verbose], [--no-verbose]  
     [--mute], [--no-mute]        
     [--noop], [--no-noop]        
-    [--cluster=CLUSTER]          # Cluster.  Overrides ufo/settings.yml.
+    [--cluster=CLUSTER]          # Cluster.  Overrides .ufo/settings.yml.
 ```
 

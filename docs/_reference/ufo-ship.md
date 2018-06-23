@@ -43,22 +43,23 @@ ECS services can be associated with a Load Balancer upon creation. Ufo can autom
 
 1. Automatically create the ELB.
 2. Provide a target group from an existing ELB.
-3. No ELB is created and associated.
+3. No ELB is created.
 
 Here are examples for each of them:
 
-    # Use different profiles to create the ELB:
-    #  .ufo/balancer/profiles/default.yml
-    #  .ufo/balancer/profiles/production.yml
-    ufo ship hi-web --elb=default
-    ufo ship hi-web --elb=production
+    ufo ship hi-web --elb=true
 
     # Use existing target group from pre-created ELB:
     ufo ship hi-web --elb=arn:aws:elasticloadbalancing:us-east-1:123456789:targetgroup/target-name/2378947392743
-    ufo ship hi-web --target-group=arn:aws:elasticloadbalancing:us-east-1:123456789:targetgroup/target-name/2378947392743 # legacy, currently works
 
     # Disable creating elb and prompt:
     ufo ship hi-web --elb=false
+
+Note, if the docker container's name is web then the `--elb` flag defaults to true automatically.
+
+If you need to create a network load balancer with pre-allocated EIPs, you can use `--elb-eip-ids`, example:
+
+    ufo deploy hi-web --elb-eip-ids eipalloc-a8de9ca0 eipalloc-a8de9ca0
 
 More info available at the [load balancer docs](http://ufoships.com/docs/load-balancer/).
 
@@ -80,6 +81,16 @@ You should see output similar to this:
     ......
     Time waiting for ECS deployment: 31s.
     Software shipped!
+
+### Route 53 DNS Support
+
+Ufo can automatically create a "pretty" route53 record an set it to the created ELB dns name. This is done in by configuring the `.ufo/settings/network/[profile].yml` file. Example:
+
+    dns:
+      name: "{stack_name}.mydomain.com."
+      hosted_zone_name: mydomain.com. # dont forget the trailing period
+
+Refer to [Route53 Support](http://ufoships.com/docs/route53-support/) for more info.
 
 ### Cleaning up Docker Images Automatically
 
@@ -103,14 +114,17 @@ If you are using DockerHub or another registry, ufo does not automatically clean
 [--target-group-prompt], [--no-target-group-prompt]  # Enable Target Group ARN prompt
                                                      # Default: true
 [--wait], [--no-wait]                                # Wait for deployment to complete
+                                                     # Default: true
 [--pretty], [--no-pretty]                            # Pretty format the json for the task definitions
                                                      # Default: true
 [--stop-old-tasks], [--no-stop-old-tasks]            # Stop old tasks after waiting for deploying to complete
 [--ecr-keep=N]                                       # ECR specific cleanup of old images.  Specifies how many images to keep.  Only runs if the images are ECR images. Defaults keeps all images.
-[--elb=ELB]                                          # ELB balancer profile to use
-[--verbose], [--no-verbose]
-[--mute], [--no-mute]
-[--noop], [--no-noop]
-[--cluster=CLUSTER]                                  # Cluster.  Overrides ufo/settings.yml.
+[--elb=ELB]                                          # Decides to create elb, not create elb or use existing target group.
+[--elb-type=ELB_TYPE]                                # ELB type: application or network. Keep current deployed elb type when not specified.
+[--elb-eip-ids=one two three]                        # EIP Allocation ids to use for network load balancer.
+[--verbose], [--no-verbose]                          
+[--mute], [--no-mute]                                
+[--noop], [--no-noop]                                
+[--cluster=CLUSTER]                                  # Cluster.  Overrides .ufo/settings.yml.
 ```
 
