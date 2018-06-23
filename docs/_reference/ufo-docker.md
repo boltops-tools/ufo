@@ -13,8 +13,10 @@ docker subcommands
 
 ## Examples
 
+    ufo docker base
     ufo docker build
-    ufo docker tag
+    ufo docker name
+    ufo docker push
 
 ## Subcommands
 
