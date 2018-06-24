@@ -28,6 +28,7 @@ class Ufo::Stack
         create_elb: create_elb?, # helps set Ecs DependsOn
         elb_type: elb_type,
         subnet_mappings: subnet_mappings,
+        create_route53: create_elb? && network[:dns] && network[:dns][:name],
       }
       # puts "vars:".colorize(:cyan)
       # pp vars

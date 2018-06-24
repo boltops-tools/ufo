@@ -30,8 +30,9 @@ module Ufo
       puts "   Desired count: #{service.desired_count}"
       puts "   Launch type: #{service.launch_type}"
       puts "   Task definition: #{service.task_definition.split('/').last}"
-      dns = info.load_balancer_dns(service)
-      puts "   Dns: #{dns}" if dns
+      elb_dns = info.load_balancer_dns(service)
+      puts "   Elb: #{elb_dns}" if elb_dns
+      puts "   Route53: #{info.route53_dns}" if info.route53_dns
     end
 
     # If the running count less than the desired account yet, check the events

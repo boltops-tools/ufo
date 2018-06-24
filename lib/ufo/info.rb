@@ -31,7 +31,6 @@ module Ufo
     memoize :load_balancer_dns
 
     def service
-      stack = find_stack(@stack_name)
       return unless stack
 
       service = stack_resources.find { |r| r.resource_type == "AWS::ECS::Service" }
@@ -40,6 +39,20 @@ module Ufo
       resp.services.first
     end
     memoize :service
+
+    def stack
+      find_stack(@stack_name)
+    end
+    memoize :stack
+
+    def route53_dns
+      return unless stack
+
+      output = stack.outputs.find do |o|
+        o.output_key == "Route53Dns"
+      end
+      output.output_value
+    end
 
     def stack_resources
       resp = cloudformation.describe_stack_resources(stack_name: @stack_name)

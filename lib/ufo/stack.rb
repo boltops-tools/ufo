@@ -91,7 +91,6 @@ module Ufo
 
     def parameters
       create_elb, elb_target_group = context.elb_options
-      elb_eip_ids = context.elb_eip_ids
 
       network = Setting::Network.new(settings[:network_profile]).data
       hash = {
@@ -100,7 +99,7 @@ module Ufo
 
         CreateElb: create_elb,
         ElbTargetGroup: elb_target_group,
-        ElbEipIds: elb_eip_ids,
+        ElbEipIds: context.elb_eip_ids,
 
         EcsDesiredCount: current_desired_count,
         EcsTaskDefinition: task_definition_arn,
