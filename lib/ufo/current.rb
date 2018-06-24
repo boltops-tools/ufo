@@ -79,10 +79,11 @@ module Ufo
       service = Current.service
       return service if service
 
+      puts "ERROR: service must be specified.".colorize(:red)
       puts <<-EOL
-ERROR: service must be specified at the cli:
+Example:
     ufo #{ARGV.first} SERVICE
-Or you can set a current service must be set with:
+You can also set a current service to be remembered with:
     ufo current SERVICE
 EOL
       exit 1
