@@ -3,7 +3,7 @@ require 'yaml'
 module Ufo
   class Setting
     extend Memoist
-    autoload :Network, "ufo/setting/network"
+    autoload :Profile, "ufo/setting/profile"
 
     def initialize(check_ufo_project=true)
       @check_ufo_project = check_ufo_project

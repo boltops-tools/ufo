@@ -44,12 +44,10 @@ module Ufo
       end
     end
 
-    def network
-      n = Ufo::Setting::Network.new(settings[:network_profile]).data
-      # pp n
-      n
+    def cfn
+      Ufo::Setting::Profile.new(:cfn, settings[:network_profile]).data
     end
-    memoize :network
+    memoize :cfn
 
     def settings
       Ufo.settings
@@ -57,7 +55,7 @@ module Ufo
 
     def custom_properties(resource)
       resource = resource.to_s.underscore
-      properties = network[resource.to_sym]
+      properties = cfn[resource.to_sym]
       return unless properties
 
       # transform keys: camelize

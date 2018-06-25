@@ -1,15 +1,16 @@
 class Ufo::Setting
-  class Network
+  class Profile
     extend Memoist
 
-    def initialize(profile='default')
+    def initialize(type, profile='default')
+      @type = type.to_s # cfn or network
       @profile = profile
     end
 
     def data
-      path = "#{Ufo.root}/.ufo/settings/network/#{@profile}.yml"
+      path = "#{Ufo.root}/.ufo/settings/#{@type}/#{@profile}.yml"
       unless File.exist?(path)
-        puts "Network profile #{path} not found. Please double check that it exists."
+        puts "#{@type.camelize} profile #{path} not found. Please double check that it exists."
         exit 1
       end
 

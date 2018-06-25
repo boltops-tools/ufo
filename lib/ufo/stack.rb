@@ -92,7 +92,7 @@ module Ufo
     def parameters
       create_elb, elb_target_group = context.elb_options
 
-      network = Setting::Network.new(settings[:network_profile]).data
+      network = Setting::Profile.new(:network, settings[:network_profile]).data
       # pp network
       elb_subnets = network[:elb_subnets] && !network[:elb_subnets].empty? ?
                     network[:elb_subnets] :

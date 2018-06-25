@@ -28,7 +28,7 @@ class Ufo::Stack
         create_elb: create_elb?, # helps set Ecs DependsOn
         elb_type: elb_type,
         subnet_mappings: subnet_mappings,
-        create_route53: create_elb? && network[:dns] && network[:dns][:name],
+        create_route53: create_elb? && cfn[:dns] && cfn[:dns][:name],
       }
       # puts "vars:".colorize(:cyan)
       # pp vars
@@ -55,7 +55,7 @@ class Ufo::Stack
         name: container_def["name"],
         port: port,
         fargate: fargate,
-        network_mode: network_mode,
+        network_mode: network_mode, # awsvpc, bridge, etc
       }
     end
     memoize :container
@@ -210,9 +210,14 @@ class Ufo::Stack
     memoize :elb_type
 
     def network
-      Ufo::Setting::Network.new(settings[:network_profile]).data
+      Ufo::Setting::Profile.new(:network, settings[:network_profile]).data
     end
     memoize :network
+
+    def cfn
+      Ufo::Setting::Cfn.new(settings[:cfn_profile]).data
+    end
+    memoize :cfn
 
     def settings
       Ufo.settings
