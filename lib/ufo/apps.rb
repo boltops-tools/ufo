@@ -20,7 +20,7 @@ module Ufo
         puts "ECS cluster #{@cluster.colorize(:green)} not found."
         exit 1
       end
-      arns = resp.service_arns
+      arns = resp.service_arns.sort
 
       puts "Listing ECS services in the #{@cluster.colorize(:green)} cluster."
       if arns.empty?

@@ -93,7 +93,7 @@ module Ufo
       create_elb, elb_target_group = context.elb_options
 
       network = Setting::Network.new(settings[:network_profile]).data
-      pp network
+      # pp network
       elb_subnets = network[:elb_subnets] && !network[:elb_subnets].empty? ?
                     network[:elb_subnets] :
                     network[:ecs_subnets]
@@ -139,7 +139,7 @@ module Ufo
       if service
         service.desired_count.to_s
       else
-        "1" # new service
+        "1" # new service default
       end
     end
 
