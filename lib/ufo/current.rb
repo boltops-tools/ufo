@@ -35,6 +35,16 @@ module Ufo
     end
 
     def show
+      if data.empty?
+        puts <<-EOL
+There are no current settings.  To set a current service run:
+
+    ufo current --service my-service
+    ufo current -h # for more examples
+EOL
+        return
+      end
+
       data.each do |key, value|
         puts "Current #{key}: #{value}"
       end

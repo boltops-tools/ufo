@@ -12,7 +12,9 @@ module Ufo
         [:execution_role_arn, desc: "execution role arn used by tasks, required for fargate."],
         [:template, desc: "Custom template to use."],
         [:template_mode, desc: "Template mode: replace or additive."],
-        [:vpc_id, desc: "Vpc id: for settings/network/default.yml."],
+        [:vpc_id, desc: "Vpc id. For settings/network/default.yml."],
+        [:ecs_subnets, type: :array, desc: "Subnets for ECS tasks, defaults to --elb-subnets set to. For settings/network/default.yml"],
+        [:elb_subnets, type: :array, desc: "Subnets for ELB. For settings/network/default.yml"],
       ]
     end
     cli_options.each { |o| class_option(*o) }

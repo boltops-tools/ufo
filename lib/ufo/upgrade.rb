@@ -17,9 +17,9 @@ module Ufo
     def self.options
       [
         [:force, type: :boolean, desc: "Bypass overwrite are you sure prompt for existing files."],
-        [:elb_subnets, type: :array, desc: "Subnets for ELB", required: true],
+        [:vpc_id, desc: "Vpc id"],
         [:ecs_subnets, type: :array, desc: "Subnets for ECS tasks, defaults to --elb-subnets set to"],
-        [:vpc_id, desc: "Vpc id", required: true],
+        [:elb_subnets, type: :array, desc: "Subnets for ELB"],
       ]
     end
     options.each { |o| option(*o) }

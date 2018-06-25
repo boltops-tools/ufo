@@ -1,7 +1,7 @@
 ---
 vpc: <%= @options[:vpc_id] %>
 ecs_subnets: # required: at least 2 subnets
-<% @options[:elb_subnets].each do |subnet| -%>
+<% @options[:ecs_subnets].each do |subnet| -%>
   - <%= subnet %>
 <% end -%>
 elb_subnets: # defaults to same subnets as ecs_subnets
@@ -23,6 +23,10 @@ elb_subnets: # defaults to same subnets as ecs_subnets
 # ecs_security_groups:
 #   - sg-bbb
 #   - sg-ccc
+
+##############################
+# Options below are allow you to customize any resources that ufo creates with
+# CloudFormation by inserting the options into the generated template.
 
 elb:
   scheme: internet-facing
@@ -66,6 +70,8 @@ listener:
 
 # Configure dns to automatically be associated with the ELB dns name.
 # Note, the route53 record set for the domain name must already exist.
+# The {stack_name} variable gets replaced with the name of the CloudFormation stack name.
+# Example: {stack_name} => demo-web
 # dns:
 #   name: "{stack_name}.yourdomain."
 #   hosted_zone_name: yourdomain. # dont forget the trailing period
