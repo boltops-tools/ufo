@@ -94,8 +94,9 @@ module Ufo
 
       network = Setting::Network.new(settings[:network_profile]).data
       hash = {
-        Subnets: network[:subnets].join(','),
         Vpc: network[:vpc],
+        ElbSubnets: network[:elb_subnets].join(','),
+        EcsSubnets: network[:ecs_subnets].join(','),
 
         CreateElb: create_elb,
         ElbTargetGroup: elb_target_group,

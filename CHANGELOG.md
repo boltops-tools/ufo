@@ -8,6 +8,7 @@ This project *tries* to adhere to [Semantic Versioning](http://semver.org/), eve
 - ECS service created by CloudFormation now
 - ELB support: both application and network ELBs
 - Route53 support: associates ELB with DNS record
+- UFO_ENV_EXTRA concept introduced
 - Many additional CLI commands:
 - ufo apps
 - ufo cancel

@@ -13,7 +13,6 @@ module Ufo
         [:template, desc: "Custom template to use."],
         [:template_mode, desc: "Template mode: replace or additive."],
         [:vpc_id, desc: "Vpc id: for settings/network/default.yml."],
-        [:fargate_security_groups, type: :array, desc: "Fargate security groups."],
       ]
     end
     cli_options.each { |o| class_option(*o) }
@@ -75,9 +74,7 @@ EOL
     end
 
     def upsert_dockerignore
-      text =<<-EOL
-.ufo
-EOL
+      text = ".ufo\n"
       if File.exist?(".dockerignore")
         append_to_file ".dockerignore", text
       else

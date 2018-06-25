@@ -24,6 +24,7 @@ For this example we will use [tongueroo/hi](https://github.com/tongueroo/hi) whi
     ufo init --image httpd --app demo
     ufo init --image 123456789012.dkr.ecr.us-west-2.amazonaws.com/myimage --app demo
     ufo init --image tongueroo/hi --app hi --launch-type fargate --execution-role-arn arn:aws:iam::123456789012:role/ecsTaskExecutionRole
+    ufo init --image httpd --app demo --vpc-id vpc-123
 
 ## Important options
 

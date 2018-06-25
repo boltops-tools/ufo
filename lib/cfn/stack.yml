@@ -1,13 +1,15 @@
 Description: "Ufo ECS stack <%= @pretty_service_name %>"
 Parameters:
   # required
-  Subnets:
-    Description: Existing subnet ids
-    Type: List<AWS::EC2::Subnet::Id>
   Vpc:
     Description: Existing vpc id
     Type: AWS::EC2::VPC::Id
-
+  ElbSubnets:
+    Description: Existing subnet ids for ELB
+    Type: List<AWS::EC2::Subnet::Id>
+  EcsSubnets:
+    Description: Existing subnet ids for ECS
+    Type: List<AWS::EC2::Subnet::Id>
   EcsSecurityGroups:
     Description: Existing ecs security group ids
     Type: String
@@ -72,7 +74,7 @@ Resources:
           SubnetId: <%= subnet_id %>
 <% end -%>
 <% else -%>
-      Subnets: !Ref Subnets
+      Subnets: !Ref ElbSubnets
 <% end -%>
 <%= custom_properties(:Elb) %>
 
@@ -166,7 +168,7 @@ Resources:
 <% if @container[:network_mode] == "awsvpc" -%>
       NetworkConfiguration:
         AwsvpcConfiguration:
-          Subnets: !Ref Subnets # required
+          Subnets: !Ref EcsSubnets # required
           SecurityGroups: !Split
             - ','
             - !If
