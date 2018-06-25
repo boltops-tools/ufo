@@ -92,11 +92,12 @@ module Ufo
     def parameters
       create_elb, elb_target_group = context.elb_options
 
-      elb_subnets = !network[:elb_subnets]&.empty? ?
+      network = Setting::Network.new(settings[:network_profile]).data
+      pp network
+      elb_subnets = network[:elb_subnets] && !network[:elb_subnets].empty? ?
                     network[:elb_subnets] :
                     network[:ecs_subnets]
 
-      network = Setting::Network.new(settings[:network_profile]).data
       hash = {
         Vpc: network[:vpc],
         ElbSubnets: elb_subnets.join(','),
@@ -121,6 +122,7 @@ module Ufo
         end
       end
     end
+    memoize :parameters
 
     def context
       Context.new(@options.merge(
