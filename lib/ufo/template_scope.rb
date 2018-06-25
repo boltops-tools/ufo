@@ -44,8 +44,13 @@ module Ufo
       end
     end
 
+    def network
+      Ufo::Setting::Profile.new(:network, settings[:network_profile]).data
+    end
+    memoize :network
+
     def cfn
-      Ufo::Setting::Profile.new(:cfn, settings[:network_profile]).data
+      Ufo::Setting::Profile.new(:cfn, settings[:cfn_profile]).data
     end
     memoize :cfn
 

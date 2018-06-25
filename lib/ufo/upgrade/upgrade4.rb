@@ -30,7 +30,7 @@ class Ufo::Upgrade
     end
 
     def final_message
-      puts "Upgrade complete."
+      puts "Upgrade complete.\n\n"
       new_env_info
     end
 
@@ -46,11 +46,15 @@ EOL
     def new_files
       configure_network_settings
       template(".ufo/settings/network/default.yml")
+      template(".ufo/settings/cfn/default.yml")
     end
 
     # add network_profile: default line
     def update_settings
-      text = "  network_profile: default # .ufo/settings/network/default.yml file\n"
+      text = <<-EOL
+  network_profile: default # .ufo/settings/network/default.yml file
+  cfn_profile: default # .ufo/settings/cfn/default.yml file
+EOL
       insert_into_file ".ufo/settings.yml", text, :after => "base:\n"
     end
 

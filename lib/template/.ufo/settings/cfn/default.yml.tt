@@ -1,6 +1,7 @@
 ---
 # Options allow you to customize any resources that ufo creates with
 # CloudFormation. These options are inserting into the generated template.
+# More info: https://ufoships.com/docs/customize-cloudformation
 
 elb:
   scheme: internet-facing

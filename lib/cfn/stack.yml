@@ -134,8 +134,8 @@ Resources:
       VpcId: !Ref Vpc
       SecurityGroupIngress:
       - IpProtocol: tcp
-        FromPort: '<%= network[:listener][:port] %>'
-        ToPort: '<%= network[:listener][:port] %>'
+        FromPort: '<%= cfn[:listener][:port] %>'
+        ToPort: '<%= cfn[:listener][:port] %>'
         CidrIp: 0.0.0.0/0
       SecurityGroupEgress:
       - IpProtocol: tcp

@@ -215,7 +215,7 @@ class Ufo::Stack
     memoize :network
 
     def cfn
-      Ufo::Setting::Cfn.new(settings[:cfn_profile]).data
+      Ufo::Setting::Profile.new(:cfn, settings[:cfn_profile]).data
     end
     memoize :cfn
 
