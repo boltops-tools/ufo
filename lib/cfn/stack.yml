@@ -159,7 +159,7 @@ Resources:
       - !Ref AWS::NoValue
       - !Ref EcsDesiredCount
       TaskDefinition: !Ref EcsTaskDefinition
-<% if static_name? -%>
+<% if pretty_name? -%>
       ServiceName: <%= @pretty_service_name %>
 <% end -%>
 <% if @container[:fargate] -%>

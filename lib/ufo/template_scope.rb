@@ -98,12 +98,12 @@ module Ufo
       @elb_type == "application" ? "HTTP" : "TCP"
     end
 
-    def static_name?
+    def pretty_name?
       # env variable takes highest precedence
       if ENV["STATIC_NAME"]
         ENV["STATIC_NAME"] != "0"
       else
-        settings[:static_name]
+        settings[:pretty_name]
       end
     end
   end
