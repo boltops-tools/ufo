@@ -92,10 +92,14 @@ module Ufo
     def parameters
       create_elb, elb_target_group = context.elb_options
 
+      elb_subnets = !network[:elb_subnets]&.empty? ?
+                    network[:elb_subnets] :
+                    network[:ecs_subnets]
+
       network = Setting::Network.new(settings[:network_profile]).data
       hash = {
         Vpc: network[:vpc],
-        ElbSubnets: network[:elb_subnets].join(','),
+        ElbSubnets: elb_subnets.join(','),
         EcsSubnets: network[:ecs_subnets].join(','),
 
         CreateElb: create_elb,
@@ -106,8 +110,8 @@ module Ufo
         EcsTaskDefinition: task_definition_arn,
       }
 
-      hash[:ElbSecurityGroups] = network[:elb_security_groups].join(',') if network[:elb_security_groups]
       hash[:EcsSecurityGroups] = network[:ecs_security_groups].join(',') if network[:ecs_security_groups]
+      hash[:ElbSecurityGroups] = network[:elb_security_groups].join(',') if network[:elb_security_groups]
 
       hash.map do |k,v|
         if v == :use_previous_value

@@ -1,13 +1,21 @@
 ---
 vpc: <%= @options[:vpc_id] %>
-elb_subnets: # at least 2 subnets required
+ecs_subnets: # required: at least 2 subnets
 <% @options[:elb_subnets].each do |subnet| -%>
   - <%= subnet %>
 <% end -%>
-ecs_subnets: # at least 2 subnets required
+elb_subnets: # defaults to same subnets as ecs_subnets
 <% @options[:elb_subnets].each do |subnet| -%>
   - <%= subnet %>
 <% end -%>
+
+# by ufo.
+# ecs_security_groups:
+#   - sg-bbb
+#   - sg-ccc
+# elb_security_groups:
+#   - sg-aaa
+
 # Optional additional existing security group ids to add on top of the ones created
 # by ufo.
 # elb_security_groups:
