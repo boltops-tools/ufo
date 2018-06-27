@@ -72,7 +72,21 @@ module Ufo
         end
       end
 
-      # transform keys: values
+      substitute_variables!(properties)
+
+      yaml = YAML.dump(properties)
+      # add spaces in front on each line
+      yaml.split("\n")[1..-1].map do |line|
+        "      #{line}"
+      end.join("\n") + "\n"
+    end
+
+    # Substitute special variables that cannot be baked into the template
+    # because they are dynamically assigned. Only one special variable:
+    #
+    #   {stack_name}
+    def substitute_variables!(properties)
+      # transform values and substitute for special values
       # https://stackoverflow.com/questions/34595142/process-nested-hash-to-convert-all-values-to-strings
       #
       # Examples:
@@ -85,12 +99,7 @@ module Ufo
           v
         end
       end
-
-      yaml = YAML.dump(properties)
-      # add spaces in front on each line
-      yaml.split("\n")[1..-1].map do |line|
-        "      #{line}"
-      end.join("\n") + "\n"
+      properties
     end
 
     def default_target_group_protocol
