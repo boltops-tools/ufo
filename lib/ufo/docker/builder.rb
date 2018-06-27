@@ -41,7 +41,8 @@ class Ufo::Docker
       end
 
       took = Time.now - start_time
-      say "Docker image #{full_image_name} built.  " + "Took #{pretty_time(took)}.".green
+      say "Docker image #{full_image_name} built.  "
+      say "Docker build took #{pretty_time(took)}.".green
     end
 
     def build_options

@@ -11,7 +11,7 @@ elb:
 # When using SSL with network elb, the target group protocol is usually http still
 # unless you also handle SSL termination at the app level.
 target_group:
-  port: 80 # not needed with ECS
+  port: 80 # only used with ECS if awsvpc mode
   # protocol: TCP # valid values - application elb: HTTP HTTPS, network elb: TCP
                   # ufo sets defaults in cloudformation template
                   #   application elb: HTTP

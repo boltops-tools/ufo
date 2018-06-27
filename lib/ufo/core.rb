@@ -35,6 +35,10 @@ module Ufo
     end
     memoize :env_extra
 
+    def pretty_service_name(service)
+      [service, Ufo.env_extra].reject {|x| x==''}.compact.join('-')
+    end
+
     def settings
       Setting.new.data
     end
@@ -42,10 +46,6 @@ module Ufo
 
     def cfn_profile
       settings[:cfn_profile] || "default"
-    end
-
-    def pretty_service_name(service)
-      [service, Ufo.env_extra].reject {|x| x==''}.compact.join('-')
     end
 
     def check_ufo_project!

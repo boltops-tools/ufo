@@ -51,6 +51,8 @@ module Ufo
 
       @stack ? perform(:update) : perform(:create)
 
+      stop_old_tasks if @options[:stop_old_task]
+
       return unless @options[:wait]
       status.wait
 

@@ -37,7 +37,7 @@ module Ufo
       option :target_group_prompt, type: :boolean, desc: "Enable Target Group ARN prompt", default: true
       option :wait, type: :boolean, desc: "Wait for deployment to complete", default: true
       option :pretty, type: :boolean, default: true, desc: "Pretty format the json for the task definitions"
-      option :stop_old_tasks, type: :boolean, default: false, desc: "Stop old tasks after waiting for deploying to complete"
+      option :stop_old_tasks, type: :boolean, default: false, desc: "Stop old tasks as part of deployment to speed it up"
       option :ecr_keep, type: :numeric, desc: "ECR specific cleanup of old images.  Specifies how many images to keep.  Only runs if the images are ECR images. Defaults keeps all images."
       # All elb options remember their 'state'
       option :elb, desc: "Decides to create elb, not create elb or use existing target group."
