@@ -52,6 +52,7 @@ module Ufo
       check_path = "#{Ufo.root}/.ufo/settings.yml"
       unless File.exist?(check_path)
         puts "ERROR: No settings file at #{check_path}.  Are you sure you are in a project with ufo setup?".colorize(:red)
+        puts "Current directory: #{Dir.pwd}"
         puts "If you want to set up ufo for this prjoect, please create a settings file via: ufo init"
         exit 1 unless ENV['TEST']
       end

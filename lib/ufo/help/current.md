@@ -8,6 +8,14 @@ The state information is written to `.ufo/current`.
 
 ## Examples
 
+### summary
+
+    ufo current --service hi-web --env-extra 1
+    ufo current --service hi-web --env-extra 1 --services hi-web hi-worker
+    ufo current --service hi-web --env-extra ''
+    ufo current --service hi-web
+    ufo current --env-extra '1'
+
 ### service
 
 To set current service:
