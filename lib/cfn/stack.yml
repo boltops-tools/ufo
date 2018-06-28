@@ -95,11 +95,7 @@ Resources:
       - - <%= @pretty_service_name %>
         - !Select [ 2, !Split [ '-', !GetAtt Elb.LoadBalancerName]]
 <% end -%>
-<% if @elb_type == "application" -%>
-      Protocol: HTTP
-<% else -%>
-      Protocol: TCP
-<% end -%>
+      Protocol: <%= @default_target_group_protocol %>
 <% if @container[:network_mode] == "awsvpc" -%>
       TargetType: ip
 <% end -%>
@@ -119,11 +115,7 @@ Resources:
         TargetGroupArn:
           !If [ElbTargetGroupIsBlank, !Ref TargetGroup, !Ref ElbTargetGroup]
       LoadBalancerArn: !Ref Elb
-<% if @elb_type == "application" -%>
-      Protocol: HTTP
-<% else -%>
-      Protocol: TCP
-<% end -%>
+      Protocol: <%= @default_listener_protocol %>
 <%= custom_properties(:Listener) %>
 
   ElbSecurityGroup:

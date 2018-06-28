@@ -23,7 +23,8 @@ target_group:
   # network elb support health_check_interval_seconds of 10 or 30
   # health_check_interval_seconds: 30
 
-  # health check settings are supported by application load balancer:
+  # health check settings are supported by application load balancer only:
+  # health_check_protocol: HTTP # HTTP or HTTPS
   # health_check_path: /
   # health_check_port: traffic-port
   # unhealthy_threshold_count: 10
@@ -31,7 +32,7 @@ target_group:
 # https://docs.aws.amazon.com/fr_fr/elasticloadbalancing/latest/APIReference/API_CreateListener.html
 #
 # If HTTPS and SSL is required this is where it would normally be set. Application ELBs
-# support SSL termination. Network laod balancers do not.
+# support SSL termination. Network load balancers do not.
 listener:
   port: 80 # required by ufo, used in cloudformation template
   # For Application Load Balancers, the supported protocols are HTTP and HTTPS. For Network Load Balancers, the supported protocol is TCP.
@@ -40,6 +41,7 @@ listener:
                   #   application elb: HTTP
                   #   network elb: TCP
                   # so we can keep this commented out, unless we need HTTPS at elb level
+  # certificates is required if using HTTPS protocol with application
   # certificates:
   # - certificate: arn:aws:acm:us-east-1:111111111111:certificate/11111111-2222-3333-4444-555555555555
 
