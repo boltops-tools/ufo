@@ -38,7 +38,7 @@ class Ufo::Upgrade
     def update_task_definitions
       text = <<-EOL
     # HINT: shows how Ufo.env_extra can to create different log groups
-    # awslogs_group: ["ecs/blaze-web", Ufo.env_extra].compact.join('-'),
+    # awslogs_group: ["ecs/TASK_DEFINITION_NAME", Ufo.env_extra].compact.join('-'),
 EOL
       insert_into_file ".ufo/task_definitions.rb", text, :before => /    awslogs_group:/
     end
@@ -60,6 +60,14 @@ EOL
 
     # remove the create_service and update_service sections
     def update_params_yaml
+      if File.exist?("#{Ufo.root}/.ufo/params.yml")
+        update_params_yaml_existing
+      else
+        update_params_yaml_new
+      end
+    end
+
+    def update_params_yaml_existing
       lines = IO.readlines("#{Ufo.root}/.ufo/params.yml")
       new_lines = []
 
@@ -88,6 +96,10 @@ EOL
 
 EOL
       insert_into_file ".ufo/params.yml", new_run_task, :before => "run_task:\n"
+    end
+
+    def update_params_yaml_new
+      template ".ufo/params.yml"
     end
 
     def remove?(line)

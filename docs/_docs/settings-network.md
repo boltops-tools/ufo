@@ -25,7 +25,7 @@ target_group:
   port: 80 # not needed with ECS
   target_group_attributes:
   - key: deregistration_delay.timeout_seconds
-    value: 0
+    value: 1
 listener:
   port: 80 # required by ufo, used in cloudformation template
 
@@ -45,7 +45,7 @@ target_group:
 ...
   target_group_attributes:
   - key: deregistration_delay.timeout_seconds
-    value: 0
+    value: 1
 ```
 
 That effectively will inject this code into the CloudFormation template and allows you to customize the resource properties for the TargetGroup.
@@ -53,7 +53,7 @@ That effectively will inject this code into the CloudFormation template and allo
 ```
   TargetGroupAttributes:
   - Key: deregistration_delay.timeout_seconds
-    Value: 0
+    Value: 1
 ```
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/params.md %}">Back</a>

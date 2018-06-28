@@ -2,19 +2,19 @@
 title: Quick Start
 ---
 
-In a hurry? No sweat! Here's a quick start to using ufo that takes only a few minutes. For this example, we will use a sinatra app from [tongueroo/hi](https://github.com/tongueroo/ufo).  The first `ufo init` command sets up the ufo directory structure in your project. The second `ufo ship` command deploys your code to an AWS ECS service.
+In a hurry? No sweat! Here's a quick start to using ufo that takes only a few minutes. For this example, we will use a sinatra app from [tongueroo/demo-ufo](https://github.com/tongueroo/demo-ufo).  The first `ufo init` command sets up the ufo directory structure in your project. The second `ufo ship` command deploys your code to an AWS ECS service.
 
 ```sh
 gem install ufo
-git clone https://github.com/tongueroo/hi.git
-cd hi
-ufo init --app=hi --image=tongueroo/hi
-ufo ship hi-web
+git clone https://github.com/tongueroo/demo-ufo.git
+cd demo-ufo
+ufo init --app=demo --image=tongueroo/demo-ufo
+ufo ship demo-web
 ```
 
 ## What Happened
 
-The `ufo ship hi-web` command does the following:
+The `ufo ship demo-web` command does the following:
 
 1. Builds the Docker image and pushes it to a registry
 2. Builds the ECS task definitions and registry them to ECS
@@ -23,7 +23,7 @@ The `ufo ship hi-web` command does the following:
 You should see something similar to this:
 
 ```
-$ ufo init --app=hi --image=tongueroo/hi
+$ ufo init --app=demo --image=tongueroo/demo-ufo
 Setting up ufo project...
       create  .env
       create  .ufo/settings.yml

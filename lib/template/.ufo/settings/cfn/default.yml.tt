@@ -19,7 +19,7 @@ target_group:
                   # so we can keep this commented out, unless we need HTTPS at the app level
   target_group_attributes:
   - key: deregistration_delay.timeout_seconds
-    value: 0
+    value: 1
   # network elb support health_check_interval_seconds of 10 or 30
   # health_check_interval_seconds: 30
 
