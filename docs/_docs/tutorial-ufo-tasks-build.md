@@ -39,7 +39,7 @@ The instance variable values are specified in `.ufo/task_definitions.rb` via a D
 **.ufo/task_definitions.rb**:
 
 ```
-task_definition "hi-web" do
+task_definition "demo-web" do
   source "main" # will use ufo/templates/main.json.erb
   variables(
     family: task_definition_name,
@@ -49,7 +49,7 @@ task_definition "hi-web" do
   )
 end
 
-task_definition "hi-worker" do
+task_definition "demo-worker" do
   source "main" # will use ufo/templates/main.json.erb
   variables(
     family: task_definition_name,
@@ -66,7 +66,7 @@ Ufo has a concept of shared variables, covered in [Shared Variables]({% link _do
 **.ufo/variables/base.rb**:
 
 ```ruby
-@image = helper.full_image_name # includes the git sha tongueroo/hi:ufo-[sha].
+@image = helper.full_image_name # includes the git sha tongueroo/demo-ufo:ufo-[sha].
 @cpu = 128
 @memory_reservation = 256
 @environment = helper.env_file(".env")
@@ -99,22 +99,22 @@ You should see output similar to below:
 $ ufo tasks build
 Building Task Definitions...
 Generating Task Definitions:
-  .ufo/output/hi-web.json
-  .ufo/output/hi-worker.json
-  .ufo/output/hi-clock.json
+  .ufo/output/demo-web.json
+  .ufo/output/demo-worker.json
+  .ufo/output/demo-clock.json
 Task Definitions built in .ufo/output
 $
 ```
 
-Let's take a look at one of the generated files: `.ufo/output/hi-web.json`.
+Let's take a look at one of the generated files: `.ufo/output/demo-web.json`.
 
 ```json
 {
-  "family": "hi-web",
+  "family": "demo-web",
   "containerDefinitions": [
     {
       "name": "web",
-      "image": "tongueroo/hi:ufo-2018-02-13T11-33-15-27aa242",
+      "image": "tongueroo/demo-ufo:ufo-2018-02-13T11-33-15-27aa242",
       "cpu": 192,
       "memoryReservation": 256,
       "portMappings": [
@@ -137,7 +137,7 @@ Let's take a look at one of the generated files: `.ufo/output/hi-web.json`.
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "ecs/hi-web",
+          "awslogs-group": "ecs/demo-web",
           "awslogs-region": "us-east-1",
           "awslogs-stream-prefix": "hi"
         }
@@ -159,9 +159,9 @@ ufo tasks register
 You should see something similar to this:
 
 ```sh
-hi-clock task definition registered.
-hi-web task definition registered.
-hi-worker task definition registered.
+demo-clock task definition registered.
+demo-web task definition registered.
+demo-worker task definition registered.
 ```
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/tutorial-ufo-docker-build.md %}">Back</a>
