@@ -87,6 +87,7 @@ We've been typing the `demo-web` service name explicitly.  We can set the curren
 
     ufo current --service demo-web
     ufo ship # now same as ufo ship demo-web
+    ufo ps # now same as ufo ps demo-web
 
 Congratulations 🎊 You have successfully built a Docker image, register it and deployed it to AWS ECS.
 
