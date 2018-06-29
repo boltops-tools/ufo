@@ -70,7 +70,7 @@ class Ufo::Stack
         fargate: fargate,
         network_mode: network_mode, # awsvpc, bridge, etc
       }
-      result[:port] if port
+      result[:port] = port if port
       result
     end
     memoize :container

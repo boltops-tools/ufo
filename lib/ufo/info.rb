@@ -51,7 +51,7 @@ module Ufo
       output = stack.outputs.find do |o|
         o.output_key == "Route53Dns"
       end
-      output.output_value
+      output.output_value if output
     end
 
     def stack_resources
