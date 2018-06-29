@@ -25,8 +25,7 @@ module Ufo
       ensure_cluster_exist
       success = deploy_stack
 
-      return if @options[:mute]
-
+      return if @options[:mute] || !@options[:wait]
       if success
         puts "Software shipped!"
       else

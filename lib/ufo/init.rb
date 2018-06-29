@@ -87,26 +87,29 @@ EOL
     def user_message
       puts "Starter ufo files created."
       puts <<-EOL
-#{"="*64}
 Congrats 🎉 You have successfully set up ufo for your project.
+#{"="*64}
 
-## Load Balancer Config
-
-Ufo creates load balancer a using a starter profile file has been generated at: .ufo/.balancer/profiles/default.yml  The ELB settings are defaults that can be adjusted.  For more information about how to configure ufo for load balancer create, refer to: http://ufoships.com/docs/load-balancers/
-
-To deploy to ECS:
-
-  ufo ship #{@app}-web
-
-## More customization
+## Task Definition Customizations
 
 If you need to customize the ECS task definition to configure things like memory and cpu allocation. You can do this by adjusting the files the .ufo/variables folder. These variables get applied to the .ufo/templates/main.json.erb task definition json that is passed to the ECS register task definition api.
 
 Some additional starter example roles for your apps were set up in in .ufo/task_definitions.rb.  Be sure to check it out and adjust it for your needs.
 
-This allows you to fully customize and control your environment to fit your application's needs.
+## Settings files
 
-More info: http://ufoships.com
+Additionally, ufo generated starter settings files at that further allow you to customize more settings.
+
+* .ufo/settings.yml: general settings.
+* .ufo/settings/cfn/default.yml: properties of CloudFormation resources that ufo creates.
+* .ufo/settings/network/default.yml: network settings.
+
+More more info refer to: http://ufoships.com/docs/settings/
+
+To deploy to ECS:
+
+  ufo ship #{@app}-web
+
 EOL
     end
   end

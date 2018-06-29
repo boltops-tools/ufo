@@ -82,6 +82,7 @@ module Ufo
     desc "ships [LIST_OF_SERVICES]", "Builds and ships same container image to multiple ECS services."
     long_desc Help.text(:ships)
     ship_options.call
+    option :wait, type: :boolean, desc: "Wait for deployment to complete", default: false
     def ships(*services)
       builder = build_docker
 

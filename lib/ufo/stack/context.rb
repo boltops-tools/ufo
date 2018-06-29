@@ -56,21 +56,22 @@ class Ufo::Stack
       task_definition = resp.task_definition
 
       container_def = task_definition["container_definitions"].first
-      mappings = container_def["port_mappings"]
-      if mappings
-        map = mappings.first
-        port = map["container_port"]
-      end
       requires_compatibilities = task_definition["requires_compatibilities"]
       fargate = requires_compatibilities && requires_compatibilities == ["FARGATE"]
       network_mode = task_definition["network_mode"]
 
-      {
+      mappings = container_def["port_mappings"] || []
+      unless mappings.empty?
+        port = mappings.first["container_port"]
+      end
+
+      result = {
         name: container_def["name"],
-        port: port,
         fargate: fargate,
         network_mode: network_mode, # awsvpc, bridge, etc
       }
+      result[:port] if port
+      result
     end
     memoize :container
 
@@ -118,7 +119,7 @@ class Ufo::Stack
 
       # default is to create the load balancer is if container name is web
       # and no --elb option is provided
-      create_elb = "true" if container[:name] == "web"
+      create_elb = container[:name] == "web" ? "true" : "false"
       elb_target_group = ""
       [create_elb, elb_target_group]
     end

@@ -171,16 +171,18 @@ Resources:
           AssignPublicIp: ENABLED # Works with fargate but doesnt seem to work with non-fargate
 <% end -%>
 <% end -%>
+      # Default to port 80 to get template to validate.  For worker processes
+      # there is no actual port used.
       LoadBalancers: !If
       - CreateTargetGroupIsTrue
       - - ContainerName: <%= @container[:name] %>
-          ContainerPort: <%= @container[:port] %>
+          ContainerPort: <%= @container[:port] || 80 %>
           TargetGroupArn: !Ref TargetGroup
       - !If
         - ElbTargetGroupIsBlank
         - []
         - - ContainerName: <%= @container[:name] %>
-            ContainerPort: <%= @container[:port] %>
+            ContainerPort: <%= @container[:port] || 80 %>
             TargetGroupArn: !Ref ElbTargetGroup
 <%= custom_properties(:Ecs) %>
 
