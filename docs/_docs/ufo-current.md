@@ -6,15 +6,15 @@ title: Ufo Current
 
 There's a handy way to shorten ufo commands by setting the current service.  Example:
 
-    ufo current --service hi-web
-    ufo ship hi-web # typical usage
-    ufo ship # does the same thing as ufo ship hi-web
+    ufo current --service demo-web
+    ufo ship demo-web # typical usage
+    ufo ship # does the same thing as ufo ship demo-web
 
 To view the current settings run `ufo current` with no options.
 
     $ ufo current
     Current env_extra: 1
-    Current service: hi-web
+    Current service: demo-web
 
 The current service helps shorten other commands also.
 
@@ -38,11 +38,11 @@ The UFO_ENV_EXTRA env variable allows you create multiple same services.  More i
 
 The `ufo ships` commands builds one Docker image and deploys them to multiple ECS services, so it usually takes a list of services like so:
 
-    ufo ships hi-web hi-worker hi-clock
+    ufo ships demo-web demo-worker demo-clock
 
 This can be shorten with with current also.
 
-    ufo current --services hi-web hi-worker hi-clock
+    ufo current --services demo-web demo-worker demo-clock
     ufo ships
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/params.md %}">Back</a>

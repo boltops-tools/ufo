@@ -15,8 +15,8 @@ Auto Completion examples:
 ```
 ufo [TAB]
 ufo ship [TAB]
-ufo ship hi-web [TAB]
-ufo ship hi-web --[TAB]
+ufo ship demo-web [TAB]
+ufo ship demo-web --[TAB]
 ufo ship --[TAB]
 ufo docker [TAB]
 ufo docker build [TAB]

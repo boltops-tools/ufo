@@ -12,11 +12,11 @@ dns:
 
 The `{stack_name}` variable gets substituted with the CloudFormation stack name launched by ufo. So for example:
 
-    ufo ship hi-web
+    ufo ship demo-web
 
 Results in this:
 
-    "{stack_name}.mydomain.com." => "development-hi-web.mydomain.com."
+    "{stack_name}.mydomain.com." => "development-demo-web.mydomain.com."
 
 **IMPORTANT**: The route53 host zone must already exist. You can create route53 hosted zone with the cli like so:
 

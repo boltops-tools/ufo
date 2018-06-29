@@ -1,8 +1,8 @@
 {
   "services": [
     {
-      "service_arn": "arn:aws:ecs:us-east-1:111111111111:service/dev-hi-web-Ecs-1HRL8Y9F4D1CR",
-      "service_name": "dev-hi-web-Ecs-1HRL8Y9F4D1CR",
+      "service_arn": "arn:aws:ecs:us-east-1:111111111111:service/dev-demo-web-Ecs-1HRL8Y9F4D1CR",
+      "service_name": "dev-demo-web-Ecs-1HRL8Y9F4D1CR",
       "cluster_arn": "arn:aws:ecs:us-east-1:111111111111:cluster/dev",
       "load_balancers": [
         {
@@ -19,7 +19,7 @@
       "running_count": 1,
       "pending_count": 0,
       "launch_type": "EC2",
-      "task_definition": "arn:aws:ecs:us-east-1:111111111111:task-definition/hi-web:280",
+      "task_definition": "arn:aws:ecs:us-east-1:111111111111:task-definition/demo-web:280",
       "deployment_configuration": {
         "maximum_percent": 200,
         "minimum_healthy_percent": 100
@@ -28,7 +28,7 @@
         {
           "id": "ecs-svc/9223370507252821574",
           "status": "PRIMARY",
-          "task_definition": "arn:aws:ecs:us-east-1:111111111111:task-definition/hi-web:280",
+          "task_definition": "arn:aws:ecs:us-east-1:111111111111:task-definition/demo-web:280",
           "desired_count": 1,
           "pending_count": 0,
           "running_count": 1,
@@ -54,17 +54,17 @@
         {
           "id": "573e2508-b665-455e-864c-b02b71dcfa1a",
           "created_at": "2018-06-21 10:27:03 -0700",
-          "message": "(service dev-hi-web-Ecs-1HRL8Y9F4D1CR) has reached a steady state."
+          "message": "(service dev-demo-web-Ecs-1HRL8Y9F4D1CR) has reached a steady state."
         },
         {
           "id": "24cef3d6-576e-4ca6-8a0e-3429c8b73a02",
           "created_at": "2018-06-21 10:26:51 -0700",
-          "message": "(service dev-hi-web-Ecs-1HRL8Y9F4D1CR) registered 1 targets in (target-group arn:aws:elasticloadbalancing:us-east-1:111111111111:targetgroup/dev-h-Targe-DXCJGJW781GA/42c901a93aa1f13f)"
+          "message": "(service dev-demo-web-Ecs-1HRL8Y9F4D1CR) registered 1 targets in (target-group arn:aws:elasticloadbalancing:us-east-1:111111111111:targetgroup/dev-h-Targe-DXCJGJW781GA/42c901a93aa1f13f)"
         },
         {
           "id": "ae89fcde-f45e-4ce3-ab1a-2eea1b5898a5",
           "created_at": "2018-06-21 10:25:58 -0700",
-          "message": "(service dev-hi-web-Ecs-1HRL8Y9F4D1CR) has started 1 tasks: (task 0becf9af-e709-4bfe-bbfd-fa7f5c8e15d5)."
+          "message": "(service dev-demo-web-Ecs-1HRL8Y9F4D1CR) has started 1 tasks: (task 0becf9af-e709-4bfe-bbfd-fa7f5c8e15d5)."
         }
       ],
       "created_at": "2018-06-21 10:25:54 -0700",

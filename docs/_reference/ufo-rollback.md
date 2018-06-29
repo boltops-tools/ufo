@@ -15,8 +15,8 @@ Rolls back to older task definition.
 
 You only need to specific the task definition version number, though you can specify the name also
 
-    ufo rollback hi-web 1
-    ufo rollback hi-web hi-web:1
+    ufo rollback demo-web 1
+    ufo rollback demo-web demo-web:1
 
 To see recent task definitions:
 
@@ -24,7 +24,7 @@ To see recent task definitions:
 
 If you set a current service with `ufo current`, then the commands get shorten:
 
-    ufo rollback hi-web:1
+    ufo rollback demo-web:1
     ufo rollback 1
 
 Note, task definitions get created by many ways with more than just `ufo ship`. So it the previous version might not be the latest version number minus one.
@@ -51,9 +51,9 @@ You only need to specify enough for a match to be found.  Ufo searches the 30 mo
 ## Options
 
 ```
-[--verbose], [--no-verbose]  
-[--mute], [--no-mute]        
-[--noop], [--no-noop]        
+[--verbose], [--no-verbose]
+[--mute], [--no-mute]
+[--noop], [--no-noop]
 [--cluster=CLUSTER]          # Cluster.  Overrides .ufo/settings.yml.
 ```
 

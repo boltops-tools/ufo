@@ -15,14 +15,14 @@ The `UFO_ENV` can be set in several ways:
 ## At the CLI Command
 
 ```sh
-ufo ship hi-web --cluster production
+ufo ship demo-web --cluster production
 ```
 
 ## As an environment variable
 
 ```sh
 export UFO_ENV=production
-ufo ship hi-web
+ufo ship demo-web
 ```
 
 Most people will set `UFO_ENV` in their `~/.profile`.

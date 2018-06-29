@@ -19,15 +19,15 @@ The main command you use when using ufo is: `ufo ship`.  This command:
 
 Basic usage is:
 
-    ufo ship hi-web
+    ufo ship demo-web
 
 The ECS service gets created if the service does not yet exist on the cluster.
 
 ### Conventions
 
-By convention the task and service names match. If you need override to this convention then you can specific the task.  For example if you want to ship to the `hi-web-1` service and use the `hi-web` task, run:
+By convention the task and service names match. If you need override to this convention then you can specific the task.  For example if you want to ship to the `demo-web-1` service and use the `demo-web` task, run:
 
-    ufo ship hi-web-1 --task hi-web
+    ufo ship demo-web-1 --task demo-web
 
 ## Options in Detail
 
@@ -47,19 +47,19 @@ ECS services can be associated with a Load Balancer upon creation. Ufo can autom
 
 Here are examples for each of them:
 
-    ufo ship hi-web --elb=true
+    ufo ship demo-web --elb=true
 
     # Use existing target group from pre-created ELB:
-    ufo ship hi-web --elb=arn:aws:elasticloadbalancing:us-east-1:123456789:targetgroup/target-name/2378947392743
+    ufo ship demo-web --elb=arn:aws:elasticloadbalancing:us-east-1:123456789:targetgroup/target-name/2378947392743
 
     # Disable creating elb and prompt:
-    ufo ship hi-web --elb=false
+    ufo ship demo-web --elb=false
 
 Note, if the docker container's name is web then the `--elb` flag defaults to true automatically.
 
 If you need to create a network load balancer with pre-allocated EIPs, you can use `--elb-eip-ids`, example:
 
-    ufo deploy hi-web --elb-eip-ids eipalloc-a8de9ca0 eipalloc-a8de9ca0
+    ufo deploy demo-web --elb-eip-ids eipalloc-a8de9ca0 eipalloc-a8de9ca0
 
 More info available at the [load balancer docs](http://ufoships.com/docs/load-balancer/).
 
@@ -71,13 +71,13 @@ Let's you want skip the docker build phase and only want use ufo to deploy a tas
 
 By default when ufo updates the ECS service with the new task definition it does so asynchronuously. You then normally visit the ECS service console and then refresh until you see that the deployment is completed.  You can also have ufo poll and wait for the deployment to be done with the `--wait` option
 
-    ufo ship hi-web --wait
+    ufo ship demo-web --wait
 
 You should see output similar to this:
 
-    Shipping hi-web...
-    hi-web service updated on cluster with task hi-web
-    Waiting for deployment of task definition hi-web:8 to complete
+    Shipping demo-web...
+    demo-web service updated on cluster with task demo-web
+    Waiting for deployment of task definition demo-web:8 to complete
     ......
     Time waiting for ECS deployment: 31s.
     Software shipped!
@@ -96,7 +96,7 @@ Refer to [Route53 Support](http://ufoships.com/docs/route53-support/) for more i
 
 Since ufo builds the Docker image every time there's a deployment you will end up with a long list of docker images.  Ufo automatically cleans up older docker images at the end of the deploy process if you are using AWS ECR.  By default ufo keeps the most recent 30 Docker images. This can be adjust with the `--ecr-keep` option.
 
-    docker ship hi-web --ecr-keep 2
+    docker ship demo-web --ecr-keep 2
 
 You should see something like this:
 
@@ -122,9 +122,9 @@ If you are using DockerHub or another registry, ufo does not automatically clean
 [--elb=ELB]                                          # Decides to create elb, not create elb or use existing target group.
 [--elb-type=ELB_TYPE]                                # ELB type: application or network. Keep current deployed elb type when not specified.
 [--elb-eip-ids=one two three]                        # EIP Allocation ids to use for network load balancer.
-[--verbose], [--no-verbose]                          
-[--mute], [--no-mute]                                
-[--noop], [--no-noop]                                
+[--verbose], [--no-verbose]
+[--mute], [--no-mute]
+[--noop], [--no-noop]
 [--cluster=CLUSTER]                                  # Cluster.  Overrides .ufo/settings.yml.
 ```
 

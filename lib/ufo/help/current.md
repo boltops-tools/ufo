@@ -1,7 +1,7 @@
 Sets a current service to remember so you do not have to provide the service name all the time.  This shortens the commands
 
-    ufo ship hi-web # before
-    ufo current --service hi-web
+    ufo ship demo-web # before
+    ufo current --service demo-web
     ufo ship # after
 
 The state information is written to `.ufo/current`.
@@ -10,24 +10,24 @@ The state information is written to `.ufo/current`.
 
 ### summary
 
-    ufo current --service hi-web --env-extra 1
-    ufo current --service hi-web --env-extra 1 --services hi-web hi-worker
-    ufo current --service hi-web --env-extra ''
-    ufo current --service hi-web
+    ufo current --service demo-web --env-extra 1
+    ufo current --service demo-web --env-extra 1 --services demo-web demo-worker
+    ufo current --service demo-web --env-extra ''
+    ufo current --service demo-web
     ufo current --env-extra '1'
 
 ### service
 
 To set current service:
 
-    ufo current --service hi-web
-    ufo current --service hi-worker
+    ufo current --service demo-web
+    ufo current --service demo-worker
     ufo current --service demo-web
 
 To view current service, run `ufo current` without any arguments.
 
     $ ufo current
-    Current service: hi-web
+    Current service: demo-web
 
 To remove current service:
 
@@ -42,7 +42,7 @@ To also set a current `UFO_ENV_EXTRA`.
 The extra env setting will be reflected:
 
     $ ufo current
-    Current service: hi-web
+    Current service: demo-web
     Current env_extra: 1
 
 The `UFO_ENV_EXTRA` variable takes higher precedence than the current setting in the saved file.
@@ -55,8 +55,8 @@ To unset:
 
 The ufo ships command builds one docker image and deploys it to multiple ECS services. You can also have ufo remember what services to use with the current command.
 
-    ufo current --services hi-web hi-worker
-    ufo ships # will depoy to both hi-web and hi-worker
+    ufo current --services demo-web demo-worker
+    ufo ships # will depoy to both demo-web and demo-worker
 
 ### rm all
 

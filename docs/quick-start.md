@@ -36,7 +36,7 @@ Setting up ufo project...
       create  bin/deploy
       append  .gitignore
 Starter ufo files created.
-$ ufo ship hi-web
+$ ufo ship demo-web
 Building docker image with:
   docker build -t tongueroo/hi:ufo-2017-09-10T15-00-19-c781aaf -f Dockerfile .
 ....

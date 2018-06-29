@@ -20,7 +20,7 @@ module Ufo
       @options = options
     end
 
-    # aws ecs register-task-definition --cli-input-json file://.ufo/output/hi-web-prod.json
+    # aws ecs register-task-definition --cli-input-json file://.ufo/output/demo-web-prod.json
     def register
       data = JSON.parse(IO.read(@template_definition_path))
       data = rubyize_format(data)

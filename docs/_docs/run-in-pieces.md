@@ -27,7 +27,7 @@ ufo tasks register # registers all genreated task definitions .ufo/output to ECS
 Update the service with the task definitions in `.ufo/output` untouched.
 
 ```bash
-ufo deploy hi-web
+ufo deploy demo-web
 ```
 
 Note if you use the `ufo deploy` you should ensure that you have already pushed the docker image to your docker registry.  Or else the task will not be able to spin up because the docker image does not exist.  This is one of the reasons it is recommended that you use `ufo ship`.

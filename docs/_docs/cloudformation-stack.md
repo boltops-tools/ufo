@@ -10,9 +10,9 @@ The CloudFormation stack name is based on the cluster, service name and UFO_ENV_
 
 Command | Stack Name
 --- | ---
-ufo ship hi-web | development-hi-web
-ufo ship hi-web --cluster dev | dev-hi-web
-UFO_ENV_EXTRA=2 ufo ship hi-web --cluster dev | dev-hi-web-2
+ufo ship demo-web | development-demo-web
+ufo ship demo-web --cluster dev | dev-demo-web
+UFO_ENV_EXTRA=2 ufo ship demo-web --cluster dev | dev-demo-web-2
 
 ## CloudFormation Stack Source Code
 

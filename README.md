@@ -33,16 +33,16 @@ Full installation instructions are at [Install Ufo](http://ufoships.com/docs/ins
 To quickly demonstrate how simple it is to use ufo we will use an example app from [tongueroo/hi](https://github.com/tongueroo/ufo).  The app is a barebones sinatra app.  Here are the steps:
 
     gem install ufo
-    git clone https:///github.com/tongueroo/hi.git
-    cd hi
-    ufo init --app=hi --image=tongueroo/hi
-    ufo ship hi-web
+    git clone https:///github.com/tongueroo/demo-ufo.git demo
+    cd demo
+    ufo init --app=demo --image=tongueroo/demo-ufo
+    ufo ship demo-web
 
 Congratulations, you have successfully used ufo to deploy to an ECS service.
 
 ## Load Balancer Support
 
-Ufo can also create a load balancer as part of creating the ECS service if you wish. Underneath the hood, ufo uses the [balancer](https://github.com/tongueroo/balancer) gem, to create the load balancer.  More information can be found at the [load balancer support docs](http://ufoships.com/docs/load-balancer/).
+Ufo can also create a load balancer as part of creating the ECS service if you wish. Underneath the hood, ufo uses CloudFormation to create the load balancer.  More information can be found at the [load balancer support docs](http://ufoships.com/docs/load-balancer/).
 
 ## Articles
 

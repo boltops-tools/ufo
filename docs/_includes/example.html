@@ -2,14 +2,14 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-12 text-center">
-        <h2>Example: ufo ship hi-web</h2>
+        <h2>Example: ufo ship demo-web</h2>
         <hr class="star-primary">
       </div>
     </div>
     <div class='row'>
       <div class='col-md-offset-1 col-md-10'>
 {% highlight sh %}
-$ ufo ship hi-web
+$ ufo ship demo-web
 Building docker image with:
   docker build -t tongueroo/hi:ufo-2017-06-11T19-43-19-bc80e84 -f Dockerfile .
 Sending build context to Docker daemon 719.4 kB
@@ -62,13 +62,13 @@ ufo-2017-06-11T19-43-19-bc80e84: digest: sha256:6381ff8d4413edf0c13926def1d55d0f
 Pushed tongueroo/hi:ufo-2017-06-11T19-43-19-bc80e84 docker image. Took 10s.
 Building Task Definitions...
 Generating Task Definitions:
-  ufo/output/hi-web.json
-  ufo/output/hi-worker.json
-  ufo/output/hi-clock.json
+  ufo/output/demo-web.json
+  ufo/output/demo-worker.json
+  ufo/output/demo-clock.json
 Task Definitions built in ufo/output.
-hi-web task definition registered.
-Shipping hi-web...
-hi-web service updated on stag cluster with task hi-web
+demo-web task definition registered.
+Shipping demo-web...
+demo-web service updated on stag cluster with task demo-web
 Software shipped!
 Cleaning up docker images...
 Running: docker rmi tongueroo/hi:ufo-2017-06-11T11-37-00-bc80e84

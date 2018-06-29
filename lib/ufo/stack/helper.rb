@@ -8,7 +8,7 @@ class Ufo::Stack
       resp = cloudformation.describe_stacks(stack_name: stack_name)
       resp.stacks.first
     rescue Aws::CloudFormation::Errors::ValidationError => e
-      # example: Stack with id hi-web does not exist
+      # example: Stack with id demo-web does not exist
       if e.message =~ /Stack with/ && e.message =~ /does not exist/
         nil
       else

@@ -90,8 +90,8 @@ module Ufo
       # https://stackoverflow.com/questions/34595142/process-nested-hash-to-convert-all-values-to-strings
       #
       # Examples:
-      #   "{stack_name}.stag.boltops.com." => development-hi-web.stag.boltops.com.
-      #   "{stack_name}.stag.boltops.com." => dev-hi-web-2.stag.boltops.com.
+      #   "{stack_name}.stag.boltops.com." => development-demo-web.stag.boltops.com.
+      #   "{stack_name}.stag.boltops.com." => dev-demo-web-2.stag.boltops.com.
       properties.deep_merge(properties) do |_,_,v|
         if v.is_a?(String)
           v.sub!('{stack_name}', @stack_name) # unsure why need shebang, but it works

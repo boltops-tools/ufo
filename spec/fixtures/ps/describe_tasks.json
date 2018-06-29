@@ -3,7 +3,7 @@
     {
       "task_arn": "arn:aws:ecs:us-east-1:111111111111:task/f39dcfd4-06ec-4cce-9824-58c23654b3f3",
       "cluster_arn": "arn:aws:ecs:us-east-1:111111111111:cluster/dev",
-      "task_definition_arn": "arn:aws:ecs:us-east-1:111111111111:task-definition/hi-web:259",
+      "task_definition_arn": "arn:aws:ecs:us-east-1:111111111111:task-definition/demo-web:259",
       "container_instance_arn": "arn:aws:ecs:us-east-1:111111111111:container-instance/79529589-9d86-40c2-a205-b49ff88da5cc",
       "overrides": {
         "container_overrides": [
@@ -44,7 +44,7 @@
       "pull_stopped_at": "2018-06-20 15:24:10 -0700",
       "created_at": "2018-06-20 15:24:09 -0700",
       "started_at": "2018-06-20 15:24:11 -0700",
-      "group": "service:dev-hi-web-Ecs-995XN7V9819R",
+      "group": "service:dev-demo-web-Ecs-995XN7V9819R",
       "launch_type": "EC2",
       "attachments": [
 

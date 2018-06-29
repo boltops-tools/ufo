@@ -15,10 +15,10 @@ Displays information about the service.
 
 ## Examples
 
-    $ ufo resources hi-web
+    $ ufo resources demo-web
     Resources:
     Ecs - AWS::ECS::Service:
-      arn:aws:ecs:us-east-1:111111111111:service/dev-hi-web-Ecs-KN8OVQ7L2N40
+      arn:aws:ecs:us-east-1:111111111111:service/dev-demo-web-Ecs-KN8OVQ7L2N40
     EcsCrossSecurityGroupRule - AWS::EC2::SecurityGroupIngress:
       EcsCrossSecurityGroupRule
     EcsSecurityGroup - AWS::EC2::SecurityGroup:
@@ -36,9 +36,9 @@ Displays information about the service.
 ## Options
 
 ```
-[--verbose], [--no-verbose]  
-[--mute], [--no-mute]        
-[--noop], [--no-noop]        
+[--verbose], [--no-verbose]
+[--mute], [--no-mute]
+[--noop], [--no-noop]
 [--cluster=CLUSTER]          # Cluster.  Overrides .ufo/settings.yml.
 ```
 

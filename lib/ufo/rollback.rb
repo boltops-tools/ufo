@@ -9,8 +9,8 @@ module Ufo
 
     # normalizes the task definition
     # if user passes in:
-    #    1 => hi-web:1
-    #    hi-web:1 => hi-web:1
+    #    1 => demo-web:1
+    #    demo-web:1 => demo-web:1
     def normalize_version(version)
       if version =~ /^\d+$/
         "#{@service}:#{version}"

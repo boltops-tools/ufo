@@ -11,18 +11,18 @@ reference: true
 
 Deploy task definition to ECS service without re-building the definition.
 
-It is useful to sometimes deploy only the task definition without re-building it.  Say for example, you are debugging the task definition and just want to directly edit the `.ufo/output/hi-web.json` definition. You can accomplish this with the `ufo deploy` command.  The `ufo deploy` command will deploy the task definition in `.ufo/output` unmodified.  Example:
+It is useful to sometimes deploy only the task definition without re-building it.  Say for example, you are debugging the task definition and just want to directly edit the `.ufo/output/demo-web.json` definition. You can accomplish this with the `ufo deploy` command.  The `ufo deploy` command will deploy the task definition in `.ufo/output` unmodified.  Example:
 
-    ufo deploy hi-web
+    ufo deploy demo-web
 
 The above command does the following:
 
-1. register the `.ufo/output/hi-web.json` task definition to ECS untouched.
+1. register the `.ufo/output/demo-web.json` task definition to ECS untouched.
 2. deploys it to ECS by updating the service
 
 ### ufo tasks build
 
-To regenerate a `.ufo/output/hi-web.json` definition:
+To regenerate a `.ufo/output/demo-web.json` definition:
 
     ufo tasks build
 
@@ -55,9 +55,9 @@ The `ufo ships`, `ufo ship`, `ufo deploy` command support the same options. The 
 [--elb=ELB]                                          # Decides to create elb, not create elb or use existing target group.
 [--elb-type=ELB_TYPE]                                # ELB type: application or network. Keep current deployed elb type when not specified.
 [--elb-eip-ids=one two three]                        # EIP Allocation ids to use for network load balancer.
-[--verbose], [--no-verbose]                          
-[--mute], [--no-mute]                                
-[--noop], [--no-noop]                                
+[--verbose], [--no-verbose]
+[--mute], [--no-mute]
+[--noop], [--no-noop]
 [--cluster=CLUSTER]                                  # Cluster.  Overrides .ufo/settings.yml.
 ```
 

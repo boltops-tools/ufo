@@ -7,5 +7,5 @@ This command lists ECS services for an ECS cluster. It includes ECS services tha
     +-------------------------------------+-----------------+---------+-------------+-----+------+
     |            Service Name             | Task Definition | Running | Launch type | Dns | Ufo? |
     +-------------------------------------+-----------------+---------+-------------+-----+------+
-    | dev-hi-web-Ecs-3JCJA3QFYK1 (hi-web) | hi-web:286      | 8       | EC2         |     | yes  |
+    | dev-demo-web-Ecs-3JCJA3QFYK1 (demo-web) | demo-web:286      | 8       | EC2         |     | yes  |
     +-------------------------------------+-----------------+---------+-------------+-----+------+

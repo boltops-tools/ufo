@@ -9,7 +9,7 @@ describe Ufo::Ship do
       stop_old_tasks: false,
     }
   end
-  let(:service) { "hi-web-prod" }
+  let(:service) { "demo-web-prod" }
   let(:task_definition) { service }
   let(:ship) do
     ship = Ufo::Ship.new(service, task_definition, options)
@@ -17,7 +17,7 @@ describe Ufo::Ship do
     ship
   end
 
-  context "hi-web-prod service" do
+  context "demo-web-prod service" do
     it "should create or update service" do
       allow(ship).to receive(:process_deployment)
 
@@ -39,7 +39,7 @@ describe Ufo::Ship do
 
     context "1 services found" do
       it "should call update service" do
-        allow(ship).to receive(:find_ecs_service).and_return(ecs_service("hi-web-prod"))
+        allow(ship).to receive(:find_ecs_service).and_return(ecs_service("demo-web-prod"))
         allow(ship).to receive(:update_service)
 
         ship.deploy
