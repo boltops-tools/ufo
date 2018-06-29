@@ -4,7 +4,7 @@ ecs_subnets: # required: at least 2 subnets
 <% @options[:ecs_subnets].each do |subnet| -%>
   - <%= subnet %>
 <% end -%>
-elb_subnets: # defaults to same subnets as ecs_subnets
+elb_subnets: # defaults to same subnets as ecs_subnets when not set
 <% @options[:elb_subnets].each do |subnet| -%>
   - <%= subnet %>
 <% end -%>

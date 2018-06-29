@@ -2,14 +2,17 @@
 title: Settings Network
 ---
 
-The settings.yml file references a network settings file. A `.ufo/settings/network/default.yml` is generated for when you run `ufo init`.  This file generally has configurations that are more related to network components.  The source code for the starter template file is at (lib/template/.ufo/settings/network/default.yml.tt)[https://github.com/tongueroo/ufo/blob/master/lib/template/.ufo/settings/network/default.yml.tt]  Here's an example of a network settings file.
+The settings.yml file references a network settings file with the `network_profile` option. This file has configurations that are related to the network.  The source code for the starter template file is at [network/default.yml.tt](https://github.com/tongueroo/ufo/blob/master/lib/template/.ufo/settings/network/default.yml.tt)  Here's an example network settings file.
 
 ```
 ---
-subnets: # at least 2 subnets required
-  - subnet-77d3bf3d
-  - subnet-b0c0298e
-vpc: vpc-a6f716dc
+vpc: vpc-11111111
+ecs_subnets: # at least 2 subnets required
+  - subnet-11111111
+  - subnet-22222222
+elb_subnets: # defaults to same subnets as ecs_subnets when not set
+  - subnet-33333333
+  - subnet-44444444
 
 # Optional additional existing security group ids to add on top of the ones created
 # by ufo.
@@ -17,44 +20,15 @@ vpc: vpc-a6f716dc
 #   - sg-aaa
 # ecs_security_groups:
 #   - sg-bbb
-
-elb:
-  scheme: internet-facing
-
-target_group:
-  port: 80 # not needed with ECS
-  target_group_attributes:
-  - key: deregistration_delay.timeout_seconds
-    value: 1
-listener:
-  port: 80 # required by ufo, used in cloudformation template
-
-dns:
-  name: "{stack_name}.stag.boltops.com."
-  hosted_zone_name: stag.boltops.com. # dont forget the trailing period
 ```
 
-The subnets and vpc configs are used for network components like the ELB and subnets is used for ECS tasks.
-
-## Customizing Resources
-
-Some of the properties in this file map directly to CloudFormation resources and allows you to customize the resources.  The settings properties will transform the underscore keys to CamelCase keys which CloudFormation works with.  Notice the `target_group_attributes` property above.
-
-```
-target_group:
-...
-  target_group_attributes:
-  - key: deregistration_delay.timeout_seconds
-    value: 1
-```
-
-That effectively will inject this code into the CloudFormation template and allows you to customize the resource properties for the TargetGroup.
-
-```
-  TargetGroupAttributes:
-  - Key: deregistration_delay.timeout_seconds
-    Value: 1
-```
+Option | Description
+--- | ---
+vpc | Used to create ecs and elb security groups, target group in the CloudFormation template.
+ecs_subnets | Used to assign assign a subnet mapping to the ECS service created in CloudFormation when the network mode is awsvpc. Also used to in .ufo/params.yml as part of the run_task api call that is made by `ufo task`.
+elb_subnets | Used to create elb load balancer.
+ecs_security_groups | Addiitonal security groups to associate with the ECS tasks.
+ecs_security_groups | Addiitonal security groups to associate with the ELB.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/params.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/variables.md %}">Next Step</a>

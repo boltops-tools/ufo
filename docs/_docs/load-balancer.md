@@ -4,13 +4,13 @@ title: Load Balancer Support
 
 ECS services can be associated with a Load Balancer upon creation. Ufo can automatically create a load balancer.  The options:
 
-1. Automatically create the ELB.
-2. Provide a target group from an existing ELB.
-3. No ELB is created.
+1. Create an ELB.
+2. Use existing ELB by providing a target group arn.
+3. Do not create an ELB.
 
 ## Examples
 
-Here are examples for each of them:
+Here are examples of each of them:
 
     ufo ship hi-web --elb=true
 
