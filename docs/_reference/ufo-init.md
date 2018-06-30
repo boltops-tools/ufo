@@ -11,7 +11,10 @@ reference: true
 
 Set up initial ufo files.
 
-The `ufo init` command provides a way to quickly setup a project to be ufo ready. It creates a ufo folder with all the starter supporting files in order to use ufo.  This page demonstrates how to use `ufo init`.  The command requires these options: `--app` and `--image`.
+The `ufo init` command provides a way to quickly setup a project to be ufo ready. It creates a ufo folder with all the starter supporting files in order to use ufo.  This page demonstrates how to use `ufo init`.  The command requires the `--image` option.  If the `--app` option is not provided, then it is inferred and set as the parent folder name. Example:
+
+    cd demo
+    ufo init --image tongueroo/demo-ufo # same as --app demo
 
 ## Examples
 
@@ -50,13 +53,6 @@ The `image` is the base portion of image name that will be pushed to the docker 
 The generated `tongueroo/demo-ufo:ufo-2018-02-08T21-04-02-3c86158` image name gets pushed to the docker registry.
 
 The `--vpc-id` option is optional but very useful. If not specified then ufo will use the default vpc for the network settings like subnets and security groups, which might not be what you want.
-
-## Inferred App Name
-
-The `--app` option is inferred and set as the parent folder name.  So if the folder is named demo, then the app is set as demo.
-
-    cd demo
-    ufo init --image tongueroo/demo-ufo # same as --app demo
 
 ## Directory Structure
 
