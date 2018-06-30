@@ -114,12 +114,13 @@ Let's take a look at one of the generated files: `.ufo/output/demo-web.json`.
   "containerDefinitions": [
     {
       "name": "web",
-      "image": "tongueroo/demo-ufo:ufo-2018-02-13T11-33-15-27aa242",
-      "cpu": 192,
-      "memoryReservation": 256,
+      "image": "tongueroo/demo-ufo:ufo-2018-06-29T23-20-47-20b3a10",
+      "cpu": 256,
+      "memory": 512,
+      "memoryReservation": 512,
       "portMappings": [
         {
-          "containerPort": "3000",
+          "containerPort": 4567,
           "protocol": "tcp"
         }
       ],
@@ -139,7 +140,7 @@ Let's take a look at one of the generated files: `.ufo/output/demo-web.json`.
         "options": {
           "awslogs-group": "ecs/demo-web",
           "awslogs-region": "us-east-1",
-          "awslogs-stream-prefix": "hi"
+          "awslogs-stream-prefix": "demo"
         }
       },
       "essential": true
@@ -159,9 +160,17 @@ ufo tasks register
 You should see something similar to this:
 
 ```sh
-demo-clock task definition registered.
+$ ufo tasks register
+Equivalent aws cli command:
+  aws ecs register-task-definition --cli-input-json file://.ufo/output/demo-web.json
 demo-web task definition registered.
+Equivalent aws cli command:
+  aws ecs register-task-definition --cli-input-json file://.ufo/output/demo-clock.json
+demo-clock task definition registered.
+Equivalent aws cli command:
+  aws ecs register-task-definition --cli-input-json file://.ufo/output/demo-worker.json
 demo-worker task definition registered.
+$
 ```
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/tutorial-ufo-docker-build.md %}">Back</a>

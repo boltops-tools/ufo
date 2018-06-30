@@ -14,8 +14,7 @@ elb_subnets: # defaults to same subnets as ecs_subnets when not set
   - subnet-33333333
   - subnet-44444444
 
-# Optional additional existing security group ids to add on top of the ones created
-# by ufo.
+# Optional existing security group ids to add in addition to the ones created by ufo.
 # elb_security_groups:
 #   - sg-aaa
 # ecs_security_groups:
@@ -25,10 +24,10 @@ elb_subnets: # defaults to same subnets as ecs_subnets when not set
 Option | Description
 --- | ---
 vpc | Used to create ecs and elb security groups, target group in the CloudFormation template.
-ecs_subnets | Used to assign assign a subnet mapping to the ECS service created in CloudFormation when the network mode is awsvpc. Also used to in .ufo/params.yml as part of the run_task api call that is made by `ufo task`.
+ecs_subnets | Used to assign a subnet mapping to the ECS service created in CloudFormation when the network mode is awsvpc. Also used to in .ufo/params.yml as part of the run_task api call that is made by `ufo task`.
 elb_subnets | Used to create elb load balancer.
-ecs_security_groups | Addiitonal security groups to associate with the ECS tasks.
-ecs_security_groups | Addiitonal security groups to associate with the ELB.
+ecs_security_groups | Additional security groups to associate with the ECS tasks.
+elb_security_groups | Additional security groups to associate with the ELB.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/settings.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/settings-cfn.md %}">Next Step</a>

@@ -2,14 +2,17 @@
 title: Quick Start
 ---
 
-In a hurry? No sweat! Here's a quick start to using ufo that takes only a few minutes. For this example, we will use a sinatra app from [tongueroo/demo-ufo](https://github.com/tongueroo/demo-ufo).  The first `ufo init` command sets up the ufo directory structure in your project. The second `ufo ship` command deploys your code to an AWS ECS service.
+In a hurry? No sweat! Here's a quick start to using ufo that takes only a few minutes. For this example, we will use a sinatra app from [tongueroo/demo-ufo](https://github.com/tongueroo/demo-ufo).  The `ufo init` command sets up the ufo directory structure in your project. The `ufo ship` command deploys your code to an AWS ECS service.  The `ufo ps` and `ufo scale` command shows you how to verify and scale additional containers.
 
 ```sh
 gem install ufo
 git clone https://github.com/tongueroo/demo-ufo.git
 cd demo-ufo
 ufo init --app=demo --image=tongueroo/demo-ufo
-ufo ship demo-web
+ufo current demo-web
+ufo ship
+ufo ps
+ufo scale 2
 ```
 
 ## What Happened
@@ -41,8 +44,17 @@ Building docker image with:
   docker build -t tongueroo/demo-ufo:ufo-2017-09-10T15-00-19-c781aaf -f Dockerfile .
 ....
 Software shipped!
+$ ufo ps
++----------+------+-------------+---------------+---------+-------+
+|    Id    | Name |   Release   |    Started    | Status  | Notes |
++----------+------+-------------+---------------+---------+-------+
+| f590ee5e | web  | demo-web:85 | 1 minutes ago | RUNNING |       |
++----------+------+-------------+---------------+---------+-------+
+$ ufo scale 2
+Scale demo-web service in development cluster to 2
 $
 ```
+
 Congratulations! You have successfully deployed code to AWS ECS with ufo. It was really that simple 😁
 
 Note: This quick start does require that you have a docker working on your environment.  For docker installation instructions refer to to the official [docker installation guide](https://docs.docker.com/engine/installation/).

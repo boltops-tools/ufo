@@ -16,12 +16,13 @@ This command lists ECS services for an ECS cluster. It includes ECS services tha
 ## Examples
 
     $ ufo apps
-    Listing ECS services in the dev cluster.
-    +-------------------------------------+-----------------+---------+-------------+-----+------+
-    |            Service Name             | Task Definition | Running | Launch type | Dns | Ufo? |
-    +-------------------------------------+-----------------+---------+-------------+-----+------+
-    | dev-demo-web-Ecs-3JCJA3QFYK1 (demo-web) | demo-web:286      | 8       | EC2         |     | yes  |
-    +-------------------------------------+-----------------+---------+-------------+-----+------+
+    Listing ECS services in the development cluster.
+    +--------------------------------------------------+-----------------+---------+-------------+------+
+    |                   Service Name                   | Task Definition | Running | Launch type | Ufo? |
+    +--------------------------------------------------+-----------------+---------+-------------+------+
+    | development-demo-web-Ecs-7GAUAXH5F56M (demo-web) | demo-web:85     | 2       | FARGATE     | yes  |
+    +--------------------------------------------------+-----------------+---------+-------------+------+
+    $
 
 
 ## Options

@@ -2,7 +2,7 @@
 title: Load Balancer Support
 ---
 
-ECS services can be associated with a Load Balancer upon creation. Ufo can automatically create a load balancer.  The options:
+Ufo can automatically create a load balancer and associate it with an ECS service.  The options:
 
 1. Create an ELB.
 2. Use existing ELB by providing a target group arn.
@@ -25,11 +25,11 @@ Here are examples of each of them:
 
 Ufo retains the ELB setting.  So future `ufo ship` commands will not suddenly remove the load balancer.  If you need to change the elb setting, then you need to explicitly set a new `--elb` value.
 
-Important: Adding and removing load balancers will change the ELB DNS.  Please take pre-caution using the elb options.
+Important: Adding and removing load balancers will change the ELB DNS.  Please take pre-caution using the elb options.  This risk is mitigated if you have configured [Route53 support]({% link _docs/route53-support.md %}).
 
 ## Web Service Convention
 
-By convention, if the container name is 'web' in the task definition. Deployments of new services will automatically create a load balancer.  The prompt can be bypassed with `--elb=false` for web containers.
+By convention, if the container name is 'web' in the task definition. Deployments of new services will automatically create a load balancer.  The behavior can be disabled with `--elb=false` for web containers.
 
     ufo ship demo-web --elb=false
 
@@ -50,7 +50,7 @@ Network load balancers support static EIP address. You can create a network load
 
 If you use the `--elb-eip-ids` option, ufo assumes you want an `--elb-type=network` since only network load balancers support EIPs.
 
-When specifying the `--elb-eip-ids` option, the list length must be the same as the number of subnets configured in your `.ufo/network/settings/default.yml` profile.  The `--elb-eip-ids` setting is optional. If you do not specify it, a network load balancer will still be created you will not have control of the IP addresses.
+When specifying the `--elb-eip-ids` option, the list length must be the same as the number of subnets configured in your `.ufo/settings/network/default.yml` profile.  The `--elb-eip-ids` setting is optional. If you do not specify it, a network load balancer will still be created.
 
 If you need to change the EIPs for existing services, you might get a "TargetGroup cannot be associated with more than one load balancer" error. To work around this you can set the env variable `UFO_FORCE_TARGET_GROUP=1` which will force a re-creation of the target group.
 

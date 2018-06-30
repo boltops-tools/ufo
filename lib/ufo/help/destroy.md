@@ -1,6 +1,6 @@
 ## Examples
 
-Ufo provides a quick way to destroy an ECS service. To destroy an ECS service, you must make sure that the desired number of tasks is first set to 0. It is easy to forget to do this and waste time. So as part of destroying the service ufo will scale the ECS service down to 0 automatically first and then destroys the service.  Ufo also prompts you before destroying the service.
+Ufo provides a quick way to destroy an ECS service. This is effectively the same thing as deleting the CloudFormation stack.
 
     ufo destroy demo-web
 

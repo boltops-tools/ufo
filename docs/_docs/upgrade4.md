@@ -29,6 +29,7 @@ It is recommended that you run the `ufo upgrade v3to4` command with the network 
            force  .ufo/params.yml
         conflict  .ufo/settings.yml
            force  .ufo/settings.yml
+          create  .ufo/settings/cfn/default.yml
           create  .ufo/settings/network/default.yml
     Upgrade complete.
 
@@ -40,6 +41,7 @@ File | Changes
 --- | ---
 .ufo/params.yml | The create_service and update_service sections have been removed. The options handed by CloudFormation and can be customized with `.ufo/settings/cfn/default.yml`. If you have used these options for Fargate support, you no longer need to worry about them.  The generated CloudFormation template detects if the task definition uses Fargate and handles it for you.
 .ufo/settings.yml | A network_profile and cfn_profile option have been added with default settings.
+.ufo/settings/cfn/default.yml | Starter cfn settings file.
 .ufo/settings/network/default.yml | This generated file will have the vpc and subnets that you specified above.  You can change them directly in this file to control what network settings ufo uses.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/customize-cloudformation.md %}">Back</a>

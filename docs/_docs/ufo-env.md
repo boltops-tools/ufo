@@ -8,15 +8,8 @@ Ufo's behavior is controlled by the `UFO_ENV` environment variable.  For example
 
 The `UFO_ENV` can be set in several ways:
 
-1. At the CLI command invocation - This takes the highest precedence.
-2. Exported as an environment variable to your shell - This takes the second highest precedence.
-3. From the `aws_profiles` setting in your `settings.yml` file - This takes the lowest precedence.
-
-## At the CLI Command
-
-```sh
-ufo ship demo-web --cluster production
-```
+1. Exported as an environment variable to your shell - This takes the second highest precedence.
+2. From the `aws_profiles` setting in your `settings.yml` file - This takes the lowest precedence.
 
 ## As an environment variable
 

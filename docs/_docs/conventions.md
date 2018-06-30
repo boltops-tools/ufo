@@ -29,7 +29,7 @@ end
 
 ```
 
-## Web Role Convention
+## Web Service Load Balancer Convention
 
 By convention, if the service has a container named "web", ufo will automatically create an ELB.  If you would like to name a service with the word "web" without an ELB, specify `--elb false`.  Example:
 

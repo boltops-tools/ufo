@@ -2,14 +2,15 @@
 
     $ ufo releases
     Recent task definitions for this service:
-      demo-web:287
-      demo-web:286
-      demo-web:285
-      demo-web:284
-      demo-web:283
-      demo-web:282
-      demo-web:281
-      demo-web:280
-      demo-web:279
-      demo-web:278
-      demo-web:277
+      demo-web:86
+      demo-web:85
+      demo-web:84
+      demo-web:83
+      demo-web:82
+      demo-web:81
+      demo-web:80
+      demo-web:79
+      demo-web:78
+      demo-web:77
+      demo-web:76
+    $

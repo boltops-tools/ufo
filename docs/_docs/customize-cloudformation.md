@@ -9,7 +9,7 @@ Under the hood, ufo creates most of the required resources with a CloudFormation
 
 ## Settings
 
-The recommended to customize the CloudFormation resources is by adding properties to `.ufo/settings/cfn/default.yml`.  More info here: [Settings Cfn]({% link _docs/settings-cfn.md %})
+The recommended approach to customize the CloudFormation resources is by adding properties to `.ufo/settings/cfn/default.yml`.  More info here: [Settings Cfn]({% link _docs/settings-cfn.md %})
 
 ## Override Cfn Template
 
@@ -22,8 +22,8 @@ The CloudFormation stack name is based on the cluster, service name and UFO_ENV_
 Command | Stack Name
 --- | ---
 ufo ship demo-web | development-demo-web
-ufo ship demo-web --cluster dev | dev-demo-web
-UFO_ENV_EXTRA=2 ufo ship demo-web --cluster dev | development-demo-web-2
+ufo ship demo-web -\-cluster dev | dev-demo-web
+UFO_ENV_EXTRA=2 ufo ship demo-web -\-cluster dev | development-demo-web-2
 
 ## CloudFormation Stack Source Code
 

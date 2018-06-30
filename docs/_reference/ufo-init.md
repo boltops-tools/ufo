@@ -44,7 +44,7 @@ For this example we will use [tongueroo/demo-ufo](https://github.com/tongueroo/d
 
 ## Important options
 
-The `app` is that application name that you want to show up on the ECS dashboard.  It is encouraged to have the app name be a single word.
+The `app` is that application name that you want to show up on the ECS dashboard.  It is encouraged to have the app name be a single word.  If the option is not provided, the app name is inferred and is the parent folder name.
 
 The `image` is the base portion of image name that will be pushed to the docker registry, ie: DockerHub or AWS ECR.  The image should **not** include the tag since the tag is generated upon a `ufo ship`.  For example:
 
@@ -82,6 +82,8 @@ You can also generate the init ufo files and bypass the prompt by providing the 
     ufo init --image tongueroo/demo-ufo --app demo --force --launch-type fargate --execution-role-arn arn:aws:iam::123456789012:role/ecsTaskExecutionRole
 
 Important: You will need to adjust adjust the generated `.ufo/params.yml` and set the subnet and security_group values which are required for Fargate.
+
+For more information and a demo of Fargate support, check out the [Fargate Docs]({% link _docs/fargate.md %}).
 
 ## Custom Templates
 
