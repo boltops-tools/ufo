@@ -111,7 +111,8 @@ More more info refer to: http://ufoships.com/docs/settings/
 
 To deploy to ECS:
 
-  ufo ship #{@app}-web
+  ufo current --service #{@app}-web
+  ufo ship
 
 EOL
     end
