@@ -4,13 +4,13 @@ title: Helpers
 
 The `task_definitions.rb` file has access to helper methods. These helper methods provide useful contextual information about the project.
 
-For example, one of the helper methods provides the exposed port in the Dockerfile of the project. This is useful if someone changes the exported port in the Dockerfile, he will likely forget to also update the ufo variable.  You can reference the port via the helper to prevent this from happening. Here is a list of the helpers:
+For example, one of the helper methods provides the exposed port in the Dockerfile of the project. This is useful if someone changes the exported port in the Dockerfile, he will likely forget also to update the ufo variable.  You can reference the port via the helper to prevent this from happening. Here is a list of the helpers:
 
 Helper  | Description
 ------------- | -------------
-full\_image\_name | The full docker image name that ufo builds. The "base" portion of the docker image name is defined in `settings.yml`. For example, the base portion is `tongueroo/hi` and the full image name is `tongueroo/hi:ufo-[timestamp]-[sha]`. The base name does not include the generated Docker tag, which contains a timestamp and git sha of the Dockerfile that is used.
+full\_image\_name | The full docker image name that ufo builds. The "base" portion of the docker image name is defined in `settings.yml`. For example, the base portion is `tongueroo/hi` and the full image name is `tongueroo/hi:ufo-[timestamp]-[sha]`. The base name does not include the generated Docker tag, which contains a timestamp and git sha of the project.
 dockerfile\_port | Exposed port extracted from the Dockerfile of the project. 
-env_vars(text) | This method takes a block of text that contains the env values in `key=value` format and converts that block of text to the proper task definition json format.
+env_vars(text) | This method takes a block of text that contains the env values in `key=value` format and converts that block of text to the proper task definition JSON format.
 env_file(path) | This method takes a `.env` file which contains a simple key-value list of environment variables and converts the list to the proper task definition JSON format.
 task_definition_name | The name of the task_definition.  So if the code looks like this `task_definition "demo-web" do`, the task_definition_name is "demo-web".
 

@@ -25,7 +25,7 @@ export UFO_ENV=production
 ufo ship demo-web
 ```
 
-Most people will set `UFO_ENV` in their `~/.profile`.
+You can set `UFO_ENV` in your `~/.profile`.
 
 ## In .ufo/settings.yml
 

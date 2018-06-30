@@ -2,7 +2,7 @@
 title: Shared Variables
 ---
 
-Often times, you end up using the set of common variables across your task definitions for a project.  Ufo supports a shared variables concept to help with this.  You specify variables files in the `.ufo/variables` folder and they are made availale to your `.ufo/task_definitions.rb` as well as your `.ufo/templates` files.
+Often, you end up using the set of common variables across your task definitions for a project.  Ufo supports a shared variables concept to support this.  You specify variables files in the `.ufo/variables` folder and they are made available to your `.ufo/task_definitions.rb` as well as your `.ufo/templates` files.
 
 For example, given `variables/base.rb`:
 
@@ -13,7 +13,7 @@ For example, given `variables/base.rb`:
 @environment = helper.env_file(".env")
 ```
 
-You can now use `@image` in your `.ufo/templates/main.json.erb` without having to explicitly declare them in the `.ufo/task_definitions.rb` file.  Variables are automatically made available to all templates and the `task_definition.rb` file also.
+You can now use `@image` in your `.ufo/templates/main.json.erb` without having to declare them in the `.ufo/task_definitions.rb` file explicitly.  Variables are automatically made available to all templates and the `task_definition.rb` file.
 
 ## Layering
 

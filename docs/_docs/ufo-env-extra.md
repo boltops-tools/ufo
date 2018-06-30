@@ -2,7 +2,7 @@
 title: UFO_ENV_EXTRA
 ---
 
-Ufo has an concept of extra environments. This is controlled by the `UFO_ENV_EXTRA` variable.  By setting `UFO_ENV_EXTRA` you can create additional ECS services with similar environments.
+Ufo has an concept of extra environments. This is controlled by the `UFO_ENV_EXTRA` variable.  By setting `UFO_ENV_EXTRA` you can create additional identical ECS services or environments.
 
     ufo ship demo-web # creates a demo-web ecs service
     UFO_ENV_EXTRA=2 ufo ship demo-web # creates a demo-web-2 ecs service
