@@ -28,9 +28,9 @@ If you would like to bypass the prompt, you can use the `--sure` option.
 [--sure], [--no-sure]        # By pass are you sure prompt.
 [--wait], [--no-wait]        # Wait for completion
                              # Default: true
-[--verbose], [--no-verbose]
-[--mute], [--no-mute]
-[--noop], [--no-noop]
+[--verbose], [--no-verbose]  
+[--mute], [--no-mute]        
+[--noop], [--no-noop]        
 [--cluster=CLUSTER]          # Cluster.  Overrides .ufo/settings.yml.
 ```
 

@@ -21,6 +21,14 @@ The state information is written to `.ufo/current`.
 
 ## Examples
 
+### summary
+
+    ufo current --service demo-web --env-extra 1
+    ufo current --service demo-web --env-extra 1 --services demo-web demo-worker
+    ufo current --service demo-web --env-extra ''
+    ufo current --service demo-web
+    ufo current --env-extra '1'
+
 ### service
 
 To set current service:
@@ -77,9 +85,9 @@ To remove all current settings use the `--rm` option.
 [--service=SERVICE]          # Sets service as a current setting.
 [--services=one two three]   # Sets services as a current setting. This is used for ufo ships.
 [--env-extra=ENV_EXTRA]      # Sets UFO_ENV_EXTRA as a current setting.
-[--verbose], [--no-verbose]
-[--mute], [--no-mute]
-[--noop], [--no-noop]
+[--verbose], [--no-verbose]  
+[--mute], [--no-mute]        
+[--noop], [--no-noop]        
 [--cluster=CLUSTER]          # Cluster.  Overrides .ufo/settings.yml.
 ```
 

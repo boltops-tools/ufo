@@ -51,9 +51,9 @@ You only need to specify enough for a match to be found.  Ufo searches the 30 mo
 ## Options
 
 ```
-[--verbose], [--no-verbose]
-[--mute], [--no-mute]
-[--noop], [--no-noop]
+[--verbose], [--no-verbose]  
+[--mute], [--no-mute]        
+[--noop], [--no-noop]        
 [--cluster=CLUSTER]          # Cluster.  Overrides .ufo/settings.yml.
 ```
 

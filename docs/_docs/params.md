@@ -7,57 +7,28 @@ Additionally, the params that ufo sends to the [ruby aws-sdk](https://docs.aws.a
 A starter project `.ufo/params.yml` file is generated as part of the `ufo init` command. Let's take a look at an example `params.yml`:
 
 ```yaml
-<%
-  # replace with actual values:
-  @subnets = ["subnet-111","subnet-222"]
-  @security_groups = ["sg-111"]
-%>
 # These params are passsed to the corresponding aws-sdk ecs client methods.
 # AWS Docs example: https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/ECS/Client.html#run_task-instance_method
 #
-# Comments left in as examples.
-# Uncomment launch_type and network_configuration sections to enable fargate.
+# The network helper provides access to the .ufo/settings/network/[PROFILE].yml
 #
-
-# ufo ship calls create_service when service doesnt exist
-create_service:
-  deployment_configuration:
-    maximum_percent: 200
-    minimum_healthy_percent: 100
-  desired_count: 1
-  # launch_type: "FARGATE"
-  # network_configuration:
-  #   awsvpc_configuration:
-  #     subnets: <%= @subnets.inspect %> # required
-  #     security_groups: <%= @security_groups.inspect %>
-  #     assign_public_ip: "ENABLED" # accepts ENABLED, DISABLED
-
-
-# ufo ship calls update_service when service already exists
-# update service is provide as an example below.  Though it is probably better
-# to not add any options to update_service if you are using the ECS console
-# to update these settings often.
-update_service:
+# More docs: http://ufoships.com/docs/params/
 
 # ufo task calls run_tasks
 run_task:
-  # launch_type: "FARGATE"
-  # network_configuration:
-  #   awsvpc_configuration:
-  #     subnets: <%= @subnets.inspect %> # required
-  #     security_groups: <%= @security_groups.inspect %>
-  #     assign_public_ip: "ENABLED" # accepts ENABLED, DISABLED
+  # network_configuration is required for FARGATE
+  network_configuration:
+    awsvpc_configuration:
+      subnets: <%= network[:ecs_subnets].inspect %> # required
+      security_groups: <%= network[:ecs_security_groups].inspect %>
+      assign_public_ip: "ENABLED" # accepts ENABLED, DISABLED
 ```
 
 Ufo provides 1st class citizen access to adjust the params sent to the aws-sdk calls:
 
-* create_service - `ufo ship` calls this when the ECS service does not yet exist.
-* update_service - `ufo ship` calls this when the ECS service already exists.
-* run_task - `ufo task` calls this.
+The parameters from this `params.yml` file get merged with params ufo generates internally.  Here's an example of where the merging happens in the source code for the run task command [task.rb](https://github.com/tongueroo/ufo/blob/master/lib/ufo/task.rb).  Also, here's the starter [params.yml source code](https://github.com/tongueroo/ufo/blob/master/lib/template/.ufo/params.yml.tt) for reference.
 
-The parameters from this `params.yml` file get merged with params ufo generates internally.  Here's an example of where the merging happens in the source code for the run task command [task.rb](https://github.com/tongueroo/ufo/blob/90f12df035843528770122deb328d150249a25e2/lib/ufo/task.rb#L20).  Also, here's the starter [params.yml source code](https://github.com/tongueroo/ufo/blob/master/lib/template/.ufo/params.yml) for reference.
-
-ERB and [shared variables]({% link _docs/variables.md %}) are available in the params file.  Notice how ERB is used at the top of the example file to set some subnets to prevent duplication. You can also define the subnets in your config/variables and use them in them in the params.yml file.
+ERB and [shared variables]({% link _docs/variables.md %}) are available in the params file.  You can also define the subnets in your config/variables and use them in them in the params.yml file.
 
 NOTE: The params.yml file does not have access to the `task_definition_name` helper method. That is only available in the `task_definitions.rb` template_definition code blocks.
 

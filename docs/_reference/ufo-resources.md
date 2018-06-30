@@ -36,9 +36,9 @@ Displays information about the service.
 ## Options
 
 ```
-[--verbose], [--no-verbose]
-[--mute], [--no-mute]
-[--noop], [--no-noop]
+[--verbose], [--no-verbose]  
+[--mute], [--no-mute]        
+[--noop], [--no-noop]        
 [--cluster=CLUSTER]          # Cluster.  Overrides .ufo/settings.yml.
 ```
 

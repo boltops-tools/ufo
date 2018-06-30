@@ -36,9 +36,9 @@ The `--no-docker` option is useful. By default, the `ufo task` command will buil
     [--docker], [--no-docker]    # Enable docker build and push
                                  # Default: true
 c, [--command=one two three]     # Override the command used for the container
-    [--verbose], [--no-verbose]
-    [--mute], [--no-mute]
-    [--noop], [--no-noop]
+    [--verbose], [--no-verbose]  
+    [--mute], [--no-mute]        
+    [--noop], [--no-noop]        
     [--cluster=CLUSTER]          # Cluster.  Overrides .ufo/settings.yml.
 ```
 

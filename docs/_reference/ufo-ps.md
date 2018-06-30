@@ -43,9 +43,9 @@ Skip the summary info:
 ```
 [--summary], [--no-summary]  # Display summary header info.
                              # Default: true
-[--verbose], [--no-verbose]
-[--mute], [--no-mute]
-[--noop], [--no-noop]
+[--verbose], [--no-verbose]  
+[--mute], [--no-mute]        
+[--noop], [--no-noop]        
 [--cluster=CLUSTER]          # Cluster.  Overrides .ufo/settings.yml.
 ```
 

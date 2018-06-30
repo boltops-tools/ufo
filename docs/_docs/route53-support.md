@@ -2,7 +2,7 @@
 title: Route53 Support
 ---
 
-Ufo can automatically create a "pretty" route53 record an set it to the created ELB dns name. This is done in by configuring the `.ufo/settings/network/[profile].yml` file. Example `.ufo/settings/network/default.yml`:
+Ufo can create a "pretty" route53 record and set it's value to the created ELB DNS name. This is done by configuring the `.ufo/settings/cfn/default.yml` file. Example:
 
 ```yaml
 dns:
@@ -14,7 +14,7 @@ The `{stack_name}` variable gets substituted with the CloudFormation stack name 
 
     ufo ship demo-web
 
-Results in this:
+Results in:
 
     "{stack_name}.mydomain.com." => "development-demo-web.mydomain.com."
 

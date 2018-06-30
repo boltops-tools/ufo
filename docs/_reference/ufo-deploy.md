@@ -42,22 +42,19 @@ The `ufo ships`, `ufo ship`, `ufo deploy` command support the same options. The 
 ## Options
 
 ```
-[--task=TASK]                                        # ECS task name, to override the task name convention.
-[--target-group=TARGET_GROUP]                        # ELB Target Group ARN.
-[--target-group-prompt], [--no-target-group-prompt]  # Enable Target Group ARN prompt
-                                                     # Default: true
-[--wait], [--no-wait]                                # Wait for deployment to complete
-                                                     # Default: true
-[--pretty], [--no-pretty]                            # Pretty format the json for the task definitions
-                                                     # Default: true
-[--stop-old-tasks], [--no-stop-old-tasks]            # Stop old tasks after waiting for deploying to complete
-[--ecr-keep=N]                                       # ECR specific cleanup of old images.  Specifies how many images to keep.  Only runs if the images are ECR images. Defaults keeps all images.
-[--elb=ELB]                                          # Decides to create elb, not create elb or use existing target group.
-[--elb-type=ELB_TYPE]                                # ELB type: application or network. Keep current deployed elb type when not specified.
-[--elb-eip-ids=one two three]                        # EIP Allocation ids to use for network load balancer.
-[--verbose], [--no-verbose]
-[--mute], [--no-mute]
-[--noop], [--no-noop]
-[--cluster=CLUSTER]                                  # Cluster.  Overrides .ufo/settings.yml.
+[--ecr-keep=N]                             # ECR specific cleanup of old images.  Specifies how many images to keep.  Only runs if the images are ECR images. Defaults keeps all images.
+[--elb=ELB]                                # Decides to create elb, not create elb or use existing target group.
+[--elb-eip-ids=one two three]              # EIP Allocation ids to use for network load balancer.
+[--elb-type=ELB_TYPE]                      # ELB type: application or network. Keep current deployed elb type when not specified.
+[--pretty], [--no-pretty]                  # Pretty format the json for the task definitions
+                                           # Default: true
+[--stop-old-tasks], [--no-stop-old-tasks]  # Stop old tasks as part of deployment to speed it up
+[--task=TASK]                              # ECS task name, to override the task name convention.
+[--wait], [--no-wait]                      # Wait for deployment to complete
+                                           # Default: true
+[--verbose], [--no-verbose]                
+[--mute], [--no-mute]                      
+[--noop], [--no-noop]                      
+[--cluster=CLUSTER]                        # Cluster.  Overrides .ufo/settings.yml.
 ```
 

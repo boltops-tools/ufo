@@ -5,7 +5,9 @@
 #
 # More docs: http://ufoships.com/docs/params/
 
+# ufo task calls run_tasks
 run_task:
+  # network_configuration is required for FARGATE
   network_configuration:
     awsvpc_configuration:
       subnets: <%%= network[:ecs_subnets].inspect %> # required

@@ -37,6 +37,7 @@ For this example we will use [tongueroo/hi](https://github.com/tongueroo/hi) whi
     ufo init --image httpd --app demo
     ufo init --image 123456789012.dkr.ecr.us-west-2.amazonaws.com/myimage --app demo
     ufo init --image tongueroo/hi --app hi --launch-type fargate --execution-role-arn arn:aws:iam::123456789012:role/ecsTaskExecutionRole
+    ufo init --image httpd --app demo --vpc-id vpc-123
 
 ## Important options
 
@@ -114,8 +115,9 @@ If you would like to use a local template that is not on GitHub, then created a 
 [--execution-role-arn=EXECUTION_ROLE_ARN]  # execution role arn used by tasks, required for fargate.
 [--template=TEMPLATE]                      # Custom template to use.
 [--template-mode=TEMPLATE_MODE]            # Template mode: replace or additive.
-[--vpc-id=VPC_ID]                          # Vpc id: for settings/network/default.yml.
-[--fargate-security-groups=one two three]  # Fargate security groups.
+[--vpc-id=VPC_ID]                          # Vpc id. For settings/network/default.yml.
+[--ecs-subnets=one two three]              # Subnets for ECS tasks, defaults to --elb-subnets set to. For settings/network/default.yml
+[--elb-subnets=one two three]              # Subnets for ELB. For settings/network/default.yml
 [--verbose], [--no-verbose]                
 [--mute], [--no-mute]                      
 [--noop], [--no-noop]                      

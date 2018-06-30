@@ -6,9 +6,9 @@ title: Ufo Current
 
 There's a handy way to shorten ufo commands by setting the current service.  Example:
 
+    ufo ship demo-web # normal usage
     ufo current --service demo-web
-    ufo ship demo-web # typical usage
-    ufo ship # does the same thing as ufo ship demo-web
+    ufo ship # no longer have to type: demo-web
 
 To view the current settings run `ufo current` with no options.
 
@@ -16,7 +16,7 @@ To view the current settings run `ufo current` with no options.
     Current env_extra: 1
     Current service: demo-web
 
-The current service helps shorten other commands also.
+Setting the current service helps shorten other commands also:
 
     ufo cancel
     ufo deploy
@@ -30,7 +30,7 @@ The current service helps shorten other commands also.
 
 ## UFO_ENV_EXTRA
 
-The UFO_ENV_EXTRA env variable allows you create multiple same services.  More info about is is detailed at [ufo-env-extra]({% link _docs/ufo-env-extra.md %}).  You can also set a current UFO_ENV_EXTRA with the `--env-extra` option.
+The UFO_ENV_EXTRA env variable allows you create multiple environments with of the same services quickly.  More info about is is detailed at [ufo-env-extra]({% link _docs/ufo-env-extra.md %}).  You can also set a current UFO_ENV_EXTRA with the `--env-extra` option.
 
     ufo current --env-extra 1
 
