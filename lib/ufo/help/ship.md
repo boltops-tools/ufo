@@ -46,7 +46,7 @@ Note, if the docker container's name is web then the `--elb` flag defaults to tr
 
 If you need to create a network load balancer with pre-allocated EIPs, you can use `--elb-eip-ids`, example:
 
-    ufo deploy demo-web --elb-eip-ids eipalloc-a8de9ca0 eipalloc-a8de9ca0
+    ufo deploy demo-web --elb-eip-ids eipalloc-a8de9ca1 eipalloc-a8de9ca2
 
 More info available at the [load balancer docs](http://ufoships.com/docs/load-balancer/).
 
