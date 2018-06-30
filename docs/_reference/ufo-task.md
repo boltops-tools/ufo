@@ -21,24 +21,23 @@ You can use the `--command` or `-c` option to override the Docker container comm
     ufo task demo-web -c uptime
     ufo task demo-web -c pwd
 
-## Skipping Docker
+## Skipping Docker and Task Registration
 
-The `--no-docker` option is useful. By default, the `ufo task` command will build the docker image.  The docker build process usually is the part that takes the most time. You can skip the docker build process after building it at least once.  This is a faster way to run a bunch of commands with the same Docker image. Example:
+The `--task-only` option is useful. By default, the `ufo task` command will build the docker image and then register a new task definition.  The docker build process usually is the part that takes the most time. You can skip the docker build process after building it at least once.  This is a faster way to run a bunch of commands with the same Docker image. Example:
 
     ufo task demo-web -c uptime # build at least once
-    ufo task demo-web --no-docker -c ls # skip docker for speed
-    ufo task demo-web --no-docker -c pwd # skip docker for speed
+    ufo task demo-web --task-only -c ls # skip docker for speed
+    ufo task demo-web --task-only -c pwd # skip docker for speed
 
 
 ## Options
 
 ```
-    [--docker], [--no-docker]    # Enable docker build and push
-                                 # Default: true
-c, [--command=one two three]     # Override the command used for the container
-    [--verbose], [--no-verbose]  
-    [--mute], [--no-mute]        
-    [--noop], [--no-noop]        
-    [--cluster=CLUSTER]          # Cluster.  Overrides .ufo/settings.yml.
+    [--task-only], [--no-task-only]  # Skip docker and task register steps. Only run the task.
+c, [--command=one two three]         # Override the command used for the container
+    [--verbose], [--no-verbose]      
+    [--mute], [--no-mute]            
+    [--noop], [--no-noop]            
+    [--cluster=CLUSTER]              # Cluster.  Overrides .ufo/settings.yml.
 ```
 

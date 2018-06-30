@@ -35,7 +35,7 @@ module Ufo
       end
 
       resp = run_task(task_options)
-      pp resp
+      exit_if_failures!(resp)
       unless @options[:mute]
         task_arn = resp.tasks[0].task_arn
         puts "Task ARN: #{task_arn}"
@@ -44,48 +44,61 @@ module Ufo
       end
     end
 
+    # Pretty hard to produce this edge case.  Happens when:
+    #   launch_type: EC2
+    #   network_mode: awsvpc
+    #   assign_public_ip: DISABLED
+    def exit_if_failures!(resp)
+      return if resp[:failures].nil? || resp[:failures].empty?
+
+      puts "There was a failure running the ECS task.".colorize(:red)
+      puts "This might be happen if you have a network_mode of awsvpc and have assigned_public_ip to DISABLED."
+      puts "This cryptic error also shows up if the network settings have security groups and subnets that are not in the same vpc as the ECS cluster container instances.  Please double check that."
+      puts "You can use this command to quickly reconfigure the network settings:"
+      puts "  ufo network init --vpc-id XXX."
+      puts "More details on the can be found under the 'Task Networking Considerations' section at: "
+      puts "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-networking.html"
+      puts "Original response with failures:"
+      pp resp
+      exit 1
+    end
+
     def run_task(options)
       puts "Equivalent aws cli command:"
       puts "  aws ecs run-task --cluster #{@cluster} --task-definition #{options[:task_definition]}".colorize(:green)
       ecs.run_task(options)
-    # rescue Aws::ECS::Errors::ClientException => e
-    #   if e.message =~ /ECS was unable to assume the role/
-    #     puts "ERROR: #{e.class} #{e.message}".colorize(:red)
-    #     puts "Please double check the executionRoleArn in your task definition."
-    #     exit 1
-    #   else
-    #     raise
-    #   end
-    # rescue Aws::ECS::Errors::InvalidParameterException => e
-    #   if e.message =~ /Network Configuration must be provided when networkMode 'awsvpc' is specified/
-    #     puts "ERROR: #{e.class} #{e.message}".colorize(:red)
-    #     puts "Please double check .ufo/params.yml and make sure that network_configuration is set."
-    #     puts "Or run change the task definition template in .ufo/templates so it does not use vpcmode."
-    #     exit 1
-    #   else
-    #     raise
-    #   end
+    rescue Aws::ECS::Errors::ClientException => e
+      if e.message =~ /ECS was unable to assume the role/
+        puts "ERROR: #{e.class} #{e.message}".colorize(:red)
+        puts "Please double check the executionRoleArn in your task definition."
+        exit 1
+      else
+        raise
+      end
+    rescue Aws::ECS::Errors::InvalidParameterException => e
+      if e.message =~ /Network Configuration must be provided when networkMode 'awsvpc' is specified/
+        puts "ERROR: #{e.class} #{e.message}".colorize(:red)
+        puts "Please double check .ufo/params.yml and make sure that network_configuration is set."
+        puts "Or run change the task definition template in .ufo/templates so it does not use vpcmode."
+        exit 1
+      else
+        raise
+      end
     end
 
   private
     # adjust network_configuration based on fargate and network mode of awsvpc
     def adjust_fargate_options(options)
-      return options
       task_def = recent_task_definition
+      return options unless task_def[:network_mode] == "awsvpc"
 
-      if task_def[:network_mode] == "awsvpc"
-        awsvpc_conf = { subnets: network[:ecs_subnets] }
-      end
-
-      fargate_enabled = task_def[:requires_compatibilities] == ["FARGATE"]
-      if fargate_enabled
+      awsvpc_conf = { subnets: network[:ecs_subnets] }
+      if task_def[:requires_compatibilities] == ["FARGATE"]
         awsvpc_conf[:assign_public_ip] = "ENABLED"
-      end
-      options[:network_configuration] = { awsvpc_configuration: awsvpc_conf }
-
-      if fargate_enabled
         options[:launch_type] = "FARGATE"
       end
+
+      options[:network_configuration] = { awsvpc_configuration: awsvpc_conf }
       options
     end
 
