@@ -19,8 +19,9 @@ module Ufo
         cluster: @cluster,
         task_definition: @task_definition
       }
-      task_options = task_options.merge(default_params[:run_task] || {})
-      task_options = add_security_group(task_options)
+      task_options = adjust_fargate_options(task_options)
+      task_options = task_options.merge(user_params[:run_task] || {})
+      task_options = adjust_security_groups(task_options)
 
       if @options[:command]
         task_options.merge!(overrides: overrides)
@@ -34,6 +35,7 @@ module Ufo
       end
 
       resp = run_task(task_options)
+      pp resp
       unless @options[:mute]
         task_arn = resp.tasks[0].task_arn
         puts "Task ARN: #{task_arn}"
@@ -46,55 +48,80 @@ module Ufo
       puts "Equivalent aws cli command:"
       puts "  aws ecs run-task --cluster #{@cluster} --task-definition #{options[:task_definition]}".colorize(:green)
       ecs.run_task(options)
-    rescue Aws::ECS::Errors::ClientException => e
-      if e.message =~ /ECS was unable to assume the role/
-        puts "ERROR: #{e.class} #{e.message}".colorize(:red)
-        puts "Please double check the executionRoleArn in your task definition."
-        exit 1
-      else
-        raise
-      end
-    rescue Aws::ECS::Errors::InvalidParameterException => e
-      if e.message =~ /Network Configuration must be provided when networkMode 'awsvpc' is specified/
-        puts "ERROR: #{e.class} #{e.message}".colorize(:red)
-        puts "Please double check .ufo/params.yml and make sure that network_configuration is set."
-        puts "Or run change the task definition template in .ufo/templates so it does not use vpcmode."
-        exit 1
-      else
-        raise
-      end
+    # rescue Aws::ECS::Errors::ClientException => e
+    #   if e.message =~ /ECS was unable to assume the role/
+    #     puts "ERROR: #{e.class} #{e.message}".colorize(:red)
+    #     puts "Please double check the executionRoleArn in your task definition."
+    #     exit 1
+    #   else
+    #     raise
+    #   end
+    # rescue Aws::ECS::Errors::InvalidParameterException => e
+    #   if e.message =~ /Network Configuration must be provided when networkMode 'awsvpc' is specified/
+    #     puts "ERROR: #{e.class} #{e.message}".colorize(:red)
+    #     puts "Please double check .ufo/params.yml and make sure that network_configuration is set."
+    #     puts "Or run change the task definition template in .ufo/templates so it does not use vpcmode."
+    #     exit 1
+    #   else
+    #     raise
+    #   end
     end
 
   private
-    # add default security group to option if not already set
-    def add_security_group(options)
-      network_conf = options[:network_configuration]
-      return options unless network_conf
+    # adjust network_configuration based on fargate and network mode of awsvpc
+    def adjust_fargate_options(options)
+      return options
+      task_def = recent_task_definition
 
-      awsvpc_conf = network_conf[:awsvpc_configuration]
-      return options unless awsvpc_conf
-
-      if [nil, '', 'nil'].include?(awsvpc_conf[:security_groups])
-        awsvpc_conf[:security_groups] = []
-      end
-      # add the default security group security_groups is empty
-      if awsvpc_conf[:security_groups].empty?
-        settings = Ufo.settings
-        network = Setting::Profile.new(:network, settings[:network_profile]).data
-        fetch = Network::Fetch.new(network[:vpc])
-        sg = fetch.security_group_id
-        awsvpc_conf[:security_groups] << sg
-        awsvpc_conf[:security_groups].uniq!
+      if task_def[:network_mode] == "awsvpc"
+        awsvpc_conf = { subnets: network[:ecs_subnets] }
       end
 
-      # override security group
-      options[:network_configuration][:awsvpc_configuration][:security_groups] = awsvpc_conf[:security_groups]
+      fargate_enabled = task_def[:requires_compatibilities] == ["FARGATE"]
+      if fargate_enabled
+        awsvpc_conf[:assign_public_ip] = "ENABLED"
+      end
+      options[:network_configuration] = { awsvpc_configuration: awsvpc_conf }
+
+      if fargate_enabled
+        options[:launch_type] = "FARGATE"
+      end
       options
     end
 
+    # Ensures at least 1 security group is assigned if awsvpc_configuration
+    # is provided.
+    def adjust_security_groups(options)
+      return options unless options[:network_configuration] &&
+                     options[:network_configuration][:awsvpc_configuration]
+
+      awsvpc_conf = options[:network_configuration][:awsvpc_configuration]
+
+      security_groups = awsvpc_conf[:security_groups]
+      if [nil, '', 'nil'].include?(security_groups)
+        security_groups = []
+      end
+      if security_groups.empty?
+        fetch = Network::Fetch.new(network[:vpc])
+        sg = fetch.security_group_id
+        security_groups << sg
+        security_groups.uniq!
+      end
+
+      # override security groups
+      options[:network_configuration][:awsvpc_configuration][:security_groups] = security_groups
+      options
+    end
+
+    def network
+      settings = Ufo.settings
+      Setting::Profile.new(:network, settings[:network_profile]).data
+    end
+    memoize :network
+
     def cloudwatch_info(task_arn)
-      config = original_container_definition[:log_configuration]
-      container_name = original_container_definition[:name]
+      config = container_definition[:log_configuration]
+      container_name = container_definition[:name]
 
       return unless config && config[:log_driver] == "awslogs"
 
@@ -113,7 +140,6 @@ module Ufo
     # only using the overrides to override the container command
     def overrides
       command = @options[:command] # Thor parser ensure this is always an array
-      container_definition = original_container_definition
       {
         container_overrides: [
           {
@@ -125,14 +151,25 @@ module Ufo
       }
     end
 
-    def original_container_definition
+    # Usually most recent task definition.
+    # If user has specified task_definition with specific version like
+    #   demo-web:8
+    # Then it'll be that exact task definnition.
+    def recent_task_definition
       arns = task_definition_arns(@task_definition)
       # "arn:aws:ecs:us-east-1:<aws_account_id>:task-definition/wordpress:6",
       last_definition_arn = arns.first
+      puts "last_definition_arn #{last_definition_arn}"
       task_name = last_definition_arn.split("/").last
       resp = ecs.describe_task_definition(task_definition: task_name)
-      container_definition = resp.task_definition.container_definitions[0].to_h
+
+      resp.task_definition
     end
-    memoize :original_container_definition
+    memoize :recent_task_definition
+
+    # container definition from the most recent task definition
+    def container_definition
+      recent_task_definition.container_definitions[0].to_h
+    end
   end
 end

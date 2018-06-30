@@ -100,11 +100,11 @@ module Ufo
 
     desc "task TASK_DEFINITION", "Run a one-time task."
     long_desc Help.text(:task)
-    option :docker, type: :boolean, desc: "Enable docker build and push", default: true
+    option :task_only, type: :boolean, desc: "Skip docker and task register steps. Only run the task.", default: true
     option :command, type: :array, aliases: 'c', desc: "Override the command used for the container"
     def task(task_definition)
-      Docker::Builder.build(options) if @options[:docker]
-      Tasks::Builder.ship(task_definition, options)
+      Docker::Builder.build(options) unless @options[:task_only]
+      Tasks::Builder.ship(task_definition, options) unless @options[:task_only]
       Task.new(task_definition, options).run
     end
 

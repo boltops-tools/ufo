@@ -15,10 +15,10 @@ module Ufo
       @settings ||= Ufo.settings
     end
 
-    # Naming it default_params because params is too commonly used in ufo.
-    # Param keys must be symbols for the aws-sdk calls.
-    def default_params
-      @default_params ||= Param.new.data
+    # Custom user params from .ufo/params.yml
+    # Param keys are symbols for the aws-sdk calls.
+    def user_params
+      @user_params ||= Param.new.data
     end
 
     def execute(command, local_options={})
