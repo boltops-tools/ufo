@@ -38,7 +38,7 @@ Setting up ufo project...
 Starter ufo files created.
 $ ufo ship demo-web
 Building docker image with:
-  docker build -t tongueroo/hi:ufo-2017-09-10T15-00-19-c781aaf -f Dockerfile .
+  docker build -t tongueroo/demo-ufo:ufo-2017-09-10T15-00-19-c781aaf -f Dockerfile .
 ....
 Software shipped!
 $

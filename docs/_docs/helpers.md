@@ -8,7 +8,7 @@ For example, one of the helper methods provides the exposed port in the Dockerfi
 
 Helper  | Description
 ------------- | -------------
-full\_image\_name | The full docker image name that ufo builds. The "base" portion of the docker image name is defined in `settings.yml`. For example, the base portion is `tongueroo/hi` and the full image name is `tongueroo/hi:ufo-[timestamp]-[sha]`. The base name does not include the generated Docker tag, which contains a timestamp and git sha of the project.
+full\_image\_name | The full docker image name that ufo builds. The "base" portion of the docker image name is defined in `settings.yml`. For example, the base portion is `tongueroo/demo-ufo` and the full image name is `tongueroo/demo-ufo:ufo-[timestamp]-[sha]`. The base name does not include the generated Docker tag, which contains a timestamp and git sha of the project.
 dockerfile\_port | Exposed port extracted from the Dockerfile of the project. 
 env_vars(text) | This method takes a block of text that contains the env values in `key=value` format and converts that block of text to the proper task definition JSON format.
 env_file(path) | This method takes a `.env` file which contains a simple key-value list of environment variables and converts the list to the proper task definition JSON format.

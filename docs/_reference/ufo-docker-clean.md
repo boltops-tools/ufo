@@ -15,30 +15,30 @@ Ufo comes with a handy command to clean up old images that ufo generates. Ufo on
 
 Say you currently have these images:
 
-    tongueroo/hi:ufo-2016-10-15T19-29-06-88071f5
-    tongueroo/hi:ufo-2016-10-16T19-29-06-88071f5
-    tongueroo/hi:ufo-2016-10-17T19-29-06-88071f5
-    tongueroo/hi:ufo-2016-10-18T19-29-06-88071f5
+    tongueroo/demo-ufo:ufo-2016-10-15T19-29-06-88071f5
+    tongueroo/demo-ufo:ufo-2016-10-16T19-29-06-88071f5
+    tongueroo/demo-ufo:ufo-2016-10-17T19-29-06-88071f5
+    tongueroo/demo-ufo:ufo-2016-10-18T19-29-06-88071f5
 
 To clean them up and keep the 3 more recent:
 
-    $ ufo docker clean tongueroo/hi
+    $ ufo docker clean tongueroo/demo-ufo
     Cleaning up docker images...
-    Running: docker rmi tongueroo/hi:ufo-2016-10-15T19-29-06-88071f5
+    Running: docker rmi tongueroo/demo-ufo:ufo-2016-10-15T19-29-06-88071f5
 
-This will remove tongueroo/hi:ufo-2016-10-15T19-29-06-88071f5.
+This will remove tongueroo/demo-ufo:ufo-2016-10-15T19-29-06-88071f5.
 
 By default the clean command keeps the most 3 recent docker images. If you would like to override this setting you can use the `--keep` option. Example:
 
-    ufo docker clean tongueroo/hi --keep 5
+    ufo docker clean tongueroo/demo-ufo --keep 5
 
 
 ## Options
 
 ```
-[--keep=N]                 
+[--keep=N]
                            # Default: 3
-[--tag-prefix=TAG_PREFIX]  
+[--tag-prefix=TAG_PREFIX]
                            # Default: ufo
 ```
 

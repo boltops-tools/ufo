@@ -24,12 +24,12 @@ Another way to specify the version for rollback is with the container definition
     "container_definitions": [
       {
         "name": "web",
-        "image": "tongueroo/hi:ufo-2018-06-21T15-03-52-ac60240",
+        "image": "tongueroo/demo-ufo:ufo-2018-06-21T15-03-52-ac60240",
         "cpu": 256,
     ...
 
 You only need to specify enough for a match to be found.  Ufo searches the 30 most recent task definitions. So all of these would work:
 
-    ufo rollback tongueroo/hi:ufo-2018-06-21T15-03-52-ac60240
+    ufo rollback tongueroo/demo-ufo:ufo-2018-06-21T15-03-52-ac60240
     ufo rollback 2018-06-21T15-03-52
     ufo rollback ac60240

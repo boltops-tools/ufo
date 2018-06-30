@@ -18,9 +18,9 @@ Yes, you can do this with the environment variable `UFO_DOCKER_BUILD_OPTIONS`.  
 ```
 $ UFO_DOCKER_BUILD_OPTIONS="--build-arg RAILS_ENV=production" ufo docker build
 Building docker image with:
-  docker build --build-arg RAILS_ENV=production -t tongueroo/hi:ufo-2018-05-19T11-52-16-6714713 -f Dockerfile .
+  docker build --build-arg RAILS_ENV=production -t tongueroo/demo-ufo:ufo-2018-05-19T11-52-16-6714713 -f Dockerfile .
 ...
-Docker image tongueroo/hi:ufo-2018-05-19T11-52-16-6714713 built.  Took 2s.
+Docker image tongueroo/demo-ufo:ufo-2018-05-19T11-52-16-6714713 built.  Took 2s.
 ```
 
 ---
@@ -32,11 +32,11 @@ In short, no. There's some image cleanup logic that relies on the specific namin
 ```
 $ ufo docker build
 $ ufo docker name
-tongueroo/hi:ufo-2018-05-19T11-41-06-6714713
+tongueroo/demo-ufo:ufo-2018-05-19T11-41-06-6714713
 $ docker tag $(ufo docker name) hi:mytag
 $ docker images | grep hi
 hi                                                     mytag                              5b01e38bd060        3 minutes ago       955MB
-tongueroo/hi                                           ufo-2018-05-19T11-41-06-6714713    5b01e38bd060        3 minutes ago       955MB
+tongueroo/demo-ufo                                           ufo-2018-05-19T11-41-06-6714713    5b01e38bd060        3 minutes ago       955MB
 $ docker push hi:mytag
 ```
 

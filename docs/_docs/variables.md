@@ -7,7 +7,7 @@ Often, you end up using the set of common variables across your task definitions
 For example, given `variables/base.rb`:
 
 ```
-@image = helper.full_image_name # includes the git sha tongueroo/hi:ufo-[sha].
+@image = helper.full_image_name # includes the git sha tongueroo/demo-ufo:ufo-[sha].
 @cpu = 128
 @memory_reservation = 256
 @environment = helper.env_file(".env")
@@ -22,7 +22,7 @@ Shared variables also support a concept called layering.  The `variables/base.rb
 `.ufo/variables/base.rb`:
 
 ```ruby
-@image = helper.full_image_name # includes the git sha tongueroo/hi:ufo-[sha].
+@image = helper.full_image_name # includes the git sha tongueroo/demo-ufo:ufo-[sha].
 @cpu = 128
 @memory_reservation = 256
 @environment = helper.env_file(".env")

@@ -19,7 +19,7 @@ updates the FROM `Dockerfile` image with the generated image from `Dockerfile.ba
     ufo docker base
     ufo docker base --no-push # do not push the image to the registry
 
-Docker image `tongueroo/hi:base-2016-10-21T15-50-57-88071f5` built.
+Docker image `tongueroo/demo-ufo:base-2016-10-21T15-50-57-88071f5` built.
 
 ## Concept
 
@@ -31,23 +31,23 @@ There are pros and cons of using this approach.  Remember there are 2 hard probl
 
 ## Demo
 
-To demonstrate this command, there's a `docker-cache` branch in the [tongueroo/hi](https://github.com/tongueroo/hi/tree/docker-cache) repo.
+To demonstrate this command, there's a `docker-cache` branch in the [tongueroo/demo-ufo](https://github.com/tongueroo/demo-ufo/tree/docker-cache) repo.
 
  Let's see the command in action:
 
     ufo docker base
     Building docker image with:
-      docker build -t tongueroo/hi:base-2017-06-12T14-36-44-2af505e -f Dockerfile.base .
+      docker build -t tongueroo/demo-ufo:base-2017-06-12T14-36-44-2af505e -f Dockerfile.base .
       ...
-    Pushed tongueroo/hi:base-2017-06-12T14-36-44-2af505e docker image. Took 28s.
+    Pushed tongueroo/demo-ufo:base-2017-06-12T14-36-44-2af505e docker image. Took 28s.
     The Dockerfile FROM statement has been updated with the latest base image:
-      tongueroo/hi:base-2017-06-12T14-36-44-2af505e
+      tongueroo/demo-ufo:base-2017-06-12T14-36-44-2af505e
 
 Some of the output has been excluded so we can focus on the important parts to point out. First notice that the commmand simply shells out to the docker command and calls:
 
-    docker build -t tongueroo/hi:base-2017-06-12T14-36-44-2af505e -f Dockerfile.base .
+    docker build -t tongueroo/demo-ufo:base-2017-06-12T14-36-44-2af505e -f Dockerfile.base .
 
-It is using the docker `-f Dockerfile.base` option to build the base image.  It names the image with `tongueroo/hi:base-2017-06-12T14-36-44-2af505e`.  The image tag contains useful information: the timestamp when the image was built and the exact git sha of the code.  The image gets push to a registry immediately.
+It is using the docker `-f Dockerfile.base` option to build the base image.  It names the image with `tongueroo/demo-ufo:base-2017-06-12T14-36-44-2af505e`.  The image tag contains useful information: the timestamp when the image was built and the exact git sha of the code.  The image gets push to a registry immediately.
 
 Notice at the very end, the *current* `Dockerfile`'s FROM statement has been updated with the newly built base Docker image automatically.  This saves you from forgetting to copying and pasting it the `Dockerfile` yourself.
 
@@ -55,7 +55,7 @@ Notice at the very end, the *current* `Dockerfile`'s FROM statement has been upd
 ## Options
 
 ```
-[--push], [--no-push]  
+[--push], [--no-push]
                        # Default: true
 ```
 

@@ -14,6 +14,10 @@ module Ufo
     end
 
   private
+    def inferred_app
+      File.basename(Dir.pwd)
+    end
+
     def get_execution_role_arn_input
       return @execution_role_arn if @execution_role_arn
 

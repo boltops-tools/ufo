@@ -4,7 +4,7 @@ title: Build Docker
 
 ## Build the Docker Image
 
-Let's use the `ufo docker build` command to build the docker image. The command uses the `Dockerfile` in the current project to build the docker image.  You use your own Dockerfile so you have fully control over how you would like the image to be built.  For this tutorial we will continue to use the [tongueroo/hi](https://github.com/tongueroo/hi) app and it's Dockerfile. Let's run the command:
+Let's use the `ufo docker build` command to build the docker image. The command uses the `Dockerfile` in the current project to build the docker image.  You use your own Dockerfile so you have fully control over how you would like the image to be built.  For this tutorial we will continue to use the [tongueroo/demo-ufo](https://github.com/tongueroo/demo-ufo) app and it's Dockerfile. Let's run the command:
 
 ```sh
 ufo docker build
@@ -33,7 +33,7 @@ Docker image tongueroo/demo-ufo:ufo-2018-06-28T16-33-57-7e0af94 built.
 Docker build took 2s.
 ```
 
-As you can see `ufo docker build` shells out and calls `docker build -t tongueroo/hi:ufo-2017-06-11T22-18-03-a18aa30 -f Dockerfile .`.  The docker image tag that is generated contains a useful timestamp and the current HEAD git sha of the project that you are on.
+As you can see `ufo docker build` shells out and calls `docker build -t tongueroo/demo-ufo:ufo-2017-06-11T22-18-03-a18aa30 -f Dockerfile .`.  The docker image tag that is generated contains a useful timestamp and the current HEAD git sha of the project that you are on.
 
 By default when you are running `ufo docker build` directly it does not push the docker image to the registry.  If you would like it to push the built image to a registry at the end of the build use the `--push` flag.
 

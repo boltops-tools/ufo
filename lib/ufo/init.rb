@@ -6,8 +6,8 @@ module Ufo
     def self.cli_options
       [
         [:force, type: :boolean, desc: "Bypass overwrite are you sure prompt for existing files."],
-        [:image, required: true, desc: "Docker image name without the tag. Example: tongueroo/hi. Configures ufo/settings.yml"],
-        [:app, required: true, desc: "App name. Preferably one word. Used in the generated ufo/task_definitions.rb."],
+        [:image, required: true, desc: "Docker image name without the tag. Example: tongueroo/demo-ufo. Configures ufo/settings.yml"],
+        [:app, desc: "App name. Preferably one word. Used in the generated ufo/task_definitions.rb.  If not specified then the app name is inferred as the folder name."],
         [:launch_type, default: "ec2", desc: "ec2 or fargate."],
         [:execution_role_arn, desc: "execution role arn used by tasks, required for fargate."],
         [:template, desc: "Custom template to use."],
@@ -54,12 +54,15 @@ module Ufo
 
     def init_files
       # map variables
-      @app = options[:app]
+      @app = options[:app] || inferred_app
       @image = options[:image]
       @execution_role_arn_input = get_execution_role_arn_input
       # copy the files
       puts "Setting up ufo project..."
-      directory ".", exclude_pattern: /(\.git)/
+      exclude_pattern = File.exist?("#{Ufo.root}/Dockerfile") ?
+                          /(\.git|Dockerfile)/ :
+                          /(\.git)/
+      directory ".", exclude_pattern: exclude_pattern
     end
 
     def upsert_gitignore

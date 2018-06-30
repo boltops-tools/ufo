@@ -92,7 +92,7 @@ The shared variables are set in the variables folder:
 **ufo/variables/base.rb**:
 
 ```ruby
-@image = helper.full_image_name # includes the git sha tongueroo/hi:ufo-[sha].
+@image = helper.full_image_name # includes the git sha tongueroo/demo-ufo:ufo-[sha].
 @cpu = 128
 @memory_reservation = 256
 @environment = helper.env_file(".env")
@@ -131,7 +131,7 @@ Let's take a look at one of the generated files: `.ufo/output/demo-web.json`.
       "containerDefinitions": [
         {
           "name": "web",
-          "image": "tongueroo/hi:ufo-2017-06-11T22-22-32-a18aa30",
+          "image": "tongueroo/demo-ufo:ufo-2017-06-11T22-22-32-a18aa30",
           "cpu": 128,
           "memoryReservation": 256,
           "portMappings": [

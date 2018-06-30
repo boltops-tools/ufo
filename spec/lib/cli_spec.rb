@@ -8,12 +8,12 @@ describe Ufo::CLI do
     context "docker" do
       it "build builds image" do
         out = execute("exe/ufo docker build #{@args}")
-        expect(out).to include("docker build -t tongueroo/hi")
+        expect(out).to include("docker build -t tongueroo/demo-ufo")
       end
 
       it "tag shows the tag" do
         out = execute("exe/ufo docker name #{@args}")
-        expect(out).to match(%r{tongueroo/hi:ufo-.{7}})
+        expect(out).to match(%r{tongueroo/demo-ufo:ufo-.{7}})
       end
     end
 

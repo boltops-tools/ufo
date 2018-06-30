@@ -88,7 +88,7 @@ Since ufo builds the Docker image every time there's a deployment you will end u
 You should see something like this:
 
     Cleaning up docker images...
-    Running: docker rmi tongueroo/hi:ufo-2017-06-12T06-46-12-a18aa30
+    Running: docker rmi tongueroo/demo-ufo:ufo-2017-06-12T06-46-12-a18aa30
 
 If you are using DockerHub or another registry, ufo does not automatically clean up images.
 

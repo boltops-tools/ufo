@@ -17,7 +17,7 @@ module Ufo
       elsif version.include?(':') && !version.include?(":ufo-")
         version
       else # assume git sha
-        # tongueroo/hi:ufo-2018-06-21T15-03-52-ac60240
+        # tongueroo/demo-ufo:ufo-2018-06-21T15-03-52-ac60240
         from_git_sha(version)
       end
     end
