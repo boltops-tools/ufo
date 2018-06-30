@@ -16,6 +16,6 @@ The precedence:
 1. UFO_ENV_EXTRA - takes highest precedence
 2. `.ufo/current` env-extra setting - takes lower precedence
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/params.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/variables.md %}">Next Step</a>
+<a id="prev" class="btn btn-basic" href="{% link _docs/ufo-env.md %}">Back</a>
+<a id="next" class="btn btn-primary" href="{% link _docs/ufo-current.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>

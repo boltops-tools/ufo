@@ -60,6 +60,6 @@ By convention, if the container name is 'web' in the task definition. Deployment
 
 For non-web container the `--elb` option must be explicitly set to `--elb=true` if you want a load balancer to be created.
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/settings.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/params.md %}">Next Step</a>
+<a id="prev" class="btn btn-basic" href="{% link _docs/ufo-current.md %}">Back</a>
+<a id="next" class="btn btn-primary" href="{% link _docs/route53-support.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>

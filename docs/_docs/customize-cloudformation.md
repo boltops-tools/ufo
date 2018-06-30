@@ -29,4 +29,6 @@ UFO_ENV_EXTRA=2 ufo ship demo-web --cluster dev | development-demo-web-2
 
 The CloudFormation stack is currently generated from a template. The source code for this template is located at [cfn/stack.yml](https://github.com/tongueroo/ufo/blob/master/lib/cfn/stack.yml).  This implementation might change in the future.
 
-
+<a id="prev" class="btn btn-basic" href="{% link _docs/why-cloudformation.md %}">Back</a>
+<a id="next" class="btn btn-primary" href="{% link _docs/upgrade4.md %}">Next Step</a>
+<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>

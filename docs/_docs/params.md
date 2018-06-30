@@ -32,7 +32,7 @@ ERB and [shared variables]({% link _docs/variables.md %}) are available in the p
 
 NOTE: The params.yml file does not have access to the `task_definition_name` helper method. That is only available in the `task_definitions.rb` template_definition code blocks.
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/load-balancer.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/ufo-env.md %}">Next Step</a>
+<a id="prev" class="btn btn-basic" href="{% link _docs/settings-cfn.md %}">Back</a>
+<a id="next" class="btn btn-primary" href="{% link _docs/variables.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
 
