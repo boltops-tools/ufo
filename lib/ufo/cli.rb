@@ -166,6 +166,12 @@ module Ufo
       Releases.new(service, options).list
     end
 
+    desc "stop SERVICE", "Stop tasks from old deployments.  Can speed up deployments with network load balancer."
+    long_desc Help.text(:stop)
+    def stop(service=:current)
+      Stop.new(service, options).run
+    end
+
     desc "completion *PARAMS", "Prints words for auto-completion."
     long_desc Help.text("completion")
     def completion(*params)

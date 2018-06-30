@@ -3,6 +3,7 @@ require 'colorize'
 module Ufo
   class UfoError < RuntimeError; end
   class ShipmentOverridden < UfoError; end
+  autoload :KillTask, 'ufo/ship/kill_task'
 
   class Ship < Base
     def initialize(service, options={})
@@ -23,6 +24,7 @@ module Ufo
 
       ensure_log_group_exist
       ensure_cluster_exist
+      stop_old_tasks if @options[:stop_old_tasks]
       success = deploy_stack
 
       return if @options[:mute] || !@options[:wait]
@@ -30,6 +32,23 @@ module Ufo
         puts "Software shipped!"
       else
         puts "Software fail to ship."
+      end
+    end
+
+    # Start a thread that will poll for ecs deployments and kill of tasks
+    # in old deployments.
+    # This must be done in a thread because the stack update process is blocking.
+    def stop_old_tasks
+      # only works when deployment is blocking
+      return unless @options[:wait]
+
+      Thread.new do
+        stop = Ufo::Stop.new(@service, @options.merge(mute: true))
+        while true
+          stop.log "checking for old tasks and waiting for 10 seconds"
+          stop.run
+          sleep 10
+        end
       end
     end
 

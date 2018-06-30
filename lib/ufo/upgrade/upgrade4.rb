@@ -123,6 +123,7 @@ EOL
       text =<<-EOL
 .ufo/current
 .ufo/data
+.ufo/log
 .ufo/output
 EOL
       if File.exist?(".gitignore")
