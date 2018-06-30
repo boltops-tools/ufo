@@ -55,7 +55,7 @@ Notice at the very end, the *current* `Dockerfile`'s FROM statement has been upd
 ## Options
 
 ```
-[--push], [--no-push]
+[--push], [--no-push]  
                        # Default: true
 ```
 

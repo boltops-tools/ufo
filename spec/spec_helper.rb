@@ -16,7 +16,7 @@ ENV['UFO_ROOT'] = "tmp/project"
 module Helpers
   def create_ufo_project
     FileUtils.rm_rf(Ufo.root)
-    execute("exe/ufo init --app hi --image tongueroo/demo-ufo")
+    execute("exe/ufo init --app demo --image tongueroo/demo-ufo")
     create_test_settings
   end
 

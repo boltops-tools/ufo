@@ -119,9 +119,9 @@ If you are using DockerHub or another registry, ufo does not automatically clean
 [--task=TASK]                              # ECS task name, to override the task name convention.
 [--wait], [--no-wait]                      # Wait for deployment to complete
                                            # Default: true
-[--verbose], [--no-verbose]
-[--mute], [--no-mute]
-[--noop], [--no-noop]
+[--verbose], [--no-verbose]                
+[--mute], [--no-mute]                      
+[--noop], [--no-noop]                      
 [--cluster=CLUSTER]                        # Cluster.  Overrides .ufo/settings.yml.
 ```
 

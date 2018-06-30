@@ -36,9 +36,9 @@ By default the clean command keeps the most 3 recent docker images. If you would
 ## Options
 
 ```
-[--keep=N]
+[--keep=N]                 
                            # Default: 3
-[--tag-prefix=TAG_PREFIX]
+[--tag-prefix=TAG_PREFIX]  
                            # Default: ufo
 ```
 

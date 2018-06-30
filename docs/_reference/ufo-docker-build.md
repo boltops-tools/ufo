@@ -86,6 +86,6 @@ You can specify docker build options with the `UFO_DOCKER_BUILD_OPTIONS` environ
 ## Options
 
 ```
-[--push], [--no-push]
+[--push], [--no-push]  
 ```
 

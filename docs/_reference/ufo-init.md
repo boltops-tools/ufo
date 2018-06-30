@@ -5,7 +5,7 @@ reference: true
 
 ## Usage
 
-    ufo init --app=APP --image=IMAGE
+    ufo init --image=IMAGE
 
 ## Description
 
@@ -18,8 +18,8 @@ The `ufo init` command provides a way to quickly setup a project to be ufo ready
 For this example we will use [tongueroo/demo-ufo](https://github.com/tongueroo/demo-ufo) which is a small test sinatra app.  Let's run the command in our newly clone project.
 
     $ git clone https://github.com/tongueroo/demo-ufo.git
-    $ cd hi
-    $ ufo init --app=hi --image=tongueroo/demo-ufo
+    $ cd demo-ufo
+    $ ufo init --app=demo --image=tongueroo/demo-ufo
     Setting up ufo project...
           create  .ufo/settings.yml
           create  .ufo/task_definitions.rb
@@ -36,7 +36,7 @@ For this example we will use [tongueroo/demo-ufo](https://github.com/tongueroo/d
 
     ufo init --image httpd --app demo
     ufo init --image 123456789012.dkr.ecr.us-west-2.amazonaws.com/myimage --app demo
-    ufo init --image tongueroo/demo-ufo --app hi --launch-type fargate --execution-role-arn arn:aws:iam::123456789012:role/ecsTaskExecutionRole
+    ufo init --image tongueroo/demo-ufo --app demo --launch-type fargate --execution-role-arn arn:aws:iam::123456789012:role/ecsTaskExecutionRole
     ufo init --image httpd --app demo --vpc-id vpc-123
 
 ## Important options
@@ -49,10 +49,14 @@ The `image` is the base portion of image name that will be pushed to the docker 
 
 The generated `tongueroo/demo-ufo:ufo-2018-02-08T21-04-02-3c86158` image name gets pushed to the docker registry.
 
-The `--vpc-id` option is optional but very useful. If not specified then ufo will use the default vpc for the network settings like subnets and security groups.
+The `--vpc-id` option is optional but very useful. If not specified then ufo will use the default vpc for the network settings like subnets and security groups, which might not be what you want.
 
-* .ufo/.balancer/profiles/default.yml
-* .ufo/params.yml
+## Inferred App Name
+
+The `--app` option is inferred and set as the parent folder name.  So if the folder is named demo, then the app is set as demo.
+
+    cd demo
+    ufo init --image tongueroo/demo-ufo # same as --app demo
 
 ## Directory Structure
 
@@ -75,11 +79,11 @@ For a explanation of the folders and files refer to [Structure]({% link _docs/st
 
 For ECS Fargate, the ECS task definition structure is a bit different.  To initialize a project to support Fargate use the `--launch-type fargate` option.  You'll be prompted for a execution role arn.  This value gets added to the generated `.ufo/variables/base.rb` and used in the `.ufo/templates/main.json.erb`.
 
-    ufo init --image tongueroo/demo-ufo --app hi --force --launch-type fargate
+    ufo init --image tongueroo/demo-ufo --app demo --force --launch-type fargate
 
 You can also generate the init ufo files and bypass the prompt by providing the `--execution-role-arn` option upfront.
 
-    ufo init --image tongueroo/demo-ufo --app hi --force --launch-type fargate --execution-role-arn arn:aws:iam::123456789012:role/ecsTaskExecutionRole
+    ufo init --image tongueroo/demo-ufo --app demo --force --launch-type fargate --execution-role-arn arn:aws:iam::123456789012:role/ecsTaskExecutionRole
 
 Important: You will need to adjust adjust the generated `.ufo/params.yml` and set the subnet and security_group values which are required for Fargate.
 
@@ -87,21 +91,21 @@ Important: You will need to adjust adjust the generated `.ufo/params.yml` and se
 
 If you would like the `ufo init` command to use your own custom templates, you can achieve this with the `--template` and `--template-mode` options.  Example:
 
-    ufo init --app=hi --image=tongueroo/demo-ufo --template=tongueroo/ufo-custom-template
+    ufo init --app=demo --image=tongueroo/demo-ufo --template=tongueroo/ufo-custom-template
 
 This will clone the repo on GitHub into the `~/.ufo/templates/tongueroo/ufo-custom-template` and use that as an additional template source.  The default `--template-mode=additive` mode means that if there's a file in `tongueroo/ufo-custom-template` that exists it will use that in place of the default template files.
 
 If you do not want to use any of the original default template files within the ufo gem at all, you can use the `--template-mode=replace` mode. Replace mode will only use templates from the provided `--template` option.  Example:
 
-    ufo init --app=hi --image=tongueroo/demo-ufo --template=tongueroo/ufo-custom-template --template-mode=replace
+    ufo init --app=demo --image=tongueroo/demo-ufo --template=tongueroo/ufo-custom-template --template-mode=replace
 
 You can also specific the full GitHub url. Example:
 
-    ufo init --app=hi --image=tongueroo/demo-ufo --template=https://github.com/tongueroo/ufo-custom-template
+    ufo init --app=demo --image=tongueroo/demo-ufo --template=https://github.com/tongueroo/ufo-custom-template
 
 If you would like to use a local template that is not on GitHub, then created a top-level folder in `~/.ufo/templates` without a subfolder. Example:
 
-    ufo init --app=hi --image=tongueroo/demo-ufo --template=my-custom # uses ~/.ufo/templates/my-custom
+    ufo init --app=demo --image=tongueroo/demo-ufo --template=my-custom # uses ~/.ufo/templates/my-custom
 
 
 ## Options
@@ -109,7 +113,7 @@ If you would like to use a local template that is not on GitHub, then created a 
 ```
 [--force]                                  # Bypass overwrite are you sure prompt for existing files.
 --image=IMAGE                              # Docker image name without the tag. Example: tongueroo/demo-ufo. Configures ufo/settings.yml
---app=APP                                  # App name. Preferably one word. Used in the generated ufo/task_definitions.rb.
+[--app=APP]                                # App name. Preferably one word. Used in the generated ufo/task_definitions.rb.  If not specified then the app name is inferred as the folder name.
 [--launch-type=LAUNCH_TYPE]                # ec2 or fargate.
                                            # Default: ec2
 [--execution-role-arn=EXECUTION_ROLE_ARN]  # execution role arn used by tasks, required for fargate.
@@ -118,9 +122,9 @@ If you would like to use a local template that is not on GitHub, then created a 
 [--vpc-id=VPC_ID]                          # Vpc id. For settings/network/default.yml.
 [--ecs-subnets=one two three]              # Subnets for ECS tasks, defaults to --elb-subnets set to. For settings/network/default.yml
 [--elb-subnets=one two three]              # Subnets for ELB. For settings/network/default.yml
-[--verbose], [--no-verbose]
-[--mute], [--no-mute]
-[--noop], [--no-noop]
+[--verbose], [--no-verbose]                
+[--mute], [--no-mute]                      
+[--noop], [--no-noop]                      
 [--cluster=CLUSTER]                        # Cluster.  Overrides .ufo/settings.yml.
 ```
 
