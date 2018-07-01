@@ -28,10 +28,9 @@ In this way, you can customize and override any property associated with any res
 
 Here's a list of the resources in the [cfn/stack.yml](https://github.com/tongueroo/ufo/blob/master/lib/cfn/stack.yml) that you can customize:
 
-* Dns
 * Ecs
-* EcsSecurityGroupRule
 * EcsSecurityGroup
+* EcsSecurityGroupRule
 * Elb
 * ElbSecurityGroup
 * Listener
