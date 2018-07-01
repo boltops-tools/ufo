@@ -9,7 +9,9 @@ Under the hood, ufo creates most of the required resources with a CloudFormation
 
 ## Settings
 
-The recommended approach to customize the CloudFormation resources is by adding properties to `.ufo/settings/cfn/default.yml`.  More info here: [Settings Cfn]({% link _docs/settings-cfn.md %})
+The recommended approach to customize the CloudFormation resources is by adding properties to `.ufo/settings/cfn/default.yml`.
+
+{% include cfn-customize.md %}
 
 ## Override Cfn Template
 
