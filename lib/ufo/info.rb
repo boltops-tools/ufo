@@ -14,7 +14,7 @@ module Ufo
     end
 
     # Passing in service so method can be used else where.
-    def load_balancer_dns(service)
+    def load_balancer(service)
       load_balancer = service.load_balancers.first
       return unless load_balancer
 
@@ -25,10 +25,9 @@ module Ufo
       load_balancer_arn = target_group.load_balancer_arns.first # assume first only
 
       resp = elb.describe_load_balancers(load_balancer_arns: [load_balancer_arn])
-      load_balancer = resp.load_balancers.first
-      load_balancer.dns_name
+      resp.load_balancers.first
     end
-    memoize :load_balancer_dns
+    memoize :load_balancer
 
     def service
       return unless stack

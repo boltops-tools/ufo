@@ -13,6 +13,10 @@ The pull request for that code is here [ufo/pull/42](https://github.com/tonguero
 
 The results of the exercise confirm my gut.  Though the CloudFormation implementation requires more upfront investment, it ultimately pays off.  For example, route53 DNS support was added to ufo easily and quickly.  Sometimes the learning curve of CloudFormation can be a deterrent, so I hope that these thoughts help.
 
+You can check the resources created with CloudFormation by clicking on the stack name of in the CloudFormation console.
+
+<img src="/img/docs/cloudformation-resources.png" class="doc-photo" />
+
 <a id="prev" class="btn btn-basic" href="{% link _docs/faq.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/customize-cloudformation.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>

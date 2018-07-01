@@ -34,8 +34,11 @@ module Ufo
       puts "   Desired count: #{service.desired_count}"
       puts "   Launch type: #{service.launch_type}"
       puts "   Task definition: #{service.task_definition.split('/').last}"
-      elb_dns = info.load_balancer_dns(service)
-      puts "   Elb: #{elb_dns}" if elb_dns
+      elb = info.load_balancer(service)
+      if elb
+        puts "   Elb: #{elb.dns_name}"
+        puts "   Elb type: #{elb.type}"
+      end
       puts "   Route53: #{info.route53_dns}" if info.route53_dns
     end
 

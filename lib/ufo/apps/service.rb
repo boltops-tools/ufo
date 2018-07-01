@@ -44,7 +44,8 @@ class Ufo::Apps
 
     def dns
       return 'dns' if ENV['TEST']
-      info.load_balancer_dns(@service)
+      elb = info.load_balancer(@service)
+      elb.dns_name if elb
     end
 
     def info
