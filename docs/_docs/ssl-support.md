@@ -25,13 +25,17 @@ Once this is configured, you deploy the app again:
 
 Network Load Balancers work at layer 4, so they do not support SSL termination because SSL happens higher up in the OSI model layers. With Network Load Balancers you handle SSL termination within your app with the app server you are using.  For example, it could be apache, nginx or tomcat.
 
-You also will need to configure the target group to check the port that your app server is listening to and configure the health_check_protocol to HTTPS.  Here's an example:
+You also will need to also configure the target group to check the port that your app server is listening to and configure the health_check_protocol to HTTPS.  Here's an example:
 
 ```
+listener:
+  port: 443
 target_group:
   port: 443
   health_check_protocol: HTTPS
 ```
+
+The protocol in the case of the network load balancer is TCP and is configured to TCP by default by ufo for Network Load Balancers, so you don't have to configure it.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/load-balancer.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/route53-support.md %}">Next Step</a>

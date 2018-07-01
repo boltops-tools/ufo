@@ -54,6 +54,13 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Condition: CreateElbIsTrue
     Properties:
+<% if ENV['UFO_FORCE_ELB'] -%>
+# Error: SetSubnets is not supported for load balancers of type 'network'
+# Happens: When changing subnets for an ELB
+# Solution: Rename the ELB to force a replacement of it
+<% random = (0...3).map { (65 + rand(26)).chr }.join.downcase %>
+      Name: <%= "#{@pretty_service_name}-#{random}" %>
+<% end -%>
       Type: <%= @elb_type %>
       Tags:
       - Key: Name
@@ -118,7 +125,6 @@ Resources:
       Protocol: <%= @default_listener_protocol %>
 <%= custom_properties(:Listener) %>
 
-<% # network load balancers dont have security groups -%>
 <% if @elb_type == "application" -%>
   ElbSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -228,7 +234,7 @@ Resources:
       GroupId: !GetAtt EcsSecurityGroup.GroupId
       Description: application elb access to ecs
 <%= custom_properties(:EcsSecurityGroupRule) %>
-
+<% end -%>
 <% if @create_route53 -%>
   Dns:
     Type: AWS::Route53::RecordSet

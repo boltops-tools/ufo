@@ -83,7 +83,10 @@ module Ufo
 
     def stack_options
       save_template
-      # puts "EARLY EXIT"; exit 1
+      if ENV['SAVE_TEMPLATE_EXIT']
+        puts "Template saved. Exiting."
+        exit 1
+      end
       {
         parameters: parameters,
         stack_name: @stack_name,

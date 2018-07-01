@@ -176,7 +176,7 @@ class Ufo::Stack
       reason = event["resource_status_reason"]
       messages_map.each do |pattern, message|
         if reason =~ pattern
-          return "#{message} Refer to https://ufoships.com/docs/rollback-errors for more info."
+          return message
         end
       end
 
@@ -187,6 +187,7 @@ class Ufo::Stack
       {
         /CloudFormation cannot update a stack when a custom-named resource requires replacing/ => "A workaround is to run ufo again with STATIC_NAME=0 and to switch to dynamic names for resources. Then run ufo again with STATIC_NAME=1 to get back to statically name resources. Note, there are caveats with the workaround.",
         /cannot be associated with more than one load balancer/ => "There's was an issue updating the stack. Target groups can only be associated with one load balancer at a time. The workaround for this is to use UFO_FORCE_TARGET_GROUP=1 and run the command again. This will force the recreation of the target group resource.",
+        /SetSubnets is not supported for load balancers of type/ => "Changing subnets for Network Load Balancers is currently not supported. You can try workarouding this with UFO_FORCE_ELB=1 and run the command again. This will force the recreation of the elb resource."
       }
     end
 
