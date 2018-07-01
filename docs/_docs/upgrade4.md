@@ -44,6 +44,6 @@ File | Changes
 .ufo/settings/cfn/default.yml | Starter cfn settings file.
 .ufo/settings/network/default.yml | This generated file will have the vpc and subnets that you specified above.  You can change them directly in this file to control what network settings ufo uses.
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/customize-cloudformation.md %}">Back</a>
+<a id="prev" class="btn btn-basic" href="{% link _docs/stuck-cloudformation.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/run-in-pieces.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
