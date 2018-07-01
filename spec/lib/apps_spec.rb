@@ -8,6 +8,9 @@ describe Ufo::Apps do
       JSON.load(IO.read("spec/fixtures/apps/describe_services.json"))
     end
     it "displays info" do
+      allow(apps).to receive(:service_info).and_return([
+        "demo-web", "task-def", "1", "EC2", "yes"
+      ])
       apps.display_info(describe_tasks_response)
     end
   end

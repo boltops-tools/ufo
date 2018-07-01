@@ -36,9 +36,14 @@ module Ufo
       table = Text::Table.new
       table.head = ["Service Name", "Task Definition", "Running", "Launch type", "Ufo?"]
       resp["services"].each do |s|
-        table.rows << Service.new(s, @options).to_a
+        table.rows << service_info(s)
       end
-      puts table
+      puts table unless ENV['TEST']
+    end
+
+    # for specs
+    def service_info(s)
+      Service.new(s, @options).to_a
     end
   end
 end

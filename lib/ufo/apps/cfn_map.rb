@@ -9,6 +9,8 @@ class Ufo::Apps
       @map = {}
     end
 
+    # Example:
+    #   {"development-demo-web-Ecs-1L3WUTJFFM5JV"=>"demo-web"}
     def map
       return @map if @populated
 
