@@ -1,4 +1,7 @@
 describe Ufo::Apps do
+  before(:each) do
+    create_ufo_project
+  end
   let(:apps) do
     Ufo::Apps.new({})
   end
