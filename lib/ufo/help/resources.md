@@ -6,8 +6,8 @@ Displays information about the service.
     Resources:
     Ecs - AWS::ECS::Service:
       arn:aws:ecs:us-east-1:111111111111:service/dev-demo-web-Ecs-KN8OVQ7L2N40
-    EcsCrossSecurityGroupRule - AWS::EC2::SecurityGroupIngress:
-      EcsCrossSecurityGroupRule
+    EcsSecurityGroupRule - AWS::EC2::SecurityGroupIngress:
+      EcsSecurityGroupRule
     EcsSecurityGroup - AWS::EC2::SecurityGroup:
       sg-63c17228
     Elb - AWS::ElasticLoadBalancingV2::LoadBalancer:

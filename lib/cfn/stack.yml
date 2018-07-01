@@ -118,6 +118,8 @@ Resources:
       Protocol: <%= @default_listener_protocol %>
 <%= custom_properties(:Listener) %>
 
+<% # network load balancers dont have security groups -%>
+<% if @elb_type == "application" -%>
   ElbSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Condition: CreateElbIsTrue
@@ -138,6 +140,7 @@ Resources:
       - Key: Name
         Value: <%= @pretty_service_name %>-elb
 <%= custom_properties(:ElbSecurityGroup) %>
+<% end -%>
 
   Ecs:
     Type: AWS::ECS::Service
@@ -214,7 +217,7 @@ Resources:
 
 <% if @elb_type == "application" -%>
   # Allow all traffic from ELB SG to ECS SG
-  EcsCrossSecurityGroupRule:
+  EcsSecurityGroupRule:
     Type: AWS::EC2::SecurityGroupIngress
     Condition: CreateElbIsTrue
     Properties:
@@ -223,9 +226,8 @@ Resources:
       ToPort: '65535'
       SourceSecurityGroupId: !GetAtt ElbSecurityGroup.GroupId
       GroupId: !GetAtt EcsSecurityGroup.GroupId
-      Description: elb access to ecs
-<%= custom_properties(:EcsCrossSecurityGroupRule) %>
-<% end -%>
+      Description: application elb access to ecs
+<%= custom_properties(:EcsSecurityGroupRule) %>
 
 <% if @create_route53 -%>
   Dns:

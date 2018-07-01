@@ -36,7 +36,7 @@ Here's a list of the resources in the [cfn/stack.yml](https://github.com/tonguer
 
 * Dns
 * Ecs
-* EcsCrossSecurityGroupRule
+* EcsSecurityGroupRule
 * EcsSecurityGroup
 * Elb
 * ElbSecurityGroup
