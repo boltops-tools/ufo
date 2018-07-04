@@ -21,7 +21,7 @@ TargetGroup:
     TargetGroupAttributes:
     - Key: deregistration_delay.timeout_seconds
       Value: 8
-..
+...
 ```
 
 In this way, you can customize and override any property associated with any resource created the ufo CloudFormation stack.

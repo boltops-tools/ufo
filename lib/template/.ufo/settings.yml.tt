@@ -12,7 +12,6 @@ base:
   # There are some cavaets with this. Updating properties on resources that require
   # replacment might not work. For example, adding and removing a load balancer.
   # In these cases, you must delete the entire ecs service and recreate it.
-  pretty_name: false
 
 development:
   # cluster: development
