@@ -1,23 +1,23 @@
 module Ufo
   class Init < Sequence
-    add_runtime_options! # force, pretend, quiet, skip options
-      # https://github.com/erikhuda/thor/blob/master/lib/thor/actions.rb#L49
+    include Network::Helper
 
     # Ugly, this is how I can get the options from to match with this Thor::Group
     def self.cli_options
       [
         [:force, type: :boolean, desc: "Bypass overwrite are you sure prompt for existing files."],
-        [:image, required: true, desc: "Docker image name without the tag. Example: tongueroo/hi. Configures ufo/settings.yml"],
-        [:app, required: true, desc: "App name. Preferably one word. Used in the generated ufo/task_definitions.rb."],
+        [:image, required: true, desc: "Docker image name without the tag. Example: tongueroo/demo-ufo. Configures ufo/settings.yml"],
+        [:app, desc: "App name. Preferably one word. Used in the generated ufo/task_definitions.rb.  If not specified then the app name is inferred as the folder name."],
         [:launch_type, default: "ec2", desc: "ec2 or fargate."],
         [:execution_role_arn, desc: "execution role arn used by tasks, required for fargate."],
         [:template, desc: "Custom template to use."],
         [:template_mode, desc: "Template mode: replace or additive."],
+        [:vpc_id, desc: "Vpc id. For settings/network/default.yml."],
+        [:ecs_subnets, type: :array, desc: "Subnets for ECS tasks, defaults to --elb-subnets set to. For settings/network/default.yml"],
+        [:elb_subnets, type: :array, desc: "Subnets for ELB. For settings/network/default.yml"],
       ]
     end
-    cli_options.each do |args|
-      class_option *args
-    end
+    cli_options.each { |o| class_option(*o) }
 
     def setup_template_repo
       return unless @options[:template]&.include?('/')
@@ -48,26 +48,29 @@ module Ufo
       FileUtils.cd(dest)
     end
 
+    def set_network_options
+      configure_network_settings
+    end
+
     def init_files
       # map variables
-      @app = options[:app]
+      @app = options[:app] || inferred_app
       @image = options[:image]
       @execution_role_arn_input = get_execution_role_arn_input
       # copy the files
       puts "Setting up ufo project..."
-      directory ".", exclude_pattern: /(\.git|templates)/
-
-      if @options[:launch_type] == "fargate"
-        copy_file ".ufo/templates/fargate.json.erb", ".ufo/templates/main.json.erb"
-      else
-        copy_file ".ufo/templates/main.json.erb"
-      end
+      exclude_pattern = File.exist?("#{Ufo.root}/Dockerfile") ?
+                          /(\.git|Dockerfile)/ :
+                          /(\.git)/
+      directory ".", exclude_pattern: exclude_pattern
     end
 
     def upsert_gitignore
       text =<<-EOL
-.ufo/output
+.ufo/current
 .ufo/data
+.ufo/log
+.ufo/output
 EOL
       if File.exist?(".gitignore")
         append_to_file ".gitignore", text
@@ -77,9 +80,7 @@ EOL
     end
 
     def upsert_dockerignore
-      text =<<-EOL
-.ufo
-EOL
+      text = ".ufo\n"
       if File.exist?(".dockerignore")
         append_to_file ".dockerignore", text
       else
@@ -90,18 +91,30 @@ EOL
     def user_message
       puts "Starter ufo files created."
       puts <<-EOL
+Congrats 🎉 You have successfully set up ufo for your project.
 #{"="*64}
-Congrats 🎉 You have successfully set up ufo for your project. To deploy to ECS:
 
-  ufo ship #{@app}-web
+## Task Definition Customizations
 
 If you need to customize the ECS task definition to configure things like memory and cpu allocation. You can do this by adjusting the files the .ufo/variables folder. These variables get applied to the .ufo/templates/main.json.erb task definition json that is passed to the ECS register task definition api.
 
 Some additional starter example roles for your apps were set up in in .ufo/task_definitions.rb.  Be sure to check it out and adjust it for your needs.
 
-This allows you to fully customize and control your environment to fit your application's needs.
+## Settings files
 
-More info: http://ufoships.com
+Additionally, ufo generated starter settings files at that further allow you to customize more settings.
+
+* .ufo/settings.yml: general settings.
+* .ufo/settings/cfn/default.yml: properties of CloudFormation resources that ufo creates.
+* .ufo/settings/network/default.yml: network settings.
+
+More more info refer to: http://ufoships.com/docs/settings/
+
+To deploy to ECS:
+
+  ufo current --service #{@app}-web
+  ufo ship
+
 EOL
     end
   end

@@ -6,15 +6,15 @@ The main command you use when using ufo is: `ufo ship`.  This command:
 
 Basic usage is:
 
-    ufo ship hi-web
+    ufo ship demo-web
 
 The ECS service gets created if the service does not yet exist on the cluster.
 
 ### Conventions
 
-By convention the task and service names match. If you need override to this convention then you can specific the task.  For example if you want to ship to the `hi-web-1` service and use the `hi-web` task, run:
+By convention the task and service names match. If you need override to this convention then you can specific the task.  For example if you want to ship to the `demo-web-1` service and use the `demo-web` task, run:
 
-    ufo ship hi-web-1 --task hi-web
+    ufo ship demo-web-1 --task demo-web
 
 ## Options in Detail
 
@@ -24,15 +24,31 @@ The command has a decent amount of options, you can see the options available wi
 
 As you can see there are plenty of options for `ufo ship`.  Let's demonstrate usage of them in a few examples.
 
-### Load Balancer Target Group
+### Load Balancer
 
-When you are deploying to a service with the word 'web' in it, ufo assumes that this is a web service that uses a load balancer in front of it.  This is also covered a in the [Conventions]({% link _docs/conventions.md %}) page.  The deploy will prompt you for the ELB `--target-group`  if the ECS does not yet exist.  For non-web container the `--target-group` option gets ignored.  The prommpt can be bypassed by specifying a valid `--target-group` option or specifying the `---no-target-group-prompt` option.
+ECS services can be associated with a Load Balancer upon creation. Ufo can automatically create a load balancer.  The options:
 
-    ufo ship hi-web --no-target-group-prompt
+1. Automatically create the ELB.
+2. Provide a target group from an existing ELB.
+3. No ELB is created.
 
-Or if you would like to specify the target-group upfront and not be bother with the prompted later you can use the `--target-group` option.
+Here are examples for each of them:
 
-    ufo ship hi-web --target-group=arn:aws:elasticloadbalancing:us-east-1:12345689:targetgroup/hi-web/12345
+    ufo ship demo-web --elb=true
+
+    # Use existing target group from pre-created ELB:
+    ufo ship demo-web --elb=arn:aws:elasticloadbalancing:us-east-1:123456789:targetgroup/target-name/2378947392743
+
+    # Disable creating elb and prompt:
+    ufo ship demo-web --elb=false
+
+Note, if the docker container's name is web then the `--elb` flag defaults to true automatically.
+
+If you need to create a network load balancer with pre-allocated EIPs, you can use `--elb-eip-ids`, example:
+
+    ufo deploy demo-web --elb-eip-ids eipalloc-a8de9ca1 eipalloc-a8de9ca2
+
+More info available at the [load balancer docs](http://ufoships.com/docs/load-balancer/).
 
 ### Deploying Task Definition without Docker Build
 
@@ -42,27 +58,37 @@ Let's you want skip the docker build phase and only want use ufo to deploy a tas
 
 By default when ufo updates the ECS service with the new task definition it does so asynchronuously. You then normally visit the ECS service console and then refresh until you see that the deployment is completed.  You can also have ufo poll and wait for the deployment to be done with the `--wait` option
 
-    ufo ship hi-web --wait
+    ufo ship demo-web --wait
 
 You should see output similar to this:
 
-    Shipping hi-web...
-    hi-web service updated on cluster with task hi-web
-    Waiting for deployment of task definition hi-web:8 to complete
+    Shipping demo-web...
+    demo-web service updated on cluster with task demo-web
+    Waiting for deployment of task definition demo-web:8 to complete
     ......
     Time waiting for ECS deployment: 31s.
     Software shipped!
+
+### Route 53 DNS Support
+
+Ufo can automatically create a "pretty" route53 record an set it to the created ELB dns name. This is done in by configuring the `.ufo/settings/network/[profile].yml` file. Example:
+
+    dns:
+      name: "{stack_name}.mydomain.com."
+      hosted_zone_name: mydomain.com. # dont forget the trailing period
+
+Refer to [Route53 Support](http://ufoships.com/docs/route53-support/) for more info.
 
 ### Cleaning up Docker Images Automatically
 
 Since ufo builds the Docker image every time there's a deployment you will end up with a long list of docker images.  Ufo automatically cleans up older docker images at the end of the deploy process if you are using AWS ECR.  By default ufo keeps the most recent 30 Docker images. This can be adjust with the `--ecr-keep` option.
 
-    docker ship hi-web --ecr-keep 2
+    docker ship demo-web --ecr-keep 2
 
 You should see something like this:
 
     Cleaning up docker images...
-    Running: docker rmi tongueroo/hi:ufo-2017-06-12T06-46-12-a18aa30
+    Running: docker rmi tongueroo/demo-ufo:ufo-2017-06-12T06-46-12-a18aa30
 
 If you are using DockerHub or another registry, ufo does not automatically clean up images.
 

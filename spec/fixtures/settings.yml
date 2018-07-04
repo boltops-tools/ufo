@@ -4,6 +4,8 @@ base:
   # clean_keep: 30 # cleans up docker images on your docker server.
   # ecr_keep: 30 # cleans up images on ECR and keeps this remaining amount. Defaults to keep all.
   # defaults when an new ECS service is created by ufo ship
+  cfn_profile: default
+  network_profile: default
 
 development:
   cluster: dev

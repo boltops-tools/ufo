@@ -8,12 +8,12 @@ describe Ufo::CLI do
     context "docker" do
       it "build builds image" do
         out = execute("exe/ufo docker build #{@args}")
-        expect(out).to include("docker build -t tongueroo/hi")
+        expect(out).to include("docker build -t tongueroo/demo-ufo")
       end
 
       it "tag shows the tag" do
         out = execute("exe/ufo docker name #{@args}")
-        expect(out).to match(%r{tongueroo/hi:ufo-.{7}})
+        expect(out).to match(%r{tongueroo/demo-ufo:ufo-.{7}})
       end
     end
 
@@ -39,7 +39,7 @@ describe Ufo::CLI do
 
     context "ship" do
       it "deploys software" do
-        out = execute("exe/ufo ship hi-web-prod #{@args} --no-wait")
+        out = execute("exe/ufo ship demo-web-prod #{@args} --no-wait")
         # cannot look for Software shipped! because
         #   ship.deploy unless ENV['TEST'] # to allow me to quickly test CLI portion only
         # just testing the CLI portion.  The ship class itself is tested via ship_spec.rb
@@ -49,7 +49,7 @@ describe Ufo::CLI do
 
     context "ships" do
       it "deploys software to multiple services" do
-        out = execute("exe/ufo ships hi-web-prod hi-worker-prod #{@args} --no-wait")
+        out = execute("exe/ufo ships demo-web-prod demo-worker-prod #{@args} --no-wait")
         # cannot look for Software shipped! because
         #   ship.deploy unless ENV['TEST'] # to allow me to quickly test CLI portion only
         # just testing the CLI portion.  The ship class itself is tested via ship_spec.rb

@@ -1,7 +1,7 @@
 require 'fileutils'
 require 'yaml'
 
-module Ufo
+class Ufo::Upgrade
   class Upgrade3
     def initialize(options)
       @options = options

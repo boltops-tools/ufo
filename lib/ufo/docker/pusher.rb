@@ -29,7 +29,7 @@ class Ufo::Docker
         end
       end
       took = Time.now - start_time
-      message << " Took #{pretty_time(took)}.".green
+      message << "\nDocker push took #{pretty_time(took)}.".green
       puts message unless @options[:mute]
     end
 
@@ -45,7 +45,7 @@ class Ufo::Docker
 
     # full_image - does not include the tag
     def image_name
-      settings["image"]
+      settings[:image]
     end
   end
 end

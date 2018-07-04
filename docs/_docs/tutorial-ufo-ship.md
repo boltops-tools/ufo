@@ -7,91 +7,87 @@ title: Deploy One App
 In this guide we have walked through what ufo does step by step.  First ufo builds the Docker image with `ufo docker build`.  Then it will build and register the ECS task definitions with the `ufo tasks` commands. Now we'll deploy the code to ECS.
 
 ```sh
-ufo ship hi-web
+ufo ship demo-web
 ```
 
 By convention, ufo will ship the docker container to an ECS cluster with the same value as UFO_ENV, which defaults to development.  So the command above is the same as:
 
 ```sh
-ufo ship hi-web --cluster development
-UFO_ENV=development ufo ship hi-web
+ufo ship demo-web --cluster development
+UFO_ENV=development ufo ship demo-web
 ```
 
-When you run `ufo ship hi-web`:
+When you run `ufo ship demo-web`:
 
 1. It builds the docker image.
 2. Generates a task definition and registers it.
 3. Updates the ECS service to use it.
 
-If the ECS service hi-web does not yet exist, ufo will create the service for you. Ufo will also automatically create the ECS cluster.
+If the ECS service demo-web does not yet exist, ufo will create the service for you. Ufo will also automatically create the ECS cluster.
 
-NOTE: If you are relying on this tool to create the cluster, you still need to associate ECS Container Instances to the cluster yourself.
+NOTE: Ufo creates the ECS cluster record, but you still need to associate ECS Container Instances to the cluster yourself.
 
-By convention, if the service has a container name web, you'll get prompted to create an ELB and specify a target group ARN.  The ELB and target group must already exist. You can bypass the prompt and specify the target group ARN as part of the ship command or with the `--no-target-group-prompt` option.  The ELB target group only gets associated with the ECS service if the service is being created for the first time.  If the service already exists then the `--target-group` parameter just gets ignored and the ECS task simply gets updated.  Example:
-
-
-```bash
-ufo ship hi-web --target-group=arn:aws:elasticloadbalancing:us-east-1:12345689:targetgroup/hi-web/12345
-```
-
-Let's go back to the original command and take a look at the output:
+By convention, if the service has a container name web, ufo will automatically create an Load Balancer.  Let's take a look at the example out from the `ufo ship`.  Some of the output has been removed for conciseness.
 
 ```sh
-ufo ship hi-web
-```
-
-The output should look something like this (some of the output has been removed for conciseness):
-
-```sh
-$ ufo ship hi-web
+$ ufo ship demo-web
 Building docker image with:
-  docker build -t tongueroo/hi:ufo-2017-06-12T06-46-12-a18aa30 -f Dockerfile .
+  docker build -t tongueroo/demo-ufo:ufo-2018-06-28T16-41-11-7e0af94 -f Dockerfile .
 ...
-Pushed tongueroo/hi:ufo-2017-06-12T06-46-12-a18aa30 docker image. Took 9s.
-Building Task Definitions...
-Generating Task Definitions:
-  ufo/output/hi-web.json
-  ufo/output/hi-worker.json
-  ufo/output/hi-clock.json
-Task Definitions built in ufo/output.
-hi-web task definition registered.
-Shipping hi-web...
-hi-web service updated on stag cluster with task hi-web
+Deploying demo-web...
+Ensuring log group for demo-web task definition exists
+Log group name: ecs/demo-web
+Creating stack development-demo-web...
+Generated template saved at: /tmp/ufo/development-demo-web/stack.yml
+Generated parameters saved at: /tmp/ufo/development-demo-web/parameters.yml
+04:41:27PM CREATE_IN_PROGRESS AWS::CloudFormation::Stack development-demo-web User Initiated
+04:41:31PM CREATE_IN_PROGRESS AWS::EC2::SecurityGroup ElbSecurityGroup
+04:41:31PM CREATE_IN_PROGRESS AWS::EC2::SecurityGroup EcsSecurityGroup
+04:41:31PM CREATE_IN_PROGRESS AWS::ElasticLoadBalancingV2::TargetGroup TargetGroup
+04:41:31PM CREATE_IN_PROGRESS AWS::EC2::SecurityGroup ElbSecurityGroup Resource creation Initiated
+04:41:32PM CREATE_IN_PROGRESS AWS::EC2::SecurityGroup EcsSecurityGroup Resource creation Initiated
+04:41:32PM CREATE_IN_PROGRESS AWS::ElasticLoadBalancingV2::TargetGroup TargetGroup Resource creation Initiated
+...
+04:44:46PM CREATE_COMPLETE AWS::ECS::Service Ecs
+04:44:48PM CREATE_COMPLETE AWS::CloudFormation::Stack development-demo-web
+Stack success status: CREATE_COMPLETE
+Time took for stack deployment: 3m 22s.
 Software shipped!
-Cleaning up docker images...
-Running: docker rmi tongueroo/hi:ufo-2017-06-11T20-32-16-a18aa30 tongueroo/hi:ufo-2017-06-11T20-27-44-bc80e84 tongueroo/hi:ufo-2017-06-11T20-02-18-bc80e84
+$
 ```
 
 Checking the ECS console you should see something like this:
 
 <img src="/img/tutorials/ecs-console-ufo-ship.png" class="doc-photo" />
 
-You have successfully shipped a docker image to ECS! 🍾🥂
+You have successfully deployed a Docker image to ECS! 🍾🥂
 
-## Skipping Previous Steps Method
+## Checking ECS Service
 
-You should notice that `ufo ship` re-built the docker image and re-registered the task definitions.  The `ufo ship` command is designed to run everything in one simple command, so we do not have to manually call the commands in the previous pages: `ufo build` and `ufo tasks`.
+Another way to check that the ECS service is running is with the `ufo ps` command.
 
-If you would like to skip the first 2 steps, then you can use the [ufo deploy]({% link _reference/ufo-deploy.md %}) instead.  The `ufo deploy` command will:
+    $ ufo ps demo-web
+    => Service: demo-web
+       Service name: development-demo-web-Ecs-12DRF2703Z3D2
+       Status: ACTIVE
+       Running count: 1
+       Desired count: 1
+       Launch type: EC2
+       Task definition: demo-web:82
+       Elb: develop-Elb-ZY1VARS3KP14-2141687965.us-east-1.elb.amazonaws.com
+    +----------+------+-------------+---------------+---------+-------+
+    |    Id    | Name |   Release   |    Started    | Status  | Notes |
+    +----------+------+-------------+---------------+---------+-------+
+    | e4426421 | web  | demo-web:82 | 5 minutes ago | RUNNING |       |
+    +----------+------+-------------+---------------+---------+-------+
 
-1. register the task definition in `.ufo/output/hi-web.json` unmodified
-2. update the ECS service
+## Ufo Current Tip
 
-Example:
+We've been typing the `demo-web` service name explicitly.  We can set the current service with the `ufo current` command to save us from typing each time.  Example:
 
-```sh
-ufo deploy hi-web
-```
-
-The output should look something like this:
-
-```sh
-Shipping hi-web...
-hi-web service updated on stag cluster with task hi-web
-Software shipped!
-```
-
-Normally you run everything together in one `ufo ship` command though.  Ufo takes a multiple step process and simplifies it down to a single command!
+    ufo current --service demo-web
+    ufo ship # now same as ufo ship demo-web
+    ufo ps # now same as ufo ps demo-web
 
 Congratulations 🎊 You have successfully built a Docker image, register it and deployed it to AWS ECS.
 

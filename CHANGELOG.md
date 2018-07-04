@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [4.0.0-prelease]
+- Major architecture changes
+- Fuller CLI Toolkit Commands
+- Load Balancer Support
+- Updated Tutorial Guide
+- Security Groups
+- Improved Fargate Support
+- Extra Env Support
+- CloudFormation Implementation
+- Upgrade Guide
+- ECS service created by CloudFormation now
+- ELB support: both application and network ELBs
+- Route53 support: associates ELB with DNS record
+- UFO_ENV_EXTRA concept introduced
+- Many additional CLI commands:
+- ufo apps
+- ufo cancel
+- ufo current
+- ufo network
+- ufo ps
+- ufo releases
+- ufo resources
+- ufo rollback
+
 ## [3.5.7]
 - display aws ecs run-task command
 - fix ufo init in help menu

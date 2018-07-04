@@ -2,6 +2,9 @@ require 'yaml'
 
 module Ufo
   class Setting
+    extend Memoist
+    autoload :Profile, "ufo/setting/profile"
+
     def initialize(check_ufo_project=true)
       @check_ufo_project = check_ufo_project
     end
@@ -9,12 +12,8 @@ module Ufo
     # data contains the settings.yml config.  The order or precedence for settings
     # is the project ufo/settings.yml and then the ~/.ufo/settings.yml.
     def data
-      return @data if @data
-
       if @check_ufo_project && !File.exist?(project_settings_path)
-        puts "ERROR: No settings file at #{project_settings_path}.  Are you sure you are in a project with ufo setup?"
-        puts "If you want to set up ufo for this prjoect, please create a settings file via: ufo init"
-        exit 1
+        Ufo.check_ufo_project!
       end
 
       # project based settings files
@@ -28,8 +27,10 @@ module Ufo
 
       all_envs = default.deep_merge(user.deep_merge(project))
       all_envs = merge_base(all_envs)
-      @@data = all_envs[Ufo.env] || all_envs["base"] || {}
+      data = all_envs[Ufo.env] || all_envs["base"] || {}
+      data.deep_symbolize_keys
     end
+    memoize :data
 
   private
     def load_file(path)

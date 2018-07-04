@@ -6,11 +6,18 @@ module Ufo
   class Sequence < Thor::Group
     include Thor::Actions
 
+    add_runtime_options! # force, pretend, quiet, skip options
+      # https://github.com/erikhuda/thor/blob/master/lib/thor/actions.rb#L49
+
     def self.source_paths
       [File.expand_path("../../template", __FILE__)]
     end
 
   private
+    def inferred_app
+      File.basename(Dir.pwd)
+    end
+
     def get_execution_role_arn_input
       return @execution_role_arn if @execution_role_arn
 

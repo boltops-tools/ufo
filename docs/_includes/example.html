@@ -2,16 +2,16 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-12 text-center">
-        <h2>Example: ufo ship hi-web</h2>
+        <h2>Example: ufo ship demo-web</h2>
         <hr class="star-primary">
       </div>
     </div>
     <div class='row'>
       <div class='col-md-offset-1 col-md-10'>
 {% highlight sh %}
-$ ufo ship hi-web
+$ ufo ship demo-web
 Building docker image with:
-  docker build -t tongueroo/hi:ufo-2017-06-11T19-43-19-bc80e84 -f Dockerfile .
+  docker build -t tongueroo/demo-ufo:ufo-2017-06-11T19-43-19-bc80e84 -f Dockerfile .
 Sending build context to Docker daemon 719.4 kB
 Step 1 : FROM ruby:2.3.3
  ---> 0e1db669d557
@@ -52,26 +52,26 @@ Step 11 : CMD bin/web
  ---> 1689ba53ca03
 Removing intermediate container f56d659a2c9e
 Successfully built 1689ba53ca03
-Docker image tongueroo/hi:ufo-2017-06-11T19-43-19-bc80e84 built.  Took 34s.
-The push refers to a repository [docker.io/tongueroo/hi]
+Docker image tongueroo/demo-ufo:ufo-2017-06-11T19-43-19-bc80e84 built.  Took 34s.
+The push refers to a repository [docker.io/tongueroo/demo-ufo]
 0826214f2b9a: Pushed
 ee30634e4a5d: Pushed
 277ff31e79b4: Layer already exists
 a361a4de05df: Layer already exists
 ufo-2017-06-11T19-43-19-bc80e84: digest: sha256:6381ff8d4413edf0c13926def1d55d0f805d169d686f59cdee3abb960b52eb9a size: 3464
-Pushed tongueroo/hi:ufo-2017-06-11T19-43-19-bc80e84 docker image. Took 10s.
+Pushed tongueroo/demo-ufo:ufo-2017-06-11T19-43-19-bc80e84 docker image. Took 10s.
 Building Task Definitions...
 Generating Task Definitions:
-  ufo/output/hi-web.json
-  ufo/output/hi-worker.json
-  ufo/output/hi-clock.json
+  ufo/output/demo-web.json
+  ufo/output/demo-worker.json
+  ufo/output/demo-clock.json
 Task Definitions built in ufo/output.
-hi-web task definition registered.
-Shipping hi-web...
-hi-web service updated on stag cluster with task hi-web
+demo-web task definition registered.
+Shipping demo-web...
+demo-web service updated on stag cluster with task demo-web
 Software shipped!
 Cleaning up docker images...
-Running: docker rmi tongueroo/hi:ufo-2017-06-11T11-37-00-bc80e84
+Running: docker rmi tongueroo/demo-ufo:ufo-2017-06-11T11-37-00-bc80e84
 $
 {% endhighlight %}
       </div>

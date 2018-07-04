@@ -1,7 +1,7 @@
 #!/bin/bash -xe
 
-# Generated started bin/deploy script.  Meant to be example only and should probably
-# be overridden.
+# Generated starter bin/deploy script example.
+# Meant to be overridden.
 
 # Only build one docker image and deploys it to multiple ECS services
 ufo ships <%= @app %>-{web,clock,worker}

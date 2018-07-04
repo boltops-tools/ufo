@@ -3,7 +3,7 @@
 # Trap ^C
 Signal.trap("INT") {
   puts "\nCtrl-C detected. Exiting..."
-  sleep 1
+  sleep 0.1
   exit
 }
 

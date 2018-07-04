@@ -1,20 +1,15 @@
-FROM ruby:2.5.0
-MAINTAINER Tung Nguyen <tongueroo@gmail.com>
+FROM ruby:2.5.1
 
-# This is just a sample Dockerfile. This is meant to be overriden.
-
-# Install bundle of gems first in a layer
-# so if the Gemfile doesnt chagne it wont have to install gems again
-WORKDIR /tmp
-COPY Gemfile* /tmp/
-RUN bundle install && rm -rf /root/.bundle/cache
-
-# Add the Rails app
-ENV HOME /root
 WORKDIR /app
-COPY . /app
-RUN bundle install
-RUN mkdir -p tmp/cache tmp/pids
+ADD Gemfile /app/Gemfile
+ADD Gemfile.lock /app/Gemfile.lock
+RUN bundle install --system
 
-EXPOSE 5001
+ADD . /app
+RUN bundle install --system
+
+EXPOSE 4567
+
+# If you do not have a bin/web wrapper file, create one or update this command
+RUN chmod a+x bin/web
 CMD ["bin/web"]

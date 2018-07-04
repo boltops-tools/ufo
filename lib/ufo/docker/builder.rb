@@ -41,7 +41,8 @@ class Ufo::Docker
       end
 
       took = Time.now - start_time
-      say "Docker image #{full_image_name} built.  " + "Took #{pretty_time(took)}.".green
+      say "Docker image #{full_image_name} built.  "
+      say "Docker build took #{pretty_time(took)}.".green
     end
 
     def build_options
@@ -89,15 +90,15 @@ class Ufo::Docker
 
     # full_image - does not include the tag
     def image_name
-      settings["image"]
+      settings[:image]
     end
 
     # full_image - Includes the tag. Examples:
     #   123456789.dkr.ecr.us-west-2.amazonaws.com/myapp:ufo-2018-04-20T09-29-08-b7d51df
-    #   tongueroo/hi:ufo-2018-04-20T09-29-08-b7d51df
+    #   tongueroo/demo-ufo:ufo-2018-04-20T09-29-08-b7d51df
     def full_image_name
       return generate_name if @options[:generate]
-      return "tongueroo/hi:ufo-12345678" if ENV['TEST']
+      return "tongueroo/demo-ufo:ufo-12345678" if ENV['TEST']
 
       unless File.exist?(docker_name_path)
         puts "Unable to find #{docker_name_path} which contains the last docker image name that was used as a part of `ufo docker build`.  Please run `ufo docker build` first."

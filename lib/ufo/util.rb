@@ -7,18 +7,18 @@ module Ufo
     #
     # More info: http://ufoships.com/docs/settings/
     def default_cluster
-      settings["cluster"] || Ufo.env
+      settings[:cluster] || Ufo.env
     end
 
     # Keys are strings for simplicity.
     def settings
-      @settings ||= Setting.new.data
+      @settings ||= Ufo.settings
     end
 
-    # Naming it default_params because params is too commonly used in ufo.
-    # Param keys must be symbols for the aws-sdk calls.
-    def default_params
-      @default_params ||= Param.new.data.deep_symbolize_keys
+    # Custom user params from .ufo/params.yml
+    # Param keys are symbols for the aws-sdk calls.
+    def user_params
+      @user_params ||= Param.new.data
     end
 
     def execute(command, local_options={})
@@ -48,6 +48,19 @@ module Ufo
 
     def display_params(options)
       puts YAML.dump(options.deep_stringify_keys)
+    end
+
+    def task_definition_arns(service, max_items=10)
+      resp = ecs.list_task_definitions(
+        family_prefix: service,
+        sort: "DESC",
+      )
+      arns = resp.task_definition_arns
+      arns = arns.select do |arn|
+        task_definition = arn.split('/').last.split(':').first
+        task_definition == service
+      end
+      arns[0..max_items]
     end
   end
 end

@@ -9,6 +9,8 @@ Ufo creates a `.ufo` folder within your project which contains the required file
 ├── output
 ├── params.yml
 ├── settings.yml
+├── settings/cfn/default.yml
+├── settings/network/default.yml
 ├── task_definitions.rb
 ├── templates
 |   └── main.json.erb
@@ -24,7 +26,9 @@ File / Directory  | Description
 ------------- | -------------
 <code>output/</code>  | The folder where the generated task definitions are written to.  The way the task definitions are generated is covered in [ufo tasks build]({% link _docs/tutorial-ufo-tasks-build.md %}).
 <code>params</code>  | This is where you can adjust the params that get send to the aws-sdk api calls. More info at [Params]({% link _docs/params.md %}).
-<code>settings.yml</code>  | Ufo's settings file, where you adjust the default [settings]({% link _docs/settings.md %}).
+<code>settings.yml</code>  | Ufo's general settings file, where you adjust the default [settings]({% link _docs/settings.md %}).
+<code>settings/cfn/default.yml</code>  | Ufo's cfn settings. You can customize the CloudFormation resource properties here.
+<code>settings/network/default.yml</code>  | Ufo's network settings. You can customize the vpc and subnets to used here.
 <code>task_definitions.rb</code>  | This is where you define the task definitions and specify the variables to be used by the ERB templates.
 <code>templates/</code>  | The ERB templates with the task definition json code.  The templates are covered in more detail in [ufo tasks build]({% link _docs/tutorial-ufo-tasks-build.md %}).
 <code>templates/main.json.erb</code>  | This is the main and starter template task definition json file that ufo initially generates.

@@ -1,0 +1,55 @@
+---
+# Options allow you to customize any resources that ufo creates with
+# CloudFormation. These options are inserting into the generated template.
+# More info: https://ufoships.com/docs/customize-cloudformation
+
+elb:
+  scheme: internet-facing
+
+# https://docs.aws.amazon.com/fr_fr/elasticloadbalancing/latest/APIReference/API_CreateTargetGroup.html
+#
+# When using SSL with network elb, the target group protocol is usually http still
+# unless you also handle SSL termination at the app level.
+target_group:
+  port: 80 # only used with ECS if awsvpc mode
+  # protocol: TCP # valid values - application elb: HTTP HTTPS, network elb: TCP
+                  # ufo sets defaults in cloudformation template
+                  #   application elb: HTTP
+                  #   network elb: TCP
+                  # so we can keep this commented out, unless we need HTTPS at the app level
+  target_group_attributes:
+  - key: deregistration_delay.timeout_seconds
+    value: 1
+  # network elb support health_check_interval_seconds of 10 or 30
+  # health_check_interval_seconds: 30
+
+  # health check settings are supported by application load balancer only:
+  # health_check_protocol: HTTP # HTTP or HTTPS
+  # health_check_path: /
+  # health_check_port: traffic-port
+  # unhealthy_threshold_count: 10
+
+# https://docs.aws.amazon.com/fr_fr/elasticloadbalancing/latest/APIReference/API_CreateListener.html
+#
+# If HTTPS and SSL is required this is where it would normally be set. Application ELBs
+# support SSL termination. Network load balancers do not.
+listener:
+  port: 80 # required by ufo, used in cloudformation template
+  # For Application Load Balancers, the supported protocols are HTTP and HTTPS. For Network Load Balancers, the supported protocol is TCP.
+  # protocol: TCP # valid values - application elb: HTTP HTTPS, network elb: TCP
+                  # ufo sets defaults in cloudformation template
+                  #   application elb: HTTP
+                  #   network elb: TCP
+                  # so we can keep this commented out, unless we need HTTPS at elb level
+  # certificates is required if using HTTPS protocol with application
+  # certificates:
+  # - certificate: arn:aws:acm:us-east-1:111111111111:certificate/11111111-2222-3333-4444-555555555555
+
+# Configure dns to automatically be associated with the ELB dns name.
+# Note, the route53 record set for the domain name must already exist.
+# The {stack_name} variable gets replaced with the name of the CloudFormation stack name.
+# Example: {stack_name} => demo-web
+# dns:
+#   name: "{stack_name}.yourdomain."
+#   hosted_zone_name: yourdomain. # dont forget the trailing period
+#   TTL: '60' # ttl has special upcase casing

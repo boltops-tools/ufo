@@ -13,8 +13,10 @@ docker subcommands
 
 ## Examples
 
+    ufo docker base
     ufo docker build
-    ufo docker tag
+    ufo docker name
+    ufo docker push
 
 ## Subcommands
 
@@ -30,6 +32,6 @@ docker subcommands
 [--verbose], [--no-verbose]  
 [--mute], [--no-mute]        
 [--noop], [--no-noop]        
-[--cluster=CLUSTER]          # Cluster.  Overrides ufo/settings.yml.
+[--cluster=CLUSTER]          # Cluster.  Overrides .ufo/settings.yml.
 ```
 

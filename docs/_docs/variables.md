@@ -2,18 +2,18 @@
 title: Shared Variables
 ---
 
-Often times, you end up using the set of common variables across your task definitions for a project.  Ufo supports a shared variables concept to help with this.  You specify variables files in the `.ufo/variables` folder and they are made availale to your `.ufo/task_definitions.rb` as well as your `.ufo/templates` files.
+Often, you end up using the set of common variables across your task definitions for a project.  Ufo supports a shared variables concept to support this.  You specify variables files in the `.ufo/variables` folder and they are made available to your `.ufo/task_definitions.rb` as well as your `.ufo/templates` files.
 
 For example, given `variables/base.rb`:
 
 ```
-@image = helper.full_image_name # includes the git sha tongueroo/hi:ufo-[sha].
+@image = helper.full_image_name # includes the git sha tongueroo/demo-ufo:ufo-[sha].
 @cpu = 128
 @memory_reservation = 256
 @environment = helper.env_file(".env")
 ```
 
-You can now use `@image` in your `.ufo/templates/main.json.erb` without having to explicitly declare them in the `.ufo/task_definitions.rb` file.  Variables are automatically made available to all templates and the `task_definition.rb` file also.
+You can now use `@image` in your `.ufo/templates/main.json.erb` without having to declare them in the `.ufo/task_definitions.rb` file explicitly.  Variables are automatically made available to all templates and the `task_definition.rb` file.
 
 ## Layering
 
@@ -22,7 +22,7 @@ Shared variables also support a concept called layering.  The `variables/base.rb
 `.ufo/variables/base.rb`:
 
 ```ruby
-@image = helper.full_image_name # includes the git sha tongueroo/hi:ufo-[sha].
+@image = helper.full_image_name # includes the git sha tongueroo/demo-ufo:ufo-[sha].
 @cpu = 128
 @memory_reservation = 256
 @environment = helper.env_file(".env")
@@ -51,6 +51,6 @@ When `ufo ship` is ran with `UFO_ENV=development` the `variables/development.rb`
 ])
 ```
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/ufo-env.md %}">Back</a>
+<a id="prev" class="btn btn-basic" href="{% link _docs/params.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/helpers.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>

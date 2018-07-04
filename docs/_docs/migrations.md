@@ -5,13 +5,13 @@ title: Database Migrations
 A common task is to run database migrations with newer code before deploying the code. This is easily achieved with the `ufo task` command. Here's an example:
 
 ```sh
-ufo task hi-web --command bundle exec rake db:migrate
+ufo task demo-web -c bundle exec rake db:migrate
 ```
 
 It is nice to wrap the commands in a wrapper script in case you have to do things like to load the environment.
 
 ```sh
-ufo task hi-web --command bin/migrate
+ufo task demo-web -c bin/migrate
 ```
 
 The `bin/migrate` script can look like this:

@@ -2,36 +2,37 @@
 title: Setup Ufo
 ---
 
-The easiest way to create this ufo folder is by using the `ufo init` command.  For this tutorial we'll [tongueroo/hi](https://github.com/tongueroo/hi) which is a small test sinatra app.
+The easiest way to create this ufo folder is by using the `ufo init` command.  For this tutorial we'll [tongueroo/demo-ufo](https://github.com/tongueroo/demo-ufo) which is a small test sinatra app.
 Let's run the command in our newly cloned project.
 
 ```sh
-git clone https://github.com/tongueroo/hi.git
-cd hi
-ufo init --app=hi --image=tongueroo/hi
+git clone https://github.com/tongueroo/demo-ufo.git
+cd demo-ufo
+ufo init --app=demo --image=tongueroo/demo-ufo
 ```
 
 You should see output similiar to this:
 
 ```sh
-$ ufo init --app=hi --image=tongueroo/hi
+$ ufo init --app=demo --image=tongueroo/demo-ufo
 Setting up ufo project...
       create  .env
+      create  .ufo/params.yml
       create  .ufo/settings.yml
+      create  .ufo/settings/cfn/default.yml
+      create  .ufo/settings/network/default.yml
       create  .ufo/task_definitions.rb
+      create  .ufo/templates/fargate.json.erb
       create  .ufo/templates/main.json.erb
       create  .ufo/variables/base.rb
       create  .ufo/variables/development.rb
       create  .ufo/variables/production.rb
-      create  Dockerfile
+   identical  Dockerfile
       create  bin/deploy
       append  .gitignore
+      create  .dockerignore
 Starter ufo files created.
-$ ufo ship hi-web
-Building docker image with:
-  docker build -t tongueroo/hi:ufo-2017-09-10T15-00-19-c781aaf -f Dockerfile .
-....
-Software shipped!
+Congrats 🎉 You have successfully set up ufo for your project.
 $
 ```
 
@@ -59,10 +60,13 @@ Take a look at the `settings.yml` file and notice that it contains some default 
 ```yaml
 # More info: http://ufoships.com/docs/settings/
 base:
-  image: tongueroo/hi
+  image: tongueroo/demo-ufo
   # clean_keep: 30 # cleans up docker images on your docker server.
   # ecr_keep: 30 # cleans up images on ECR and keeps this remaining amount. Defaults to keep all.
   # defaults when an new ECS service is created by ufo ship
+  network_profile: default # .ufo/settings/network/default.yml file
+  cfn_profile: default # .ufo/settings/cfn/default.yml file
+
 development:
   # cluster: dev # uncomment if you want the cluster name be other than the default
                  # the default is to match UFO_ENV.  So UFO_ENV=development means the ECS

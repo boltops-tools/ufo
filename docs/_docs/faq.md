@@ -7,9 +7,11 @@ title: FAQ
 Yes, Fargate is supported.  To use ufo with Fargate, you will need to adjust the template in `.ufo/templates` to a structure supported by Fargate.  There are 2 key items to adjust:
 
 1. The task definition JSON. Notably, the JSON structure has the `requiresCompatibilities`, `networkMode`, and `executionRoleArn` attributes. The `cpu` and `memory` attributes also move outside of the `containerDefinitions` level to the top-level attributes. For details on how to adjust the task definition refer to [Task Definitions]({% link _docs/tutorial-ufo-tasks-build.md %}).
-2. The params that get sent to the `create_service` or  `run_task` API methods. For details on how to adjust the params refer to [Params]({% link _docs/params.md %})
+2. The params that get sent to the `run_task` API methods. For details on how to adjust the params refer to [Params]({% link _docs/params.md %})
 
 If it's a brand new project, you can use `ufo init` with the `--launch-type fargate` option and it will generate a starter task definition JSON file that has the right Fargate structure. More info is available at [ufo init reference](/reference/ufo-init/#fargate-support).
+
+A quick and easy way to test fargate is to follow the [Fargate Docs]({% link _docs/fargate.md %}) which provides a demo example.
 
 **Q: Can I tell ufo to use specific docker build options?**
 
@@ -18,9 +20,9 @@ Yes, you can do this with the environment variable `UFO_DOCKER_BUILD_OPTIONS`.  
 ```
 $ UFO_DOCKER_BUILD_OPTIONS="--build-arg RAILS_ENV=production" ufo docker build
 Building docker image with:
-  docker build --build-arg RAILS_ENV=production -t tongueroo/hi:ufo-2018-05-19T11-52-16-6714713 -f Dockerfile .
+  docker build --build-arg RAILS_ENV=production -t tongueroo/demo-ufo:ufo-2018-05-19T11-52-16-6714713 -f Dockerfile .
 ...
-Docker image tongueroo/hi:ufo-2018-05-19T11-52-16-6714713 built.  Took 2s.
+Docker image tongueroo/demo-ufo:ufo-2018-05-19T11-52-16-6714713 built.  Took 2s.
 ```
 
 ---
@@ -32,11 +34,11 @@ In short, no. There's some image cleanup logic that relies on the specific namin
 ```
 $ ufo docker build
 $ ufo docker name
-tongueroo/hi:ufo-2018-05-19T11-41-06-6714713
+tongueroo/demo-ufo:ufo-2018-05-19T11-41-06-6714713
 $ docker tag $(ufo docker name) hi:mytag
 $ docker images | grep hi
 hi                                                     mytag                              5b01e38bd060        3 minutes ago       955MB
-tongueroo/hi                                           ufo-2018-05-19T11-41-06-6714713    5b01e38bd060        3 minutes ago       955MB
+tongueroo/demo-ufo                                           ufo-2018-05-19T11-41-06-6714713    5b01e38bd060        3 minutes ago       955MB
 $ docker push hi:mytag
 ```
 
@@ -94,6 +96,6 @@ Also, you might have to enable the log driver by adding the ECS_AVAILABLE_LOGGIN
 
 Hope that helps.
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/next-steps.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link articles.md %}">Next Step</a>
+<a id="prev" class="btn btn-basic" href="{% link _docs/route53-support.md %}">Back</a>
+<a id="next" class="btn btn-primary" href="{% link _docs/why-cloudformation.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>

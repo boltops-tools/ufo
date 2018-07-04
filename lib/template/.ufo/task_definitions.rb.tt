@@ -11,8 +11,9 @@
 #
 # More info: http://ufoships.com/docs/helpers/
 #
+<% source_name = @options[:launch_type] == "fargate" ? "fargate" : "main" -%>
 task_definition "<%= @app %>-web" do
-  source "main" # will use ufo/templates/main.json.erb
+  source "<%= source_name %>" # will use ufo/templates/<%= source_name %>.json.erb
   variables(
     family: task_definition_name,
     name: "web",
@@ -26,7 +27,7 @@ task_definition "<%= @app %>-web" do
     #   prefix-name/container-name/ecs-task-id
     # Here's an exmaple when you specify the prefix of "demo"
     #   demo/web/209e93b4-5523-4496-9a27-662fd151eb78
-    awslogs_group: "ecs/<%= @app %>-web",
+    awslogs_group: ["ecs/<%= @app %>-web", Ufo.env_extra].compact.join('-'),
     awslogs_stream_prefix: "<%= @app %>",
     awslogs_region: helper.current_region,
     # command: ["bin/web"] # IMPORTANT: change or create a bin/web file
@@ -34,12 +35,12 @@ task_definition "<%= @app %>-web" do
 end
 
 task_definition "<%= @app %>-worker" do
-  source "main" # will use ufo/templates/main.json.erb
+  source "<%= source_name %>" # will use ufo/templates/<%= source_name %>.json.erb
   variables(
     family: task_definition_name,
     name: "worker",
     # Comment out awslogs_* if you do not want logs to be sent to CloudWatch.
-    awslogs_group: "ecs/<%= @app %>-worker",
+    awslogs_group: ["ecs/<%= @app %>-worker", Ufo.env_extra].compact.join('-'),
     awslogs_stream_prefix: "<%= @app %>",
     awslogs_region: helper.current_region,
     # command: ["bin/worker"] # IMPORTANT: change or create a bin/worker file
@@ -47,12 +48,12 @@ task_definition "<%= @app %>-worker" do
 end
 
 task_definition "<%= @app %>-clock" do
-  source "main" # will use ufo/templates/main.json.erb
+  source "<%= source_name %>" # will use ufo/templates/<%= source_name %>.json.erb
   variables(
     family: task_definition_name,
     name: "clock",
     # Comment out awslogs_* if you do not want logs to be sent to CloudWatch.
-    awslogs_group: "ecs/<%= @app %>-clock",
+    awslogs_group: ["ecs/<%= @app %>-clock", Ufo.env_extra].compact.join('-'),
     awslogs_stream_prefix: "<%= @app %>",
     awslogs_region: helper.current_region,
     # command: ["bin/clock"] # IMPORTANT: change or create a bin/clock file

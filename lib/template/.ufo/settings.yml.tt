@@ -6,7 +6,12 @@ base:
   image: <%= @image %>
   # clean_keep: 30
   # ecr_keep: 30
-  # defaults when an new ECS service is created by ufo ship
+  network_profile: default # .ufo/settings/network/default.yml file
+  cfn_profile: default # .ufo/settings/cfn/default.yml file
+  # If you want to have prettier name set for the ECS service name
+  # There are some cavaets with this. Updating properties on resources that require
+  # replacment might not work. For example, adding and removing a load balancer.
+  # In these cases, you must delete the entire ecs service and recreate it.
 
 development:
   # cluster: development

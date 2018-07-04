@@ -1,0 +1,3 @@
+## Examples
+
+  ufo network init

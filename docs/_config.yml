@@ -2,7 +2,7 @@
 title: Ufo
 email: tongueroo@gmail.com
 url: http://ufoships.com
-description: "Easy Way to Build and Ship Docker Images to AWS ECS"
+description: "AWS ECS Deployment Tool"
 keywords: "AWS EC2 Container Service, AWS ECS, UFO, Deploy to ECS, ufo ship"
 skills: ""
 meta_author: Tung Nguyen
