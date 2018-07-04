@@ -11,7 +11,7 @@ Some consideration for these security groups:
 
 ## EC2 Instance Security Group Help
 
-If you are seeing that the Targets in the ELB Target Group are reporting unhealthy, it is usually a security group issue.  You might see this out with `ufo ps`:
+If you are seeing that the Targets in the ELB Target Group are reporting unhealthy, it is usually a security group issue.  You might see this output with `ufo ps`:
 
     $ ufo ps --no-summary
     +----------+------+--------------+----------------+---------+-------------------------+
@@ -21,7 +21,7 @@ If you are seeing that the Targets in the ELB Target Group are reporting unhealt
     | d02728ba | web  | demo-web:169 | 3 minutes ago  | STOPPED | Failed ELB health check |
     | 8dcf81ae | web  | demo-web:169 | 13 seconds ago | RUNNING |                         |
     +----------+------+--------------+----------------+---------+-------------------------+
-    There are targets the target group reporting unhealthy.  This can cause containers to cycle. Here's the error:
+    There are targets in the target group reporting unhealthy.  This can cause containers to cycle. Here's the error:
     (service development-demo-web-Ecs-13D2BFA4ULNC9) (instance i-0812a3bcd94babf12) (port 32779) is unhealthy in (target-group arn:aws:elasticloadbalancing:us-east-1:111111111111:targetgroup/devel-Targe-1MJR8V6VOWBGI/3f44f85710fe0297) due to (reason Request timed out)
     Check out the ECS console events tab for more info.
     $

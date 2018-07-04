@@ -20,7 +20,7 @@ See [ufoships.com](http://ufoships.com) for full documentation.
 
 ## Important
 
-If you are on version 3, you can run `ufo upgrade v3to4` within your project to upgrade it to version 4.  Refer to the [CHANGELOG](CHANGELOG.md).
+If you are on version 3, you can run `ufo upgrade v3to4` within your project to upgrade it to version 4.  Refer to the [CHANGELOG](CHANGELOG.md) and the [Upgrade 4 Docs](http://ufoships.com/docs/upgrade4/).
 
 ## Installation
 

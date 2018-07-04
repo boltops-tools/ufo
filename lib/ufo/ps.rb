@@ -56,7 +56,7 @@ module Ufo
       end
       return unless error_event
 
-      puts "There are targets the target group reporting unhealthy.  This can cause containers to cycle. Here's the error:"
+      puts "There are targets in the target group reporting unhealthy.  This can cause containers to cycle. Here's the error:"
       puts error_event.message.colorize(:red)
       puts "Check out the ECS console events tab for more info."
     end
