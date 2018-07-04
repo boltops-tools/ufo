@@ -9,7 +9,7 @@ gem install ufo
 git clone https://github.com/tongueroo/demo-ufo.git
 cd demo-ufo
 ufo init --app=demo --image=tongueroo/demo-ufo
-ufo current demo-web
+ufo current --service demo-web
 ufo ship
 ufo ps
 ufo scale 2
