@@ -8,7 +8,6 @@ PATH
       aws-sdk-ecr
       aws-sdk-ecs
       aws-sdk-elasticloadbalancingv2
-      balancer
       colorize
       deep_merge
       memoist
@@ -26,38 +25,31 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     aws-eventstream (1.0.1)
-    aws-partitions (1.92.0)
-    aws-sdk-cloudformation (1.5.0)
+    aws-partitions (1.95.0)
+    aws-sdk-cloudformation (1.6.0)
       aws-sdk-core (~> 3)
       aws-sigv4 (~> 1.0)
-    aws-sdk-cloudwatchlogs (1.3.0)
+    aws-sdk-cloudwatchlogs (1.4.0)
       aws-sdk-core (~> 3)
       aws-sigv4 (~> 1.0)
-    aws-sdk-core (3.21.3)
+    aws-sdk-core (3.22.1)
       aws-eventstream (~> 1.0)
       aws-partitions (~> 1.0)
       aws-sigv4 (~> 1.0)
       jmespath (~> 1.0)
-    aws-sdk-ec2 (1.35.0)
+    aws-sdk-ec2 (1.37.0)
       aws-sdk-core (~> 3)
       aws-sigv4 (~> 1.0)
-    aws-sdk-ecr (1.3.0)
+    aws-sdk-ecr (1.4.0)
       aws-sdk-core (~> 3)
       aws-sigv4 (~> 1.0)
-    aws-sdk-ecs (1.14.0)
+    aws-sdk-ecs (1.15.0)
       aws-sdk-core (~> 3)
       aws-sigv4 (~> 1.0)
-    aws-sdk-elasticloadbalancingv2 (1.10.0)
+    aws-sdk-elasticloadbalancingv2 (1.11.0)
       aws-sdk-core (~> 3)
       aws-sigv4 (~> 1.0)
-    aws-sigv4 (1.0.2)
-    balancer (0.2.0)
-      activesupport
-      aws-sdk-ec2
-      aws-sdk-elasticloadbalancingv2
-      colorize
-      memoist
-      thor
+    aws-sigv4 (1.0.3)
     byebug (10.0.2)
     cli_markdown (0.1.0)
     codeclimate-test-reporter (1.0.8)
