@@ -67,20 +67,11 @@ More info available at the [load balancer docs](http://ufoships.com/docs/load-ba
 
 Let's you want skip the docker build phase and only want use ufo to deploy a task definition. You can do this with the `ufo deploy` command.  Refer to [ufo deploy](http://ufoships.com/reference/ufo-deploy/) for more info.
 
-### Waiting for Deployments to Complete
+### Not Waiting for Deployments to Complete
 
-By default when ufo updates the ECS service with the new task definition it does so asynchronuously. You then normally visit the ECS service console and then refresh until you see that the deployment is completed.  You can also have ufo poll and wait for the deployment to be done with the `--wait` option
+By default when ufo updates the ECS service with the new task definition it does so synchronuously. It'll wait until the CloudFormation stack finishes.  You can make it asynchronuously with the `--no-wait` option:
 
-    ufo ship demo-web --wait
-
-You should see output similar to this:
-
-    Shipping demo-web...
-    demo-web service updated on cluster with task demo-web
-    Waiting for deployment of task definition demo-web:8 to complete
-    ......
-    Time waiting for ECS deployment: 31s.
-    Software shipped!
+    ufo ship demo-web --no-wait
 
 ### Route 53 DNS Support
 
