@@ -6,7 +6,8 @@ base:
   # image:
   # clean_keep: 30
   # ecr_keep: 30
-  # defaults when an new ECS service is created by ufo ship
+  network_profile: default # .ufo/settings/network/default.yml file
+  cfn_profile: default # .ufo/settings/cfn/default.yml file
 
 development:
   # cluster: dev

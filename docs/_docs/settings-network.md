@@ -25,7 +25,7 @@ Option | Description
 --- | ---
 vpc | Used to create ecs and elb security groups, target group in the CloudFormation template.
 ecs_subnets | Used to assign a subnet mapping to the ECS service created in CloudFormation when the network mode is awsvpc. Also used to in .ufo/params.yml as part of the run_task api call that is made by `ufo task`.
-elb_subnets | Used to create elb load balancer.
+elb_subnets | Used to create elb load balancer.  Defaults to same subnets as ecs_subnets when not set.
 ecs_security_groups | Additional security groups to associate with the ECS tasks.
 elb_security_groups | Additional security groups to associate with the ELB.
 

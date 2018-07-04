@@ -102,7 +102,7 @@ Some additional starter example roles for your apps were set up in in .ufo/task_
 
 ## Settings files
 
-Additionally, ufo generated starter settings files at that further allow you to customize more settings.
+Additionally, ufo generated starter settings files that allow you to customize more settings.
 
 * .ufo/settings.yml: general settings.
 * .ufo/settings/cfn/default.yml: properties of CloudFormation resources that ufo creates.

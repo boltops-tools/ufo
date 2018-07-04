@@ -24,7 +24,7 @@ TargetGroup:
 ...
 ```
 
-In this way, you can customize and override any property associated with any resource created the ufo CloudFormation stack.
+In this way, you can customize and override any properties associated with resources created by the ufo CloudFormation stack.
 
 Here's a list of the resources in the [cfn/stack.yml](https://github.com/tongueroo/ufo/blob/master/lib/cfn/stack.yml) that you can customize:
 
