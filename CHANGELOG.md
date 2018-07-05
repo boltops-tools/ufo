@@ -3,7 +3,12 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
-## [4.0.0-prelease]
+## [4.0.1]
+- Merge pull request #44 from tongueroo/ssl
+- add listener_ssl resource for better ssl support
+- update docs
+
+## [4.0.0]
 - Major architecture changes
 - Fuller CLI Toolkit Commands
 - Load Balancer Support
