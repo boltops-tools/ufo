@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [4.0.2]
+- Merge pull request #45 from tongueroo/ssl2
+- default deregistration_delay 10
+- improve ssl support, only create ssl listener when configured
+
 ## [4.0.1]
 - Merge pull request #44 from tongueroo/ssl
 - add listener_ssl resource for better ssl support
