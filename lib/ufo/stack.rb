@@ -42,8 +42,8 @@ module Ufo
       if @stack && rollback_complete?(@stack)
         puts "Existing stack in ROLLBACK_COMPLETE state. Deleting stack before continuing."
         cloudformation.delete_stack(stack_name: @stack_name)
-        @status.wait
-        @status.reset
+        status.wait
+        status.reset
         @stack = nil # at this point stack has been deleted
       end
 

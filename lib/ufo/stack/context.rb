@@ -31,6 +31,7 @@ class Ufo::Stack
         create_route53: create_elb? && cfn[:dns] && cfn[:dns][:name],
         default_target_group_protocol: default_target_group_protocol,
         default_listener_protocol: default_listener_protocol,
+        default_listener_ssl_protocol: default_listener_ssl_protocol,
       }
       # puts "vars:".colorize(:cyan)
       # pp vars
@@ -42,13 +43,16 @@ class Ufo::Stack
     def default_target_group_protocol
       return 'TCP' if elb_type == 'network'
       'HTTP'
-      # cfn[:target_group][:port] == 443 ? 'HTTPS' : 'HTTP'
     end
 
     def default_listener_protocol
       return 'TCP' if elb_type == 'network'
-      'HTTP'
-      # cfn[:listener][:port] == 443 ? 'HTTPS' : 'HTTP'
+      cfn[:listener][:port] == 443 ? 'HTTPS' : 'HTTP'
+    end
+
+    def default_listener_ssl_protocol
+      return 'TCP' if elb_type == 'network'
+      cfn[:listener_ssl][:port] == 443 ? 'HTTPS' : 'HTTP'
     end
 
     def container

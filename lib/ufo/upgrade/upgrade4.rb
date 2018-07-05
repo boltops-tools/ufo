@@ -24,7 +24,6 @@ class Ufo::Upgrade
       upsert_dockerignore
       upsert_gitignore
       update_params_yaml
-      update_settings
       update_task_definitions
       new_files
     end
@@ -47,15 +46,6 @@ EOL
       configure_network_settings
       template(".ufo/settings/network/default.yml")
       template(".ufo/settings/cfn/default.yml")
-    end
-
-    # add network_profile: default line
-    def update_settings
-      text = <<-EOL
-  network_profile: default # .ufo/settings/network/default.yml file
-  cfn_profile: default # .ufo/settings/cfn/default.yml file
-EOL
-      insert_into_file ".ufo/settings.yml", text, :after => "base:\n"
     end
 
     # remove the create_service and update_service sections
