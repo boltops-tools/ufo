@@ -7,7 +7,7 @@ Ufo supports Fargate.  AWS Fargate is a technology for Amazon ECS that allows yo
 Here's video demo of using ufo with ECS Fargate:
 
 <div class="video-box"><div class="video-container">
-<iframe width="560" height="315" src="https://www.youtube.com/embed/nYWt-mM7kyY" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<iframe src="https://www.youtube.com/embed/nYWt-mM7kyY" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div></div>
 
 The commands from the video are also provided and explained below.
