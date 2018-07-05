@@ -125,6 +125,7 @@ Resources:
       Protocol: <%= @default_listener_protocol %>
 <%= custom_properties(:Listener) %>
 
+<% if @create_listener_ssl -%>
   ListenerSsl:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Condition: CreateElbIsTrue
@@ -136,6 +137,7 @@ Resources:
       LoadBalancerArn: !Ref Elb
       Protocol: <%= @default_listener_ssl_protocol %>
 <%= custom_properties(:ListenerSsl) %>
+<% end -%>
 
 <% if @elb_type == "application" -%>
   ElbSecurityGroup:
@@ -149,10 +151,12 @@ Resources:
         FromPort: '<%= cfn[:listener][:port] %>'
         ToPort: '<%= cfn[:listener][:port] %>'
         CidrIp: 0.0.0.0/0
+<% if @create_listener_ssl -%>
       - IpProtocol: tcp
         FromPort: '<%= cfn[:listener_ssl][:port] %>'
         ToPort: '<%= cfn[:listener_ssl][:port] %>'
         CidrIp: 0.0.0.0/0
+<% end -%>
       SecurityGroupEgress:
       - IpProtocol: tcp
         FromPort: '0'

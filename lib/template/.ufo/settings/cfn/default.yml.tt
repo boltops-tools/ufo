@@ -43,21 +43,21 @@ listener:
 
 # If HTTPS and SSL is required then the listener_ssl config is what you need.
 #   Application ELBs support SSL termination.
-#   Network load balancers do not.
+#   Network load balancers do not and must pass the request through to the app
+#   to handle SSL termination.
 #
-# ufo current creates both a normal listener and an ssl listener, even if you
-# are not using it. Both listeners point to the same target group.
-listener_ssl:
-  port: 443
-  # protocol: TCP # valid values - application elb: HTTP HTTPS, network elb: TCP
-                  # ufo handles setting the defaults:
-                  #   application elb: HTTP  # unless port is 443
-                  #   application elb: HTTPS # if port is 443
-                  #   network elb: TCP
-  # Certificates are supported by application load balancers only.
-  # Network load balancers do not support SSL termination.
-  # certificates:
-  # - certificate_arn: arn:aws:acm:us-east-1:111111111111:certificate/11111111-2222-3333-4444-555555555555
+# ufo creates an ssl listener when listener_ssl is set.
+# listener_ssl:
+#   port: 443
+#   # protocol: TCP # valid values - application elb: HTTP HTTPS, network elb: TCP
+#                   # ufo handles setting the defaults:
+#                   #   application elb: HTTPS
+#                   #   network elb: TCP
+#   # Certificates are supported by application load balancers only.
+#   # Network load balancers do not support SSL termination so do not support
+#   # certificates.
+#   # certificates:
+#   # - certificate_arn: arn:aws:acm:us-east-1:111111111111:certificate/11111111-2222-3333-4444-555555555555
 
 
 # Configure dns to automatically be associated with the ELB dns name.

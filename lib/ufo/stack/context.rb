@@ -32,6 +32,7 @@ class Ufo::Stack
         default_target_group_protocol: default_target_group_protocol,
         default_listener_protocol: default_listener_protocol,
         default_listener_ssl_protocol: default_listener_ssl_protocol,
+        create_listener_ssl: create_listener_ssl?,
       }
       # puts "vars:".colorize(:cyan)
       # pp vars
@@ -52,7 +53,12 @@ class Ufo::Stack
 
     def default_listener_ssl_protocol
       return 'TCP' if elb_type == 'network'
-      cfn[:listener_ssl][:port] == 443 ? 'HTTPS' : 'HTTP'
+      'HTTPS'
+    end
+
+    # if the configuration is set to anything then enable it
+    def create_listener_ssl?
+      cfn[:listener_ssl] && cfn[:listener_ssl][:port]
     end
 
     def container
