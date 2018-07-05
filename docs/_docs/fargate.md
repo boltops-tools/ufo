@@ -8,9 +8,9 @@ Ufo supports Fargate.  AWS Fargate is a technology for Amazon ECS that allows yo
 
 Here's an example of creating web service with Fargate.
 
-    git clone https://github.com/tongueroo/demo-ufo
-    cd demo-ufo
-    ufo init --image tongueroo/demo-ufo --app demo --force --launch-type fargate --execution-role-arn arn:aws:iam::123456789012:role/ecsTaskExecutionRole
+    git clone https://github.com/tongueroo/demo-ufo demo
+    cd demo
+    ufo init --image tongueroo/demo-ufo --launch-type fargate --execution-role-arn arn:aws:iam::123456789012:role/ecsTaskExecutionRole
     ufo current --service demo-web
     ufo ship
 

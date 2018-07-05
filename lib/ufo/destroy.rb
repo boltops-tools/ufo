@@ -8,7 +8,7 @@ module Ufo
 
       stack = find_stack(@stack_name)
       unless stack
-        puts "Stack #{@stack_name} does not exit"
+        puts "Stack #{@stack_name} does not exist."
         exit
       end
 
