@@ -4,6 +4,14 @@ title: Fargate
 
 Ufo supports Fargate.  AWS Fargate is a technology for Amazon ECS that allows you to run containers without having to manage servers or clusters.  This provides an interesting "serverless" option for running Docker containers on AWS.
 
+Here's video demo of using ufo with ECS Fargate:
+
+<div class="video-box"><div class="video-container">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/nYWt-mM7kyY" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+</div></div>
+
+The commands from the video are also provided and explained below.
+
 ## Fargate Example
 
 Here's an example of creating web service with Fargate.
@@ -96,6 +104,7 @@ Remove the service to save costs.
     $
 
 Here's an article that compares the cost of ECS Fargate: [Heroku vs ECS Fargate vs EC2 On-Demand vs EC2 Spot Pricing Comparison](https://blog.boltops.com/2018/04/22/heroku-vs-ecs-fargate-vs-ec2-on-demand-vs-ec2-spot-pricing-comparison)
+
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/conventions.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/ufo-env.md %}">Next Step</a>
