@@ -25,7 +25,7 @@ target_group:
   # unhealthy_threshold_count: 10
   target_group_attributes:
   - key: deregistration_delay.timeout_seconds
-    value: 1
+    value: 10
 
 # https://docs.aws.amazon.com/fr_fr/elasticloadbalancing/latest/APIReference/API_CreateListener.html
 #
