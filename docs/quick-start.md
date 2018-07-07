@@ -57,7 +57,7 @@ $
 
 Congratulations! You have successfully deployed code to AWS ECS with ufo. It was really that simple 😁
 
-Note: This quick start does require that you have a docker working on your environment.  For docker installation instructions refer to to the official [docker installation guide](https://docs.docker.com/engine/installation/).
+Note: This quick start requires a working Docker installation.  For Docker installation instructions refer to to the [Docker installation guide](https://docs.docker.com/engine/installation/).
 
 Learn more in the next sections.
 

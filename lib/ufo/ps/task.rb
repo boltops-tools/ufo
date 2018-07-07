@@ -27,21 +27,25 @@ class Ufo::Ps
     end
 
     def started
-      started = Time.parse(@task["started_at"].to_s)
+      started = time(@task["started_at"])
+      return "PENDING" unless started
       relative_time(started)
-    rescue ArgumentError
-      "PENDING"
     end
 
-    def started_at
-      Time.parse(@task["started_at"].to_s)
+    def time(value)
+      Time.parse(value.to_s)
     rescue ArgumentError
       nil
     end
 
-    # hide stopped tasks that are older than 10 minutes
+    # hide stopped tasks have been stopped for more than 5 minutes
+    #  created_at=2018-07-05 21:52:13 -0700,
+     # started_at=2018-07-05 21:52:15 -0700,
+     # stopping_at=2018-07-05 22:03:44 -0700,
+     # stopped_at=2018-07-05 22:03:45 -0700,
     def hide?
-      status == "STOPPED" && started_at < Time.now - 60 * 10
+      stopped_at = time(@task["stopped_at"])
+      status == "STOPPED" && stopped_at < Time.now - 60 * 5
     end
 
     def status
