@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [4.0.3]
+- fix ufo ps for stopped task
+- improve docs
+
 ## [4.0.2]
 - Merge pull request #45 from tongueroo/ssl2
 - default deregistration_delay 10
