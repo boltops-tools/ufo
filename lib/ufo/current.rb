@@ -94,7 +94,7 @@ EOL
 Example:
     ufo #{ARGV.first} SERVICE
 You can also set a current service to be remembered with:
-    ufo current SERVICE
+    ufo current --service SERVICE
 EOL
       exit 1
       # if want to display full help menu:

@@ -74,6 +74,9 @@ module Ufo
 
       puts "There is an issue scaling the #{@service.colorize(:green)} service to #{service.desired_count}.  Here's the error:"
       puts error_event.message.colorize(:red)
+      if service.launch_type == "EC2"
+        puts "If AutoScaling is set up for the container instances, it can take a little time to add additional instances. You'll see this message until the capacity is added."
+      end
     end
 
     def display_info(resp)

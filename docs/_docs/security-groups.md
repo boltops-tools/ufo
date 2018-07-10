@@ -38,7 +38,7 @@ With network bridge mode, the Docker containers of multiple services share the E
 
 One advantage of bridge mode is you can use dynamic port mapping and do not have to worry about network card limits.
 
-With awsvpc network mode, you must consider the limit of ethernet cards for the instance type. The table that lists the limits are under section the aws EC2 docs under [IP Addresses Per Network Interface Per Instance Type](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-eni.html) For example, a t2 large instance has a limit of 3 Ethernet cards. This means, at most, you can run 3 ECS tasks on that instance in awsvpc network mode.
+With awsvpc network mode, you must consider the limit of ethernet cards for the instance type. The table that lists the limits are under section the aws EC2 docs under [IP Addresses Per Network Interface Per Instance Type](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-eni.html) For example, a t2.large instance has a limit of 3 ethernet cards. This means, at most, you can run 3 ECS tasks on that instance in awsvpc network mode.  The network card limit ranges from 3 to 15 ethernet cards depending on the instance type.
 
 The advantage of awsvpc mode is that since the ECS task has its own network card and security group, there’s more granular control of the permissions per ECS service. For example, when service A and B are using awsvpc mode, they can have different security groups associated with them. In this mode, ufo creates a security group and sets up the permissions so the load balancer can talk to the containers.  You can also add additional security group to the `.ufo/settings/network/default.yml` config.
 

@@ -14,8 +14,12 @@ module Ufo
 
       cloudformation.delete_stack(stack_name: @stack_name)
       puts "Deleting CloudFormation stack with ECS resources: #{@stack_name}."
+
       return unless @options[:wait]
+      start_time = Time.now
       status.wait
+      took = Time.now - start_time
+      puts "Time took for deletion: #{status.pretty_time(took).green}."
     end
 
     def are_you_sure?
