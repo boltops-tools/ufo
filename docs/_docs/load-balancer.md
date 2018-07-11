@@ -21,19 +21,29 @@ Here are examples of each of them:
     # Disable creating ELB
     ufo ship demo-web --elb=false
 
+## Web Service Convention
+
+By convention, if the container name is 'web' in the task definition. Deployments of new services will automatically create a load balancer.  So if the task definition looks something like the following then a load balancer will automatically be created:
+
+```json
+{
+    "containerDefinitions": [
+        {
+            "name": "web",
+...
+```
+
+The behavior can be disabled with `--elb=false` for web containers.
+
+    ufo ship demo-web --elb=false
+
+For non-web container the `--elb` option must be explicitly set to `--elb=true` if you want a load balancer to be created.
+
 ## ELB Retained
 
 Ufo retains the ELB setting.  So future `ufo ship` commands will not suddenly remove the load balancer.  If you need to change the elb setting, then you need to explicitly set a new `--elb` value.
 
 Important: Adding and removing load balancers will change the ELB DNS.  Please take pre-caution using the elb options.  This risk is mitigated if you have configured [Route53 support]({% link _docs/route53-support.md %}).
-
-## Web Service Convention
-
-By convention, if the container name is 'web' in the task definition. Deployments of new services will automatically create a load balancer.  The behavior can be disabled with `--elb=false` for web containers.
-
-    ufo ship demo-web --elb=false
-
-For non-web container the `--elb` option must be explicitly set to `--elb=true` if you want a load balancer to be created.
 
 ## ELB Types: Application and Network
 
@@ -60,6 +70,8 @@ To remove the EIPs but still keep the network load balancer, you can specify eit
 
     UFO_FORCE_TARGET_GROUP=1 ufo deploy demo-web --elb-eip-ids ' ' --elb-type network
     UFO_FORCE_TARGET_GROUP=1 ufo deploy demo-web --elb-eip-ids 'empty' --elb-type network
+
+Note be careful using the UFO_FORCE_TARGET_GROUP option. If the deploy fails, then the CloudFormation stack rolls back and can leave the target group with healthy targets resulting in downtime. If it's an production service and you are changing the load balancer type or eip IPs, it is recommended to instead create a temporary additional ECS service, do a DNS switch, and then remove the old ECS.
 
 ## Load Balancer Implementation
 
