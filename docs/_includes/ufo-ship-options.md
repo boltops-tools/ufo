@@ -2,7 +2,7 @@
 Option  | Description
 ------------- | -------------
 `--cluster`  | This decides what cluster to use.  This can also be set in ufo/settings.yml covered in [Settings]({% link _docs/settings.md %}).  The cli option takes highest precedence.
-`--ecr-keep`  | This integer option determines how many old docker images to keep around.  Ufo will automatically delete and clean up docker images at the end of this process. The default is reasonable large at 30.
+`--ecr-keep`  | This integer option determines how many old docker images to keep around.  Ufo will automatically delete and clean up docker images at the end of this process. The default is to keep all.  If you set this, set it at a reasonable high number like 30.
 `--elb-eip-ids` | EIP Allocation ids to use for network load balancer.  If specified then `--elb-type` is automatically assumed to be `network`.
 `--elb-type` |  ELB type: application or network. Keep current deployed elb type when not specified.
 `--elb` | Decides to create elb, not create elb or use existing target group.
