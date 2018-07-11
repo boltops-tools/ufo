@@ -36,6 +36,6 @@ target_group:
 
 The protocol in the case of the network load balancer is TCP and is configured to TCP by default by ufo for Network Load Balancers, so you don't have to configure the protocol.
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/security-groups.md %}">Back</a>
+<a id="prev" class="btn btn-basic" href="{% link _docs/ecs-network-mode.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/route53-support.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
