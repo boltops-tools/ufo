@@ -1,5 +1,5 @@
 ---
-title: Security Groups
+title: ECS Network Mode
 ---
 
 ## Pros and Cons: awsvpc vs bridge network mode
