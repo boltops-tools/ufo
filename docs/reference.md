@@ -20,6 +20,7 @@ title: CLI Reference
 * [ufo scale]({% link _reference/ufo-scale.md %})
 * [ufo ship]({% link _reference/ufo-ship.md %})
 * [ufo ships]({% link _reference/ufo-ships.md %})
+* [ufo status]({% link _reference/ufo-status.md %})
 * [ufo stop]({% link _reference/ufo-stop.md %})
 * [ufo task]({% link _reference/ufo-task.md %})
 * [ufo tasks]({% link _reference/ufo-tasks.md %})
