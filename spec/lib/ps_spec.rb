@@ -7,8 +7,8 @@ describe Ufo::Ps do
     let(:describe_tasks_response) do
       JSON.load(IO.read("spec/fixtures/ps/describe_tasks.json"))
     end
-    it "displays info" do
-      ps.display_info(describe_tasks_response)
+    it "display_tasks" do
+      ps.display_tasks(describe_tasks_response)
     end
   end
 end
