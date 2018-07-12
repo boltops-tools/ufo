@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [4.1.0]
+- Merge pull request #46 from tongueroo/ufo-status
+- add ufo status command
+- ufo ps --extra option
+- update docs
+
 ## [4.0.3]
 - fix ufo ps for stopped task
 - improve docs
