@@ -156,6 +156,7 @@ module Ufo
     desc "ps SERVICE", "Show process info on ECS service."
     long_desc Help.text(:ps)
     option :summary, type: :boolean, default: true, desc: "Display summary header info."
+    option :extra, type: :boolean, default: false, desc: "Display extra debugging columns."
     def ps(service=:current)
       Ps.new(service, options).run
     end
@@ -170,6 +171,12 @@ module Ufo
     long_desc Help.text(:stop)
     def stop(service=:current)
       Stop.new(service, options).run
+    end
+
+    desc "status SERVICE", "Status of ECS service.  Essentially, status of CloudFormation stack"
+    long_desc Help.text(:status)
+    def status(service=:current)
+      Status.new(service, options).run
     end
 
     desc "completion *PARAMS", "Prints words for auto-completion."

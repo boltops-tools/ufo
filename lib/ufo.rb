@@ -36,6 +36,7 @@ module Ufo
   autoload :Setting, 'ufo/setting'
   autoload :Ship, 'ufo/ship'
   autoload :Stack, 'ufo/stack'
+  autoload :Status, 'ufo/status'
   autoload :Stop, 'ufo/stop'
   autoload :Task, 'ufo/task'
   autoload :Tasks, 'ufo/tasks'

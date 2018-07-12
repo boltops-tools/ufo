@@ -29,6 +29,7 @@ class Ufo::Stack
     include Ufo::Util
 
     attr_reader :events
+    attr_writer :hide_time_took
     def initialize(stack_name)
       @stack_name = stack_name
       reset
@@ -64,6 +65,7 @@ class Ufo::Stack
         puts "Stack success status: #{last_event_status}".colorize(:green)
       end
 
+      return unless @hide_time_took
       took = Time.now - start_time
       puts "Time took for stack deployment: #{pretty_time(took).green}."
     end
