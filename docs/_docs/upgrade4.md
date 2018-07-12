@@ -8,7 +8,7 @@ A major change in ufo from version 3 to 4 is that the ECS service is now created
 
 The upgrade path recommended here should result in zero downtime. It is effectively a blue/green deployment with a DNS switchover.
 
-1. Run `ufo upgrade v3to4`
+1. Run `ufo upgrade v3to4` in your project folder.
 2. Check the changed files.
 3. Run `ufo ship SERVICE`.
 4. Confirm your new service is working. `ufo ps` and `ufo apps` is useful.
