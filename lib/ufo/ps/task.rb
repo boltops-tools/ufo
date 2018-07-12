@@ -27,7 +27,7 @@ class Ufo::Ps
     end
 
     def container_instance_arn
-      @task['container_instance_arn']
+      @task['container_instance_arn'].split('/').last
     end
 
     def release
