@@ -45,6 +45,7 @@ Skip the summary info:
 ```
 [--summary], [--no-summary]  # Display summary header info.
                              # Default: true
+[--extra], [--no-extra]      # Display extra debugging columns.
 [--verbose], [--no-verbose]  
 [--mute], [--no-mute]        
 [--noop], [--no-noop]        
