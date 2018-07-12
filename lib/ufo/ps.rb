@@ -19,7 +19,7 @@ module Ufo
       end
 
       resp = ecs.describe_tasks(tasks: task_arns, cluster: @cluster)
-      display_info(resp)
+      display_tasks(resp)
 
       display_scale_help
       display_target_group_help
@@ -79,10 +79,12 @@ module Ufo
       end
     end
 
-    def display_info(resp)
+    def display_tasks(resp)
       table = Text::Table.new
+      Task.extra_columns = @options[:extra]
       table.head = Task.header
-      resp["tasks"].each do |t|
+      tasks = resp["tasks"].sort_by { |t| t["task_arn"] }
+      tasks.each do |t|
         task = Task.new(t)
         table.rows << task.to_a unless task.hide?
       end

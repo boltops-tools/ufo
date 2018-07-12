@@ -1,7 +1,9 @@
 class Ufo::Ps
   class Task
     def self.header
-      %w[Id Name Release Started Status Notes]
+      header = %w[Id Name Release Started Status Notes]
+      header << "Container Instance" if extra_columns
+      header
     end
 
     def initialize(task)
@@ -9,7 +11,9 @@ class Ufo::Ps
     end
 
     def to_a
-      [id, name, release, started, status, notes]
+      row = [id, name, release, started, status, notes]
+      row << container_instance_arn if extra_columns
+      row
     end
 
     def id
@@ -20,6 +24,10 @@ class Ufo::Ps
       @task["overrides"]["container_overrides"].first["name"]
     rescue NoMethodError
       @task["containers"].first["name"]
+    end
+
+    def container_instance_arn
+      @task['container_instance_arn']
     end
 
     def release
@@ -77,6 +85,19 @@ class Ufo::Ps
         else
           start_time.strftime("%m/%d/%Y")
       end
+    end
+
+    @@extra_columns = false
+    def self.extra_columns=(val)
+      @@extra_columns = val
+    end
+
+    def self.extra_columns
+      @@extra_columns
+    end
+
+    def extra_columns
+      self.class.extra_columns
     end
   end
 end
