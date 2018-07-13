@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [4.1.2]
+- add --build option for ufo deploy
+
 ## [4.1.1]
 - add --no-register ability to ufo deploy command
 - fixes: hide_time_took, ps_spec
