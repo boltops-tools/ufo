@@ -52,6 +52,8 @@ The `ufo ships`, `ufo ship`, `ufo deploy` command support the same options. The 
 [--task=TASK]                              # ECS task name, to override the task name convention.
 [--wait], [--no-wait]                      # Wait for deployment to complete
                                            # Default: true
+[--register], [--no-register]              # Register task definition
+                                           # Default: true
 [--verbose], [--no-verbose]                
 [--mute], [--no-mute]                      
 [--noop], [--no-noop]                      
