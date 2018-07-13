@@ -54,6 +54,7 @@ The `ufo ships`, `ufo ship`, `ufo deploy` command support the same options. The 
                                            # Default: true
 [--register], [--no-register]              # Register task definition
                                            # Default: true
+[--build], [--no-build]                    # Build task definition
 [--verbose], [--no-verbose]                
 [--mute], [--no-mute]                      
 [--noop], [--no-noop]                      
