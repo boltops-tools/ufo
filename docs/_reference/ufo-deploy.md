@@ -64,6 +64,7 @@ If you would like to create multiple enviroments quickly in parallel, the `--no-
 [--register], [--no-register]              # Register task definition
                                            # Default: true
 [--build], [--no-build]                    # Build task definition
+                                           # Default: true
 [--verbose], [--no-verbose]                
 [--mute], [--no-mute]                      
 [--noop], [--no-noop]                      
