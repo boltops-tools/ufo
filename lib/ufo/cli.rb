@@ -46,10 +46,11 @@ module Ufo
     desc "deploy SERVICE", "Deploy task definition to ECS service without re-building the definition."
     long_desc Help.text(:deploy)
     ship_options.call
+    option :register, type: :boolean, desc: "Register task definition", default: true
     def deploy(service=:current)
       service = service == :current ? Current.service! : service
       task_definition = options[:task] || service # convention
-      Tasks::Register.register(task_definition, options)
+      Tasks::Register.register(task_definition, options) if options[:register]
       ship = Ship.new(service, options.merge(task_definition: task_definition))
       ship.deploy
     end
