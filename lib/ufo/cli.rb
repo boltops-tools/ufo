@@ -47,9 +47,11 @@ module Ufo
     long_desc Help.text(:deploy)
     ship_options.call
     option :register, type: :boolean, desc: "Register task definition", default: true
+    option :build, type: :boolean, desc: "Build task definition", default: false
     def deploy(service=:current)
       service = service == :current ? Current.service! : service
       task_definition = options[:task] || service # convention
+      Tasks::Builder.build(options) if options[:build]
       Tasks::Register.register(task_definition, options) if options[:register]
       ship = Ship.new(service, options.merge(task_definition: task_definition))
       ship.deploy

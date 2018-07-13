@@ -5,8 +5,13 @@ module Ufo
       # When handling task definitions in with the ship command and class, we always want to
       # build and register task definitions. There is little point of running them independently
       # This method helps us do that.
-      Tasks::Builder.new(options).build
+      build(options)
       Tasks::Register.register(task_definition, options)
+    end
+
+    # ship: build and registers task definitions together
+    def self.build(options)
+      Tasks::Builder.new(options).build
     end
 
     def initialize(options={})
