@@ -2,7 +2,7 @@
   <img src="http://ufoships.com/img/logos/ufo-logo.png" />
 </div>
 
-# Ufo - ECS Deployment Tool
+# UFO - ECS Deployment Tool
 
 [![CircleCI](https://circleci.com/gh/tongueroo/ufo.svg?style=svg)](https://circleci.com/gh/tongueroo/ufo)
 [![Join the chat at https://gitter.im/tongueroo/ufo](https://badges.gitter.im/tongueroo/ufo.svg)](https://gitter.im/tongueroo/ufo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
