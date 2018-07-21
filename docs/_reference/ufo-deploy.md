@@ -47,6 +47,9 @@ If you would like to create multiple enviroments quickly in parallel, the `--no-
       UFO_ENV_EXTRA=$i ufo deploy --no-wait --build
     done
 
+A more detailed post is available here: [How to Create Unlimited Extra Environments
+](https://blog.boltops.com/2018/07/12/ufo-how-to-create-unlimited-extra-environments).
+
 
 ## Options
 
