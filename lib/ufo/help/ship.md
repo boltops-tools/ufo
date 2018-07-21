@@ -60,6 +60,9 @@ By default when ufo updates the ECS service with the new task definition it does
 
     ufo ship demo-web --no-wait
 
+The `--no-wait` option is useful for creating multiple environments:: [How to Create Unlimited Extra Environments
+](https://blog.boltops.com/2018/07/12/ufo-how-to-create-unlimited-extra-environments).
+
 ### Route 53 DNS Support
 
 Ufo can automatically create a "pretty" route53 record an set it to the created ELB dns name. This is done in by configuring the `.ufo/settings/network/[profile].yml` file. Example:
