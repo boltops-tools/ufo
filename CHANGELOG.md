@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [4.1.4]
+- improve regexp for striping trailing comments in env files, fixes #47
+
 ## [4.1.3]
 - build the task definition by default for ufo deploy
 
