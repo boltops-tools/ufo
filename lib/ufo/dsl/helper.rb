@@ -41,7 +41,7 @@ module Ufo
       def filtered_lines(text)
         lines = text.split("\n")
         # remove comment at the end of the line
-        lines.map! { |l| l.sub(/#.*/,'').strip }
+        lines.map! { |l| l.sub(/\s+#.*/,'').strip }
         # filter out commented lines
         lines = lines.reject { |l| l =~ /(^|\s)#/i }
         # filter out empty lines
