@@ -15,7 +15,14 @@ class Ufo::Network
       resp = ec2.describe_vpcs(filters: [
         {name: "isDefault", values: ["true"]}
       ])
-      resp.vpcs.first.vpc_id
+      default_vpc = resp.vpcs.first
+      if default_vpc
+        default_vpc.vpc_id
+      else
+        puts "A default vpc was not found in this AWS account and region.".colorize(:red)
+        puts "Because there is no default vpc, please specify the --vpc-id option.  More info: http://ufoships.com/reference/ufo-init/"
+        exit 1
+      end
     end
     memoize :vpc_id
 
