@@ -4,16 +4,20 @@ title: Quick Start
 
 In a hurry? No sweat! Here's a quick start to using ufo that takes only a few minutes. For this example, we will use a sinatra app from [tongueroo/demo-ufo](https://github.com/tongueroo/demo-ufo).  The `ufo init` command sets up the ufo directory structure in your project. The `ufo ship` command deploys your code to an AWS ECS service.  The `ufo ps` and `ufo scale` command shows you how to verify and scale additional containers.
 
-```sh
-gem install ufo
-git clone https://github.com/tongueroo/demo-ufo.git demo
-cd demo
-ufo init --image=tongueroo/demo-ufo
-ufo current --service demo-web
-ufo ship
-ufo ps
-ufo scale 2
-```
+    gem install ufo
+    git clone https://github.com/tongueroo/demo-ufo.git demo
+    cd demo
+    ufo init --image=tongueroo/demo-ufo
+    ufo current --service demo-web
+    ufo ship
+    ufo ps
+    ufo scale 2
+
+Note: The example pushes the Docker image to Dockerhub. If you are using ECR instead, you can specific an ECR repo with the `--image` option.  Example:
+
+    ufo init --image 123456789012.dkr.ecr.us-west-2.amazonaws.com/myimage
+
+For more info, refer to the [ufo init](http://ufoships.com/reference/ufo-init/) reference docs.
 
 ## What Happened
 
