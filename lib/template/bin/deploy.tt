@@ -1,4 +1,4 @@
-#!/bin/bash -xe
+#!/bin/bash
 
 # Generated starter bin/deploy script example.
 # Meant to be overridden.

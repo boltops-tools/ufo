@@ -1,4 +1,4 @@
 #!/bin/bash -ex
 
 bundle exec jekyll clean
-exec bundle exec jekyll serve
+exec bundle exec jekyll serve "$@"
