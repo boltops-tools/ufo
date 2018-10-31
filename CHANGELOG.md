@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [4.1.6]
+- update bin/deploy starter wrapper
+- update quick start with note about ecr image
+- update ufo init help
+
 ## [4.1.5]
 - provide error message and instructions for case of missing default vpc, pull request #49
 
