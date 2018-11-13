@@ -38,7 +38,7 @@ module Ufo
       option :elb_eip_ids, type: :array, desc: "EIP Allocation ids to use for network load balancer."
       option :elb_type, desc: "ELB type: application or network. Keep current deployed elb type when not specified."
       option :pretty, type: :boolean, default: true, desc: "Pretty format the json for the task definitions"
-      option :scheduling_strategy, desc: "Scheduling strategy to use for the service. IE: REPLICA, DAEMON"
+      option :scheduling_strategy, desc: "Scheduling strategy to use for the service. IE: replica, daemon"
       option :stop_old_tasks, type: :boolean, default: false, desc: "Stop old tasks as part of deployment to speed it up"
       option :task, desc: "ECS task name, to override the task name convention."
       option :wait, type: :boolean, desc: "Wait for deployment to complete", default: true
