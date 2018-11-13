@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [4.1.7]
+- add scheduling-strategy option #55 from tongueroo/scheduling-strategy
+
 ## [4.1.6]
 - update bin/deploy starter wrapper
 - update quick start with note about ecr image
