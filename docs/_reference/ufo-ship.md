@@ -25,7 +25,7 @@ The ECS service gets created if the service does not yet exist on the cluster.
 
 ### Conventions
 
-By convention the task and service names match. If you need override to this convention then you can specific the task.  For example if you want to ship to the `demo-web-1` service and use the `demo-web` task, run:
+By convention, the task and service names match. If you need to override this convention, then you can use the task option.  For example, if you want to ship to the `demo-web-1` service and use the `demo-web` task, run:
 
     ufo ship demo-web-1 --task demo-web
 
@@ -69,7 +69,7 @@ Let's you want skip the docker build phase and only want use ufo to deploy a tas
 
 ### Not Waiting for Deployments to Complete
 
-By default when ufo updates the ECS service with the new task definition it does so synchronuously. It'll wait until the CloudFormation stack finishes.  You can make it asynchronuously with the `--no-wait` option:
+By default when ufo updates the ECS service with the new task definition, it does so synchronuously. It'll wait until the CloudFormation stack finishes.  You can make it asynchronuously with the `--no-wait` option:
 
     ufo ship demo-web --no-wait
 
@@ -88,7 +88,7 @@ Refer to [Route53 Support](http://ufoships.com/docs/route53-support/) for more i
 
 ### Cleaning up Docker Images Automatically
 
-Since ufo builds the Docker image every time there's a deployment you will end up with a long list of docker images.  Ufo automatically cleans up older docker images at the end of the deploy process if you are using AWS ECR.  By default ufo keeps the most recent 30 Docker images. This can be adjust with the `--ecr-keep` option.
+Since ufo builds the Docker image every time there's a deployment, you eventually will end up with a long list of Docker images.  Ufo automatically cleans up older docker images at the end of the deploy process if you are using AWS ECR.  By default ufo keeps the most recent 30 Docker images. This can be adjusted with the `--ecr-keep` option.
 
     docker ship demo-web --ecr-keep 2
 
@@ -99,23 +99,32 @@ You should see something like this:
 
 If you are using DockerHub or another registry, ufo does not automatically clean up images.
 
+### Scheduling Strategy
+
+You can set the ECS scheduling strategy dynamically.  Here's an example:
+
+    ufo ship --scheduling-strategy daemon
+
+You can change the scheduling strategy by explicitly specifying it.  Otherwise, the scheduling strategy state is maintained for future deployments, so you do not have to specify it repeatedly. The default scheduling strategy is replica.
+
 
 ## Options
 
 ```
-[--ecr-keep=N]                             # ECR specific cleanup of old images.  Specifies how many images to keep.  Only runs if the images are ECR images. Defaults keeps all images.
-[--elb=ELB]                                # Decides to create elb, not create elb or use existing target group.
-[--elb-eip-ids=one two three]              # EIP Allocation ids to use for network load balancer.
-[--elb-type=ELB_TYPE]                      # ELB type: application or network. Keep current deployed elb type when not specified.
-[--pretty], [--no-pretty]                  # Pretty format the json for the task definitions
-                                           # Default: true
-[--stop-old-tasks], [--no-stop-old-tasks]  # Stop old tasks as part of deployment to speed it up
-[--task=TASK]                              # ECS task name, to override the task name convention.
-[--wait], [--no-wait]                      # Wait for deployment to complete
-                                           # Default: true
-[--verbose], [--no-verbose]                
-[--mute], [--no-mute]                      
-[--noop], [--no-noop]                      
-[--cluster=CLUSTER]                        # Cluster.  Overrides .ufo/settings.yml.
+[--ecr-keep=N]                               # ECR specific cleanup of old images.  Specifies how many images to keep.  Only runs if the images are ECR images. Defaults keeps all images.
+[--elb=ELB]                                  # Decides to create elb, not create elb or use existing target group.
+[--elb-eip-ids=one two three]                # EIP Allocation ids to use for network load balancer.
+[--elb-type=ELB_TYPE]                        # ELB type: application or network. Keep current deployed elb type when not specified.
+[--pretty], [--no-pretty]                    # Pretty format the json for the task definitions
+                                             # Default: true
+[--scheduling-strategy=SCHEDULING_STRATEGY]  # Scheduling strategy to use for the service. IE: replica, daemon
+[--stop-old-tasks], [--no-stop-old-tasks]    # Stop old tasks as part of deployment to speed it up
+[--task=TASK]                                # ECS task name, to override the task name convention.
+[--wait], [--no-wait]                        # Wait for deployment to complete
+                                             # Default: true
+[--verbose], [--no-verbose]                  
+[--mute], [--no-mute]                        
+[--noop], [--no-noop]                        
+[--cluster=CLUSTER]                          # Cluster.  Overrides .ufo/settings.yml.
 ```
 

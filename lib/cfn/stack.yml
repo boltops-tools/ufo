@@ -40,6 +40,10 @@ Parameters:
     Description: ELB EIP Allocation ids to use for network load balancer
     Type: String
     Default: ''
+  EcsSchedulingStrategy:
+    Description: The scheduling strategy to use for the service
+    Type: String
+    Default: 'REPLICA'
 Conditions:
   CreateElbIsTrue: !Equals [ !Ref CreateElb, true ]
   ElbTargetGroupIsBlank: !Equals [ !Ref ElbTargetGroup, '' ]
@@ -213,6 +217,7 @@ Resources:
         - - ContainerName: <%= @container[:name] %>
             ContainerPort: <%= @container[:port] || 80 %>
             TargetGroupArn: !Ref ElbTargetGroup
+      SchedulingStrategy: !Ref EcsSchedulingStrategy
 <%= custom_properties(:Ecs) %>
 
   EcsSecurityGroup:

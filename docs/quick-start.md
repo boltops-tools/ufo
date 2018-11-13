@@ -7,13 +7,17 @@ In a hurry? No sweat! Here's a quick start to using ufo that takes only a few mi
     gem install ufo
     git clone https://github.com/tongueroo/demo-ufo.git demo
     cd demo
-    ufo init --image=tongueroo/demo-ufo
+    ufo init --image=tongueroo/demo-ufo # NOTE: use your own account
     ufo current --service demo-web
     ufo ship
     ufo ps
     ufo scale 2
 
-Note: The example pushes the Docker image to Dockerhub. If you are using ECR instead, you can specific an ECR repo with the `--image` option.  Example:
+Note: The example pushes the Docker image to Dockerhub account. You need push access the repo. So, you will need to an account that you have access to. You can control that with the `--image` option.  Example:
+
+    ufo init --image=yourusername/yourrepo # use your own account
+
+Also, if you are using ECR instead, you can specific an ECR repo with the `--image` option.  Example:
 
     ufo init --image 123456789012.dkr.ecr.us-west-2.amazonaws.com/myimage
 

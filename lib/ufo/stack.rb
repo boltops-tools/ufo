@@ -114,6 +114,7 @@ module Ufo
 
         EcsDesiredCount: current_desired_count,
         EcsTaskDefinition: task_definition_arn,
+        EcsSchedulingStrategy: scheduling_strategy,
       }
 
       hash[:EcsSecurityGroups] = network[:ecs_security_groups].join(',') if network[:ecs_security_groups]
@@ -138,7 +139,15 @@ module Ufo
     end
     memoize :context
 
+    def scheduling_strategy
+      strategy = @options[:scheduling_strategy] || context.scheduling_strategy
+      strategy.upcase
+    end
+
     def current_desired_count
+      # Cannot set ECS desired count when is scheduling_strategy DAEMON
+      return '' if scheduling_strategy == "DAEMON"
+
       info = Info.new(@service, @options)
       service = info.service
       if service
