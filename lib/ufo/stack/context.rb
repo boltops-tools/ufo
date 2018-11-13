@@ -138,7 +138,14 @@ class Ufo::Stack
       param = stack.parameters.find do |p|
         p.parameter_key == key
       end
-      param.parameter_value
+      param.parameter_value if param
+    end
+
+    def scheduling_strategy
+      unless @new_stack
+        scheduling_strategy = get_parameter_value(@stack, "EcsSchedulingStrategy")
+      end
+      scheduling_strategy || 'REPLICA' # defaults to REPLICA
     end
 
     def reset_empty_eip_ids?

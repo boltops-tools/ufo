@@ -114,6 +114,7 @@ module Ufo
 
         EcsDesiredCount: current_desired_count,
         EcsTaskDefinition: task_definition_arn,
+        EcsSchedulingStrategy: context.scheduling_strategy,
       }
 
       hash[:EcsSecurityGroups] = network[:ecs_security_groups].join(',') if network[:ecs_security_groups]
