@@ -57,7 +57,7 @@ Note: The `--task` option is not used with the `ufo ships` command.
 [--elb-type=ELB_TYPE]                        # ELB type: application or network. Keep current deployed elb type when not specified.
 [--pretty], [--no-pretty]                    # Pretty format the json for the task definitions
                                              # Default: true
-[--scheduling-strategy=SCHEDULING_STRATEGY]  # Scheduling strategy to use for the service. IE: REPLICA, DAEMON
+[--scheduling-strategy=SCHEDULING_STRATEGY]  # Scheduling strategy to use for the service. IE: replica, daemon
 [--stop-old-tasks], [--no-stop-old-tasks]    # Stop old tasks as part of deployment to speed it up
 [--task=TASK]                                # ECS task name, to override the task name convention.
 [--wait], [--no-wait]                        # Wait for deployment to complete
