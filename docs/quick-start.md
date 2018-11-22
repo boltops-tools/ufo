@@ -13,7 +13,7 @@ In a hurry? No sweat! Here's a quick start to using ufo that takes only a few mi
     ufo ps
     ufo scale 2
 
-Note: These quick start commands use ECS EC2 and assume that you have an ECS cluster with some EC2 Container instances running. Refer to the Notes "ECS EC2 vs ECS Fargate" section below for more info.
+Note: These quick start commands assume that you have push access to the repo. Refer to the Notes "Repo Push Access" section below for more info. It also assumes that you'd like to use ECS EC2 and assume that you have an ECS cluster with some EC2 Container instances running. Refer to the Notes "ECS EC2 vs ECS Fargate" section below for more info.
 
 ## What Happened
 
