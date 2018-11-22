@@ -18,11 +18,11 @@ Here's an example of creating web service with Fargate.
 
     git clone https://github.com/tongueroo/demo-ufo demo
     cd demo
-    ufo init --image tongueroo/demo-ufo --launch-type fargate --execution-role-arn arn:aws:iam::123456789012:role/ecsTaskExecutionRole
+    ufo init --image tongueroo/demo-ufo --launch-type fargate --execution-role-arn arn:aws:iam::112233445566:role/ecsTaskExecutionRole
     ufo current --service demo-web
     ufo ship
 
-Replace the `--execution-role-arn` with the ecsTaskExecutionRole associated with your account. If you do not have an ecsTaskExecutionRole yet, create one by following [Amazon ECS Task Execution IAM Role](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_execution_IAM_role.html) guide.
+**IMPORTANT**: Replace the `--execution-role-arn` with the ecsTaskExecutionRole associated with your account. If you do not have an ecsTaskExecutionRole yet, create one by following [Amazon ECS Task Execution IAM Role](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_execution_IAM_role.html) guide.
 
 You should see output similiar to this. Some output has been removed for conciseness.
 
