@@ -105,6 +105,8 @@ module Ufo
     desc "task TASK_DEFINITION", "Run a one-time task."
     long_desc Help.text(:task)
     option :task_only, type: :boolean, desc: "Skip docker and task register steps. Only run the task."
+    option :wait, type: :boolean, aliases: 'w', desc: "Wait for task to finish.", default: false
+    option :timeout, type: :numeric, aliases: 't', desc: "How long to wait for task to finish.", default: 600
     option :command, type: :array, aliases: 'c', desc: "Override the command used for the container"
     def task(task_definition)
       Docker::Builder.build(options) unless @options[:task_only]
