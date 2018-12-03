@@ -191,17 +191,20 @@ module Ufo
       recent_task_definition.container_definitions[0].to_h
     end
 
-    def exit_status_of_task task_arn
+    def exit_status_of_task(task_arn)
       waiter_max_attempts = @options[:timeout] / 5
       waiter_delay = 5 # seconds long polling.
 
+      print "Waiting for task to complete."
       ecs.wait_until(:tasks_stopped, { cluster: @cluster, tasks: [task_arn] }) do |waiter|
+        waiter.before_wait { print '.' }
         waiter.delay = waiter_delay
         waiter.max_attempts = waiter_max_attempts
       end
+      puts
       container = ecs.describe_tasks(cluster: @cluster, tasks: [task_arn]).tasks[0].containers[0]
 
-      container.exit_code
+      container.exit_code.nil? ? 1 : container.exit_code
     rescue Aws::Waiters::Errors::WaiterFailed
       puts "It took longer than #{options[:timeout]} seconds to run #{command_in_human_readable_form} (#{task_arn})"
       exit 1
