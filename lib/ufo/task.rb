@@ -34,6 +34,8 @@ module Ufo
         display_params(task_options)
       end
 
+      ensure_log_group_exist
+
       resp = run_task(task_options)
       exit_if_failures!(resp)
       unless @options[:mute]
@@ -42,6 +44,10 @@ module Ufo
         puts "  aws ecs describe-tasks --tasks #{task_arn} --cluster #{@cluster}"
         cloudwatch_info(task_arn)
       end
+    end
+
+    def ensure_log_group_exist
+      LogGroup.new(@task_definition, @options).create
     end
 
     # Pretty hard to produce this edge case.  Happens when:
@@ -178,7 +184,7 @@ module Ufo
       arns = task_definition_arns(@task_definition)
       # "arn:aws:ecs:us-east-1:<aws_account_id>:task-definition/wordpress:6",
       last_definition_arn = arns.first
-      puts "last_definition_arn #{last_definition_arn}"
+      # puts "last_definition_arn #{last_definition_arn}"
       task_name = last_definition_arn.split("/").last
       resp = ecs.describe_task_definition(task_definition: task_name)
 
