@@ -26,7 +26,7 @@ module Ufo
       if @options[:command]
         task_options.merge!(overrides: overrides)
         puts "Running task with container overrides."
-        puts "Command: #{@options[:command].join(' ')}"
+        puts "Command: #{command_in_human_readable_form}"
       end
 
       unless @options[:mute]
@@ -66,7 +66,13 @@ module Ufo
     def run_task(options)
       puts "Equivalent aws cli command:"
       puts "  aws ecs run-task --cluster #{@cluster} --task-definition #{options[:task_definition]}".colorize(:green)
-      ecs.run_task(options)
+      run_task_result = ecs.run_task(options)
+      if @options[:wait]
+        task_arn = run_task_result.tasks[0].task_arn
+        raise SystemExit, exit_status_of_task(task_arn)
+      else
+        run_task_result
+      end
     rescue Aws::ECS::Errors::ClientException => e
       if e.message =~ /ECS was unable to assume the role/
         puts "ERROR: #{e.class} #{e.message}".colorize(:red)
@@ -183,6 +189,26 @@ module Ufo
     # container definition from the most recent task definition
     def container_definition
       recent_task_definition.container_definitions[0].to_h
+    end
+
+    def exit_status_of_task task_arn
+      waiter_max_attempts = @options[:timeout] / 5
+      waiter_delay = 5 # seconds long polling.
+
+      ecs.wait_until(:tasks_stopped, { cluster: @cluster, tasks: [task_arn] }) do |waiter|
+        waiter.delay = waiter_delay
+        waiter.max_attempts = waiter_max_attempts
+      end
+      container = ecs.describe_tasks(cluster: @cluster, tasks: [task_arn]).tasks[0].containers[0]
+
+      container.exit_code
+    rescue Aws::Waiters::Errors::WaiterFailed
+      puts "It took longer than #{options[:timeout]} seconds to run #{command_in_human_readable_form} (#{task_arn})"
+      exit 1
+    end
+
+    def command_in_human_readable_form
+      @options[:command].join(' ')
     end
   end
 end
