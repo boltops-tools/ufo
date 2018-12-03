@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [4.1.9]
+- print Command failed if task fails
+
 ## [4.1.8]
 - Merge pull request #59 from everplays/58-ability-to-wait-for-one-off-task-to-finish
 - Merge pull request #60 from tongueroo/wait-exit-code
