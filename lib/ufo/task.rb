@@ -34,6 +34,8 @@ module Ufo
         display_params(task_options)
       end
 
+      ensure_log_group_exist
+
       resp = run_task(task_options)
       exit_if_failures!(resp)
       unless @options[:mute]
@@ -42,6 +44,10 @@ module Ufo
         puts "  aws ecs describe-tasks --tasks #{task_arn} --cluster #{@cluster}"
         cloudwatch_info(task_arn)
       end
+    end
+
+    def ensure_log_group_exist
+      LogGroup.new(@task_definition, @options).create
     end
 
     # Pretty hard to produce this edge case.  Happens when:
@@ -178,7 +184,7 @@ module Ufo
       arns = task_definition_arns(@task_definition)
       # "arn:aws:ecs:us-east-1:<aws_account_id>:task-definition/wordpress:6",
       last_definition_arn = arns.first
-      puts "last_definition_arn #{last_definition_arn}"
+      # puts "last_definition_arn #{last_definition_arn}"
       task_name = last_definition_arn.split("/").last
       resp = ecs.describe_task_definition(task_definition: task_name)
 
@@ -191,17 +197,20 @@ module Ufo
       recent_task_definition.container_definitions[0].to_h
     end
 
-    def exit_status_of_task task_arn
+    def exit_status_of_task(task_arn)
       waiter_max_attempts = @options[:timeout] / 5
       waiter_delay = 5 # seconds long polling.
 
+      print "Waiting for task to complete."
       ecs.wait_until(:tasks_stopped, { cluster: @cluster, tasks: [task_arn] }) do |waiter|
+        waiter.before_wait { print '.' }
         waiter.delay = waiter_delay
         waiter.max_attempts = waiter_max_attempts
       end
+      puts
       container = ecs.describe_tasks(cluster: @cluster, tasks: [task_arn]).tasks[0].containers[0]
 
-      container.exit_code
+      container.exit_code.nil? ? 1 : container.exit_code
     rescue Aws::Waiters::Errors::WaiterFailed
       puts "It took longer than #{options[:timeout]} seconds to run #{command_in_human_readable_form} (#{task_arn})"
       exit 1
