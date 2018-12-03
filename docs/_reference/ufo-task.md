@@ -34,6 +34,9 @@ The `--task-only` option is useful. By default, the `ufo task` command will buil
 
 ```
     [--task-only], [--no-task-only]  # Skip docker and task register steps. Only run the task.
+w, [--wait], [--no-wait]             # Wait for task to finish.
+t, [--timeout=N]                     # How long to wait for task to finish.
+                                     # Default: 600
 c, [--command=one two three]         # Override the command used for the container
     [--verbose], [--no-verbose]      
     [--mute], [--no-mute]            
