@@ -210,7 +210,12 @@ module Ufo
       puts
       container = ecs.describe_tasks(cluster: @cluster, tasks: [task_arn]).tasks[0].containers[0]
 
-      container.exit_code.nil? ? 1 : container.exit_code
+      if container.exit_code.nil?
+        puts "Command failed!".colorize(:red)
+        1
+      else
+        container.exit_code
+      end
     rescue Aws::Waiters::Errors::WaiterFailed
       puts "It took longer than #{options[:timeout]} seconds to run #{command_in_human_readable_form} (#{task_arn})"
       exit 1
