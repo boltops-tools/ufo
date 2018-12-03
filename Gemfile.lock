@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ufo (4.1.7)
+    ufo (4.1.8)
       aws-sdk-cloudformation
       aws-sdk-cloudwatchlogs
       aws-sdk-ec2
@@ -19,34 +19,34 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (5.2.1)
+    activesupport (5.2.1.1)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 0.7, < 2)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     aws-eventstream (1.0.1)
-    aws-partitions (1.115.0)
+    aws-partitions (1.121.0)
     aws-sdk-cloudformation (1.13.0)
       aws-sdk-core (~> 3, >= 3.39.0)
       aws-sigv4 (~> 1.0)
-    aws-sdk-cloudwatchlogs (1.11.0)
+    aws-sdk-cloudwatchlogs (1.12.0)
       aws-sdk-core (~> 3, >= 3.39.0)
       aws-sigv4 (~> 1.0)
-    aws-sdk-core (3.39.0)
+    aws-sdk-core (3.42.0)
       aws-eventstream (~> 1.0)
       aws-partitions (~> 1.0)
       aws-sigv4 (~> 1.0)
       jmespath (~> 1.0)
-    aws-sdk-ec2 (1.59.0)
+    aws-sdk-ec2 (1.62.0)
       aws-sdk-core (~> 3, >= 3.39.0)
       aws-sigv4 (~> 1.0)
     aws-sdk-ecr (1.9.0)
       aws-sdk-core (~> 3, >= 3.39.0)
       aws-sigv4 (~> 1.0)
-    aws-sdk-ecs (1.25.0)
+    aws-sdk-ecs (1.26.0)
       aws-sdk-core (~> 3, >= 3.39.0)
       aws-sigv4 (~> 1.0)
-    aws-sdk-elasticloadbalancingv2 (1.17.0)
+    aws-sdk-elasticloadbalancingv2 (1.18.0)
       aws-sdk-core (~> 3, >= 3.39.0)
       aws-sigv4 (~> 1.0)
     aws-sigv4 (1.0.3)
@@ -92,7 +92,7 @@ GEM
     text-table (1.2.4)
     thor (0.20.3)
     thread_safe (0.3.6)
-    tilt (2.0.8)
+    tilt (2.0.9)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
 
@@ -109,4 +109,4 @@ DEPENDENCIES
   ufo!
 
 BUNDLED WITH
-   1.16.3
+   1.17.1
