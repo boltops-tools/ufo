@@ -212,6 +212,7 @@ module Ufo
 
       if container.exit_code.nil?
         puts "Command failed!".colorize(:red)
+        puts "Reason: #{container.reason}"
         1
       else
         container.exit_code
