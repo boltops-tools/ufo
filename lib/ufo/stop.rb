@@ -3,6 +3,8 @@ module Ufo
     def run
       info = Info.new(@service, @options)
       service = info.service
+      return unless service # brand new deploy
+
       @deployments = service.deployments
       if @deployments.size > 1
         stop_old_tasks(service.service_name)
