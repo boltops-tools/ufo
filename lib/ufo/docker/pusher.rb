@@ -29,7 +29,7 @@ class Ufo::Docker
         end
       end
       took = Time.now - start_time
-      message << "\nDocker push took #{pretty_time(took)}.".green
+      message << "\nDocker push took #{pretty_time(took)}.".color(:green)
       puts message unless @options[:mute]
     end
 

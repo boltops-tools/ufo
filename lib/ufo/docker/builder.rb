@@ -26,8 +26,8 @@ class Ufo::Docker
       update_auth_token
 
       command = "docker build #{build_options}-t #{full_image_name} -f #{@dockerfile} ."
-      say "Building docker image with:".green
-      say "  #{command}".green
+      say "Building docker image with:".color(:green)
+      say "  #{command}".color(:green)
       check_dockerfile_exists
       command = "cd #{Ufo.root} && #{command}"
       success = execute(command, use_system: true)
@@ -42,7 +42,7 @@ class Ufo::Docker
 
       took = Time.now - start_time
       say "Docker image #{full_image_name} built.  "
-      say "Docker build took #{pretty_time(took)}.".green
+      say "Docker build took #{pretty_time(took)}.".color(:green)
     end
 
     def build_options

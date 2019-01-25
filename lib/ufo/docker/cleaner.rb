@@ -14,8 +14,8 @@ module Ufo
     def cleanup
       return if delete_list.empty?
       command = "docker rmi #{delete_list}"
-      say "Cleaning up docker images...".green
-      say "=> #{"docker rmi #{delete_list}"}".green
+      say "Cleaning up docker images...".color(:green)
+      say "=> #{"docker rmi #{delete_list}"}".color(:green)
       return if @options[:noop]
       execute(command, use_system: false) # to use_system: false silence output
     end

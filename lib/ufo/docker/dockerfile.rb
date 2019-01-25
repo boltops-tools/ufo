@@ -33,8 +33,8 @@ module Ufo
     def write_new_dockerfile
       IO.write(dockerfile_path, new_dockerfile)
       unless @options[:mute]
-        puts "The Dockerfile FROM statement has been updated with the latest base image:".green
-        puts "  #{@full_image_name}".green
+        puts "The Dockerfile FROM statement has been updated with the latest base image:".color(:green)
+        puts "  #{@full_image_name}".color(:green)
       end
     end
   end

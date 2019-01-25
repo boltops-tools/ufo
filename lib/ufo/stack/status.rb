@@ -67,7 +67,7 @@ class Ufo::Stack
 
       return if @hide_time_took
       took = Time.now - start_time
-      puts "Time took for stack deployment: #{pretty_time(took).green}."
+      puts "Time took for stack deployment: #{pretty_time(took).color(:green)}."
     end
 
     def completed

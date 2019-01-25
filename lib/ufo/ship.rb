@@ -16,7 +16,7 @@ module Ufo
           puts "NOOP: #{message}"
           return
         else
-          puts message.green
+          puts message.color(:green)
         end
       end
 

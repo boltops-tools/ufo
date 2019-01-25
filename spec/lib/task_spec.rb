@@ -45,9 +45,10 @@ describe Ufo::Task do
   def task option_overwrites = {}
     @task ||=
       begin
-        result = Ufo::Task.new(task_definition, options.merge(option_overwrites))
-        allow(result).to receive(:ecs).and_return(ecs_client)
-        result
+        task = Ufo::Task.new(task_definition, options.merge(option_overwrites))
+        allow(task).to receive(:ensure_log_group_exist) # stub not so not called
+        allow(task).to receive(:ecs).and_return(ecs_client)
+        task
       end
   end
 end
