@@ -36,7 +36,7 @@ class Ufo::Docker
         unless docker_version_success
           docker_version_message = "  Are you sure the docker daemon is available?  Try running: docker version."
         end
-        puts "ERROR: The docker image fail to build.#{docker_version_message}".colorize(:red)
+        puts "ERROR: The docker image fail to build.#{docker_version_message}".color(:red)
         exit 1
       end
 

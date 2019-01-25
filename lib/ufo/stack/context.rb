@@ -34,7 +34,7 @@ class Ufo::Stack
         default_listener_ssl_protocol: default_listener_ssl_protocol,
         create_listener_ssl: create_listener_ssl?,
       }
-      # puts "vars:".colorize(:cyan)
+      # puts "vars:".color(:cyan)
       # pp vars
       scope.assign_instance_variables(vars)
       scope
@@ -111,7 +111,7 @@ class Ufo::Stack
       when "", nil
         create_elb, elb_target_group = default_elb_options
       else
-        puts "Invalid --elb option provided: #{@options[:elb].inspect}".colorize(:red)
+        puts "Invalid --elb option provided: #{@options[:elb].inspect}".color(:red)
         puts "Exiting."
         exit 1
       end
@@ -187,9 +187,9 @@ class Ufo::Stack
 
     def build_subnet_mappings!(allocations)
       unless allocations.size == network[:elb_subnets].size
-        # puts "caller:".colorize(:cyan)
+        # puts "caller:".color(:cyan)
         # puts caller
-        puts "ERROR: The allocation_ids must match in length to the subnets.".colorize(:red)
+        puts "ERROR: The allocation_ids must match in length to the subnets.".color(:red)
         puts "Please double check that .ufo/settings/network/#{settings[:network_profile]} has the same number of subnets as the eip allocation ids are you specifying."
         subnets = network[:elb_subnets]
         puts "Conigured subnets: #{subnets.inspect}"

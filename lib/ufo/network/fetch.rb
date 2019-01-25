@@ -19,7 +19,7 @@ class Ufo::Network
       if default_vpc
         default_vpc.vpc_id
       else
-        puts "A default vpc was not found in this AWS account and region.".colorize(:red)
+        puts "A default vpc was not found in this AWS account and region.".color(:red)
         puts "Because there is no default vpc, please specify the --vpc-id option.  More info: http://ufoships.com/reference/ufo-init/"
         exit 1
       end

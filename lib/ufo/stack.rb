@@ -62,7 +62,7 @@ module Ufo
     end
 
     def perform(action)
-      puts "#{action[0..-2].capitalize}ing stack #{@stack_name.colorize(:green)}..."
+      puts "#{action[0..-2].capitalize}ing stack #{@stack_name.color(:green)}..."
       # Example: cloudformation.send("update_stack", stack_options)
       cloudformation.send("#{action}_stack", stack_options)
     rescue Aws::CloudFormation::Errors::ValidationError => e
@@ -178,7 +178,7 @@ module Ufo
     def exit_with_message(stack)
       region = `aws configure get region`.strip rescue "us-east-1"
       url = "https://console.aws.amazon.com/cloudformation/home?region=#{region}#/stacks"
-      puts "The stack is not in an updateable state: #{stack.stack_status.colorize(:yellow)}."
+      puts "The stack is not in an updateable state: #{stack.stack_status.color(:yellow)}."
       puts "Here's the CloudFormation url to check for more details #{url}"
       exit 1
     end
@@ -188,13 +188,13 @@ module Ufo
     def handle_stack_error(e)
       case e.message
       when /is in ROLLBACK_COMPLETE state and can not be updated/
-        puts "The #{@stack_name} stack is in #{"ROLLBACK_COMPLETE".colorize(:red)} and cannot be updated. Deleted the stack and try again."
+        puts "The #{@stack_name} stack is in #{"ROLLBACK_COMPLETE".color(:red)} and cannot be updated. Deleted the stack and try again."
         region = `aws configure get region`.strip rescue 'us-east-1'
         url = "https://console.aws.amazon.com/cloudformation/home?region=#{region}"
         puts "Here's the CloudFormation console url: #{url}"
         exit 1
       when /No updates are to be performed/
-        puts "There are no updates to be performed. Exiting.".colorize(:yellow)
+        puts "There are no updates to be performed. Exiting.".color(:yellow)
         exit 1
       else
         raise

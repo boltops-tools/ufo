@@ -89,7 +89,7 @@ EOL
       service = Current.service
       return service if service
 
-      puts "ERROR: service must be specified.".colorize(:red)
+      puts "ERROR: service must be specified.".color(:red)
       puts <<-EOL
 Example:
     ufo #{ARGV.first} SERVICE

@@ -21,10 +21,10 @@ class Ufo::Docker
         message = "NOOP #{message}"
       else
         command = "docker push #{last_image_name}"
-        puts "=> #{command}".colorize(:green)
+        puts "=> #{command}".color(:green)
         success = execute(command, use_system: true)
         unless success
-          puts "ERROR: The docker image fail to push.".colorize(:red)
+          puts "ERROR: The docker image fail to push.".color(:red)
           exit 1
         end
       end

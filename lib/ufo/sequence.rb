@@ -1,5 +1,4 @@
 require 'fileutils'
-require 'colorize'
 require 'thor'
 
 module Ufo

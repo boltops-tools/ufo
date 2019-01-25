@@ -8,13 +8,13 @@ module Ufo
 
       stack = find_stack(@stack_name)
       unless stack
-        puts "Stack #{@stack_name.colorize(:green)} does not exist."
+        puts "Stack #{@stack_name.color(:green)} does not exist."
         exit
       end
 
       if stack.stack_status =~ /_IN_PROGRESS$/
-        puts "Cannot destroy service #{@pretty_service_name.colorize(:green)}"
-        puts "Cannot delete stack #{@stack_name.colorize(:green)} in this state: #{stack.stack_status.colorize(:green)}"
+        puts "Cannot destroy service #{@pretty_service_name.color(:green)}"
+        puts "Cannot delete stack #{@stack_name.color(:green)} in this state: #{stack.stack_status.color(:green)}"
         puts "If the stack is taking a long time, you can cancel the current operation with:"
         puts "  ufo cancel #{@service}"
         return
@@ -32,7 +32,7 @@ module Ufo
 
     def are_you_sure?
       return true if @options[:sure]
-      puts "You are about to destroy #{@pretty_service_name.colorize(:green)} service on the #{@cluster.colorize(:green)} cluster."
+      puts "You are about to destroy #{@pretty_service_name.color(:green)} service on the #{@cluster.color(:green)} cluster."
       print "Are you sure you want to do this? (y/n) "
       answer = $stdin.gets.strip
       answer =~ /^y/

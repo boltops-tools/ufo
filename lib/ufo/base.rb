@@ -23,7 +23,7 @@ module Ufo
 
     def no_service_message
       <<-EOL
-No #{@pretty_service_name.colorize(:green)} found.
+No #{@pretty_service_name.color(:green)} found.
 No CloudFormation stack named #{@stack_name} found.
 Are sure it exists?
       EOL

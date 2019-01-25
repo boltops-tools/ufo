@@ -26,7 +26,7 @@ module Ufo
         begin
           JSON.parse(json)
         rescue JSON::ParserError => e
-          puts "Invalid json.  Output written to #{path} for debugging".colorize(:red)
+          puts "Invalid json.  Output written to #{path} for debugging".color(:red)
           File.open(path, 'w') {|f| f.write(json) }
           exit 1
         end

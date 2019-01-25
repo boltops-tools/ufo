@@ -3,14 +3,14 @@ module Ufo
     # used for the ufo status command
     def run
       unless stack_exists?(@stack_name)
-        puts "The stack #{@stack_name.colorize(:green)} does not exist."
+        puts "The stack #{@stack_name.color(:green)} does not exist."
         return
       end
 
       resp = cloudformation.describe_stacks(stack_name: @stack_name)
       stack = resp.stacks.first
 
-      puts "The current status for the stack #{@stack_name.colorize(:green)} is #{stack.stack_status.colorize(:green)}"
+      puts "The current status for the stack #{@stack_name.color(:green)} is #{stack.stack_status.color(:green)}"
 
       status_poller = Stack::Status.new(@stack_name)
 

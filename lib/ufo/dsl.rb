@@ -42,7 +42,7 @@ module Ufo
       error_info = e.backtrace.first
       path, line_no, _ = error_info.split(':')
       line_no = line_no.to_i
-      puts "Error evaluating #{path}:".colorize(:red)
+      puts "Error evaluating #{path}:".color(:red)
       puts e.message
       puts "Here's the line in #{path} with the error:\n\n"
 
@@ -54,7 +54,7 @@ module Ufo
       content_lines[top..bottom].each_with_index do |line_content, index|
         line_number = top+index+1
         if line_number == line_no
-          printf("%#{spacing}d %s\n".colorize(:red), line_number, line_content)
+          printf("%#{spacing}d %s\n".color(:red), line_number, line_content)
         else
           printf("%#{spacing}d %s\n", line_number, line_content)
         end

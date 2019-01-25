@@ -35,7 +35,7 @@ module Ufo
       unless @options[:mute]
         puts "Equivalent aws cli command:"
         file_path = "file://#{@template_definition_path.sub(/^\.\//,'')}"
-        puts "  aws ecs register-task-definition --cli-input-json #{file_path}".colorize(:green)
+        puts "  aws ecs register-task-definition --cli-input-json #{file_path}".color(:green)
         puts message
       end
     end
@@ -49,7 +49,7 @@ module Ufo
       ecs.register_task_definition(data)
     rescue Aws::ECS::Errors::ClientException => e
       if e.message =~ /No Fargate configuration exists for given values/
-        puts "ERROR: #{e.message}".colorize(:red)
+        puts "ERROR: #{e.message}".color(:red)
         puts "Configured values are: cpu #{data[:cpu]} memory #{data[:memory]}"
         puts "Check that the cpu and memory values are a supported combination by Fargate."
         puts "More info: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-cpu-memory-error.html"

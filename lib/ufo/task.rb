@@ -12,7 +12,7 @@ module Ufo
     end
 
     def run
-      puts "Running task_definition: #{@task_definition}".colorize(:green) unless @options[:mute]
+      puts "Running task_definition: #{@task_definition}".color(:green) unless @options[:mute]
       return if @options[:noop]
 
       task_options = {
@@ -57,7 +57,7 @@ module Ufo
     def exit_if_failures!(resp)
       return if resp[:failures].nil? || resp[:failures].empty?
 
-      puts "There was a failure running the ECS task.".colorize(:red)
+      puts "There was a failure running the ECS task.".color(:red)
       puts "This might be happen if you have a network_mode of awsvpc and have assigned_public_ip to DISABLED."
       puts "This cryptic error also shows up if the network settings have security groups and subnets that are not in the same vpc as the ECS cluster container instances.  Please double check that."
       puts "You can use this command to quickly reconfigure the network settings:"
@@ -71,7 +71,7 @@ module Ufo
 
     def run_task(options)
       puts "Equivalent aws cli command:"
-      puts "  aws ecs run-task --cluster #{@cluster} --task-definition #{options[:task_definition]}".colorize(:green)
+      puts "  aws ecs run-task --cluster #{@cluster} --task-definition #{options[:task_definition]}".color(:green)
       run_task_result = ecs.run_task(options)
       if @options[:wait]
         task_arn = run_task_result.tasks[0].task_arn
@@ -81,7 +81,7 @@ module Ufo
       end
     rescue Aws::ECS::Errors::ClientException => e
       if e.message =~ /ECS was unable to assume the role/
-        puts "ERROR: #{e.class} #{e.message}".colorize(:red)
+        puts "ERROR: #{e.class} #{e.message}".color(:red)
         puts "Please double check the executionRoleArn in your task definition."
         exit 1
       else
@@ -89,7 +89,7 @@ module Ufo
       end
     rescue Aws::ECS::Errors::InvalidParameterException => e
       if e.message =~ /Network Configuration must be provided when networkMode 'awsvpc' is specified/
-        puts "ERROR: #{e.class} #{e.message}".colorize(:red)
+        puts "ERROR: #{e.class} #{e.message}".color(:red)
         puts "Please double check .ufo/params.yml and make sure that network_configuration is set."
         puts "Or run change the task definition template in .ufo/templates so it does not use vpcmode."
         exit 1
@@ -211,7 +211,7 @@ module Ufo
       container = ecs.describe_tasks(cluster: @cluster, tasks: [task_arn]).tasks[0].containers[0]
 
       if container.exit_code.nil?
-        puts "Command failed!".colorize(:red)
+        puts "Command failed!".color(:red)
         puts "Reason: #{container.reason}"
         1
       else

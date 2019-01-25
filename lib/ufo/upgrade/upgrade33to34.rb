@@ -21,7 +21,7 @@ class Ufo::Upgrade
       src = File.expand_path("./upgrade/params.yml", File.dirname(__FILE__))
       dest = "#{Ufo.root}/.ufo/params.yml"
       FileUtils.cp(src, dest)
-      puts "File .ufo/params.yml created.".colorize(:green)
+      puts "File .ufo/params.yml created.".color(:green)
       puts "Please check it out and adjust it to your needs."
     end
 

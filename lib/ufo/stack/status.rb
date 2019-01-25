@@ -57,12 +57,12 @@ class Ufo::Stack
       end
 
       if last_event_status =~ /_FAILED/
-        puts "Stack failed: #{last_event_status}".colorize(:red)
-        puts "Stack reason #{@events[0]["resource_status_reason"]}".colorize(:red)
+        puts "Stack failed: #{last_event_status}".color(:red)
+        puts "Stack reason #{@events[0]["resource_status_reason"]}".color(:red)
       elsif last_event_status =~ /_ROLLBACK_/
-        puts "Stack rolled back: #{last_event_status}".colorize(:red)
+        puts "Stack rolled back: #{last_event_status}".color(:red)
       else # success
-        puts "Stack success status: #{last_event_status}".colorize(:green)
+        puts "Stack success status: #{last_event_status}".color(:green)
       end
 
       return if @hide_time_took
@@ -111,7 +111,7 @@ class Ufo::Stack
         e["logical_resource_id"],
         e["resource_status_reason"]
       ].join(" ")
-      message = message.colorize(:red) if e["resource_status"] =~ /_FAILED/
+      message = message.color(:red) if e["resource_status"] =~ /_FAILED/
       puts message
     end
 

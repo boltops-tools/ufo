@@ -8,7 +8,7 @@ module Ufo
       puts "Resources:"
       stack_resources.each do |r|
         # pp r
-        puts "#{r.logical_resource_id} - #{r.resource_type}:".colorize(:green)
+        puts "#{r.logical_resource_id} - #{r.resource_type}:".color(:green)
         puts "  #{r.physical_resource_id}"
       end
     end

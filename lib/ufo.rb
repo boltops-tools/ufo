@@ -1,10 +1,10 @@
 $:.unshift(File.expand_path('../', __FILE__))
-require 'ufo/version'
 require 'deep_merge'
-require 'colorize'
 require 'fileutils'
-require 'render_me_pretty'
 require 'memoist'
+require 'rainbow/ext/string'
+require 'render_me_pretty'
+require 'ufo/version'
 
 module Ufo
   autoload :Apps, 'ufo/apps'

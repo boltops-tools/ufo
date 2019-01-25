@@ -8,8 +8,8 @@ module Ufo
     def check_task_definition!(task_definition)
       task_definition_path = "#{Ufo.root}/.ufo/output/#{task_definition}.json"
       unless File.exist?(task_definition_path)
-        puts "ERROR: Unable to find the task definition at #{task_definition_path}.".colorize(:red)
-        puts "Are you sure you have defined it in ufo/template_definitions.rb and it has been generated correctly in .ufo/output?".colorize(:red)
+        puts "ERROR: Unable to find the task definition at #{task_definition_path}.".color(:red)
+        puts "Are you sure you have defined it in ufo/template_definitions.rb and it has been generated correctly in .ufo/output?".color(:red)
         puts "If you are calling `ufo deploy` directly, you might want to generate the task definition first with `ufo tasks build`."
         exit
       end
@@ -51,7 +51,7 @@ module Ufo
     def check_ufo_project!
       check_path = "#{Ufo.root}/.ufo/settings.yml"
       unless File.exist?(check_path)
-        puts "ERROR: No settings file at #{check_path}.  Are you sure you are in a project with ufo setup?".colorize(:red)
+        puts "ERROR: No settings file at #{check_path}.  Are you sure you are in a project with ufo setup?".color(:red)
         puts "Current directory: #{Dir.pwd}"
         puts "If you want to set up ufo for this prjoect, please create a settings file via: ufo init"
         exit 1 unless ENV['TEST']

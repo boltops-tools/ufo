@@ -97,7 +97,7 @@ class Ufo::Upgrade
     end
 
     def new_env_info
-      puts <<-EOL.colorize(:yellow)
+      puts <<-EOL.color(:yellow)
 INFO: The UFO_ENV default environment is now development.
 The short env names have been mapped over to their longer names.
 Examples:

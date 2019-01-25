@@ -57,7 +57,7 @@ module Ufo
       return unless error_event
 
       puts "There are targets in the target group reporting unhealthy.  This can cause containers to cycle. Here's the error:"
-      puts error_event.message.colorize(:red)
+      puts error_event.message.color(:red)
       puts "Check out the ECS console events tab for more info."
     end
 
@@ -72,8 +72,8 @@ module Ufo
       end
       return unless error_event
 
-      puts "There is an issue scaling the #{@service.colorize(:green)} service to #{service.desired_count}.  Here's the error:"
-      puts error_event.message.colorize(:red)
+      puts "There is an issue scaling the #{@service.color(:green)} service to #{service.desired_count}.  Here's the error:"
+      puts error_event.message.color(:red)
       if service.launch_type == "EC2"
         puts "If AutoScaling is set up for the container instances, it can take a little time to add additional instances. You'll see this message until the capacity is added."
       end

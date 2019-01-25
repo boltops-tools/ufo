@@ -17,14 +17,14 @@ module Ufo
       begin
         resp = ecs.list_services(cluster: @cluster)
       rescue Aws::ECS::Errors::ClusterNotFoundException => e
-        puts "ECS cluster #{@cluster.colorize(:green)} not found."
+        puts "ECS cluster #{@cluster.color(:green)} not found."
         exit 1
       end
       arns = resp.service_arns.sort
 
-      puts "Listing ECS services in the #{@cluster.colorize(:green)} cluster."
+      puts "Listing ECS services in the #{@cluster.color(:green)} cluster."
       if arns.empty?
-        puts "No ECS services found in the #{@cluster.colorize(:green)} cluster."
+        puts "No ECS services found in the #{@cluster.color(:green)} cluster."
         return
       end
 

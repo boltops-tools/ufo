@@ -9,7 +9,7 @@ module Ufo
     end
 
     def create
-      puts "Ensuring log group for #{@task_definition.colorize(:green)} task definition exists"
+      puts "Ensuring log group for #{@task_definition.color(:green)} task definition exists"
       return if @options[:noop]
 
       Ufo.check_task_definition!(@task_definition)

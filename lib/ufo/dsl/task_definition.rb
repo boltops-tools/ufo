@@ -35,12 +35,12 @@ module Ufo
       # Provide a slightly better error message to user when the task definition
       # code block is not evaluated successfully.
       def build_error_info(e)
-        puts "ERROR: evaluating block for task_definition #{@task_definition_name}".colorize(:red)
+        puts "ERROR: evaluating block for task_definition #{@task_definition_name}".color(:red)
         # The first line of the backtrace has the info of the file name. Example:
         # ./.ufo/task_definitions.rb:24:in `block in evaluate_template_definitions'
         info = e.backtrace[0]
         filename = info.split(':')[0..1].join(':')
-        puts "Filename: #{filename}".colorize(:red)
+        puts "Filename: #{filename}".color(:red)
       end
 
 

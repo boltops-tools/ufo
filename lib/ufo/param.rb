@@ -28,7 +28,7 @@ module Ufo
     def upgrade_message!
       return if File.exist?(@params_path)
 
-      puts "ERROR: Your project is missing the .ufo/params.yml.".colorize(:red)
+      puts "ERROR: Your project is missing the .ufo/params.yml.".color(:red)
       puts "This was added in ufo version 3.4"
       puts "You can find more info about the params file here: http://ufoships.com/docs/params/"
       puts "To upgrade run:"

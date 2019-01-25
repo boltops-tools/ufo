@@ -1,5 +1,3 @@
-require 'colorize'
-
 module Ufo
   class UfoError < RuntimeError; end
   class ShipmentOverridden < UfoError; end
@@ -79,7 +77,7 @@ module Ufo
       IO.write(output_path, json)
 
       file_path = "file://#{rel_path}"
-      puts "  aws ecs #{action}-service --cli-input-json #{file_path}".colorize(:green)
+      puts "  aws ecs #{action}-service --cli-input-json #{file_path}".color(:green)
     end
 
     def ensure_cluster_exist
