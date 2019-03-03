@@ -4,7 +4,7 @@ title: "Quick Start: Fargate"
 
 ## What is ECS Fargate?
 
-Ufo supports Fargate.  AWS Fargate is a technology for Amazon ECS that allows you to run containers without having to manage servers or clusters.  This provides an interesting "serverless" option for running Docker containers on AWS.
+AWS Fargate is a technology for Amazon ECS that allows you to run containers without having to manage servers or clusters.  This provides an interesting "serverless" option for running Docker containers on AWS.
 
 ## Let's Go
 
