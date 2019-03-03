@@ -5,7 +5,8 @@ ol.overview-stages li {
 
 section#main {
     /*text-align: center;*/
-    color: #fff;
+    font-family: 'Muli', 'Helvetica', 'Arial', 'sans-serif';
+    color: #292b2c;
     background: #{{ site.color.primary }};
 }
 
@@ -55,8 +56,20 @@ section#main .intro-text .skills {
     text-align: left;
 }
 
+.content-body h1 {
+    font-size: 1.6em;
+}
+
 .content-body h2 {
-    /*text-align: center;*/
+    font-size: 1.4em;
+}
+
+.content-body h3 {
+    font-size: 1.35em;
+}
+
+.content-body h4 {
+    font-size: 1.3em;
 }
 
 .content-body ul,
@@ -65,14 +78,12 @@ section#main .intro-text .skills {
 }
 .content-body ul li,
 .content-body ol li {
-    font-size: 1.2em;
+    font-size: 1.1em;
 }
 
 .content-nav {
-    /*background-color: green;*/
-    margin-top: 40px;
     font-size: 1.2em;
-    color: #9acfe0;
+    color: #484d4e;
 }
 
 .content-nav ul, .content-nav ol {
@@ -82,18 +93,21 @@ section#main .intro-text .skills {
 }
 
 .content-nav a {
-    color: #9acfe0;
+    color: #484d4e;
 }
 
 .content-nav a.active {
-    color: #e2ddef;
+    /*color: #e2ddef;*/
+    color: #2c3e50;
     font-weight: bold;
 }
 
 /* override for syntax.css */
 code {
     color: #443e40;
-    background-color: #cdcbd4;
+    /*background-color: #cdcbd4;*/
+    background-color: #f7f7f9;
+
 }
 
 footer h3 {
@@ -131,17 +145,21 @@ ul.tools li {
 }
 
 .edit-on-github {
-    font-size: 0.9em;
     border-top: thin solid white;
     border-bottom: thin solid white;
     padding: 20px 0;
     margin-top: 80px;
 }
 
-.edit-on-github h2,
-.edit-on-github p,
-.edit-on-github li {
-    font-size: 1.5em;
+.edit-on-github h2 {
+    font-size: 1.25em;
+}
+.edit-on-github p {
+    font-size: 0.95em;
+}
+.edit-on-github ul li,
+.edit-on-github ol li {
+    font-size: 0.9em;
 }
 
 .use-cases {
@@ -167,9 +185,14 @@ table.ship-options td:first-child {
 }
 
 #summary {
-    /*font-size: 18px;*/
+    font-size: 1.2em;
     padding-bottom: 0;
     margin-bottom: 0;
+}
+@media(max-width:992px) {
+    #summary {
+        font-size: 1em;
+    }
 }
 
 .video-box {

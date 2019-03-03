@@ -47,13 +47,15 @@ class Ufo::Stack
     end
 
     def default_listener_protocol
-      return 'TCP' if elb_type == 'network'
-      cfn[:listener][:port] == 443 ? 'HTTPS' : 'HTTP'
+      if elb_type == 'network'
+        cfn[:listener][:port] == 443 ? 'TLS' : 'TCP'
+      else
+        cfn[:listener][:port] == 443 ? 'HTTPS' : 'HTTP'
+      end
     end
 
     def default_listener_ssl_protocol
-      return 'TCP' if elb_type == 'network'
-      'HTTPS'
+      elb_type == 'network' ? 'TLS' : 'HTTPS'
     end
 
     # if the configuration is set to anything then enable it

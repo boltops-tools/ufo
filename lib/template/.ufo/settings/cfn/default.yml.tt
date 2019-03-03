@@ -33,15 +33,20 @@ target_group:
 listener:
   port: 80
   # For Application Load Balancers, the supported protocols are HTTP and HTTPS. For Network Load Balancers, the supported protocol is TCP.
-  # protocol: TCP # valid values - application elb: HTTP HTTPS, network elb: TCP
+  # protocol: TCP # valid values - application elb: HTTP HTTPS, network elb: TCP, TLS
                   # ufo sets these defaults:
                   #   application elb: HTTP  # unless port is 443
                   #   application elb: HTTPS # if port is 443
-                  #   network elb: TCP
+                  #   network elb: TCP  # unless port is 443
+                  #   network elb: TLS  # if port is 443
                   # Can keep protocol commented out,
                   # unless need to override the defaults.
+  # If using the listener to handle SSL
+  # certificates:
+  # - certificate_arn: arn:aws:acm:us-east-1:111111111111:certificate/11111111-2222-3333-4444-555555555555
 
-# If HTTPS and SSL is required then the listener_ssl config is what you need.
+# An optional second listener can be created.
+# If HTTPS and SSL is required then the listener_ssl config is what you should use.
 #   Application ELBs support SSL termination.
 #   Network load balancers do not and must pass the request through to the app
 #   to handle SSL termination.
@@ -49,16 +54,12 @@ listener:
 # ufo creates an ssl listener when listener_ssl is set.
 # listener_ssl:
 #   port: 443
-#   # protocol: TCP # valid values - application elb: HTTP HTTPS, network elb: TCP
-#                   # ufo handles setting the defaults:
-#                   #   application elb: HTTPS
-#                   #   network elb: TCP
-#   # Certificates are supported by application load balancers only.
-#   # Network load balancers do not support SSL termination so do not support
-#   # certificates.
 #   # certificates:
 #   # - certificate_arn: arn:aws:acm:us-east-1:111111111111:certificate/11111111-2222-3333-4444-555555555555
-
+#   # protocol: TCP # valid values - application elb: HTTP HTTPS, network elb: TCP, TLS
+#                   # ufo handles setting the defaults:
+#                   #   application elb: HTTPS
+#                   #   network elb: TLS
 
 # Configure dns to automatically be associated with the ELB dns name.
 # Note, the route53 record set for the domain name must already exist.
