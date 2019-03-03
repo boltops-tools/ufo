@@ -19,7 +19,7 @@ In a hurry? No sweat! Here's a quick start to using ufo that takes only a few mi
     ufo ps
     ufo scale 2
 
-This quick start assumes:
+This quickstart assumes:
 
 * You have push access to the repo. Refer to the Notes "Repo Push Access" section below for more info. 
 * You are using ECS EC2 and have an ECS cluster with EC2 Container instances running. Refer to the Notes "ECS EC2 vs ECS Fargate" section below for more info.
@@ -66,8 +66,6 @@ $
 ```
 
 Congratulations! You have successfully deployed code to AWS ECS with ufo. It was really that simple 😁
-
-Note: This quick start requires a working Docker installation.  For Docker installation instructions refer to to the [Docker installation guide](https://docs.docker.com/engine/installation/).
 
 {% include repo_push_access.md %}
 
