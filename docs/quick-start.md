@@ -4,7 +4,7 @@ title: "Quick Start: Fargate"
 
 ## What is ECS Fargate?
 
-AWS Fargate is a technology for Amazon ECS that allows you to run containers without having to manage servers or clusters.  This provides an interesting "serverless" option for running Docker containers on AWS.
+AWS Fargate is a technology for Amazon ECS that allows you to run containers without having to manage servers or clusters.  It provides an interesting "serverless" option for running Docker containers on AWS. The major benefit with ECS Fargate is you pass on the maintenance burden to AWS. Refer to [Heroku vs ECS Fargate vs EC2 On-Demand vs EC2 Spot Pricing Comparison](https://blog.boltops.com/2018/04/22/heroku-vs-ecs-fargate-vs-ec2-on-demand-vs-ec2-spot-pricing-comparison) for a pricing comparison.
 
 ## Let's Go
 
@@ -19,11 +19,10 @@ In a hurry? No sweat! Here's a quick start to using ufo that takes only a few mi
     ufo ps
     ufo scale 2
 
-This quick start assumes:
+This quickstart assumes:
 
 * You have push access to the repo. Refer to the Notes "Repo Push Access" section below for more info. 
 * The `ecsTaskExecutionRole` needs to exist on your AWS account.  If you do not have an ecsTaskExecutionRole yet, create one by following: [Create ecsTaskExecutionRole with AWS CLI]({% link _docs/aws-ecs-task-execution-role.md %}).
-
 
 ## What Happened
 
@@ -34,7 +33,7 @@ The `ufo ship demo-web` command does the following:
 3. Updates the ECS Service
 4. Creates an ELB and connects it to the ECS Service
 
-You should see output similiar to this. Some output has been removed for conciseness.
+You should see output similar to this.
 
     $ ufo ship
     Building docker image with:
@@ -105,7 +104,9 @@ You can verify that the app is up and running curling the ELB DNS.
     42
     $
 
-Congratulations 🎉 You have successfully deployed an docker web service to "serverless" Fargate.
+Congratulations 🎉 You have successfully deployed a docker web service to "serverless" Fargate.
+
+Note: This quick start requires a working Docker installation.  For Docker installation instructions refer to the [Docker installation guide](https://docs.docker.com/engine/installation/).
 
 ## Clean up
 
