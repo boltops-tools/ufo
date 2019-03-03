@@ -2,9 +2,7 @@
 title: SSL Support
 ---
 
-## Application Load Balancers
-
-If you are using an Application Load Balancer you can configure SSL support by uncomment the `listener_ssl` option in `.ufo/settings/cfn/default.yml`.  Here's an example:
+You can configure SSL support by uncomment the `listener_ssl` option in `.ufo/settings/cfn/default.yml`.  Here's an example:
 
 ```
 listener_ssl:
@@ -16,25 +14,7 @@ listener_ssl:
 For the certificate arn, you will need to create a certificate with AWS ACM. To do so, you can follow these instructions: [Request a Public Certificate
 ](https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-request-public.html)
 
-Once this is configured, you deploy the app again:
-
-    ufo ship
-
-## Network Load Balancers
-
-Network Load Balancers work at layer 4, so they do not support SSL termination because SSL happens higher up in the OSI model. With Network Load Balancers you must handle SSL termination within your app with the server you are using.  For example, apache, nginx or tomcat.
-
-You also will need to also configure the target group to check the port that your app server is listening to and configure the health_check_protocol to HTTPS.  Here's an example:
-
-```
-listener_ssl:
-  port: 443
-target_group:
-  port: 443
-  health_check_protocol: HTTPS
-```
-
-The protocol in the case of the network load balancer is TCP and is configured to TCP by default by ufo for Network Load Balancers, so you don't have to configure the protocol.
+The protocol will be either HTTP or HTTPS for Application Load Balancers and TCP or TLS for Network Load Balancers. Ufo will infer the right value, so you usually don't have to configure the protocol manually.  You can configure it if required though.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/ecs-network-mode.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/route53-support.md %}">Next Step</a>

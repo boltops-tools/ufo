@@ -11,7 +11,7 @@ Yes, Fargate is supported.  To use ufo with Fargate, you will need to adjust the
 
 If it's a brand new project, you can use `ufo init` with the `--launch-type fargate` option and it will generate a starter task definition JSON file that has the right Fargate structure. More info is available at [ufo init reference](/reference/ufo-init/#fargate-support).
 
-A quick and easy way to test fargate is to follow the [Fargate Docs]({% link _docs/fargate.md %}) which provides a demo example.
+A quick and easy way to test fargate is to follow the [Quick Start: Fargate Docs]({% link quick-start.md %}) which provides a demo example.
 
 **Q: Can I tell ufo to use specific docker build options?**
 

@@ -81,7 +81,7 @@ You can also generate the init ufo files and bypass the prompt by providing the 
 
     ufo init --image tongueroo/demo-ufo --app demo --launch-type fargate --execution-role-arn arn:aws:iam::123456789012:role/ecsTaskExecutionRole
 
-For more information and a demo of Fargate support, check out the [Fargate Docs]({% link _docs/fargate.md %}).
+For more information and a demo of Fargate support, check out the [Quick Start: Fargate Docs]({% link quick-start.md %}).
 
 ## Custom Templates
 

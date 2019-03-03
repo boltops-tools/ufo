@@ -9,12 +9,12 @@ body {
 }
 
 p {
-    /*font-size: 20px;*/
-    font-size: 1.2em;
+    font-size: 1.1em;
+    line-height: 1.5;
+    margin-bottom: 20px;
 }
 
 p.small {
-    /*font-size: 16px;*/
     font-size: 1em;
 }
 
@@ -23,7 +23,7 @@ pre code {
 }
 
 code {
-    font-size: 0.75em;
+    font-size: 0.80em;
 }
 
 a,
@@ -35,15 +35,16 @@ a.active {
     color: #{{ site.color.links }};
 }
 
+
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-    /*text-transform: uppercase;*/
-    font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-weight: 700;
+    font-family: 'Catamaran', 'Helvetica', 'Arial', 'sans-serif';
+    font-weight: 200;
+    letter-spacing: 1px;
 }
 
 h3,
@@ -211,16 +212,16 @@ section {
 section h2 {
     margin: 0;
     margin-bottom: 15px;
-    font-size: 1.6em;
+    /*font-size: 1.6em;*/
 }
 
 section h3 {
-    font-size: 1.4em;
+    /*font-size: 1.4em;*/
 }
 
 section.success {
     color: #fff;
-    background: #{{ site.color.primary }};
+    background: #3972c7;
 }
 
 @media(max-width:767px) {

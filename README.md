@@ -2,7 +2,7 @@
   <img src="http://ufoships.com/img/logos/ufo-logo.png" />
 </div>
 
-# UFO - ECS Deployment Tool
+# UFO: ECS Deploy Tool
 
 [![CircleCI](https://circleci.com/gh/tongueroo/ufo.svg?style=svg)](https://circleci.com/gh/tongueroo/ufo)
 [![Join the chat at https://gitter.im/tongueroo/ufo](https://badges.gitter.im/tongueroo/ufo.svg)](https://gitter.im/tongueroo/ufo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -10,8 +10,8 @@
 
 Ufo is a tool that builds Docker images and deploys them to [AWS ECS](https://aws.amazon.com/ecs/).  The main command is `ufo ship`.  Here's summary of what it does:
 
-1. Builds a docker image. 
-2. Generates and registers the ECS template definition. 
+1. Builds a docker image.
+2. Generates and registers the ECS template definition.
 3. Deploys the ECS template definition to the ECS service.
 
 Ufo deploys a task definition that is written in a templating language that is easily and fully controllable.
