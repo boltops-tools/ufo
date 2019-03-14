@@ -4,11 +4,11 @@ describe Ufo::Ps do
   end
 
   context "running tasks" do
-    let(:describe_tasks_response) do
-      JSON.load(IO.read("spec/fixtures/ps/describe_tasks.json"))
+    let(:task_arns) do
+      JSON.load(IO.read("spec/fixtures/ps/describe_tasks.json"))["tasks"]
     end
     it "display_tasks" do
-      ps.display_tasks(describe_tasks_response)
+      ps.display_tasks(task_arns)
     end
   end
 end

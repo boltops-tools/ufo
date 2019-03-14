@@ -163,6 +163,7 @@ module Ufo
     long_desc Help.text(:ps)
     option :summary, type: :boolean, default: true, desc: "Display summary header info."
     option :extra, type: :boolean, default: false, desc: "Display extra debugging columns."
+    option :status, default: "all", desc: "Status filter: all, pending, stopped, running."
     def ps(service=:current)
       Ps.new(service, options).run
     end

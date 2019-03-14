@@ -46,6 +46,8 @@ Skip the summary info:
 [--summary], [--no-summary]  # Display summary header info.
                              # Default: true
 [--extra], [--no-extra]      # Display extra debugging columns.
+[--status=STATUS]            # Status filter: all, pending, stopped, running.
+                             # Default: all
 [--verbose], [--no-verbose]  
 [--mute], [--no-mute]        
 [--noop], [--no-noop]        
