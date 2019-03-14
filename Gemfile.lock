@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ufo (4.3.0)
+    ufo (4.3.1)
       aws-sdk-cloudformation
       aws-sdk-cloudwatchlogs
       aws-sdk-ec2
@@ -29,7 +29,7 @@ GEM
     aws-sdk-cloudformation (1.14.0)
       aws-sdk-core (~> 3, >= 3.39.0)
       aws-sigv4 (~> 1.0)
-    aws-sdk-cloudwatchlogs (1.13.0)
+    aws-sdk-cloudwatchlogs (1.14.0)
       aws-sdk-core (~> 3, >= 3.39.0)
       aws-sigv4 (~> 1.0)
     aws-sdk-core (3.46.2)
@@ -43,7 +43,7 @@ GEM
     aws-sdk-ecr (1.11.0)
       aws-sdk-core (~> 3, >= 3.39.0)
       aws-sigv4 (~> 1.0)
-    aws-sdk-ecs (1.30.0)
+    aws-sdk-ecs (1.31.0)
       aws-sdk-core (~> 3, >= 3.39.0)
       aws-sigv4 (~> 1.0)
     aws-sdk-elasticloadbalancingv2 (1.21.0)

@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [4.3.1]
+- #70 ps --status filter and fix list_tasks 100 limit issue
+
 ## [4.3.0]
 - Default starter ecs ec2 template to networkMode awsvpc
 
