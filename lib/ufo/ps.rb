@@ -13,14 +13,18 @@ module Ufo
       end
 
       summary
+
       if task_arns.empty?
         puts "There are 0 running tasks."
         return
       end
 
-      resp = ecs.describe_tasks(tasks: task_arns, cluster: @cluster)
-      display_tasks(resp)
+      all_task_arns = task_arns.each_slice(100).map do |arns|
+        resp = ecs.describe_tasks(tasks: arns, cluster: @cluster)
+        resp["tasks"]
+      end.flatten
 
+      display_tasks(all_task_arns)
       display_scale_help
       display_target_group_help
     end
@@ -79,11 +83,11 @@ module Ufo
       end
     end
 
-    def display_tasks(resp)
+    def display_tasks(tasks)
       table = Text::Table.new
       Task.extra_columns = @options[:extra]
       table.head = Task.header
-      tasks = resp["tasks"].sort_by { |t| t["task_arn"] }
+      tasks = tasks.sort_by { |t| t["task_arn"] }
       tasks.each do |t|
         task = Task.new(t)
         table.rows << task.to_a unless task.hide?
@@ -91,17 +95,37 @@ module Ufo
       puts table
     end
 
+    def statuses
+      status = @options[:status].upcase
+      valid_statuses = %w[RUNNING PENDING STOPPED]
+      all_statuses = valid_statuses + ["ALL"]
+      unless all_statuses.include?(status)
+        puts "Invalid status filter provided. Please provided one of the following:"
+        puts all_statuses.map(&:downcase).join(", ")
+        exit 1
+      end
+
+      status == "ALL" ? valid_statuses : [status]
+    end
+
     def task_arns
       threads, results = [], {}
-      statuses = %w[RUNNING PENDING STOPPED]
       statuses.each do |status|
         threads << Thread.new do
-          resp = ecs.list_tasks(service_name: service.service_name, cluster: @cluster, desired_status: status)
+          options = {
+            service_name: service.service_name,
+            cluster: @cluster,
+            desired_status: status,
+          }
+          # Limit display of too many stopped tasks
+          options[:max_results] = 20 if status == "STOPPED"
+          resp = ecs.list_tasks(options)
           results[status] = resp.task_arns
         end
       end
       threads.map(&:join)
       results.values.flatten.uniq
     end
+    memoize :task_arns
   end
 end
