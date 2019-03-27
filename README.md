@@ -33,7 +33,7 @@ Full installation instructions are at [Install Ufo](http://ufoships.com/docs/ins
 To quickly demonstrate how simple it is to use ufo we will use an example app from [tongueroo/demo-ufo](https://github.com/tongueroo/demo-ufo).  The app is a barebones sinatra app.  Here are the steps:
 
     gem install ufo
-    git clone https:///github.com/tongueroo/demo-ufo.git demo
+    git clone https://github.com/tongueroo/demo-ufo.git demo
     cd demo
     ufo init --image=tongueroo/demo-ufo
     ufo ship demo-web
