@@ -1,5 +1,6 @@
 ---
 title: Upgrading to Version 4
+nav_order: 32
 ---
 
 A major change in ufo from version 3 to 4 is that the ECS service is now created by CloudFormation. If you have an existing ECS service deployed by ufo version 3, when you deploy your app again with ufo version 4, there will be a new additional ECS service created. Here is the recommended upgrade path.
@@ -41,6 +42,4 @@ File | Changes
 .ufo/settings/cfn/default.yml | Starter cfn settings file.
 .ufo/settings/network/default.yml | This generated file will have the vpc and subnets that you specified above.  You can change them directly in this file to control what network settings ufo uses.
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/stuck-cloudformation.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/run-in-pieces.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}

@@ -1,5 +1,6 @@
 ---
 title: SSL Support
+nav_order: 25
 ---
 
 You can configure SSL support by uncomment the `listener_ssl` option in `.ufo/settings/cfn/default.yml`.  Here's an example:
@@ -16,6 +17,4 @@ For the certificate arn, you will need to create a certificate with AWS ACM. To 
 
 The protocol will be either HTTP or HTTPS for Application Load Balancers and TCP or TLS for Network Load Balancers. Ufo will infer the right value, so you usually don't have to configure the protocol manually.  You can configure it if required though.
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/ecs-network-mode.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/route53-support.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}

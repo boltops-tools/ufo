@@ -1,5 +1,6 @@
 ---
 title: Conventions
+nav_order: 18
 ---
 
 Ufo uses a set of naming conventions.  This helps enforce some best practices and also allows the ufo commands to be concise.  You can override or bypass the conventions easily.
@@ -43,6 +44,4 @@ You can also use an existing ELB by specifying the target group arn as the value
 ufo ship demo-web --elb arn:aws:elasticloadbalancing:us-east-1:12345689:targetgroup/demo-web/12345
 ```
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/helpers.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/ufo-env.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}

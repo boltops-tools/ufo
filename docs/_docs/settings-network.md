@@ -1,5 +1,6 @@
 ---
 title: Settings Network
+nav_order: 13
 ---
 
 The settings.yml file references a network settings file with the `network_profile` option. This file has configurations that are related to the network.  The source code for the starter template file is at [network/default.yml.tt](https://github.com/tongueroo/ufo/blob/master/lib/template/.ufo/settings/network/default.yml.tt)  Here's an example network settings file.
@@ -29,6 +30,4 @@ elb_subnets | Used to create elb load balancer.  Defaults to same subnets as ecs
 ecs_security_groups | Additional security groups to associate with the ECS tasks.
 elb_security_groups | Additional security groups to associate with the ELB.
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/settings.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/settings-cfn.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}

@@ -1,5 +1,6 @@
 ---
 title: Stuck CloudFormation
+nav_order: 31
 ---
 
 The CloudFormation stack update or creation can get stuck in a `*_IN_PROGRESS` state for a very long time, like more than an hour.  This happens when you deploy an ECS service that fails to stabilize. Usually, this is an error with the Docker container failing to start up successfully.
@@ -25,6 +26,4 @@ To cancel a current deploy, run:
 
 This is the same thing as canceling the stack update in the CloudFormation console.
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/customize-cloudformation.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/upgrade4.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}

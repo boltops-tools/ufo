@@ -1,5 +1,6 @@
 ---
 title: Auto Completion
+nav_order: 37
 ---
 
 Ufo supports bash auto-completion.  To set it up add the following to your `~/.profile` or `.bashrc`:
@@ -24,6 +25,4 @@ ufo tasks [TAB]
 ufo tasks build [TAB]
 ```
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/automated-cleanup.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link articles.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}

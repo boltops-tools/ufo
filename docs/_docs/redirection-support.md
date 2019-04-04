@@ -1,5 +1,6 @@
 ---
 title: Redirection Support
+nav_order: 27
 ---
 
 ## Application Load Balancers
@@ -23,6 +24,4 @@ listener:
 
 Network Load Balancers work at layer 4, so they do not support redirection.  Instead you need to handle redirection within your app.
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/route53-support.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/faq.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}

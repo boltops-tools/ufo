@@ -1,5 +1,6 @@
 ---
 title: Deploy One App
+nav_order: 8
 ---
 
 ## Step 3 - Ship the Code to ECS
@@ -91,6 +92,4 @@ We've been typing the `demo-web` service name explicitly.  We can set the curren
 
 Congratulations 🎊 You have successfully built a Docker image, register it and deployed it to AWS ECS.
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/tutorial-ufo-tasks-build.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/tutorial-ufo-ships.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}

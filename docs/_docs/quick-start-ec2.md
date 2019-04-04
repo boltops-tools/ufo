@@ -1,5 +1,6 @@
 ---
-title: "Quick Start: EC2"
+title: 'Quick Start: EC2'
+nav_order: 2
 ---
 
 ## What is ECS EC2?
@@ -79,6 +80,4 @@ If you would like not to manage the EC2 server fleet, you are looking for ECS Fa
 
 Learn more in the next sections.
 
-<a id="prev" class="btn btn-basic" href="{% link quick-start.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/install.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}

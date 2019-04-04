@@ -1,5 +1,6 @@
 ---
 title: Shared Variables
+nav_order: 16
 ---
 
 Often, you end up using the set of common variables across your task definitions for a project.  Ufo supports a shared variables concept to support this.  You specify variables files in the `.ufo/variables` folder and they are made available to your `.ufo/task_definitions.rb` as well as your `.ufo/templates` files.
@@ -51,6 +52,4 @@ When `ufo ship` is ran with `UFO_ENV=development` the `variables/development.rb`
 ])
 ```
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/params.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/helpers.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}

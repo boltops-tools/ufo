@@ -1,5 +1,6 @@
 ---
 title: Params
+nav_order: 15
 ---
 
 Additionally, the params that ufo sends to the [ruby aws-sdk](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/ECS/Client.html#run_task-instance_method) methods to create resources can be customized with a `params.yml` file.  This allows you to customize the tool using the full power of the aws-sdk.
@@ -32,7 +33,4 @@ ERB and [shared variables]({% link _docs/variables.md %}) are available in the p
 
 NOTE: The params.yml file does not have access to the `task_definition_name` helper method. That is only available in the `task_definitions.rb` template_definition code blocks.
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/settings-cfn.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/variables.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
-
+{% include prev_next.md %}

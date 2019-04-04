@@ -1,5 +1,6 @@
 ---
 title: Load Balancer Support
+nav_order: 22
 ---
 
 Ufo can automatically create a load balancer and associate it with an ECS service.  The options:
@@ -79,6 +80,4 @@ Under the hood, ufo implements load balancer support with CloudFormation. You ca
 
 <img src="/img/docs/cloudformation-resources.png" class="doc-photo" />
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/ufo-current.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/security-groups.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}

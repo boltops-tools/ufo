@@ -1,5 +1,6 @@
 ---
 title: Run Single Task
+nav_order: 34
 ---
 
 Sometimes you do not want to run a long running `service` but a one time task. Running Rails migrations are an example of a one off task.  Here is an example of how you would run a one time task.
@@ -26,6 +27,4 @@ aws ecs describe-tasks --tasks arn:aws:ecs:us-west-2:994926937775:task/a0e4229d-
 
 You can check out the [ufo task](http://ufoships.com/reference/ufo-task/) reference for more details.
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/run-in-pieces.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/migrations.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}

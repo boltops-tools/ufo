@@ -1,5 +1,6 @@
 ---
 title: Structure
+nav_order: 11
 ---
 
 Ufo creates a `.ufo` folder within your project which contains the required files used by ufo to build and deploy docker images to ECS.  The standard directory structure of the `.ufo` folder looks like this:
@@ -36,7 +37,4 @@ File / Directory  | Description
 
 Now that you know where the ufo configurations are located and what they look like, let’s use ufo!
 
-<a id="prev" class="btn btn-basic" href="{% link docs.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/settings.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
-
+{% include prev_next.md %}

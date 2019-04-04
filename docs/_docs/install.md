@@ -1,5 +1,6 @@
 ---
 title: Installation
+nav_order: 3
 ---
 
 ## Install with RubyGems
@@ -31,7 +32,4 @@ For more information about the Bolts Toolbelt or to get an installer for another
 * Docker: You will need a working version of [Docker](https://docs.docker.com/engine/installation/) installed as ufo shells out and calls the `docker` command.
 * AWS: Set up your AWS credentials at `~/.aws/credentials` and `~/.aws/config`.  This is the [AWS standard way of setting up credentials](https://aws.amazon.com/blogs/security/a-new-and-standardized-way-to-manage-credentials-in-the-aws-sdks/).
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/quick-start-ec2.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/tutorial.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
-
+{% include prev_next.md %}

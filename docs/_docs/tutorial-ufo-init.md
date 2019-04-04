@@ -1,5 +1,6 @@
 ---
 title: Setup Ufo
+nav_order: 5
 ---
 
 The easiest way to create this ufo folder is by using the `ufo init` command.  For this tutorial we'll [tongueroo/demo-ufo](https://github.com/tongueroo/demo-ufo) which is a small test sinatra app.
@@ -88,7 +89,4 @@ The `image` value is the name that ufo will use as a base portion of the name to
 
 The other settings are optional.  You can learn more about them at [Settings]({% link _docs/settings.md %}).
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/tutorial.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/tutorial-ufo-docker-build.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
-
+{% include prev_next.md %}

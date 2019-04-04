@@ -1,5 +1,6 @@
 ---
 title: Customize CloudFormation
+nav_order: 30
 ---
 
 Under the hood, ufo creates most of the required resources with a CloudFormation stack.  This includes the ELB, Target Group, Listener, Security Groups, ECS Service, and Route 53 records.  You might need to customize these resources.  Here are the ways to customize the resources that ufo creates.
@@ -31,6 +32,4 @@ UFO_ENV_EXTRA=2 ufo ship demo-web -\-cluster dev | development-demo-web-2
 
 The CloudFormation stack is currently generated from a template. The source code for this template is located at [cfn/stack.yml](https://github.com/tongueroo/ufo/blob/master/lib/cfn/stack.yml).  This implementation might change in the future.
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/why-cloudformation.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/stuck-cloudformation.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}
