@@ -1,5 +1,6 @@
 ---
 title: UFO_ENV_EXTRA
+nav_order: 20
 ---
 
 Ufo has an concept of extra environments. This is controlled by the `UFO_ENV_EXTRA` variable.  By setting `UFO_ENV_EXTRA` you can create additional identical ECS services or environments.
@@ -16,6 +17,4 @@ The precedence:
 1. UFO_ENV_EXTRA - takes highest precedence
 2. `.ufo/current` env-extra setting - takes lower precedence
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/ufo-env.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/ufo-current.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}

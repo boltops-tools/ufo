@@ -1,5 +1,6 @@
 ---
 title: Articles
+nav_order: 38
 ---
 
 * [How to Create Unlimited Extra Environments
@@ -10,6 +11,4 @@ title: Articles
 * [Heroku vs ECS Fargate vs EC2 On-Demand vs EC2 Spot Pricing Comparison](https://blog.boltops.com/2018/04/22/heroku-vs-ecs-fargate-vs-ec2-on-demand-vs-ec2-spot-pricing-comparison)
 * [Ufo Ship on AWS ECS Presentation](http://www.slideshare.net/tongueroo/ufo-ship-for-aws-ecs-70885296)
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/auto-completion.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/next-steps.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}

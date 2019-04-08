@@ -1,5 +1,6 @@
 ---
 title: Ufo Current
+nav_order: 21
 ---
 
 ## service
@@ -45,6 +46,4 @@ This can be shorten with with current also.
     ufo current --services demo-web demo-worker demo-clock
     ufo ships
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/ufo-env-extra.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/load-balancer.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}

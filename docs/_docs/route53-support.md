@@ -1,5 +1,6 @@
 ---
 title: Route53 Support
+nav_order: 26
 ---
 
 Ufo can create a "pretty" route53 record and set it's value to the created ELB DNS name. This is done by configuring the `.ufo/settings/cfn/default.yml` file. Example:
@@ -23,6 +24,4 @@ Results in:
     aws route53 create-hosted-zone --name mydomain.com --caller-reference $(date +%s)
     aws route53 list-hosted-zones
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/ssl-support.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/redirection-support.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}

@@ -19,4 +19,3 @@ demo-worker task definition registered.
 You can verify that the task definitions have been registered properly by viewing the AWS ECS Console Task Definitions page.  You should see something similar to this:
 
 <img src="/img/tutorials/ecs-console-task-definitions.png" class="doc-photo" />
-

@@ -1,5 +1,6 @@
 ---
 title: Task Definitions
+nav_order: 7
 ---
 
 ## Build the ECS Task Definitions
@@ -173,6 +174,4 @@ demo-worker task definition registered.
 $
 ```
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/tutorial-ufo-docker-build.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/tutorial-ufo-ship.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}

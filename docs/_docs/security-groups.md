@@ -1,5 +1,6 @@
 ---
 title: Security Groups
+nav_order: 23
 ---
 
 Ufo creates and manages two security groups. One for the ELB and one for the ECS tasks.
@@ -32,6 +33,4 @@ In general, ports below 32768 are outside of the ephemeral port range. So an eas
 
 If you are using a network load balancer and are running bridge network mode, then you need to whitelist ports 32768 to 65535 to `0.0.0.0/0`.  This is because network load balancers operate at layer 4 of the OSI model and cannot be assigned security groups, so they use the security group of the instance.  If you feel this is too loose of permissions, you can use awsvpc mode. There are some considerations for awsvpc mode though which is discussed next.
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/load-balancer.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/ecs-network-mode.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}

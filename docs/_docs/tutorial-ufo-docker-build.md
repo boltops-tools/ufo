@@ -1,5 +1,6 @@
 ---
 title: Build Docker
+nav_order: 6
 ---
 
 ## Build the Docker Image
@@ -57,7 +58,4 @@ Docker push took 12s.
 
 Note in order to push the image to a registry you will need to login into the registry.  If you are using DockerHub use the `docker login` command.  If you are using AWS ECR then ufo automatically calls the `aws ecr get-login` command and authenticates for you.
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/tutorial-ufo-init.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/tutorial-ufo-tasks-build.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
-
+{% include prev_next.md %}

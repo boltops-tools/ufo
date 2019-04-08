@@ -1,5 +1,6 @@
 ---
-title: "Quick Start: Fargate"
+title: 'Quick Start: Fargate'
+nav_order: 1
 ---
 
 ## What is ECS Fargate?
@@ -126,5 +127,4 @@ Here's an article that compares the cost of ECS Fargate: [Heroku vs ECS Fargate 
 
 {% include repo_push_access.md %}
 
-<a id="next" class="btn btn-primary" href="{% link _docs/quick-start-ec2.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}

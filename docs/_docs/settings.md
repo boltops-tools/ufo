@@ -1,5 +1,6 @@
 ---
 title: Settings
+nav_order: 12
 ---
 
 The behavior of ufo can be configured with a `settings.yml` file.  A starter project `.ufo/settings.yml` file is generated as part of the `ufo init` command. There are can be multiple settings files. The options from the files get merged and respected in the following precedence:
@@ -109,6 +110,4 @@ AWS_PROFILE=prod-profile => UFO_ENV=production
 
 This behavior prevents you from switching `AWS_PROFILE`s, forgetting to switch `UFO_ENV` and then accidentally deploying a production based docker image to development and vice versa because you forgot to also switch `UFO_ENV` to its respective environment.
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/structure.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/settings-network.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}

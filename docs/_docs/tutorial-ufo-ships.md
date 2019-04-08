@@ -1,5 +1,6 @@
 ---
 title: Deploy Multiple Apps
+nav_order: 9
 ---
 
 You might have noticed in the tutorial that the generated starter .ufo folder contains 3 task definitions a `web`, `worker` and `clock` role.  This is a common pattern.  The web process handles web traffic, the worker process handles background job processing that would be too slow and potentially block web requests, and a clock process is typically used to schedule recurring jobs.
@@ -34,6 +35,4 @@ ufo ships demo-{web,worker,clock}
 
 In the case of the `ufo ships` command the `--wait` option defaults to false so that all the specified ECS services update in parallel.  You can check on the status of the update on the CloudFormation console.
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/tutorial-ufo-ship.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link docs.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}
