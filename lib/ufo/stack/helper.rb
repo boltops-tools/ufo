@@ -25,10 +25,10 @@ class Ufo::Stack
       end
 
       parts = if settings[:stack_naming] == "append_env"
-        [Ufo.pretty_service_name(service), cluster, Ufo.env_extra]
+        [service, cluster, Ufo.env_extra]
       else
         # legacy, to be removed in next major version
-        [cluster, Ufo.pretty_service_name(service), Ufo.env_extra]
+        [cluster, service, Ufo.env_extra]
       end
       parts.reject {|x| x==''}.compact.join('-') # stack_name
     end

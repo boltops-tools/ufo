@@ -31,7 +31,7 @@ module Ufo
 
     def summary
       return unless @options[:summary]
-      puts "=> Service: #{@pretty_service_name}"
+      puts "=> Service: #{@service}"
       puts "   Service name: #{service.service_name}"
       puts "   Status: #{service.status}"
       puts "   Running count: #{service.running_count}"

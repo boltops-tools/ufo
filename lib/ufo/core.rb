@@ -47,11 +47,6 @@ module Ufo
       end
     end
 
-    # TODO: Does nothing now, so can remove
-    def pretty_service_name(service)
-      service
-    end
-
     def settings
       Setting.new.data
     end

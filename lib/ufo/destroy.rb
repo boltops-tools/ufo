@@ -13,7 +13,7 @@ module Ufo
       end
 
       if stack.stack_status =~ /_IN_PROGRESS$/
-        puts "Cannot destroy service #{@pretty_service_name.color(:green)}"
+        puts "Cannot destroy service #{@service.color(:green)}"
         puts "Cannot delete stack #{@stack_name.color(:green)} in this state: #{stack.stack_status.color(:green)}"
         puts "If the stack is taking a long time, you can cancel the current operation with:"
         puts "  ufo cancel #{@service}"
@@ -32,7 +32,7 @@ module Ufo
 
     def are_you_sure?
       return true if @options[:sure]
-      puts "You are about to destroy #{@pretty_service_name.color(:green)} service on the #{@cluster.color(:green)} cluster."
+      puts "You are about to destroy #{@service.color(:green)} service on the #{@cluster.color(:green)} cluster."
       print "Are you sure you want to do this? (y/n) "
       answer = $stdin.gets.strip
       answer =~ /^y/
