@@ -47,8 +47,9 @@ module Ufo
       end
     end
 
+    # TODO: Does nothing now, so can remove
     def pretty_service_name(service)
-      [service, Ufo.env_extra].reject {|x| x==''}.compact.join('-')
+      service
     end
 
     def settings
