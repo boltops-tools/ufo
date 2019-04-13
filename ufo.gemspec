@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.version       = Ufo::VERSION
   spec.authors       = ["Tung Nguyen"]
   spec.email         = ["tongueroo@gmail.com"]
-  spec.summary       = "AWS ECS Deployment Tool"
+  spec.summary       = "AWS ECS Deploy Tool"
   spec.homepage      = "http://ufoships.com"
   spec.license       = "MIT"
 
