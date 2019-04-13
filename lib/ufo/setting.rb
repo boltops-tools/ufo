@@ -39,7 +39,7 @@ module Ufo
       settings = YAML.load_file("#{Ufo.root}/.ufo/settings.yml")
       env = settings.find do |_env, section|
         section ||= {}
-        section['aws_profile'] == ENV['AWS_PROFILE']
+        ENV['AWS_PROFILE'] && ENV['AWS_PROFILE'] == section['aws_profile']
       end
 
       ufo_env = env.first if env
