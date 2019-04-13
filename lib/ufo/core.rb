@@ -21,7 +21,8 @@ module Ufo
     end
 
     def env
-      ufo_env = env_from_profile(ENV['AWS_PROFILE']) || 'development'
+      # 2-way binding
+      ufo_env = env_from_profile || 'development'
       ufo_env = ENV['UFO_ENV'] if ENV['UFO_ENV'] # highest precedence
       ufo_env
     end
@@ -35,8 +36,17 @@ module Ufo
     end
     memoize :env_extra
 
-    def pretty_service_name(service)
-      [service, Ufo.env_extra].reject {|x| x==''}.compact.join('-')
+    # Overrides AWS_PROFILE based on the Ufo.env if set in configs/settings.yml
+    # 2-way binding.
+    def set_aws_profile!
+      return if ENV['TEST']
+      return unless File.exist?("#{Ufo.root}/.ufo/settings.yml") # for rake docs
+      return unless settings # Only load if within Ufo project and there's a settings.yml
+      data = settings[Ufo.env] || {}
+      if data["aws_profile"]
+        puts "Using AWS_PROFILE=#{data["aws_profile"]} from UFO_ENV=#{Ufo.env} in config/settings.yml"
+        ENV['AWS_PROFILE'] = data["aws_profile"]
+      end
     end
 
     def settings
@@ -58,17 +68,9 @@ module Ufo
       end
     end
 
-    private
-    # Do not use the Setting class to load the profile because it can cause an
-    # infinite loop then if we decide to use Ufo.env from within settings class.
-    def env_from_profile(aws_profile)
-      data = YAML.load_file("#{Ufo.root}/.ufo/settings.yml")
-      env = data.find do |_env, setting|
-        setting ||= {}
-        profiles = setting['aws_profiles']
-        profiles && profiles.include?(aws_profile)
-      end
-      env.first if env
+  private
+    def env_from_profile
+      Ufo::Setting.new.ufo_env
     end
   end
 end

@@ -30,3 +30,4 @@ class Ufo::Upgrade
     end
   end
 end
+

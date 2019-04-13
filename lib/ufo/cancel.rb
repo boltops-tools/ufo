@@ -3,12 +3,12 @@ module Ufo
     def run
       stack = find_stack(@stack_name)
       unless stack
-        puts "No #{@pretty_service_name} service to cancel."
+        puts "No #{@service} service to cancel."
         puts "No #{@stack_name} stack to cancel. Exiting"
         exit
       end
 
-      puts "Canceling updates to #{@pretty_service_name}."
+      puts "Canceling updates to #{@stack_name}."
       if stack.stack_status == "CREATE_IN_PROGRESS"
         cloudformation.delete_stack(stack_name: @stack_name)
         puts "Canceling stack creation."

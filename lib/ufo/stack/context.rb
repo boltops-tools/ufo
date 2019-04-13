@@ -22,7 +22,6 @@ class Ufo::Stack
       vars = {
         cluster: @cluster,
         stack_name: @stack_name, # used in custom_properties
-        pretty_service_name: Ufo.pretty_service_name(@service),
         container: container,
         # elb options remember that their 'state'
         create_elb: create_elb?, # helps set Ecs DependsOn

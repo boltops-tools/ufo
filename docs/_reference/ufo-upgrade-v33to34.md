@@ -1,11 +1,11 @@
 ---
-title: ufo upgrade v3_3to3_4
+title: ufo upgrade v33to34
 reference: true
 ---
 
 ## Usage
 
-    ufo upgrade v3_3to3_4
+    ufo upgrade v33to34
 
 ## Description
 

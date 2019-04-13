@@ -1,4 +1,4 @@
-Description: "Ufo ECS stack <%= @pretty_service_name %>"
+Description: "Ufo ECS stack <%= @stack_name %>"
 Parameters:
   # required
   Vpc:
@@ -63,12 +63,12 @@ Resources:
 # Happens: When changing subnets for an ELB
 # Solution: Rename the ELB to force a replacement of it
 <% random = (0...3).map { (65 + rand(26)).chr }.join.downcase %>
-      Name: <%= "#{@pretty_service_name}-#{random}" %>
+      Name: <%= "#{@stack_name}-#{random}" %>
 <% end -%>
       Type: <%= @elb_type %>
       Tags:
       - Key: Name
-        Value: <%= @pretty_service_name %>
+        Value: <%= @stack_name %>
 <% if @elb_type == "application" -%>
       # Add additional extra security groups if parameters set
       SecurityGroups: !Split
@@ -96,14 +96,14 @@ Resources:
       VpcId: !Ref Vpc
       Tags:
       - Key: Name
-        Value: <%= @pretty_service_name %>
+        Value: <%= @stack_name %>
 <% if ENV['UFO_FORCE_TARGET_GROUP'] -%>
 # When adding and removing EIPs
 # Error: TargetGroup cannot be associated with more than one load balancer
 # Solution: https://forums.aws.amazon.com/thread.jspa?threadID=254544
       Name: !Join
       - '-'
-      - - <%= @pretty_service_name %>
+      - - <%= @stack_name %>
         - !Select [ 2, !Split [ '-', !GetAtt Elb.LoadBalancerName]]
 <% end -%>
       Protocol: <%= @default_target_group_protocol %>
@@ -168,7 +168,7 @@ Resources:
         CidrIp: 0.0.0.0/0
       Tags:
       - Key: Name
-        Value: <%= @pretty_service_name %>-elb
+        Value: <%= @stack_name %>-elb
 <%= custom_properties(:ElbSecurityGroup) %>
 <% end -%>
 
@@ -185,7 +185,7 @@ Resources:
       - !Ref EcsDesiredCount
       TaskDefinition: !Ref EcsTaskDefinition
 <% if pretty_name? -%>
-      ServiceName: <%= @pretty_service_name %>
+      ServiceName: <%= @stack_name %>
 <% end -%>
 <% if @container[:fargate] -%>
       LaunchType: FARGATE
@@ -243,7 +243,7 @@ Resources:
         Description: outbound traffic
       Tags:
       - Key: Name
-        Value: <%= @pretty_service_name %>
+        Value: <%= @stack_name %>
 <%= custom_properties(:EcsSecurityGroup) %>
 
 <% if @elb_type == "application" -%>

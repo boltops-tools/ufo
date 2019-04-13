@@ -12,17 +12,14 @@ base:
   # There are some cavaets with this. Updating properties on resources that require
   # replacment might not work. For example, adding and removing a load balancer.
   # In these cases, you must delete the entire ecs service and recreate it.
+  stack_naming: append_env
 
 development:
   # cluster: development
-  # When you have AWS_PROFILE set to one of these values, ufo will switch to the desired
-  # environment. This prevents you from switching AWS_PROFILE, forgetting to
-  # also switch UFO_ENV, and accidentally deploying to production vs development.
-  # aws_profiles:
-  #   - dev_profile1
-  #   - dev_profile2
+  # The aws_profile tightly binds UFO_ENV to AWS_PROFILE and vice-versa.
+  # aws_profile: dev_profile
 
 production:
   # cluster: production
-  # aws_profiles:
-  #   - prod_profile
+  # The aws_profile tightly binds UFO_ENV to AWS_PROFILE and vice-versa.
+  # aws_profile: prod_profile

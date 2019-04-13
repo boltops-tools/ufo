@@ -32,6 +32,14 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
+      # Thanks: https://discuss.circleci.com/t/using-bundler-2-0-during-ci-fails/27411/3
+      - run:
+          name: configure bundler
+          command: |
+            echo 'export BUNDLER_VERSION=$(cat Gemfile.lock | tail -1 | tr -d " ")' >> $BASH_ENV
+            source $BASH_ENV
+            gem install bundler
+
       - run:
           name: install dependencies
           command: |

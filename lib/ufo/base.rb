@@ -7,7 +7,6 @@ module Ufo
       @service = switch_current(service)
       @options = options
 
-      @pretty_service_name = Ufo.pretty_service_name(@service)
       @cluster = @options[:cluster] || default_cluster
       @stack_name = adjust_stack_name(@cluster, @service)
     end
@@ -23,7 +22,7 @@ module Ufo
 
     def no_service_message
       <<-EOL
-No #{@pretty_service_name.color(:green)} found.
+No #{@service.color(:green)} found.
 No CloudFormation stack named #{@stack_name} found.
 Are sure it exists?
       EOL

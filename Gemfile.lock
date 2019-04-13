@@ -25,7 +25,7 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     aws-eventstream (1.0.2)
-    aws-partitions (1.148.0)
+    aws-partitions (1.149.0)
     aws-sdk-cloudformation (1.18.0)
       aws-sdk-core (~> 3, >= 3.48.2)
       aws-sigv4 (~> 1.1)
@@ -110,4 +110,4 @@ DEPENDENCIES
   ufo!
 
 BUNDLED WITH
-   1.17.3
+   2.0.1
