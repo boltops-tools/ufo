@@ -40,6 +40,7 @@ module Ufo
     # 2-way binding.
     def set_aws_profile!
       return if ENV['TEST']
+      return unless File.exist?("#{Ufo.root}/.ufo/settings.yml") # for rake docs
       return unless settings # Only load if within Ufo project and there's a settings.yml
       data = settings[Ufo.env] || {}
       if data["aws_profile"]
