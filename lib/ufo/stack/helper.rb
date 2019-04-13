@@ -17,7 +17,23 @@ class Ufo::Stack
     end
 
     def adjust_stack_name(cluster, service)
-      [cluster, Ufo.pretty_service_name(service)].compact.join('-')
+      if settings[:stack_naming] != "append_env"
+        puts "WARN: In ufo v4.4 the environment name gets appends to the end of the CloudFormation stack name.  This means a new stack gets created. You must upgrade to using the new stack and delete the old stack manually.  More info: http://ufoships.com/docs/upgrading/upgrade4.4/".color(:yellow)
+        puts "To get rid of this warning you can add `stack_naming: append_env` to your `.ufo/settings.yml config. New versions of ufo init does this automatically."
+        puts "Pausing for 20 seconds."
+        sleep 20
+      end
+
+      if settings[:stack_naming] == "append_env"
+        [Ufo.pretty_service_name(service), cluster].compact.join('-')
+      else
+        # legacy, to be removed in next major version
+        [cluster, Ufo.pretty_service_name(service)].compact.join('-')
+      end
+    end
+
+    def cfn
+      Ufo::Setting::Profile.new(:cfn, settings[:cfn_profile]).data
     end
 
     def status

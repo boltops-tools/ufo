@@ -33,12 +33,19 @@
                 <li><a href="{% link _docs/redirection-support.md %}">Redirection Support</a></li>
                 <li><a href="{% link _docs/faq.md %}">FAQ</a></li>
             </ul>
+        <li><a href="{% link _docs/upgrading.md %}">Upgrading</a>
+            <ul>
+                {% assign docs = site.docs | where: "categories","upgrading" | sort: "order" %}
+                {% for doc in docs -%}
+                  <li><a href='{{doc.url}}'>{{doc.short_title}}</a></li>
+                {% endfor %}
+            </ul>
+        </li>
         <li>More
             <ul>
                 <li><a href="{% link _docs/why-cloudformation.md %}">Why CloudFormation</a></li>
                 <li><a href="{% link _docs/customize-cloudformation.md %}">Customize CloudFormation</a></li>
                 <li><a href="{% link _docs/stuck-cloudformation.md %}">Stuck CloudFormation</a></li>
-                <li><a href="{% link _docs/upgrade4.md %}">Upgrade 4</a></li>
                 <li><a href="{% link _docs/run-in-pieces.md %}">Run In Pieces</a></li>
                 <li><a href="{% link _docs/single-task.md %}">Run Single Task</a></li>
                 <li><a href="{% link _docs/migrations.md %}">Database Migrations</a></li>
