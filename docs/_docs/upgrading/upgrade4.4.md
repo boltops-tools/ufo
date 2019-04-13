@@ -21,7 +21,7 @@ To upgrade from version 4.3 to 4.4 you can run:
 
     ufo upgrade v43to44
 
-This updates your `.ufo/settings.yml` file to include `stack_naming: append_env` which removes a warning message when you deploy. Example:
+This updates your `.ufo/settings.yml` file to include `stack_naming: append_env` which removes a warning message and 20 second delay when you deploy. Example:
 
 .ufo/settings.yml:
 
@@ -34,6 +34,6 @@ If you would still like to keep the old behavior, you can use `stack_naming: pre
 
 ## Reasoning
 
-CloudFormation names the resources it creates with the beginning portion of the stack name. When the stack name prepends the environment then resources like ELBs a little bit harder to identify since they might be named something like this `product-Elb-K0LFFQ9LK50W`. It makes it harder to distinguish quickly ELBs from different apps created by ufo.
+CloudFormation names the resources it creates with the beginning portion of the stack name. When the stack name prepends the environment then resources like ELBs a little bit harder to identify since they might be named something like this `product-Elb-K0LFFQ9LK50W`. It makes it harder to distinguish ELBs from different apps created by ufo.
 
 {% include prev_next.md %}
