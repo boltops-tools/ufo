@@ -6,14 +6,12 @@ base:
   # defaults when an new ECS service is created by ufo ship
   cfn_profile: default
   network_profile: default
+  stack_naming: append_env # so spec doesnt pause for 20s
 
 development:
   cluster: dev
-  aws_profiles:
-    - dev_profile1
-    - dev_profile2
+  aws_profile: dev_profile1
 
 production:
   cluster: prod
-  aws_profiles:
-    - prod_profile
+  aws_profile: prod_profile

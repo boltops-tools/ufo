@@ -39,6 +39,7 @@ module Ufo
     # Overrides AWS_PROFILE based on the Ufo.env if set in configs/settings.yml
     # 2-way binding.
     def set_aws_profile!
+      return if ENV['TEST']
       return unless settings # Only load if within Ufo project and there's a settings.yml
       data = settings[Ufo.env] || {}
       if data["aws_profile"]

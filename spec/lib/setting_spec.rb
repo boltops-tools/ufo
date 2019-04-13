@@ -10,4 +10,9 @@ describe Ufo::Setting do
     cluster = setting.data[:cluster]
     expect(cluster).to eq "dev"
   end
+
+  it "ufo_env" do
+    ufo_env = setting.ufo_env
+    expect(ufo_env).to eq "development"
+  end
 end
