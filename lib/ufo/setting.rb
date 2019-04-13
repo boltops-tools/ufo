@@ -27,10 +27,25 @@ module Ufo
 
       all_envs = default.deep_merge(user.deep_merge(project))
       all_envs = merge_base(all_envs)
-      data = all_envs[Ufo.env] || all_envs["base"] || {}
+      data = all_envs[ufo_env] || all_envs["base"] || {}
       data.deep_symbolize_keys
     end
     memoize :data
+
+    # Resovles infinite problem since Ufo.env can be determined from UFO_ENV or settings.yml files.
+    # When ufo is determined from settings it should not called Ufo.env since that in turn calls
+    # Settings.new.data which can then cause an infinite loop.
+    def ufo_env
+      settings = YAML.load_file("#{Ufo.root}/.ufo/settings.yml")
+      env = settings.find do |_env, section|
+        section ||= {}
+        section['aws_profile'] == ENV['AWS_PROFILE']
+      end
+
+      ufo_env = env.first if env
+      ufo_env = ENV['UFO_ENV'] if ENV['UFO_ENV'] # highest precedence
+      ufo_env || 'development'
+    end
 
   private
     def load_file(path)

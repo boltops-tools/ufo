@@ -23,24 +23,19 @@ development:
   # cluster: dev # uncomment if you want the cluster name be other than the default
                  # the default is to match UFO_ENV.  So UFO_ENV=development means the ECS
                  # cluster will be name development
-  # When you have AWS_PROFILE set to one of these values, ufo will switch to the desired
-  # environment. This prevents you from switching AWS_PROFILE, forgetting to
-  # also switch UFO_ENV, and accidentally deploying to production vs development.
-  # aws_profiles:
-  #   - dev_profile1
-  #   - dev_profile2
+  # The aws_profile tightly binds UFO_ENV to AWS_PROFILE and vice-versa.
+  # aws_profile: dev_profile
 
 production:
   # cluster: prod
-  # aws_profiles:
-  #   - prod_profile
+  # aws_profile: prod_profile
 ```
 
 The table below covers each setting:
 
 Setting  | Description
 ------------- | -------------
-`aws_profiles`  | If you have the `AWS_PROFILE` environment variable set, this will ensure that you are deploying the right `UFO_ENV` to the right AWS environment. It is explained below.
+`aws_profile`  | If you have the `AWS_PROFILE` environment variable set, this will ensure that you are deploying the right `UFO_ENV` to the right AWS environment. It is explained below.
 `cfn_profile` | The name of the cfn profile settings file to use. Maps to .ufo/settings/cfn/NAME.yml file
 `clean_keep`  | Docker images generated from ufo are cleaned up automatically for you at the end of `ufo ship`. This controls how many docker images to keep around. The default is 3.
 `cluster`  | By convention, the ECS cluster that ufo deploys to matches the `UFO_ENV`. If `UFO=development`, then `ufo ship` deploys to the `development` ECS cluster. This is option overrides this convention.
@@ -87,26 +82,29 @@ production:
 
 ## AWS_PROFILE support
 
-An interesting option is `aws_profiles`.  Here's an example:
+An interesting option is `aws_profile`.  Here's an example:
 
 ```yaml
 development:
-  aws_profiles:
-    - dev-profile1
-    - dev-profile2
+  aws_profile: dev_profile
 
 production:
-  aws_profiles:
-    - prod-profile
+  aws_profile: prod_profile
 ```
 
-In this case, when you set the environment variable `AWS_PROFILE` to switch AWS profiles in your shell, ufo picks this up and maps the `AWS_PROFILE` value to the specified `UFO_ENV` using the `aws_profiles` option.  Example:
+This provides a way to tightly bind `UFO_ENV` to `AWS_PROFILE`.  This prevents you from forgetting to switch your `UFO_ENV` when switching your `AWS_PROFILE` thereby accidentally launching a stack in the wrong environment.
 
-```sh
-AWS_PROFILE=dev-profile1 => UFO_ENV=development
-AWS_PROFILE=dev-profile2 => UFO_ENV=development
-AWS_PROFILE=prod-profile => UFO_ENV=production
-```
+
+AWS_PROFILE | UFO_ENV | Notes
+--- | --- | ---
+dev_profile | development
+prod_profile | production
+whatever | development | default since whatever is not found in settings.yml
+
+The binding is two-way. So:
+
+    UFO_ENV=production ufo ship # will deploy to the AWS_PROFILE=prod_profile
+    AWS_PROFILE=prod_profile ufo ship # will deploy to the UFO_ENV=production
 
 This behavior prevents you from switching `AWS_PROFILE`s, forgetting to switch `UFO_ENV` and then accidentally deploying a production based docker image to development and vice versa because you forgot to also switch `UFO_ENV` to its respective environment.
 

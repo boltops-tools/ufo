@@ -46,3 +46,5 @@ module Ufo
 
   extend Core
 end
+
+Ufo.set_aws_profile!
