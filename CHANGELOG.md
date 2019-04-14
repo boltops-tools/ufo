@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [4.4.1]
+- return correct exit code 1 when cloudformation deploy fails
+- update docs: organize better into subfolders
+
 ## [4.4.0]
 - #71 from gurpreetatwal/patch-1 remove extra slash from URL
 - #73 organize docs better into subfolders
