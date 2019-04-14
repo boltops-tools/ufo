@@ -30,6 +30,7 @@ module Ufo
         puts "Software shipped!"
       else
         puts "Software fail to ship."
+        exit 1
       end
     end
 
