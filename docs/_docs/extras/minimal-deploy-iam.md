@@ -24,43 +24,43 @@ It is recommended that you create an IAM group and associate it with the IAM use
 
 Here's a summary of the commands:
 
-aws iam create-group --group-name Ufo
-cat << 'EOF' > /tmp/ecs-deploy-policy.json
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Action": [
-                "cloudformation:*",
-                "ec2:*",
-                "ecr:*",
-                "ecs:*",
-                "elasticloadbalancing:*",
-                "elasticloadbalancingv2:*",
-                "logs:*",
-                "route53:*"
-            ],
-            "Resource": "*",
-            "Effect": "Allow"
-        },
-        {
-            "Action": [
-                "iam:PassRole"
-            ],
-            "Effect": "Allow",
-            "Resource": "*",
-            "Condition": {
-                "StringLike": {
-                    "iam:PassedToService": [
-                        "ecs-tasks.amazonaws.com"
-                    ]
+    aws iam create-group --group-name Ufo
+    cat << 'EOF' > /tmp/ecs-deploy-policy.json
+    {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Action": [
+                    "cloudformation:*",
+                    "ec2:*",
+                    "ecr:*",
+                    "ecs:*",
+                    "elasticloadbalancing:*",
+                    "elasticloadbalancingv2:*",
+                    "logs:*",
+                    "route53:*"
+                ],
+                "Resource": "*",
+                "Effect": "Allow"
+            },
+            {
+                "Action": [
+                    "iam:PassRole"
+                ],
+                "Effect": "Allow",
+                "Resource": "*",
+                "Condition": {
+                    "StringLike": {
+                        "iam:PassedToService": [
+                            "ecs-tasks.amazonaws.com"
+                        ]
+                    }
                 }
             }
-        }
-    ]
-}
-EOF
-aws iam put-group-policy --group-name Ufo --policy-name UfoPolicy --policy-document file:///tmp/ecs-deploy-policy.json
+        ]
+    }
+    EOF
+    aws iam put-group-policy --group-name Ufo --policy-name UfoPolicy --policy-document file:///tmp/ecs-deploy-policy.json
 
 Then create a user and add the user to IAM group. Here's an example:
 
