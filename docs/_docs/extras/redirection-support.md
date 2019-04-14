@@ -5,7 +5,7 @@ nav_order: 27
 
 ## Application Load Balancers
 
-If you are using an Application Load Balancer you can configure redirection by editing the default actions of the regular listener that is set up by ufo. This assumes you have set up [SSL Support]({% link _docs/ssl-support.md %}).  Here's an example that redirects http to https with a 302 http status code:
+If you are using an Application Load Balancer you can configure redirection by editing the default actions of the regular listener that is set up by ufo. This assumes you have set up [SSL Support]({% link _docs/extras/ssl-support.md %}).  Here's an example that redirects http to https with a 302 http status code:
 
 ```
 listener:

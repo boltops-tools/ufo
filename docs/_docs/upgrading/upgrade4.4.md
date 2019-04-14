@@ -1,9 +1,9 @@
 ---
 title: Upgrading to Version 4.4
 short_title: Version 4.4
-nav_order: 30
 order: 1
 categories: upgrading
+nav_order: 30
 ---
 
 In ufo version 4.4, the environment name gets appends to the end of the CloudFormation stack name.  Previous versions prepended the environment name to the stack name. This means a new stack gets created if you're going from version 4.3 to 4.4. For example:

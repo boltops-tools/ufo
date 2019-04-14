@@ -44,7 +44,7 @@ For non-web container the `--elb` option must be explicitly set to `--elb=true` 
 
 Ufo retains the ELB setting.  So future `ufo ship` commands will not suddenly remove the load balancer.  If you need to change the elb setting, then you need to explicitly set a new `--elb` value.
 
-Important: Adding and removing load balancers will change the ELB DNS.  Please take pre-caution using the elb options.  This risk is mitigated if you have configured [Route53 support]({% link _docs/route53-support.md %}).
+Important: Adding and removing load balancers will change the ELB DNS.  Please take pre-caution using the elb options.  This risk is mitigated if you have configured [Route53 support]({% link _docs/extras/route53-support.md %}).
 
 ## ELB Types: Application and Network
 
