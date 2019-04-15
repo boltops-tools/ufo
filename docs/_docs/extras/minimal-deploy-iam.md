@@ -18,7 +18,7 @@ Route53 | To create vanity DNS endpoint when using [Route53 setting]({% link _do
 
 ## Instructions
 
-It is recommended that you create an IAM group and associate it with the IAM users that need access to use `jets deploy`.  Here are starter instructions and a policy that you can tailor for your needs:
+It is recommended that you create an IAM group and associate it with the IAM users that need access to use `ufo ship`.  Here are starter instructions and a policy that you can tailor for your needs:
 
 ### Commands Summary
 
