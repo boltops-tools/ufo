@@ -9,6 +9,7 @@ module Ufo
     # provides some helperally context variables
     class Helper
       include Ufo::Util
+      extend Memoist
 
       ##############
       # helper variables
@@ -59,8 +60,14 @@ module Ufo
       end
 
       def current_region
-        return 'us-east-1' if ENV['TEST']
-        @current_region ||= `aws configure get region`.strip rescue 'us-east-1'
+        default_region = 'us-east-1'
+        return default_region if ENV['TEST']
+
+        return ENV['UFO_AWS_REGION'] if ENV['UFO_AWS_REGION'] # highest precedence
+        return ENV['AWS_REGION'] if ENV['AWS_REGION']
+
+        region = `aws configure get region`.strip rescue default_region
+        region.blank? ? default_region : region
       end
 
       def parse_for_dockerfile_port(dockerfile_path)
