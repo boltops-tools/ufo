@@ -14,7 +14,8 @@ In a hurry? No sweat! Here's a quick start to using ufo that takes only a few mi
     gem install ufo
     git clone https://github.com/tongueroo/demo-ufo.git demo
     cd demo
-    ECR_REPO=$(aws ecr create-repository --repository-name demo/sinatra | jq -r '.repository.repositoryUri')
+    aws ecr create-repository --repository-name demo/sinatra
+    ECR_REPO=$(aws ecr describe-repositories --repository-name demo/sinatra | jq -r '.repositories[].repositoryUri')
     ufo init --image $ECR_REPO
     ufo current --service demo-web
     ufo ship

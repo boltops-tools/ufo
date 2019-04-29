@@ -14,7 +14,8 @@ In a hurry? No sweat! Here's a quick start to using ufo that takes only a few mi
     git clone https://github.com/tongueroo/demo-ufo demo
     cd demo
     AWS_ACCOUNT=$(aws sts get-caller-identity | jq -r '.Account')
-    ECR_REPO=$(aws ecr create-repository --repository-name demo/sinatra | jq -r '.repository.repositoryUri')
+    aws ecr create-repository --repository-name demo/sinatra
+    ECR_REPO=$(aws ecr describe-repositories --repository-name demo/sinatra | jq -r '.repositories[].repositoryUri')
     ufo init --image $ECR_REPO --launch-type fargate --execution-role-arn arn:aws:iam::$AWS_ACCOUNT:role/ecsTaskExecutionRole
     ufo current --service demo-web
     ufo ship
