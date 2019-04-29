@@ -14,7 +14,8 @@ In a hurry? No sweat! Here's a quick start to using ufo that takes only a few mi
     git clone https://github.com/tongueroo/demo-ufo demo
     cd demo
     AWS_ACCOUNT=$(aws sts get-caller-identity | jq -r '.Account')
-    ufo init --image tongueroo/demo-ufo --launch-type fargate --execution-role-arn arn:aws:iam::$AWS_ACCOUNT:role/ecsTaskExecutionRole
+    ECR_REPO=$(aws ecr create-repository --repository-name demo/sinatra | jq -r '.repository.repositoryUri')
+    ufo init --image $ECR_REPO --launch-type fargate --execution-role-arn arn:aws:iam::$AWS_ACCOUNT:role/ecsTaskExecutionRole
     ufo current --service demo-web
     ufo ship
     ufo ps
@@ -22,7 +23,7 @@ In a hurry? No sweat! Here's a quick start to using ufo that takes only a few mi
 
 This quickstart assumes:
 
-* You have push access to the repo. Refer to the Notes "Repo Push Access" section below for more info. 
+* You have push access to the repo. Refer to the Notes "Repo Push Access" section below for more info.
 * The `ecsTaskExecutionRole` needs to exist on your AWS account.  If you do not have an ecsTaskExecutionRole yet, create one by following: [Create ecsTaskExecutionRole with AWS CLI]({% link _docs/aws-ecs-task-execution-role.md %}).
 
 ## What Happened
@@ -38,7 +39,7 @@ You should see output similar to this.
 
     $ ufo ship
     Building docker image with:
-      docker build -t tongueroo/demo-ufo:ufo-2018-06-29T22-54-07-20b3a10 -f Dockerfile .
+      docker build -t 112233445566.dkr.ecr.us-west-2.amazonaws.com/demo/sinatra:ufo-2018-06-29T22-54-07-20b3a10 -f Dockerfile .
     ...
     10:58:38PM CREATE_COMPLETE AWS::ECS::Service Ecs
     10:58:40PM CREATE_COMPLETE AWS::CloudFormation::Stack development-demo-web

@@ -9,12 +9,13 @@ ECS EC2 is a way to run Docker containers on your own EC2 instances.  This diffe
 
 ## Let's Go
 
-In a hurry? No sweat! Here's a quick start to using ufo that takes only a few minutes. For this example, we will use a Sinatra app from [tongueroo/demo-ufo](https://github.com/tongueroo/demo-ufo).  The `ufo init` command sets up the ufo directory structure in your project. The `ufo ship` command deploys your code to an AWS ECS service.  The `ufo ps` and `ufo scale` command shows you how to verify and scale additional containers.  
+In a hurry? No sweat! Here's a quick start to using ufo that takes only a few minutes. For this example, we will use a Sinatra app from [tongueroo/demo-ufo](https://github.com/tongueroo/demo-ufo).  The `ufo init` command sets up the ufo directory structure in your project. The `ufo ship` command deploys your code to an AWS ECS service.  The `ufo ps` and `ufo scale` command shows you how to verify and scale additional containers.
 
     gem install ufo
     git clone https://github.com/tongueroo/demo-ufo.git demo
     cd demo
-    ufo init --image=tongueroo/demo-ufo # NOTE: use your own account
+    ECR_REPO=$(aws ecr create-repository --repository-name demo/sinatra | jq -r '.repository.repositoryUri')
+    ufo init --image $ECR_REPO
     ufo current --service demo-web
     ufo ship
     ufo ps
@@ -22,7 +23,7 @@ In a hurry? No sweat! Here's a quick start to using ufo that takes only a few mi
 
 This quickstart assumes:
 
-* You have push access to the repo. Refer to the Notes "Repo Push Access" section below for more info. 
+* You have push access to the repo. Refer to the Notes "Repo Push Access" section below for more info.
 * You are using ECS EC2 and have an ECS cluster with EC2 Container instances running. Refer to the Notes "ECS EC2 vs ECS Fargate" section below for more info.
 
 ## What Happened
@@ -52,7 +53,7 @@ Setting up ufo project...
 Starter ufo files created.
 $ ufo ship demo-web
 Building docker image with:
-  docker build -t tongueroo/demo-ufo:ufo-2017-09-10T15-00-19-c781aaf -f Dockerfile .
+  docker build -t 112233445566.dkr.ecr.us-west-2.amazonaws.com/demo/sinatra:ufo-2017-09-10T15-00-19-c781aaf -f Dockerfile .
 ....
 Software shipped!
 $ ufo ps

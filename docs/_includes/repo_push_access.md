@@ -1,8 +1,8 @@
 ## Repo Push Access
 
-The quick start example pushes the Docker image to a Dockerhub repo. You need your own repo with push access. This repo could be your own Dockerhub account or ECR repo.  You can control the setting with the `--image` option.  Example:
+The quick start example pushes the Docker image to a Docker repo that you have access to. This repo could be your own Dockerhub account or ECR repo.  You can control the setting with the `--image` option.  Example:
 
-    ufo init --image=yourusername/yourrepo # use your own account
+    ufo init --image=yourusername/yourrepo # use your own Dockerhub account
 
 Also, if you are using ECR instead, you can specify an ECR repo with the `--image` option.  Example:
 
