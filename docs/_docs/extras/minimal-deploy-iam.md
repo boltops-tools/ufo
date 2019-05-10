@@ -67,12 +67,9 @@ Then create a user and add the user to IAM group. Here's an example:
     aws iam create-user --user-name tung
     aws iam add-user-to-group --user-name tung --group-name Ufo
 
-## CodeBuild
+## CodeBuild IAM Role
 
-If you're using CodeBuild with `ufo ship` to handle deployments, you can use the same policy for the role that you assign to the the CodeBuild project and attach it to the the CodeBuild service IAM role that is usually created with the CodeBuild Console wizard.  For example, of the IAM role was called `codebuild-myapp-service-role`:
-
-    aws iam put-role-policy --role-name codebuild-myapp-service-role --policy-name EcsDeployPolicy --policy-document file:///tmp/ecs-deploy-policy.json
-    aws iam get-role-policy --role-name codebuild-myapp-service-role --policy-name EcsDeployPolicy
+If you are using CodeBuild to deploy, you'll probably be interested the IAM policy for the CodeBuild project: [CodeBuild IAM Role]({% link _docs/extras/codebuild-iam-role.md %})
 
 ## ECS Task IAM Policy vs User Deploy IAM Policy
 

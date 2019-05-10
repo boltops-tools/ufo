@@ -1,6 +1,6 @@
 ---
 title: Stuck CloudFormation
-nav_order: 34
+nav_order: 35
 ---
 
 The CloudFormation stack update or creation can get stuck in a `*_IN_PROGRESS` state for a very long time, like more than an hour.  This happens when you deploy an ECS service that fails to stabilize. Usually, this is an error with the Docker container failing to start up successfully.
