@@ -1,5 +1,5 @@
 ---
-title: Minimal Deploy IAM Policy
+title: CodeBuild IAM Role
 nav_order: 29
 ---
 
@@ -36,10 +36,10 @@ Create the policy document:
 
 Create the IAM resources:
 
-  aws iam create-role --role-name EcsDeployRole --assume-role-policy-document file:///tmp/role-trust-policy.json
-  aws iam create-policy --policy-name EcsDeployPolicy --policy-document file:///tmp/ecs-deploy-policy.json
-  ACCOUNT=$(aws sts get-caller-identity | jq -r '.Account')
-  aws iam attach-role-policy --policy-arn arn:aws:iam::$ACCOUNT:policy/EcsDeployPolicy --role-name EcsDeployRole
+    aws iam create-role --role-name EcsDeployRole --assume-role-policy-document file:///tmp/role-trust-policy.json
+    aws iam create-policy --policy-name EcsDeployPolicy --policy-document file:///tmp/ecs-deploy-policy.json
+    ACCOUNT=$(aws sts get-caller-identity | jq -r '.Account')
+    aws iam attach-role-policy --policy-arn arn:aws:iam::$ACCOUNT:policy/EcsDeployPolicy --role-name EcsDeployRole
 
 The `attach-role-policy` command attaches a Customer Managed IAM policy to the IAM role. This is a little more reusable than using an inline policy.
 
