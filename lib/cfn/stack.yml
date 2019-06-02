@@ -101,9 +101,10 @@ Resources:
 # When adding and removing EIPs
 # Error: TargetGroup cannot be associated with more than one load balancer
 # Solution: https://forums.aws.amazon.com/thread.jspa?threadID=254544
+# Note: we truncate the stack name because target group names can be only 32 chars long
       Name: !Join
       - '-'
-      - - <%= @stack_name %>
+      - - <%= @stack_name[0..-6] %>
         - !Select [ 2, !Split [ '-', !GetAtt Elb.LoadBalancerName]]
 <% end -%>
       Protocol: <%= @default_target_group_protocol %>
