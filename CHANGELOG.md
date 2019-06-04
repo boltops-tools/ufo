@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [4.4.3]
+- fix edge case when target group name is too long: only occurs with UFO\_FORCE\_TARGET_GROUP mode
+- stdout sync true for improved codebuild status
+- ufo network init ecs-subnets and elb-subnets options
+- update docs: use ecr repo in quick start examples
+
 ## [4.4.2]
 - fix current_region for codebuild
 
