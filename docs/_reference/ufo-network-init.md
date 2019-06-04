@@ -29,10 +29,11 @@ The above command creates a `.ufo/settings/network/dev.yml` file.  You might wan
 ## Options
 
 ```
-[--force]                  # Bypass overwrite are you sure prompt for existing files.
-[--subnets=one two three]  # Subnets
-[--vpc-id=VPC_ID]          # Vpc id
-[--filename=FILENAME]      # Name of the settings file to create w/o extension.
-                           # Default: default
+[--force]                      # Bypass overwrite are you sure prompt for existing files.
+[--ecs-subnets=one two three]  # ECS Subnets
+[--elb-subnets=one two three]  # ELB Subnets
+[--vpc-id=VPC_ID]              # Vpc id
+[--filename=FILENAME]          # Name of the settings file to create w/o extension.
+                               # Default: default
 ```
 
