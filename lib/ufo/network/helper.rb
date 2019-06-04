@@ -9,7 +9,7 @@ class Ufo::Network
       fetch = Fetch.new(@options[:vpc_id])
       @options[:vpc_id] ||= fetch.vpc_id
       @options[:ecs_subnets] ||= fetch.subnet_ids
-      @options[:elb_subnets] ||= fetch.subnet_ids
+      @options[:elb_subnets] ||= @options[:ecs_subnets] || fetch.subnet_ids
     end
 
     # hack for specs

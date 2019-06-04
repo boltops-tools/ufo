@@ -7,7 +7,8 @@ module Ufo
     def self.cli_options
       [
         [:force, type: :boolean, desc: "Bypass overwrite are you sure prompt for existing files."],
-        [:subnets, type: :array, desc: "Subnets"],
+        [:ecs_subnets, type: :array, desc: "ECS Subnets"],
+        [:elb_subnets, type: :array, desc: "ELB Subnets"],
         [:vpc_id, desc: "Vpc id"],
         [:filename, default: "default", desc: "Name of the settings file to create w/o extension."],
       ]
