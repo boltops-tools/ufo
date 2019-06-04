@@ -1,3 +1,5 @@
+$stdout.sync = true unless ENV["UFO_STDOUT_SYNC"] == "0"
+
 $:.unshift(File.expand_path('../', __FILE__))
 require 'deep_merge'
 require 'fileutils'
