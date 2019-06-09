@@ -91,12 +91,12 @@ class Ufo::Stack
       create_elb == "true" # convert to boolean
     end
 
-    # if --elb is not set at all, so it's nil. Thhen it defaults to creating the
-    # load balancer if the ecs service has a container name "web".
+    # If --elb is not set at all and is nil, then it defaults to creating the load balancer if the ecs service has
+    # a container name "web".
     #
-    # --elb '' - wont crete an elb
+    # --elb '' - will not crete an elb
     # --elb 'auto' - creates an elb
-    # --elb arn:... - wont create elb and use the existing target group
+    # --elb arn:... - will not create elb and use the existing target group
     #
     def elb_options
       case @options[:elb]

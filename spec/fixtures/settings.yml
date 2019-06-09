@@ -6,7 +6,7 @@ base:
   # defaults when an new ECS service is created by ufo ship
   cfn_profile: default
   network_profile: default
-  stack_naming: append_env # so spec doesnt pause for 20s
+  stack_naming: append_ufo_env # so spec doesnt pause for 20s
 
 development:
   cluster: dev

@@ -3,7 +3,7 @@ module Ufo
     autoload :Upgrade3, "ufo/upgrade/upgrade3"
     autoload :Upgrade33to34, "ufo/upgrade/upgrade33to34"
     autoload :Upgrade4, "ufo/upgrade/upgrade4"
-    autoload :Upgrade43to44, "ufo/upgrade/upgrade43to44"
+    autoload :Upgrade43to45, "ufo/upgrade/upgrade43to45"
 
     desc "v2to3", "Upgrade from version 2 to 3."
     def v2to3
@@ -30,9 +30,9 @@ module Ufo
       Upgrade4.start
     end
 
-    desc "v43to44", "Upgrade from version 4.3 to 4.4"
-    def v43to44
-      Upgrade43to44.new(options).run
+    desc "v43to45", "Upgrade from version 4.3 and 4.4 to 4.5"
+    def v43to45
+      Upgrade43to45.new(options).run
     end
   end
 end
