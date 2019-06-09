@@ -1,6 +1,6 @@
 ---
 title: Run Single Task
-nav_order: 39
+nav_order: 40
 ---
 
 Sometimes you do not want to run a long running `service` but a one time task. Running Rails migrations are an example of a one off task.  Here is an example of how you would run a one time task.

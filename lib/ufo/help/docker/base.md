@@ -36,4 +36,14 @@ Some of the output has been excluded so we can focus on the important parts to p
 
 It is using the docker `-f Dockerfile.base` option to build the base image.  It names the image with `tongueroo/demo-ufo:base-2017-06-12T14-36-44-2af505e`.  The image tag contains useful information: the timestamp when the image was built and the exact git sha of the code.  The image gets push to a registry immediately.
 
+## Dockerfile FROM updated
+
 Notice at the very end, the *current* `Dockerfile`'s FROM statement has been updated with the newly built base Docker image automatically.  This saves you from forgetting to copying and pasting it the `Dockerfile` yourself.
+
+If you're using a [Dockerfile.erb](https://ufoships.com/docs/extras/dockerfile-erb/), then ufo will update the `.ufo/settings/dockerfile_variables.yml` file instead.  It assumes you're using a Dockerfile.erb that looks something like this:
+
+```Dockerfile
+FROM <%= @base_image %>
+# ...
+CMD ["bin/web"]
+```

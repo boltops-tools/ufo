@@ -23,12 +23,12 @@ class Ufo::Docker
       start_time = Time.now
       store_full_image_name
 
-      update_auth_token
-
       command = "docker build #{build_options}-t #{full_image_name} -f #{@dockerfile} ."
       say "Building docker image with:".color(:green)
       say "  #{command}".color(:green)
+      compile_dockerfile_erb
       check_dockerfile_exists
+      update_auth_token
       command = "cd #{Ufo.root} && #{command}"
       success = execute(command, use_system: true)
       unless success
@@ -79,6 +79,10 @@ class Ufo::Docker
 
     def pusher
       @pusher ||= Pusher.new(full_image_name, @options)
+    end
+
+    def compile_dockerfile_erb
+      Compiler.new("#{Ufo.root}/#{@dockerfile}").compile
     end
 
     def check_dockerfile_exists
@@ -139,8 +143,12 @@ class Ufo::Docker
     end
 
     def update_dockerfile
-      dockerfile = Dockerfile.new(full_image_name, @options)
-      dockerfile.update
+      updater = if File.exist?("#{Ufo.root}/Dockerfile.erb") # dont use @dockerfile on purpose
+        Variables.new(full_image_name, @options)
+      else
+        Dockerfile.new(full_image_name, @options)
+      end
+      updater.update
     end
 
     def say(msg)
