@@ -1,6 +1,6 @@
 ---
 title: Conventions
-nav_order: 18
+nav_order: 19
 ---
 
 Ufo uses a set of naming conventions.  This helps enforce some best practices and also allows the ufo commands to be concise.  You can override or bypass the conventions easily.

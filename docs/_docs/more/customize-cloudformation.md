@@ -1,6 +1,6 @@
 ---
 title: Customize CloudFormation
-nav_order: 34
+nav_order: 36
 ---
 
 Under the hood, ufo creates most of the required resources with a CloudFormation stack.  This includes the ELB, Target Group, Listener, Security Groups, ECS Service, and Route 53 records.  You might need to customize these resources.  Here are the ways to customize the resources that ufo creates.
@@ -20,13 +20,13 @@ You can override the source template that ufo uses by creating your own and savi
 
 ## CloudFormation Stack Name
 
-The CloudFormation stack name is based on the cluster, service name and UFO_ENV_EXTRA.  A few examples help demonstrate:
+The CloudFormation stack name is based on the service name, UFO_ENV and UFO_ENV_EXTRA.  A few examples help demonstrate:
 
 Command | Stack Name
 --- | ---
-ufo ship demo-web | development-demo-web
-ufo ship demo-web -\-cluster dev | dev-demo-web
-UFO_ENV_EXTRA=2 ufo ship demo-web -\-cluster dev | development-demo-web-2
+ufo ship demo-web | demo-web-development
+ufo ship demo-web -\-cluster dev | demo-web-development
+UFO_ENV_EXTRA=2 ufo ship demo-web -\-cluster dev | demo-web-development-2
 
 ## CloudFormation Stack Source Code
 

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ufo (4.4.2)
+    ufo (4.4.3)
       aws-sdk-cloudformation
       aws-sdk-cloudwatchlogs
       aws-sdk-ec2
@@ -25,7 +25,7 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     aws-eventstream (1.0.3)
-    aws-partitions (1.171.0)
+    aws-partitions (1.172.0)
     aws-sdk-cloudformation (1.22.0)
       aws-sdk-core (~> 3, >= 3.53.0)
       aws-sigv4 (~> 1.1)
@@ -37,7 +37,7 @@ GEM
       aws-partitions (~> 1.0)
       aws-sigv4 (~> 1.1)
       jmespath (~> 1.0)
-    aws-sdk-ec2 (1.89.0)
+    aws-sdk-ec2 (1.90.0)
       aws-sdk-core (~> 3, >= 3.53.0)
       aws-sigv4 (~> 1.1)
     aws-sdk-ecr (1.17.0)

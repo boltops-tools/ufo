@@ -15,16 +15,23 @@
         <li><a href="{% link docs.md %}">Docs</a>
             <ul>
                 <li><a href="{% link _docs/structure.md %}">Structure</a></li>
-                <li><a href="{% link _docs/settings.md %}">Settings</a></li>
-                <li><a href="{% link _docs/settings-network.md %}">Settings Network</a></li>
-                <li><a href="{% link _docs/settings-cfn.md %}">Settings Cfn</a></li>
-                <li><a href="{% link _docs/params.md %}">Params</a></li>
+                <li><a href="{% link _docs/settings.md %}">Settings</a>
+                    <ul>
+                        {% assign docs = site.docs | where: "categories","settings" | sort: "order" %}
+                        {% for doc in docs -%}
+                          <li><a href='{{doc.url}}'>{{doc.short_title}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
                 <li><a href="{% link _docs/variables.md %}">Shared Variables</a></li>
                 <li><a href="{% link _docs/helpers.md %}">Helpers</a></li>
                 <li><a href="{% link _docs/conventions.md %}">Conventions</a></li>
                 <li><a href="{% link _docs/ufo-env.md %}">Ufo Env</a></li>
                 <li><a href="{% link _docs/ufo-env-extra.md %}">Ufo Env Extra</a></li>
                 <li><a href="{% link _docs/ufo-current.md %}">Ufo Current</a></li>
+                <li><a href="{% link _docs/ufo-task-params.md %}">Ufo Task Params</a></li>
+            </ul>
+        </li>
         <li>Extras
             <ul>
                 <li><a href="{% link _docs/extras/load-balancer.md %}">Load Balancer</a></li>
@@ -36,6 +43,7 @@
                 <li><a href="{% link _docs/extras/minimal-deploy-iam.md %}">Minimal Deploy IAM</a></li>
                 <li><a href="{% link _docs/extras/codebuild-iam-role.md %}">CodeBuild IAM Role</a></li>
             </ul>
+        </li>
         <li><a href="{% link _docs/upgrading.md %}">Upgrading</a>
             <ul>
                 {% assign docs = site.docs | where: "categories","upgrading" | sort: "order" %}

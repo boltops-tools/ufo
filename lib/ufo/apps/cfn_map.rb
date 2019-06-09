@@ -5,7 +5,7 @@ class Ufo::Apps
 
     def initialize(options = {})
       @options = options
-      @cluster = @options[:cluster] || default_cluster
+      @cluster = @options[:cluster] || default_cluster(options[:service])
       @map = {}
     end
 

@@ -1,6 +1,6 @@
 ---
 title: Route53 Support
-nav_order: 26
+nav_order: 28
 ---
 
 Ufo can create a "pretty" route53 record and set it's value to the created ELB DNS name. This is done by configuring the `.ufo/settings/cfn/default.yml` file. Example:

@@ -1,6 +1,6 @@
 ---
 title: Automated Clean Up
-nav_order: 39
+nav_order: 41
 ---
 
 Ufo can be configured to automatically clean old images from the ECR registry after the deploy completes by configuring your [settings.yml]({% link _docs/settings.md %}) file like so:

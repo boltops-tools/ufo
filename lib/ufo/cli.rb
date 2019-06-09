@@ -143,8 +143,9 @@ module Ufo
 
     desc "apps", "List apps."
     long_desc Help.text(:apps)
+    option :clusters, type: :array, desc: "List of clusters"
     def apps
-      Apps.new(options).list
+      Apps.new(options).list_all
     end
 
     desc "resources SERVICE", "The ECS service resources."

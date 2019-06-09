@@ -1,6 +1,8 @@
 ---
 title: Settings Network
-nav_order: 13
+short_title: Network
+categories: settings
+nav_order: 16
 ---
 
 The settings.yml file references a network settings file with the `network_profile` option. This file has configurations that are related to the network.  The source code for the starter template file is at [network/default.yml.tt](https://github.com/tongueroo/ufo/blob/master/lib/template/.ufo/settings/network/default.yml.tt)  Here's an example network settings file.

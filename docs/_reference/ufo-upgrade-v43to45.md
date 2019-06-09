@@ -10,6 +10,3 @@ reference: true
 ## Description
 
 Upgrade from version 4.3 and 4.4 to 4.5
-
-
-

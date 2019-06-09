@@ -1,3 +1,9 @@
+The `ufo task` commands:
+
+1. Builds the docker image
+2. Registers the ECS task definition
+3. Runs the command
+
 ## Examples
 
 You can use the `--command` or `-c` option to override the Docker container command.
@@ -15,3 +21,7 @@ The `--task-only` option is useful. By default, the `ufo task` command will buil
   ufo task demo-web -c uptime # build at least once
   ufo task demo-web --task-only -c ls # skip docker for speed
   ufo task demo-web --task-only -c pwd # skip docker for speed
+
+## Params
+
+You can control and customize the params that get sent to the ECS run_task call with a `config/params.yml` file. More info here: https://ufoships.com/docs/ufo-task-params/

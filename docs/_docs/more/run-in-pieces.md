@@ -1,6 +1,6 @@
 ---
 title: Run in Pieces
-nav_order: 36
+nav_order: 38
 ---
 
 The `ufo ship` command goes through a few stages:
@@ -13,23 +13,17 @@ The CLI exposes many of these steps as separate commands.  Here is now you would
 
 Build the docker image first.
 
-```bash
-ufo docker build
-ufo docker push # pushes last built image to a registry
-```
+    ufo docker build
+    ufo docker push # pushes last built image to a registry
 
 Build the task definitions.
 
-```bash
-ufo tasks build    # generates task definition json files to .ufo/output
-ufo tasks register # registers all genreated task definitions .ufo/output to ECS
-```
+    ufo tasks build    # generates task definition json files to .ufo/output
+    ufo tasks register # registers all genreated task definitions .ufo/output to ECS
 
 Update the service with the task definitions in `.ufo/output` untouched.
 
-```bash
-ufo deploy demo-web
-```
+    ufo deploy demo-web
 
 Note if you use the `ufo deploy` you should ensure that you have already pushed the docker image to your docker registry.  Or else the task will not be able to spin up because the docker image does not exist.  This is one of the reasons it is recommended that you use `ufo ship`.
 

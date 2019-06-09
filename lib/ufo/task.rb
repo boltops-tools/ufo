@@ -8,7 +8,8 @@ module Ufo
     def initialize(task_definition, options)
       @task_definition = task_definition
       @options = options
-      @cluster = @options[:cluster] || default_cluster
+      # Assume task_definition is the same name as the ecs service name
+      @cluster = @options[:cluster] || default_cluster(task_definition)
     end
 
     def run

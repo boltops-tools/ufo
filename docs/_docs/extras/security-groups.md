@@ -1,6 +1,6 @@
 ---
 title: Security Groups
-nav_order: 23
+nav_order: 25
 ---
 
 Ufo creates and manages two security groups. One for the ELB and one for the ECS tasks.
