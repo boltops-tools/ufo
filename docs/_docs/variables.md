@@ -1,6 +1,6 @@
 ---
 title: Shared Variables
-nav_order: 16
+nav_order: 17
 ---
 
 Often, you end up using the set of common variables across your task definitions for a project.  Ufo supports a shared variables concept to support this.  You specify variables files in the `.ufo/variables` folder and they are made available to your `.ufo/task_definitions.rb` as well as your `.ufo/templates` files.

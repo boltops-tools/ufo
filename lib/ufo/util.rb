@@ -6,8 +6,11 @@ module Ufo
     # But it can be overriden by ufo/settings.yml cluster
     #
     # More info: http://ufoships.com/docs/settings/
-    def default_cluster
-      settings[:cluster] || Ufo.env
+    def default_cluster(service)
+      # to_s.to_sym in case service is nil
+      settings.dig(:service_cluster, service.to_s.to_sym) ||
+      settings[:cluster] ||
+      Ufo.env
     end
 
     # Keys are strings for simplicity.

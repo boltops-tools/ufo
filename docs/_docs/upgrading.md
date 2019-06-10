@@ -1,6 +1,6 @@
 ---
 title: Upgrading
-nav_order: 30
+nav_order: 32
 ---
 
 <ul>

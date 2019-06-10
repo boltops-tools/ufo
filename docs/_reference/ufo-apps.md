@@ -28,6 +28,7 @@ This command lists ECS services for an ECS cluster. It includes ECS services tha
 ## Options
 
 ```
+[--clusters=one two three]   # List of clusters
 [--verbose], [--no-verbose]  
 [--mute], [--no-mute]        
 [--noop], [--no-noop]        

@@ -1,6 +1,6 @@
 ---
 title: CodeBuild IAM Role
-nav_order: 29
+nav_order: 31
 ---
 
 Note, the `/tmp/ecs-deploy-policy.json` policy is available at [Minimal Deploy IAM]({% link _docs/extras/minimal-deploy-iam.md %}).

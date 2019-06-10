@@ -26,7 +26,7 @@ The table below covers the purpose of each folder and file.
 File / Directory  | Description
 ------------- | -------------
 <code>output/</code>  | The folder where the generated task definitions are written to.  The way the task definitions are generated is covered in [ufo tasks build]({% link _docs/tutorial-ufo-tasks-build.md %}).
-<code>params</code>  | This is where you can adjust the params that get send to the aws-sdk api calls. More info at [Params]({% link _docs/params.md %}).
+<code>params</code>  | This is where you can adjust the params that get send to the aws-sdk api calls for the [ufo task](https://ufoships.com/reference/ufo-task/) command. More info at [Params]({% link _docs/ufo-task-params.md %}).
 <code>settings.yml</code>  | Ufo's general settings file, where you adjust the default [settings]({% link _docs/settings.md %}).
 <code>settings/cfn/default.yml</code>  | Ufo's cfn settings. You can customize the CloudFormation resource properties here.
 <code>settings/network/default.yml</code>  | Ufo's network settings. You can customize the vpc and subnets to used here.

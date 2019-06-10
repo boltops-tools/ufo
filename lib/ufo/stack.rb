@@ -33,7 +33,7 @@ module Ufo
       @options = options
       @task_definition = options[:task_definition]
       @service = options[:service]
-      @cluster = @options[:cluster] || default_cluster
+      @cluster = @options[:cluster] || default_cluster(@service)
       @stack_name = adjust_stack_name(@cluster, options[:service])
     end
 

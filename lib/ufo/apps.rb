@@ -3,6 +3,7 @@ require 'text-table'
 module Ufo
   class Apps
     autoload :CfnMap, "ufo/apps/cfn_map"
+    autoload :Cluster, "ufo/apps/cluster"
     autoload :Service, "ufo/apps/service"
 
     extend Memoist
@@ -10,25 +11,35 @@ module Ufo
 
     def initialize(options)
       @options = options
-      @cluster = @options[:cluster] || default_cluster
+      @clusters = @options[:cluster] || @options[:clusters]
+      @clusters = [@clusters].flatten.compact
+      if @clusters.empty?
+        @clusters = Cluster.all
+      end
     end
 
-    def list
+    def list_all
+      @clusters.each do |cluster|
+        list(cluster)
+      end
+    end
+
+    def list(cluster)
       begin
-        resp = ecs.list_services(cluster: @cluster)
+        resp = ecs.list_services(cluster: cluster)
       rescue Aws::ECS::Errors::ClusterNotFoundException => e
-        puts "ECS cluster #{@cluster.color(:green)} not found."
-        exit 1
+        puts "ECS cluster #{cluster.color(:green)} not found."
+        return
       end
       arns = resp.service_arns.sort
 
-      puts "Listing ECS services in the #{@cluster.color(:green)} cluster."
+      puts "Listing ECS services in the #{cluster.color(:green)} cluster."
       if arns.empty?
-        puts "No ECS services found in the #{@cluster.color(:green)} cluster."
+        puts "No ECS services found in the #{cluster.color(:green)} cluster."
         return
       end
 
-      resp = ecs.describe_services(services: arns, cluster: @cluster)
+      resp = ecs.describe_services(services: arns, cluster: cluster)
       display_info(resp)
     end
 

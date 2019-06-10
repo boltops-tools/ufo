@@ -7,7 +7,7 @@ module Ufo
       @service = switch_current(service)
       @options = options
 
-      @cluster = @options[:cluster] || default_cluster
+      @cluster = @options[:cluster] || default_cluster(@service)
       @stack_name = adjust_stack_name(@cluster, @service)
     end
 
@@ -22,8 +22,8 @@ module Ufo
 
     def no_service_message
       <<-EOL
-No #{@service.color(:green)} found.
-No CloudFormation stack named #{@stack_name} found.
+No #{@service.color(:green)} ecs service found.
+No CloudFormation stack named #{@stack_name.color(:green)} found.
 Are sure it exists?
       EOL
     end

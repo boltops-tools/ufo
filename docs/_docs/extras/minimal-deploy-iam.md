@@ -1,6 +1,6 @@
 ---
 title: Minimal Deploy IAM Policy
-nav_order: 28
+nav_order: 30
 ---
 
 The IAM user you use to run the `ufo ship` command needs a minimal set of IAM policies in order to deploy to ECS. Here is a table of the baseline services needed:

@@ -10,13 +10,13 @@ module Ufo
     end
 
     def deploy
-      message = "Deploying #{@service}..."
+      message = "Deploying service #{@service.color(:green)} to cluster #{@cluster.color(:green)}..."
       unless @options[:mute]
         if @options[:noop]
           puts "NOOP: #{message}"
           return
         else
-          puts message.color(:green)
+          puts message
         end
       end
 

@@ -1,6 +1,6 @@
 ---
 title: FAQ
-nav_order: 41
+nav_order: 43
 ---
 
 **Q: Is AWS ECS Fargate supported?**
@@ -8,7 +8,7 @@ nav_order: 41
 Yes, Fargate is supported.  To use ufo with Fargate, you will need to adjust the template in `.ufo/templates` to a structure supported by Fargate.  There are 2 key items to adjust:
 
 1. The task definition JSON. Notably, the JSON structure has the `requiresCompatibilities`, `networkMode`, and `executionRoleArn` attributes. The `cpu` and `memory` attributes also move outside of the `containerDefinitions` level to the top-level attributes. For details on how to adjust the task definition refer to [Task Definitions]({% link _docs/tutorial-ufo-tasks-build.md %}).
-2. The params that get sent to the `run_task` API methods. For details on how to adjust the params refer to [Params]({% link _docs/params.md %})
+2. The params that get sent to the `run_task` API methods. For details on how to adjust the params refer to [Params]({% link _docs/ufo-task-params.md %})
 
 If it's a brand new project, you can use `ufo init` with the `--launch-type fargate` option and it will generate a starter task definition JSON file that has the right Fargate structure. More info is available at [ufo init reference](/reference/ufo-init/#fargate-support).
 
