@@ -1,9 +1,5 @@
 module Ufo
   class Network < Command
-    autoload :Init, "ufo/network/init"
-    autoload :Helper, "ufo/network/helper"
-    autoload :Fetch, "ufo/network/fetch"
-
     def self.cli_options
       [
         [:force, type: :boolean, desc: "Bypass overwrite are you sure prompt for existing files."],

@@ -1,10 +1,5 @@
 module Ufo
   class Upgrade < Command
-    autoload :Upgrade3, "ufo/upgrade/upgrade3"
-    autoload :Upgrade33to34, "ufo/upgrade/upgrade33to34"
-    autoload :Upgrade4, "ufo/upgrade/upgrade4"
-    autoload :Upgrade43to45, "ufo/upgrade/upgrade43to45"
-
     desc "v2to3", "Upgrade from version 2 to 3."
     def v2to3
       Upgrade3.new(options).run

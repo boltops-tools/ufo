@@ -1,12 +1,5 @@
 module Ufo
   class Docker < Command
-    autoload :Builder, 'ufo/docker/builder'
-    autoload :Cleaner, 'ufo/docker/cleaner'
-    autoload :Compiler, 'ufo/docker/compiler'
-    autoload :Dockerfile, 'ufo/docker/dockerfile'
-    autoload :Variables, 'ufo/docker/variables'
-    autoload :Pusher, 'ufo/docker/pusher'
-
     desc "build", "Build docker image."
     long_desc Help.text("docker:build")
     option :push, type: :boolean, default: false

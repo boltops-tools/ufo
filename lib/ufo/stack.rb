@@ -23,9 +23,6 @@
 #
 module Ufo
   class Stack
-    autoload :Context, "ufo/stack/context"
-    autoload :Helper, "ufo/stack/helper"
-    autoload :Status, "ufo/stack/status"
     extend Memoist
     include Helper
 

@@ -2,10 +2,6 @@ require 'text-table'
 
 module Ufo
   class Apps
-    autoload :CfnMap, "ufo/apps/cfn_map"
-    autoload :Cluster, "ufo/apps/cluster"
-    autoload :Service, "ufo/apps/service"
-
     extend Memoist
     include Stack::Helper
 
