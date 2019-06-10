@@ -1,6 +1,6 @@
 ---
 title: Run in Pieces
-nav_order: 38
+nav_order: 39
 ---
 
 The `ufo ship` command goes through a few stages:
