@@ -15,6 +15,7 @@ PATH
       render_me_pretty
       text-table
       thor
+      zeitwerk
 
 GEM
   remote: https://rubygems.org/
@@ -96,6 +97,7 @@ GEM
     tilt (2.0.9)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
+    zeitwerk (2.1.6)
 
 PLATFORMS
   ruby

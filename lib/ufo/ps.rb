@@ -2,8 +2,6 @@ require 'text-table'
 
 module Ufo
   class Ps < Base
-    autoload :Task, 'ufo/ps/task'
-
     delegate :service, to: :info
 
     def run

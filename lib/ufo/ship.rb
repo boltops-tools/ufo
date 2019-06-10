@@ -1,7 +1,6 @@
 module Ufo
   class UfoError < RuntimeError; end
   class ShipmentOverridden < UfoError; end
-  autoload :KillTask, 'ufo/ship/kill_task'
 
   class Ship < Base
     def initialize(service, options={})
