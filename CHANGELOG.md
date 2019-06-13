@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [4.5.1]
+- handle UPDATE_IN_PROGRESS stack validation error also
+- update comment at top of generated Dockerfile
+
 ## [4.5.0]
 - #78 append_ufo_env to stack name, new default
 - #79 service_cluster map setting
