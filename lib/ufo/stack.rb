@@ -184,7 +184,7 @@ module Ufo
     # Stack:arn:aws:cloudformation:... is in ROLLBACK_COMPLETE state and can not be updated.
     def handle_stack_error(e)
       case e.message
-      when /is in ROLLBACK_COMPLETE state and can not be updated/
+      when /state and can not be updated/
         puts "The #{@stack_name} stack is in #{"ROLLBACK_COMPLETE".color(:red)} and cannot be updated. Deleted the stack and try again."
         region = `aws configure get region`.strip rescue 'us-east-1'
         url = "https://console.aws.amazon.com/cloudformation/home?region=#{region}"
