@@ -16,6 +16,7 @@ class Ufo::Upgrade
       end
 
       puts "Upgrading to ufo v4.5..."
+      settings["base"] ||= {}
       settings["base"]["stack_naming"] = "append_ufo_env"
       text = YAML.dump(settings)
       IO.write(settings_path, text)
