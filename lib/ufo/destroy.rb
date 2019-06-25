@@ -32,8 +32,8 @@ module Ufo
 
     def are_you_sure?
       return true if @options[:sure]
-      puts "You are about to destroy #{@service.color(:green)} service on the #{@cluster.color(:green)} cluster."
-      print "Are you sure you want to do this? (y/n) "
+      puts "You are about to destroy the #{@stack_name.color(:green)} stack. This contains the #{@service.color(:green)} service on the #{@cluster.color(:green)} cluster."
+      print "Are you sure you want to do this? (y/N) "
       answer = $stdin.gets.strip
       answer =~ /^y/
     end
