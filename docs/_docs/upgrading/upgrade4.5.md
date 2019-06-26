@@ -45,8 +45,6 @@ Version | Setting
 4.4 | stack_naming: append_cluster
 4.5 | stack_naming: append_ufo_env
 
-Support for `prepend_cluster` may be **removed** in future versions.
-
 ## Reasoning
 
 CloudFormation names the resources it creates with the beginning portion of the stack name. When the stack name prepends the environment then resources like ELBs a little bit harder to identify since they might be named something like this `product-Elb-K0LFFQ9LK50W`. It makes it harder to distinguish ELBs from different apps created by ufo.
