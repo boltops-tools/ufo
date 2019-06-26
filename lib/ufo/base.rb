@@ -27,5 +27,9 @@ No CloudFormation stack named #{@stack_name.color(:green)} found.
 Are sure it exists?
       EOL
     end
+
+    def full_service
+      [@service, Ufo.env_extra].compact.join("-")
+    end
   end
 end

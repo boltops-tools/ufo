@@ -18,7 +18,7 @@ module Ufo
         cluster: @cluster,
         desired_count: @count
       )
-      puts "Scale #{@service.color(:green)} service in #{@cluster.color(:green)} cluster to #{@count}" unless @options[:mute]
+      puts "Scale #{full_service.color(:green)} service in #{@cluster.color(:green)} to #{@count}" unless @options[:mute]
     end
 
     def service_exists?

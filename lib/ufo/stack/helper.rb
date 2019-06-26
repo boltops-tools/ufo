@@ -17,8 +17,7 @@ class Ufo::Stack
     end
 
     def adjust_stack_name(cluster, service)
-      upgraded_namings = %w[append_ufo_env append_env append_cluster append_nothing prepend_nothing]
-      unless upgraded_namings.include?(settings[:stack_naming])
+      if settings[:stack_naming].nil?
         puts "WARN: In ufo v4.5 the UFO_ENV value gets appends to the end of the CloudFormation stack name.  This means a new stack gets created. You must upgrade to using the new stack and delete the old stack manually.  More info: https://ufoships.com/docs/upgrading/upgrade4.5/".color(:yellow)
         puts "To get rid of this warning you can add `stack_naming: append_ufo_env` to your `.ufo/settings.yml config. New versions of ufo init do this automatically."
         puts "Pausing for 20 seconds."
@@ -26,17 +25,16 @@ class Ufo::Stack
       end
 
       parts = case settings[:stack_naming]
-      when "append_ufo_env" # ufo v4.6
-        [service, Ufo.env, Ufo.env_extra]
+      when "prepend_cluster" # ufo v4.3 and below
+        [cluster, service, Ufo.env_extra] # legacy
       when "append_env", "append_cluster" # ufo v4.5
-        # append_env will be removed in the next major version in favor of apend_cluster.
-        # To avoid confusiong with append_ufo_env
+        # append_env will be removed in the next major version in favor of append_cluster to avoid confusion with
+        # append_ufo_env
         [service, cluster, Ufo.env_extra]
       when "append_nothing", "prepend_nothing"
         [service, Ufo.env_extra]
-      else
-        # legacy, to be removed in next major version
-        [cluster, service, Ufo.env_extra]
+      else # new default. ufo v4.5 and above
+        [service, Ufo.env, Ufo.env_extra]
       end
       parts.reject {|x| x==''}.compact.join('-') # stack_name
     end
