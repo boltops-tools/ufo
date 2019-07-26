@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [4.5.3]
+- fix error exit code when unable to find task definition
+- fix upgrade for empty base setting
+- improve ufo destroy confirm message
+- #82 allow prepend_cluster
+
 ## [4.5.2]
 - add append_nothing option
 
