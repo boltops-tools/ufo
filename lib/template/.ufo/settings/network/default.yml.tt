@@ -9,8 +9,7 @@ elb_subnets: # defaults to same subnets as ecs_subnets when not set
   - <%= subnet %>
 <% end -%>
 
-# Optional additional existing security group ids to add on top of the ones created
-# by ufo.
+# Optional additional existing security group ids to add on top of the ones created by ufo.
 # elb_security_groups:
 #   - sg-aaa
 # ecs_security_groups:
