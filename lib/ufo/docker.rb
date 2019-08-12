@@ -9,6 +9,13 @@ module Ufo
       push if options[:push]
     end
 
+    desc "compile", "Compile Dockerfile.erb"
+    long_desc Help.text("docker:compile")
+    def compile
+      builder = Docker::Builder.new(options)
+      builder.compile_dockerfile_erb
+    end
+
     desc "push IMAGE", "Push the docker image."
     long_desc Help.text("docker:push")
     option :push, type: :boolean, default: false

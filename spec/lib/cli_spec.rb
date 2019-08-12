@@ -15,6 +15,12 @@ describe Ufo::CLI do
         out = execute("exe/ufo docker name #{@args}")
         expect(out).to match(%r{tongueroo/demo-ufo:ufo-.{7}})
       end
+
+      it "compiles Dockerfile from Dockerfile.erb" do
+        FileUtils.cp("spec/fixtures/dockerfiles/Dockerfile.erb", "#{Ufo.root}/Dockerfile.erb")
+        out = execute("exe/ufo docker compile #{@args}")
+        expect(out).to include("Compiled Dockerfile.erb to Dockerfile")
+      end
     end
 
     context "tasks" do
