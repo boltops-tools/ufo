@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [4.5.4]
+- Merge pull request #85 `ufo docker compile` command. ability to compile Dockerfile from Dockerfile.erb w/o building
+- Merge pull request #86 slight improvement to `ufo docker compile`
+
 ## [4.5.3]
 - fix error exit code when unable to find task definition
 - fix upgrade for empty base setting
