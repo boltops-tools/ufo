@@ -13,7 +13,7 @@ module Ufo
     long_desc Help.text("docker:compile")
     def compile
       builder = Docker::Builder.new(options)
-      builder.compile_dockerfile_erb
+      builder.compile
     end
 
     desc "push IMAGE", "Push the docker image."

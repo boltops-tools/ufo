@@ -82,7 +82,17 @@ class Ufo::Docker
     end
 
     def compile_dockerfile_erb
-      Compiler.new("#{Ufo.root}/#{@dockerfile}").compile
+      Compiler.new("#{Ufo.root}/#{@dockerfile}").compile # This path does not have .erb
+    end
+    private :compile_dockerfile_erb
+
+    def compile
+      erb_path = "#{Ufo.root}/#{@dockerfile}.erb"
+      if File.exist?(erb_path)
+        compile_dockerfile_erb
+      else
+        puts "File #{erb_path.color(:green)} does not exist. Cannot compile it if it doesnt exist"
+      end
     end
 
     def check_dockerfile_exists
