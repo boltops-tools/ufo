@@ -185,7 +185,11 @@ module Ufo
     def handle_stack_error(e)
       case e.message
       when /state and can not be updated/
-        puts "The #{@stack_name} stack is in #{"ROLLBACK_COMPLETE".color(:red)} and cannot be updated. Deleted the stack and try again."
+        puts "The #{@stack_name} stack is in a state that cannot be updated. Deleted the stack and try again."
+        puts "ERROR: #{e.message}"
+        if message.include?('UPDATE_ROLLBACK_FAILED')
+          puts "You might be able to do a 'Continue Update Rollback' and skip some resources to get the stack back into a good state."
+        end
         region = `aws configure get region`.strip rescue 'us-east-1'
         url = "https://console.aws.amazon.com/cloudformation/home?region=#{region}"
         puts "Here's the CloudFormation console url: #{url}"
@@ -203,7 +207,7 @@ module Ufo
     end
 
     def updatable?(stack)
-      stack.stack_status =~ /_COMPLETE$/
+      stack.stack_status =~ /_COMPLETE$/ || stack.stack_status == 'UPDATE_ROLLBACK_FAILED'
     end
   end
 end
