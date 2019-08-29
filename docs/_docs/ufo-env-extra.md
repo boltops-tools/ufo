@@ -3,6 +3,8 @@ title: UFO_ENV_EXTRA
 nav_order: 21
 ---
 
+<div class="video-box"><div class="video-container"><iframe src="https://www.youtube.com/embed/UVQuwQGToYE" frameborder="0" allowfullscreen=""></iframe></div></div>
+
 Ufo has an concept of extra environments. This is controlled by the `UFO_ENV_EXTRA` variable.  By setting `UFO_ENV_EXTRA` you can create additional identical ECS services or environments.
 
     ufo ship demo-web # creates a demo-web ecs service
