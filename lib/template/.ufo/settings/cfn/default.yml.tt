@@ -19,10 +19,11 @@ target_group:
                   # so we can keep this commented out, unless we need HTTPS at the app level
   # Health check settings are supported by application load balancer only:
   # health_check_path: /upcheck
-  # health_check_interval_seconds: 30 # 10 or 30 for network ELB
+  health_check_interval_seconds: 10 # default: 30. Network ELB can only take 10 or 30
+  healthy_threshold_count: 2
+  unhealthy_threshold_count: 2 # default: 10
   # health_check_protocol: HTTP # HTTP or HTTPS
   # health_check_port: traffic-port
-  # unhealthy_threshold_count: 10
   target_group_attributes:
   - key: deregistration_delay.timeout_seconds
     value: 10
