@@ -36,7 +36,7 @@ module Ufo
     end
     memoize :env_extra
 
-    # Overrides AWS_PROFILE based on the Ufo.env if set in configs/settings.yml
+    # Overrides AWS_PROFILE based on the Ufo.env if set in .ufo/settings.yml
     # 2-way binding.
     def set_aws_profile!
       return if ENV['TEST']

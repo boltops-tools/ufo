@@ -237,9 +237,7 @@ Resources:
       # Outbound access: instance needs access to internet to pull down image
       # or else get CannotPullContainerError
       SecurityGroupEgress:
-      - IpProtocol: tcp
-        FromPort: '0'
-        ToPort: '65535'
+      - IpProtocol: "-1"
         CidrIp: 0.0.0.0/0
         Description: outbound traffic
       Tags:
