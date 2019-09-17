@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [4.5.6]
+- fix outgoing egress rule to allow ping
+
 ## [4.5.5]
 - adjust default health check thresholds in skeleton
 - improve error handling for UPDATE\_ROLLBACK\_FAILED state
