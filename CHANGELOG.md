@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [4.5.7]
+- #88 update starter variables template with += example
+
 ## [4.5.6]
 - fix outgoing egress rule to allow ping
 
