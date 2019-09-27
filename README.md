@@ -20,7 +20,7 @@ See [ufoships.com](http://ufoships.com) for full documentation.
 
 ## Important
 
-If you are on version 3, you can run `ufo upgrade v3to4` within your project to upgrade it to version 4.  Refer to the [CHANGELOG](CHANGELOG.md) and the [Upgrade 4 Docs](http://ufoships.com/docs/upgrade4/).
+If you are upgrading, please refer to the [Upgrading docs](https://ufoships.com/docs/upgrading/)
 
 ## Installation
 
@@ -42,7 +42,7 @@ Congratulations, you have successfully used ufo to deploy to an ECS service.
 
 ## Load Balancer Support
 
-Ufo can also create a load balancer as part of creating the ECS service if you wish. Underneath the hood, ufo uses CloudFormation to create the load balancer.  More information can be found at the [load balancer support docs](http://ufoships.com/docs/load-balancer/).
+Ufo can also create a load balancer as part of creating the ECS service if you wish. Underneath the hood, ufo uses CloudFormation to create the load balancer.  More information can be found at the [load balancer support docs](https://ufoships.com/docs/extras/load-balancer/).
 
 ## Articles
 
