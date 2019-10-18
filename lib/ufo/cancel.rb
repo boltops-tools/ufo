@@ -12,7 +12,7 @@ module Ufo
       if stack.stack_status == "CREATE_IN_PROGRESS"
         cloudformation.delete_stack(stack_name: @stack_name)
         puts "Canceling stack creation."
-      elsif stack.stack_status =~ /_IN_PROGRESS$/
+      elsif stack.stack_status == "UPDATE_IN_PROGRESS"
         cloudformation.cancel_update_stack(stack_name: @stack_name)
         puts "Canceling stack update."
       else
