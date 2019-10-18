@@ -18,7 +18,7 @@ target_group:
                   #   network elb: TCP
                   # so we can keep this commented out, unless we need HTTPS at the app level
   # Health check settings are supported by application load balancer only:
-  # health_check_path: /upcheck
+  # health_check_path: /up # health check
   health_check_interval_seconds: 10 # default: 30. Network ELB can only take 10 or 30
   healthy_threshold_count: 2
   unhealthy_threshold_count: 2 # default: 10
