@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [4.5.9]
+- fix ufo_env aws_profile tight binding
+
 ## [4.5.8]
 - #91 added helper scripts to dianose and resolve the SSL issues - added docs to help explain and save the user time and research
 - improve cancel command
