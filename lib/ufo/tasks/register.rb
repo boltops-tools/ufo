@@ -71,9 +71,8 @@ module Ufo
       definitions = data[:container_definitions]
       definitions.each_with_index do |definition, i|
         next unless definition[:log_configuration] || definition[:firelens_configuration]
-        original_definition = original_data["containerDefinitions"][i]
         { log_configuration: 'logConfiguration',
-          firelens_configuration: 'firelensConfiguration' }.each_pair(key, value) do
+          firelens_configuration: 'firelensConfiguration' }.each_pair do |key, value|
 
           next unless definition.dig(key, :options)
 
