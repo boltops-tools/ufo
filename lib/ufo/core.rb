@@ -9,7 +9,7 @@ module Ufo
       task_definition_path = "#{Ufo.root}/.ufo/output/#{task_definition}.json"
       unless File.exist?(task_definition_path)
         puts "ERROR: Unable to find the task definition at #{task_definition_path}.".color(:red)
-        puts "Are you sure you have defined it in ufo/template_definitions.rb and it has been generated correctly in .ufo/output?".color(:red)
+        puts "Are you sure you have defined it in .ufo/task_definitions.rb and it has been generated correctly in .ufo/output?".color(:red)
         puts "If you are calling `ufo deploy` directly, you might want to generate the task definition first with `ufo tasks build`."
         exit 1
       end
