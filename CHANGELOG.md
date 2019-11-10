@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [4.5.11]
+- add mfa support for normal IAM user
+
 ## [4.5.10]
 - fix .ufo/task_definitions help error message
 
