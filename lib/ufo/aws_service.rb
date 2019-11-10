@@ -5,6 +5,8 @@ require "aws-sdk-ecr"
 require "aws-sdk-ecs"
 require "aws-sdk-elasticloadbalancingv2"
 
+require "aws_mfa_secure/ext/aws" # add MFA support
+
 module Ufo
   module AwsService
     def cloudformation
