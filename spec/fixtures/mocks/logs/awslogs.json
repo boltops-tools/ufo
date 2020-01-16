@@ -1,0 +1,70 @@
+{
+  "task_definition": {
+    "task_definition_arn": "arn:aws:ecs:us-west-2:112233445566:task-definition/demo-web:1",
+    "container_definitions": [
+      {
+        "name": "web",
+        "image": "112233445566.dkr.ecr.us-west-2.amazonaws.com/demo/sinatra:ufo-2020-01-16T22-56-26-a28378e80",
+        "cpu": 256,
+        "memory": 1024,
+        "memory_reservation": 1024,
+        "port_mappings": [
+          {
+            "container_port": 4567,
+            "host_port": 4567,
+            "protocol": "tcp"
+          }
+        ],
+        "essential": true,
+        "command": [
+          "bin/web"
+        ],
+        "environment": [],
+        "log_configuration": {
+          "log_driver": "awslogs",
+          "options": {
+            "awslogs-group": "ecs/demo-web",
+            "awslogs-region": "us-west-2",
+            "awslogs-stream-prefix": "demo"
+          }
+        }
+      }
+    ],
+    "family": "demo-web",
+    "task_role_arn": "arn:aws:iam::112233445566:role/demo",
+    "network_mode": "awsvpc",
+    "revision": 1,
+    "volumes": [
+    ],
+    "status": "ACTIVE",
+    "requires_attributes": [
+      {
+        "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+      },
+      {
+        "name": "com.amazonaws.ecs.capability.ecr-auth"
+      },
+      {
+        "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+      },
+      {
+        "name": "com.amazonaws.ecs.capability.docker-remote-api.1.21"
+      },
+      {
+        "name": "com.amazonaws.ecs.capability.task-iam-role"
+      },
+      {
+        "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+      },
+      {
+        "name": "ecs.capability.task-eni"
+      }
+    ],
+    "placement_constraints": [
+
+    ],
+    "compatibilities": [
+      "EC2"
+    ]
+  }
+}

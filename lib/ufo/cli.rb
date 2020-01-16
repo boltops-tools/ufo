@@ -187,6 +187,13 @@ module Ufo
       Status.new(service, options).run
     end
 
+    desc "logs", "Prints out logs"
+    long_desc Help.text(:logs)
+    option :since, desc: "From what time to begin displaying logs.  By default, logs will be displayed starting from 1 minutes in the past. The value provided can be an ISO 8601 timestamp or a relative time."
+    def logs(service=:current)
+      Logs.new(service, options).run
+    end
+
     desc "completion *PARAMS", "Prints words for auto-completion."
     long_desc Help.text("completion")
     def completion(*params)
