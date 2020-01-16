@@ -12,6 +12,7 @@ title: CLI Reference
 * [ufo destroy]({% link _reference/ufo-destroy.md %})
 * [ufo docker]({% link _reference/ufo-docker.md %})
 * [ufo init]({% link _reference/ufo-init.md %})
+* [ufo logs]({% link _reference/ufo-logs.md %})
 * [ufo network]({% link _reference/ufo-network.md %})
 * [ufo ps]({% link _reference/ufo-ps.md %})
 * [ufo releases]({% link _reference/ufo-releases.md %})
