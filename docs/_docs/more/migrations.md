@@ -1,6 +1,6 @@
 ---
 title: Database Migrations
-nav_order: 41
+nav_order: 42
 ---
 
 A common task is to run database migrations with newer code before deploying the code. This is easily achieved with the `ufo task` command. Here's an example:

@@ -3,7 +3,7 @@ title: Upgrading to Version 4.0
 short_title: Version 4.0
 order: 2
 categories: upgrading
-nav_order: 35
+nav_order: 36
 ---
 
 A major change in ufo from version 3 to 4 is that the ECS service is now created by CloudFormation. If you have an existing ECS service deployed by ufo version 3, when you deploy your app again with ufo version 4, there will be a new additional ECS service created. Here is the recommended upgrade path.
