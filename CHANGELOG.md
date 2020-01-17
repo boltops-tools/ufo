@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [4.6.0]
+- Introduce: ufo logs command. Tail logs.
+
 ## [4.5.11]
 - add mfa support for normal IAM user
 
