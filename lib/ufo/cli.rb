@@ -189,7 +189,9 @@ module Ufo
 
     desc "logs", "Prints out logs"
     long_desc Help.text(:logs)
+    option :follow, default: true, type: :boolean, desc: " Whether to continuously poll for new logs. To exit from this mode, use Control-C."
     option :since, desc: "From what time to begin displaying logs.  By default, logs will be displayed starting from 1 minutes in the past. The value provided can be an ISO 8601 timestamp or a relative time."
+    option :format, default: "simple", desc: "The format to display the logs. IE: detailed or short.  With detailed, the log stream name is also shown."
     def logs(service=:current)
       Logs.new(service, options).run
     end

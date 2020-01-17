@@ -1,6 +1,5 @@
 ---
 Title: SSL Errors
-# nav_order:
 ---
 
 UFO uses the AWS Ruby SDK and the underlying default SSL certificate chain configured in your active Ruby and

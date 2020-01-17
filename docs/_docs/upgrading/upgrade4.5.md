@@ -3,7 +3,7 @@ title: Upgrading to Version 4.5
 short_title: Version 4.5
 order: 1
 categories: upgrading
-nav_order: 34
+nav_order: 35
 ---
 
 In ufo version 4.4 and 4.5, the default cloudformation stack names used by ufo were changed.

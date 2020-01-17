@@ -46,8 +46,8 @@ module Ufo
         log_group_name: log["awslogs-group"],
         log_stream_name_prefix: log["awslogs-stream-prefix"],
         since: since,
-        follow: true,
-        format: "simple",
+        follow: @options[:follow],
+        format: @options[:format],
       )
       cw_tail.run
     end
