@@ -70,15 +70,18 @@ module Ufo
 
       definitions = data[:container_definitions]
       definitions.each_with_index do |definition, i|
-        next unless definition[:log_configuration]
-        options = definition[:log_configuration][:options]
-        next unless options
+        next unless definition[:log_configuration] || definition[:firelens_configuration]
+        { log_configuration: 'logConfiguration',
+          firelens_configuration: 'firelensConfiguration' }.each_pair do |key, value|
 
-        # LogConfiguration options do not get transformed and keep their original
-        # structure:
-        #   https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/ECS/Types/ContainerDefinition.html
-        original_definition = original_data["containerDefinitions"][i]
-        definition[:log_configuration][:options] = original_definition["logConfiguration"]["options"]
+          next unless definition.dig(key, :options)
+
+          # LogConfiguration and firelensConfiguration options do not get transformed and
+          # keep their original structure:
+          #   https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/ECS/Types/ContainerDefinition.html
+          original_definition = original_data["containerDefinitions"][i]
+          definition[key][:options] = original_definition[value]["options"]
+        end
       end
 
       data
