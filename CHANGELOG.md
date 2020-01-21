@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [4.6.1]
+- #93 Fix firelens functionality
+- #97 ufo logs --filter-pattern option
+- #98 fix env vars helper to allow surrounding quotes
+
 ## [4.6.0]
 - #95 Introduce: ufo logs command. Tail logs.
 - #96 docs and options
