@@ -30,12 +30,24 @@ module Ufo
       def env_vars(text)
         lines = filtered_lines(text)
         lines.map do |line|
-          key,*value = line.strip.split("=").map {|x| x.strip}
+          key,*value = line.strip.split("=").map do |x|
+            remove_surrounding_quotes(x.strip)
+          end
           value = value.join('=')
           {
             name: key,
             value: value,
           }
+        end
+      end
+
+      def remove_surrounding_quotes(s)
+        if s =~ /^"/ && s =~ /"$/
+          s.sub(/^["]/, '').gsub(/["]$/,'') # remove surrounding double quotes
+        elsif s =~ /^'/ && s =~ /'$/
+          s.sub(/^[']/, '').gsub(/[']$/,'') # remove surrounding single quotes
+        else
+          s
         end
       end
 
