@@ -41,14 +41,15 @@ module Ufo
     end
 
     def cloudwatch_tail(log={})
-      since = @options[:since] || "10m" # by default, search only 10 mins in the past
-      cw_tail = AwsLogs::Tail.new(
+      o = {
         log_group_name: log["awslogs-group"],
         log_stream_name_prefix: log["awslogs-stream-prefix"],
-        since: since,
+        since: @options[:since] || "10m", # by default, search only 10 mins in the past
         follow: @options[:follow],
         format: @options[:format],
-      )
+      }
+      o[:filter_pattern] = @options[:filter_pattern] if @options[:filter_pattern]
+      cw_tail = AwsLogs::Tail.new(o)
       cw_tail.run
     end
   end
