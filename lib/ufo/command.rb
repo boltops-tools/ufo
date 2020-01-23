@@ -77,6 +77,13 @@ module Ufo
       def website
         "http://ufoships.com"
       end
+
+      # https://github.com/erikhuda/thor/issues/244
+      # Deprecation warning: Thor exit with status 0 on errors. To keep this behavior, you must define `exit_on_failure?` in `Lono::CLI`
+      # You can silence deprecations warning by setting the environment variable THOR_SILENCE_DEPRECATION.
+      def exit_on_failure?
+        true
+      end
     end
   end
 end
