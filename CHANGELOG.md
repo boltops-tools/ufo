@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [4.6.2]
+- define texit_on_failure to remove Thor deprecation warning
+
 ## [4.6.1]
 - #93 Fix firelens functionality
 - #97 ufo logs --filter-pattern option
