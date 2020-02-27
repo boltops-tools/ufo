@@ -26,6 +26,7 @@ This quickstart assumes:
 
 * You have push access to the repo. Refer to the Notes "Repo Push Access" section below for more info.
 * You are using ECS EC2 and have an ECS cluster with EC2 Container instances running. Refer to the Notes "ECS EC2 vs ECS Fargate" section below for more info.
+* The ECS Cluster is in the default VPC. If it is not you need to use the `--vpc-id`, `--ecs-subnets`, and `--elb-subnets` options in the [ufo init]({% link _reference/ufo-init.md %}) command.
 
 ## What Happened
 
