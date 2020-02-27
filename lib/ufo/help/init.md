@@ -39,7 +39,7 @@ The `image` is the base portion of image name that will be pushed to the docker 
 
 The generated `tongueroo/demo-ufo:ufo-2018-02-08T21-04-02-3c86158` image name gets pushed to the docker registry.
 
-The `--vpc-id` option is optional but very useful. If not specified then ufo will use the default vpc for the network settings like subnets and security groups, which might not be what you want.
+The `--vpc-id`, `--ecs-subnets`, and `--elb-subnets` options are optional but very useful. If not specified then ufo will use the default vpc for the network settings like subnets and security groups, which might not be what you want.
 
 ## Directory Structure
 

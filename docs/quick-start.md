@@ -26,6 +26,7 @@ This quickstart assumes:
 
 * You have push access to the repo. Refer to the Notes "Repo Push Access" section below for more info.
 * The `ecsTaskExecutionRole` needs to exist on your AWS account.  If you do not have an ecsTaskExecutionRole yet, create one by following: [Create ecsTaskExecutionRole with AWS CLI]({% link _docs/aws-ecs-task-execution-role.md %}).
+* The ECS Cluster is in the default VPC. If it is not you need to use the `--vpc-id`, `--ecs-subnets`, and `--elb-subnets` options in the [ufo init]({% link _reference/ufo-init.md %}) command.
 
 ## What Happened
 
