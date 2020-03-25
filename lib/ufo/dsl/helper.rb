@@ -41,13 +41,12 @@ module Ufo
         end
       end
 
-      def secrets(text)
+      def secrets(path,text)
         lines = filtered_lines(text)
         lines.map do |line|
-          key,*value = line.strip.split("=").map do |x|
-            remove_surrounding_quotes(x.strip)
-          end
-          value = value.join('=')
+          key = remove_surrounding_quotes(line.strip)
+          path.gsub!("{environment}", ENV['UFO_ENV'])
+          value = path + key
           {
               name: key,
               valueFrom: value,
@@ -83,6 +82,16 @@ module Ufo
         end
         text = IO.read(full_path)
         env_vars(text)
+      end
+
+      def secrets_file(paramPath,filepath)
+        full_path = "#{Ufo.root}/#{filepath}"
+        unless File.exist?(full_path)
+          puts "The #{full_path} secrets file could not be found.  Are you sure it exists?"
+          exit 1
+        end
+        text = IO.read(full_path)
+        secrets(paramPath,text)
       end
 
       def current_region
