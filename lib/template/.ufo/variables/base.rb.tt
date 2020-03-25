@@ -2,8 +2,8 @@
 # More info on how variables work: http://ufoships.com/docs/variables/
 @image = helper.full_image_name # includes the git sha tongueroo/demo-ufo:ufo-[sha].
 @environment = helper.env_file(".env")
-<% if @options[:secrets] -%>
-@secrets = helper.secrets_file("/{environment}/path/to/parameter/",".env.secrets")
+<% if @options[:secrets_path] -%>
+@secrets = helper.secrets_file("<%= @options[:secrets_path] %>",".env.secrets")
 <% end -%>
 <% if @options[:launch_type] == "fargate" -%>
 # Ensure that the cpu and memory values are a supported combination by Fargate.

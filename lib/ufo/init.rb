@@ -10,6 +10,7 @@ module Ufo
         [:app, desc: "App name. Preferably one word. Used in the generated ufo/task_definitions.rb.  If not specified then the app name is inferred as the folder name."],
         [:launch_type, default: "ec2", desc: "ec2 or fargate."],
         [:execution_role_arn, desc: "execution role arn used by tasks, required for fargate."],
+        [:secrets_path, desc: "Secrets path for aws ssm parameter store {environment} in the path will be substituted with the UFO_ENV"],
         [:template, desc: "Custom template to use."],
         [:template_mode, desc: "Template mode: replace or additive."],
         [:vpc_id, desc: "Vpc id. For settings/network/default.yml."],
