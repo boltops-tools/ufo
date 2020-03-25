@@ -41,6 +41,20 @@ module Ufo
         end
       end
 
+      def secrets(text)
+        lines = filtered_lines(text)
+        lines.map do |line|
+          key,*value = line.strip.split("=").map do |x|
+            remove_surrounding_quotes(x.strip)
+          end
+          value = value.join('=')
+          {
+              name: key,
+              valueFrom: value,
+          }
+        end
+      end
+
       def remove_surrounding_quotes(s)
         if s =~ /^"/ && s =~ /"$/
           s.sub(/^["]/, '').gsub(/["]$/,'') # remove surrounding double quotes
