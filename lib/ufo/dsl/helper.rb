@@ -45,7 +45,7 @@ module Ufo
         lines = filtered_lines(text)
         lines.map do |line|
           key = remove_surrounding_quotes(line.strip)
-          path.gsub!("{environment}", ENV['UFO_ENV'])
+          path.gsub!("{environment}", Ufo.env)
           value = path + key
           {
               name: key,
