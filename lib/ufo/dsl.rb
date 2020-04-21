@@ -2,6 +2,8 @@ require 'ostruct'
 
 module Ufo
   class DSL
+    extend Memoist
+
     def initialize(template_definitions_path, options={})
       @template_definitions_path = template_definitions_path
       @options = options
@@ -85,7 +87,10 @@ module Ufo
     end
 
     def helper
-      Helper.new
+      helper = Helper.new
+      helper.add_project_helpers
+      helper
     end
+    memoize :helper
   end
 end

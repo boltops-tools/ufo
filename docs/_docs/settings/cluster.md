@@ -11,25 +11,19 @@ Normally, the ECS cluster defaults to whatever UFO_ENV is set to by [convention]
 
 By default, these are all the same:
 
-```sh
-ufo ship demo-web
-UFO_ENV=development ufo ship demo-web # same
-UFO_ENV=development ufo ship demo-web --cluster development # same
-```
+    ufo ship demo-web
+    UFO_ENV=development ufo ship demo-web # same
+    UFO_ENV=development ufo ship demo-web --cluster development # same
 
 If you use a specific `UFO_ENV=production`, these are the same
 
-```
-UFO_ENV=production ufo ship demo-web
-UFO_ENV=production ufo ship demo-web --cluster production # same
-```
+    UFO_ENV=production ufo ship demo-web
+    UFO_ENV=production ufo ship demo-web --cluster production # same
 
 Override the convention by explicitly specifying the `--cluster` option in the CLI.
 
-```sh
-ufo ship demo-web --cluster custom-cluster # override the cluster
-UFO_ENV=production ufo ship demo-web --cluster production-cluster # override the cluster
-```
+    ufo ship demo-web --cluster custom-cluster # override the cluster
+    UFO_ENV=production ufo ship demo-web --cluster production-cluster # override the cluster
 
 The cavaet is that you must remember to specify `--cluster`.  A wrapper `bin/deploy` script could be useful here.
 

@@ -25,10 +25,12 @@ module Ufo
   class Stack
     extend Memoist
     include Helper
+    include Ufo::Settings
 
     def initialize(options)
       @options = options
       @task_definition = options[:task_definition]
+      @rollback = options[:rollback]
       @service = options[:service]
       @cluster = @options[:cluster] || default_cluster(@service)
       @stack_name = adjust_stack_name(@cluster, options[:service])
@@ -66,18 +68,6 @@ module Ufo
       handle_stack_error(e)
     end
 
-    # do not memoize template_body it can change for a rename retry
-    def template_body
-      custom_template = "#{Ufo.root}/.ufo/settings/cfn/stack.yml"
-      path = if File.exist?(custom_template)
-               custom_template
-             else
-               # built-in default
-               File.expand_path("../cfn/stack.yml", File.dirname(__FILE__))
-             end
-      RenderMePretty.result(path, context: context.scope)
-    end
-
     def stack_options
       save_template
       if ENV['SAVE_TEMPLATE_EXIT']
@@ -85,22 +75,26 @@ module Ufo
         exit 1
       end
       {
+        capabilities: ["CAPABILITY_IAM"],
+        notification_arns: notification_arns,
         parameters: parameters,
         stack_name: @stack_name,
         template_body: template_body,
       }
     end
 
+    def notification_arns
+      settings[:notification_arns] || []
+    end
+
     def parameters
       create_elb, elb_target_group = context.elb_options
 
-      network = Setting::Profile.new(:network, settings[:network_profile]).data
-      # pp network
       elb_subnets = network[:elb_subnets] && !network[:elb_subnets].empty? ?
                     network[:elb_subnets] :
                     network[:ecs_subnets]
 
-      hash = {
+      params = {
         Vpc: network[:vpc],
         ElbSubnets: elb_subnets.join(','),
         EcsSubnets: network[:ecs_subnets].join(','),
@@ -110,14 +104,11 @@ module Ufo
         ElbEipIds: context.elb_eip_ids,
 
         EcsDesiredCount: current_desired_count,
-        EcsTaskDefinition: task_definition_arn,
         EcsSchedulingStrategy: scheduling_strategy,
       }
 
-      hash[:EcsSecurityGroups] = network[:ecs_security_groups].join(',') if network[:ecs_security_groups]
-      hash[:ElbSecurityGroups] = network[:elb_security_groups].join(',') if network[:elb_security_groups]
-
-      hash.map do |k,v|
+      params = Ufo::Utils::Squeezer.new(params).squeeze
+      params.map do |k,v|
         if v == :use_previous_value
           { parameter_key: k, use_previous_value: true }
         else
@@ -127,12 +118,20 @@ module Ufo
     end
     memoize :parameters
 
+    # do not memoize template_body it can change for a rename retry
+    def template_body
+      TemplateBody.new(context).build
+    end
+    memoize :template_body
+
     def context
-      Context.new(@options.merge(
+      o = @options.merge(
         cluster: @cluster,
         stack_name: @stack_name,
         stack: @stack,
-      ))
+      )
+      o[:rollback_definition_arn] = rollback_definition_arn if rollback_definition_arn
+      Context.new(o)
     end
     memoize :context
 
@@ -154,11 +153,12 @@ module Ufo
       end
     end
 
-    def task_definition_arn
+    def rollback_definition_arn
+      return unless @rollback
       resp = ecs.describe_task_definition(task_definition: @task_definition)
       resp.task_definition.task_definition_arn
     end
-    memoize :task_definition_arn
+    memoize :rollback_definition_arn
 
     # Store template in tmp in case for debugging
     def save_template

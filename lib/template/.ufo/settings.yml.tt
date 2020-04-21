@@ -13,6 +13,7 @@ base:
   # replacment might not work. For example, adding and removing a load balancer.
   # In these cases, you must delete the entire ecs service and recreate it.
   stack_naming: append_env
+  auto_camelize: false # new default setting in ufo v5
 
 development:
   # cluster: development

@@ -11,6 +11,16 @@ module Ufo
       include Ufo::Util
       extend Memoist
 
+      # Add helpers from .ufo/helpers folder
+      def add_project_helpers
+        helpers_dir = "#{Ufo.root}/.ufo/helpers"
+        Dir.glob("#{helpers_dir}/**/*").each do |path|
+          next unless File.file?(path)
+          klass = path.gsub(%r{.*\.ufo/helpers/},'').sub(".rb",'').camelize
+          self.class.send(:include, klass.constantize)
+        end
+      end
+
       ##############
       # helper variables
       def dockerfile_port

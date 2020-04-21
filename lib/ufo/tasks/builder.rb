@@ -6,7 +6,6 @@ module Ufo
       # build and register task definitions. There is little point of running them independently
       # This method helps us do that.
       build(options)
-      Tasks::Register.register(task_definition, options)
     end
 
     # ship: build and registers task definitions together

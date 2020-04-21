@@ -4,6 +4,7 @@ require 'yaml'
 module Ufo
   module Core
     extend Memoist
+    include Ufo::Settings
 
     def check_task_definition!(task_definition)
       task_definition_path = "#{Ufo.root}/.ufo/output/#{task_definition}.json"
@@ -47,15 +48,6 @@ module Ufo
         puts "Using AWS_PROFILE=#{data[:aws_profile]} from UFO_ENV=#{Ufo.env} in config/settings.yml"
         ENV['AWS_PROFILE'] = data[:aws_profile]
       end
-    end
-
-    def settings
-      Setting.new.data
-    end
-    memoize :settings
-
-    def cfn_profile
-      settings[:cfn_profile] || "default"
     end
 
     def check_ufo_project!

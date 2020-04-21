@@ -3,7 +3,8 @@ module Ufo
     def deploy
       task_definition = normalize_version(@options[:version])
       puts "Rolling back ECS service to task definition #{task_definition}"
-      ship = Ship.new(@service, @options.merge(task_definition: task_definition))
+
+      ship = Ship.new(@service, @options.merge(task_definition: task_definition, rollback: true))
       ship.deploy
     end
 

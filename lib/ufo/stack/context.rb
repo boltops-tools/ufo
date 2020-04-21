@@ -2,13 +2,15 @@ class Ufo::Stack
   class Context
     extend Memoist
     include Helper
+    include Ufo::Settings
 
+    attr_reader :stack_name
     def initialize(options)
       @options = options
       @task_definition = options[:task_definition]
       @service = options[:service]
       # no need to adjust @cluster or @stack_name because it was adjusted in Stack#initialize
-      @cluster = options[:cluster]
+      @cluster = options[:cluster].dup # Thor options are frozen, we thaw it because CustomProperties#substitute_variables does a sub!
       @stack_name = options[:stack_name]
 
       @stack = options[:stack]
@@ -20,25 +22,32 @@ class Ufo::Stack
       # Add additional variable to scope for CloudFormation template.
       # Dirties the scope but needed.
       vars = {
+        service: @service,
         cluster: @cluster,
         stack_name: @stack_name, # used in custom_properties
         container: container,
+        # to reconstruct TaskDefinition in the CloudFormation template
+        task_definition: @task_definition,
+        rollback_definition_arn: @options[:rollback_definition_arn],
         # elb options remember that their 'state'
         create_elb: create_elb?, # helps set Ecs DependsOn
         elb_type: elb_type,
         subnet_mappings: subnet_mappings,
-        create_route53: create_elb? && cfn[:dns] && cfn[:dns][:name],
+        create_route53: create_elb? && has_dns_name?,
         default_target_group_protocol: default_target_group_protocol,
         default_listener_protocol: default_listener_protocol,
         default_listener_ssl_protocol: default_listener_ssl_protocol,
         create_listener_ssl: create_listener_ssl?,
       }
-      # puts "vars:".color(:cyan)
-      # pp vars
+
       scope.assign_instance_variables(vars)
       scope
     end
     memoize :scope
+
+    def has_dns_name?
+      cfn.dig(:Dns, :Name) || cfn.dig(:dns, :name) # backwards compatiblity
+    end
 
     def default_target_group_protocol
       return 'TCP' if elb_type == 'network'
@@ -46,10 +55,11 @@ class Ufo::Stack
     end
 
     def default_listener_protocol
+      port = cfn.dig(:Listener, :Port) || cfn.dig(:listener, :port) # backwards compatiblity
       if elb_type == 'network'
-        cfn[:listener][:port] == 443 ? 'TLS' : 'TCP'
+        port == 443 ? 'TLS' : 'TCP'
       else
-        cfn[:listener][:port] == 443 ? 'HTTPS' : 'HTTP'
+        port == 443 ? 'HTTPS' : 'HTTP'
       end
     end
 
@@ -59,32 +69,8 @@ class Ufo::Stack
 
     # if the configuration is set to anything then enable it
     def create_listener_ssl?
-      cfn[:listener_ssl] && cfn[:listener_ssl][:port]
+      cfn.dig(:ListenerSsl, :Port) || cfn.dig(:listener_ssl, :port) # backwards compatiblity
     end
-
-    def container
-      resp = ecs.describe_task_definition(task_definition: @task_definition)
-      task_definition = resp.task_definition
-
-      container_def = task_definition["container_definitions"].first
-      requires_compatibilities = task_definition["requires_compatibilities"]
-      fargate = requires_compatibilities && requires_compatibilities == ["FARGATE"]
-      network_mode = task_definition["network_mode"]
-
-      mappings = container_def["port_mappings"] || []
-      unless mappings.empty?
-        port = mappings.first["container_port"]
-      end
-
-      result = {
-        name: container_def["name"],
-        fargate: fargate,
-        network_mode: network_mode, # awsvpc, bridge, etc
-      }
-      result[:port] = port if port
-      result
-    end
-    memoize :container
 
     def create_elb?
       create_elb, _ = elb_options
@@ -134,6 +120,29 @@ class Ufo::Stack
       elb_target_group = ""
       [create_elb, elb_target_group]
     end
+
+    def container
+      task_definition = Builder::Resources::TaskDefinition::Reconstructor.new(@task_definition, @options[:rollback]).reconstruct
+
+      container_def = task_definition["ContainerDefinitions"].first
+      requires_compatibilities = task_definition["RequiresCompatibilities"]
+      fargate = requires_compatibilities && requires_compatibilities == ["FARGATE"]
+      network_mode = task_definition["NetworkMode"]
+
+      mappings = container_def["PortMappings"] || []
+      unless mappings.empty?
+        port = mappings.first["ContainerPort"]
+      end
+
+      result =  {
+        name: container_def["Name"],
+        fargate: fargate,
+        network_mode: network_mode, # awsvpc, bridge, etc
+      }
+      result[:port] = port if port
+      result
+    end
+    memoize :container
 
     def get_parameter_value(stack, key)
       param = stack.parameters.find do |p|
@@ -188,10 +197,8 @@ class Ufo::Stack
 
     def build_subnet_mappings!(allocations)
       unless allocations.size == network[:elb_subnets].size
-        # puts "caller:".color(:cyan)
-        # puts caller
         puts "ERROR: The allocation_ids must match in length to the subnets.".color(:red)
-        puts "Please double check that .ufo/settings/network/#{settings[:network_profile]} has the same number of subnets as the eip allocation ids are you specifying."
+        puts "Please double check that .ufo/settings/network/#{settings.network_profile} has the same number of subnets as the eip allocation ids are you specifying."
         subnets = network[:elb_subnets]
         puts "Conigured subnets: #{subnets.inspect}"
         puts "Specified allocation ids: #{allocations.inspect}"
@@ -241,20 +248,6 @@ class Ufo::Stack
       load_balancer.type
     end
     memoize :elb_type
-
-    def network
-      Ufo::Setting::Profile.new(:network, settings[:network_profile]).data
-    end
-    memoize :network
-
-    def cfn
-      Ufo::Setting::Profile.new(:cfn, settings[:cfn_profile]).data
-    end
-    memoize :cfn
-
-    def settings
-      Ufo.settings
-    end
 
   end
 end
