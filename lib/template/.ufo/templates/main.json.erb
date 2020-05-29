@@ -24,6 +24,9 @@
       <% if @environment %>
       "environment": <%= @environment.to_json %>,
       <% end %>
+      <% if @secrets %>
+      "secrets": <%= @secrets.to_json %>,
+      <% end %>
       <% if @awslogs_group %>
       "logConfiguration": {
         "logDriver": "awslogs",
