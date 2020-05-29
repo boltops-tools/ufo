@@ -51,6 +51,8 @@ You only need to specify enough for a match to be found.  Ufo searches the 30 mo
 ## Options
 
 ```
+[--wait], [--no-wait]        # Wait for deployment to complete
+                             # Default: true
 [--verbose], [--no-verbose]  
 [--mute], [--no-mute]        
 [--noop], [--no-noop]        

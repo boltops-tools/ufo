@@ -173,7 +173,6 @@ If you need to modify the task definition template to suite your own needs it is
 ## Options
 
 ```
-[--pretty], [--no-pretty]  # Pretty format the json for the task definitions
-                           # Default: true
+[--image-override=IMAGE_OVERRIDE]  # Override image in task definition for quick testing
 ```
 

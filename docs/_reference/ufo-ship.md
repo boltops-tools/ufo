@@ -115,13 +115,12 @@ You can change the scheduling strategy by explicitly specifying it.  Otherwise, 
 [--elb=ELB]                                  # Decides to create elb, not create elb or use existing target group.
 [--elb-eip-ids=one two three]                # EIP Allocation ids to use for network load balancer.
 [--elb-type=ELB_TYPE]                        # ELB type: application or network. Keep current deployed elb type when not specified.
-[--pretty], [--no-pretty]                    # Pretty format the json for the task definitions
-                                             # Default: true
 [--scheduling-strategy=SCHEDULING_STRATEGY]  # Scheduling strategy to use for the service. IE: replica, daemon
 [--stop-old-tasks], [--no-stop-old-tasks]    # Stop old tasks as part of deployment to speed it up
 [--task=TASK]                                # ECS task name, to override the task name convention.
 [--wait], [--no-wait]                        # Wait for deployment to complete
                                              # Default: true
+[--image-override=IMAGE_OVERRIDE]            # Override image in task definition for quick testing
 [--verbose], [--no-verbose]                  
 [--mute], [--no-mute]                        
 [--noop], [--no-noop]                        
