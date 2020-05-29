@@ -8,7 +8,6 @@ class Ufo::DSL::Helper
       # use either file or text. text takes higher precedence
       @file = options[:file]
       @text = options[:text]
-      @secrets = options[:secrets] # true or false
     end
 
     def content

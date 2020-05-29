@@ -46,11 +46,11 @@ module Ufo
       end
 
       def secrets(text)
-        Vars.new(text: text, secrets: true).secrets
+        Vars.new(text: text).secrets
       end
 
       def secrets_file(path)
-        Vars.new(file: path, secrets: true).secrets
+        Vars.new(file: path).secrets
       end
 
       def current_region
