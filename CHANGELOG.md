@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [5.0.0]
+- #104 adjust logs default format to detailed
+- #105 major rework: build cfn template with Ruby instead of ERB for new features
+- #106 secrets support
+- Codified iam_role support with .ufo/iam_roles files: custom and managed policy support. The ECS Task definition was moved into CloudFormation to support this.
+- Allow per service security groups
+- Conventional .ufo/settings cfn and network files based on ufo env
+- Managed_security_groups_enabled=false setting.yml
+- Project custom helper methods support
+- Add image-override option for ufo ship
+- Notification ARN stack cloudformation support for compliance reasons
+- update cfn/default to use CamelCase. maintain backward compatibility with underscore. through encourage users to upgrade to CamelCase. There's less mental translation overhead.
+- remove pretty option: always pretty
+
 ## [4.6.3]
 - #101 improve ufo init help
 
