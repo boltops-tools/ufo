@@ -2,8 +2,9 @@ module Ufo
   class Task < Base
     extend Memoist
 
-    include Util
     include AwsService
+    include Ufo::Settings
+    include Util
 
     def initialize(task_definition, options)
       @task_definition = task_definition
@@ -138,12 +139,6 @@ module Ufo
       options[:network_configuration][:awsvpc_configuration][:security_groups] = security_groups
       options
     end
-
-    def network
-      settings = Ufo.settings
-      Setting::Profile.new(:network, settings[:network_profile]).data
-    end
-    memoize :network
 
     def cloudwatch_info(task_arn)
       config = container_definition[:log_configuration]

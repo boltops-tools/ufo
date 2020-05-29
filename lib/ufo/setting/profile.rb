@@ -2,21 +2,25 @@ class Ufo::Setting
   class Profile
     extend Memoist
 
-    def initialize(type, profile='default')
+    def initialize(type, profile=nil)
       @type = type.to_s # cfn or network
       @profile = profile
     end
 
     def data
-      path = "#{Ufo.root}/.ufo/settings/#{@type}/#{@profile}.yml"
-      unless File.exist?(path)
-        puts "#{@type.camelize} profile #{path} not found. Please double check that it exists."
+      names = [
+        @profile, # user specified
+        Ufo.env, # conventional based on env
+        "default", # fallback to default
+      ].compact.uniq
+      paths = names.map { |name| "#{Ufo.root}/.ufo/settings/#{@type}/#{name}.yml" }
+      found = paths.find { |p| File.exist?(p) }
+      unless found
+        puts "#{@type.camelize} profile not found. Please double check that it exists. Checked paths: #{paths}"
         exit 1
       end
 
-      text = RenderMePretty.result(path)
-      # puts "text:".color(:cyan)
-      # puts text
+      text = RenderMePretty.result(found)
       YAML.load(text).deep_symbolize_keys
     end
     memoize :data

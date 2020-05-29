@@ -15,3 +15,12 @@ elb_subnets: # defaults to same subnets as ecs_subnets when not set
 # ecs_security_groups:
 #   - sg-bbb
 #   - sg-ccc
+
+# Also supports extra security groups specific to each ECS service
+# ecs_security_groups:
+#   demo-web:
+#   - sg-bbb
+#   - sg-ccc
+#   demo-worker:
+#   - sg-bbb
+#   - sg-ccc

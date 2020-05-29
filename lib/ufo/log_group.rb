@@ -11,6 +11,7 @@ module Ufo
     def create
       puts "Ensuring log group for #{@task_definition.color(:green)} task definition exists"
       return if @options[:noop]
+      return if @options[:rollback] # dont need to create log group because previously deployed
 
       Ufo.check_task_definition!(@task_definition)
       task_def = JSON.load(IO.read(task_def_path))

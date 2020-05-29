@@ -37,11 +37,11 @@ module Ufo
       option :elb, desc: "Decides to create elb, not create elb or use existing target group."
       option :elb_eip_ids, type: :array, desc: "EIP Allocation ids to use for network load balancer."
       option :elb_type, desc: "ELB type: application or network. Keep current deployed elb type when not specified."
-      option :pretty, type: :boolean, default: true, desc: "Pretty format the json for the task definitions"
       option :scheduling_strategy, desc: "Scheduling strategy to use for the service. IE: replica, daemon"
       option :stop_old_tasks, type: :boolean, default: false, desc: "Stop old tasks as part of deployment to speed it up"
       option :task, desc: "ECS task name, to override the task name convention."
       option :wait, type: :boolean, desc: "Wait for deployment to complete", default: true
+      option :image_override, desc: "Override image in task definition for quick testing"
     end
 
     desc "deploy SERVICE", "Deploy task definition to ECS service without re-building the definition."
@@ -75,6 +75,7 @@ module Ufo
 
     desc "rollback SERVICE VERSION", "Rolls back to older task definition."
     long_desc Help.text(:rollback)
+    option :wait, type: :boolean, desc: "Wait for deployment to complete", default: true
     def rollback(service=:current, version)
       service = service == :current ? Current.service! : service
       rollback = Rollback.new(service, options.merge(version: version))

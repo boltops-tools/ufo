@@ -21,7 +21,7 @@ module Ufo
     end
 
     def delete_list
-      return [] if ENV['TEST']
+      return [] if ENV['TEST'] || @options[:noop]
       return @delete_list if @delete_list
 
       out = execute("docker images") # live to override the noop cli options

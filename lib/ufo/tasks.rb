@@ -2,7 +2,7 @@ module Ufo
   class Tasks < Command
     desc "build", "Build task definitions."
     long_desc Help.text("tasks:build")
-    option :pretty, type: :boolean, default: true, desc: "Pretty format the json for the task definitions"
+    option :image_override, desc: "Override image in task definition for quick testing"
     def build
       Tasks::Builder.new(options).build
     end

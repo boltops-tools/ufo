@@ -5,7 +5,6 @@ module Ufo
         @name = name
         @erb_result = erb_result
         @options = options
-        @pretty = options[:pretty].nil? ? true : options[:pretty]
       end
 
       def write
@@ -16,24 +15,28 @@ module Ufo
         path = "#{output_path}/#{@name}.json".sub(/^\.\//,'')
         puts "  #{path}" unless @options[:quiet]
         validate(@erb_result, path)
-        json = @pretty ?
-          JSON.pretty_generate(JSON.parse(@erb_result)) :
-          @erb_result
-        File.open(path, 'w') {|f| f.write(output_json(json)) }
+        data = JSON.parse(@erb_result)
+        override_image(data)
+        json = JSON.pretty_generate(data)
+        File.open(path, 'w') {|f| f.write(json) }
+      end
+
+      def override_image(data)
+        return data unless @options[:image_override]
+        data["containerDefinitions"].each do |container_definition|
+          container_definition["image"] = @options[:image_override]
+        end
       end
 
       def validate(json, path)
         begin
           JSON.parse(json)
         rescue JSON::ParserError => e
+          puts "#{e.class}: #{e.message}"
           puts "Invalid json.  Output written to #{path} for debugging".color(:red)
           File.open(path, 'w') {|f| f.write(json) }
           exit 1
         end
-      end
-
-      def output_json(json)
-        @options[:pretty] ? JSON.pretty_generate(JSON.parse(json)) : json
       end
     end
   end

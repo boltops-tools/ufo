@@ -2,6 +2,7 @@ class Ufo::Stack
   module Helper
     include Ufo::AwsService
     include Ufo::Util
+    include Ufo::Settings
     extend Memoist
 
     def find_stack(stack_name)
@@ -34,13 +35,9 @@ class Ufo::Stack
       when "append_nothing", "prepend_nothing"
         [service, Ufo.env_extra]
       else # new default. ufo v4.5 and above
-        [service, Ufo.env, Ufo.env_extra]
+        [service, Ufo.env.to_s, Ufo.env_extra]
       end
       parts.reject {|x| x==''}.compact.join('-') # stack_name
-    end
-
-    def cfn
-      Ufo::Setting::Profile.new(:cfn, settings[:cfn_profile]).data
     end
 
     def status
