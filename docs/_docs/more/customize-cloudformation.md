@@ -1,6 +1,6 @@
 ---
 title: Customize CloudFormation
-nav_order: 38
+nav_order: 41
 ---
 
 Under the hood, ufo creates most of the required resources with a CloudFormation stack.  This includes the ELB, Target Group, Listener, Security Groups, ECS Service, and Route 53 records.  You might need to customize these resources.  Here are the ways to customize the resources that ufo creates.

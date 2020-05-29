@@ -1,6 +1,6 @@
 ---
 title: SSL Support
-nav_order: 28
+nav_order: 30
 ---
 
 You can configure SSL support by uncomment the `listener_ssl` option in `.ufo/settings/cfn/default.yml`.  Here's an example:

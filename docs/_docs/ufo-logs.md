@@ -1,6 +1,6 @@
 ---
 title: ufo logs command
-nav_order: 20
+nav_order: 22
 ---
 
 The ufo logs command will tail the logs of the ecs service if you are using the awslogs driver.
@@ -45,6 +45,5 @@ The generated .ufo task definition defaults to the awslogs driver. If you need i
   }
 }
 ```
-
 
 {% include prev_next.md %}

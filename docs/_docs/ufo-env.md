@@ -1,6 +1,6 @@
 ---
 title: UFO_ENV
-nav_order: 21
+nav_order: 23
 ---
 
 Ufo's behavior is controlled by the `UFO_ENV` environment variable.  For example, the `UFO_ENV` variable is used to layer different ufo variable files together to make it easy to specify settings for different environments like production and development.  This is covered thoroughly in the [Variables]({% link _docs/variables.md %}) section.  `UFO_ENV` defaults to `development` when not set.

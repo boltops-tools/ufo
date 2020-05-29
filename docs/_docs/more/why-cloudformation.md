@@ -1,6 +1,6 @@
 ---
 title: Why CloudFormation
-nav_order: 37
+nav_order: 40
 ---
 
 Version 3 of ufo was a simpler implementation and did not make use of CloudFormation to create the ECS service. In version 4, ufo uses CloudFormation to create the ECS Service.  This is because ufo became more powerful. Notably, support for Load Balancers was added. With this power, also came added complexity. So the complexity was push onto CloudFormation.  Hence, ECS service is implemented as CloudFormation resource in version 4.
