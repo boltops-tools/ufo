@@ -45,6 +45,10 @@ You then use a DSL to create the IAM roles. Here are examples:
 .ufo/iam_roles/execution_role.rb
 
 ```ruby
+managed_iam_policy("AmazonEC2ContainerRegistryReadOnly")
+managed_iam_policy("AmazonSSMReadOnlyAccess")
+managed_iam_policy("CloudWatchLogsFullAccess")
+managed_iam_policy("SecretsManagerReadWrite")
 managed_iam_policy("service-role/AmazonECSTaskExecutionRolePolicy")
 ```
 

@@ -6,7 +6,6 @@
 # Simply aggregates a bunch of variables that is useful for the task_definition.
 module Ufo
   class DSL
-    # provides some helperally context variables
     class Helper
       include Ufo::Util
       extend Memoist
@@ -37,48 +36,21 @@ module Ufo
 
       #############
       # helper methods
-      def env_vars(text)
-        lines = filtered_lines(text)
-        lines.map do |line|
-          key,*value = line.strip.split("=").map do |x|
-            remove_surrounding_quotes(x.strip)
-          end
-          value = value.join('=')
-          {
-            name: key,
-            value: value,
-          }
-        end
+      def env(text)
+        Vars.new(text: text).env
       end
-
-      def remove_surrounding_quotes(s)
-        if s =~ /^"/ && s =~ /"$/
-          s.sub(/^["]/, '').gsub(/["]$/,'') # remove surrounding double quotes
-        elsif s =~ /^'/ && s =~ /'$/
-          s.sub(/^[']/, '').gsub(/[']$/,'') # remove surrounding single quotes
-        else
-          s
-        end
-      end
-
-      def filtered_lines(text)
-        lines = text.split("\n")
-        # remove comment at the end of the line
-        lines.map! { |l| l.sub(/\s+#.*/,'').strip }
-        # filter out commented lines
-        lines = lines.reject { |l| l =~ /(^|\s)#/i }
-        # filter out empty lines
-        lines = lines.reject { |l| l.strip.empty? }
-      end
+      alias_method :env_vars, :env
 
       def env_file(path)
-        full_path = "#{Ufo.root}/#{path}"
-        unless File.exist?(full_path)
-          puts "The #{full_path} env file could not be found.  Are you sure it exists?"
-          exit 1
-        end
-        text = IO.read(full_path)
-        env_vars(text)
+        Vars.new(file: path).env
+      end
+
+      def secrets(text)
+        Vars.new(text: text, secrets: true).secrets
+      end
+
+      def secrets_file(path)
+        Vars.new(file: path, secrets: true).secrets
       end
 
       def current_region

@@ -26,6 +26,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "aws-sdk-ecr"
   spec.add_dependency "aws-sdk-ecs"
   spec.add_dependency "aws-sdk-elasticloadbalancingv2"
+  spec.add_dependency "aws_data"
   spec.add_dependency "rainbow"
   spec.add_dependency "deep_merge"
   spec.add_dependency "memoist"
