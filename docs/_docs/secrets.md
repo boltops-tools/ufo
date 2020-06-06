@@ -5,7 +5,7 @@ nav_order: 19
 
 ## What are Secrets?
 
-[ECS supports injecting secrets or sensitive data](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/specifying-sensitive-data.html) into the the environment as variables.  ECS handles the decryption the secrets go straight from AWS to the ECS task environment. It never passes through the machine calling `ufo ship` IE: your laptop, a deploy server, or CodeBuild, etc.
+[ECS supports injecting secrets or sensitive data](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/specifying-sensitive-data.html) into the the environment as variables.  ECS decrypts the secrets straight from AWS to the ECS task environment. It never passes through the machine calling `ufo ship` IE: your laptop, a deploy server, or CodeBuild, etc.
 
 ECS supports 2 storage backends for secrets:
 
