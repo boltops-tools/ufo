@@ -1,7 +1,7 @@
 ---
 title: Notification ARNs
 categories: extras
-nav_order: 36
+nav_order: 37
 ---
 
 You can specific notification arns for CloudFormation stack related events with [configs/settings.yml]({% link _docs/settings.md %}). This may be useful for compliance purposes.

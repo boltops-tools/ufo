@@ -1,6 +1,6 @@
 ---
 title: Auto Completion
-nav_order: 47
+nav_order: 49
 ---
 
 Ufo supports bash auto-completion.  To set it up add the following to your `~/.profile` or `.bashrc`:

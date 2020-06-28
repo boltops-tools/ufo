@@ -1,6 +1,6 @@
 ---
 title: ufo logs command
-nav_order: 22
+nav_order: 23
 ---
 
 The ufo logs command will tail the logs of the ecs service if you are using the awslogs driver.

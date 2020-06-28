@@ -1,6 +1,6 @@
 ---
 title: Dynamic Dockerfile.erb
-nav_order: 35
+nav_order: 36
 ---
 
 Sometimes you may need a little more dynamic control of your Dockerfile. For these cases, ufo supports dynamically creating a Dockerfile from a Dockerfile.erb.  If Dockerfile.erb exists, ufo uses it to generate a Dockerfile as a part of the build process.  These means that you should update the source Dockerfile.erb instead, as the Dockerfile will be overwritten.  If Dockerfile.erb does not exist, then ufo will use the Dockerfile instead.

@@ -1,6 +1,6 @@
 ---
 title: ECS Network Mode
-nav_order: 29
+nav_order: 30
 ---
 
 ## Pros and Cons: bridge network mode

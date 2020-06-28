@@ -1,6 +1,6 @@
 ---
 title: Load Balancer Support
-nav_order: 27
+nav_order: 28
 ---
 
 Ufo can automatically create a load balancer and associate it with an ECS service.  The options:

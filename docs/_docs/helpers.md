@@ -1,6 +1,6 @@
 ---
 title: Helpers
-nav_order: 18
+nav_order: 19
 ---
 
 The `task_definitions.rb` file has access to helper methods. These helper methods provide useful contextual information about the project.
