@@ -1,15 +1,15 @@
 ---
 title: SSL Support
-nav_order: 30
+nav_order: 31
 ---
 
 You can configure SSL support by uncomment the `listener_ssl` option in `.ufo/settings/cfn/default.yml`.  Here's an example:
 
 ```
-listener_ssl:
-  port: 443
-  certificates:
-  - certificate_arn: arn:aws:acm:us-east-1:111111111111:certificate/11111111-2222-3333-4444-555555555555
+ListenerSsl:
+  Port: 443
+  Certificates:
+  - CertificateArn: arn:aws:acm:us-east-1:111111111111:certificate/11111111-2222-3333-4444-555555555555
 ```
 
 For the certificate arn, you will need to create a certificate with AWS ACM. To do so, you can follow these instructions: [Request a Public Certificate

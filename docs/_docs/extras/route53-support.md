@@ -1,14 +1,14 @@
 ---
 title: Route53 Support
-nav_order: 31
+nav_order: 32
 ---
 
 Ufo can create a "pretty" route53 record and set it's value to the created ELB DNS name. This is done by configuring the `.ufo/settings/cfn/default.yml` file. Example:
 
 ```yaml
-dns:
-  name: "{stack_name}.mydomain.com."
-  hosted_zone_name: mydomain.com. # dont forget the trailing period
+Dns:
+  Name: "{stack_name}.mydomain.com."
+  HostedZoneName: mydomain.com. # dont forget the trailing period
 ```
 
 The `{stack_name}` variable gets substituted with the CloudFormation stack name launched by ufo. So for example:

@@ -1,6 +1,6 @@
 ---
 title: UFO_ENV
-nav_order: 23
+nav_order: 24
 ---
 
 Ufo's behavior is controlled by the `UFO_ENV` environment variable.  For example, the `UFO_ENV` variable is used to layer different ufo variable files together to make it easy to specify settings for different environments like production and development.  This is covered thoroughly in the [Variables]({% link _docs/variables.md %}) section.  `UFO_ENV` defaults to `development` when not set.
@@ -27,12 +27,10 @@ The most interesting way to set `UFO_ENV` is with the `aws_profiles` setting in 
 
 ```yaml
 development:
-  aws_profiles:
-    - my-dev-profile
+  aws_profile: my-dev-profile
 
 production:
-  aws_profiles:
-    - my-prod-profile
+  aws_profile: my-prod-profile
 ```
 
 In this case, when you set `AWS_PROFILE` to switch AWS profiles, ufo picks this up and maps the `AWS_PROFILE` value to the specified `UFO_ENV` using the `aws_profiles` lookup.  Example:

@@ -2,7 +2,7 @@
 title: Settings Network
 short_title: Network
 categories: settings
-nav_order: 16
+nav_order: 17
 ---
 
 The settings.yml file references a network settings file with the `network_profile` option. This file has configurations that are related to the network.  The source code for the starter template file is at [network/default.yml.tt](https://github.com/tongueroo/ufo/blob/master/lib/template/.ufo/settings/network/default.yml.tt)  Here's an example network settings file.
@@ -22,6 +22,16 @@ elb_subnets: # defaults to same subnets as ecs_subnets when not set
 #   - sg-aaa
 # ecs_security_groups:
 #   - sg-bbb
+
+# Also supports extra security groups specific to each ECS service.
+# So you can target security groups on a per-role basis.
+# ecs_security_groups:
+#   demo-web:
+#   - sg-bbb
+#   - sg-ccc
+#   demo-worker:
+#   - sg-bbb
+#   - sg-ccc
 ```
 
 Option | Description

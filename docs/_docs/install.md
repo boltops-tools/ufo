@@ -17,16 +17,6 @@ Or you can add ufo to your Gemfile in your project if you are working with a rub
 gem "ufo"
 {% endhighlight %}
 
-## Install with Bolts Toolbelt
-
-If you want to quickly install ufo without having to worry about ufo's dependencies you can install the Bolts Toolbelt which has ufo included.
-
-```sh
-brew cask install boltopslabs/software/bolts
-```
-
-For more information about the Bolts Toolbelt or to get an installer for another operating system visit: [https://boltops.com/toolbelt](https://boltops.com/toolbelt)
-
 ## Dependencies
 
 * Docker: You will need a working version of [Docker](https://docs.docker.com/engine/installation/) installed as ufo shells out and calls the `docker` command.
