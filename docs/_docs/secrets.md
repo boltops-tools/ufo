@@ -56,7 +56,7 @@ Ufo supports both forms of secrets. You create a `.secrets` file and can referen
 
 The `.secrets` file is like an env file that will understand a secrets-smart format.  Example:
 
-    NAME1=SSM:/my/parameter_name
+    NAME1=SSM:my/parameter_name
     NAME2=SECRETSMANAGER:/my/secret_name-AbCdEf
 
 The `SSM:` and `SECRETSMANAGER:` prefix will be expanded to the full ARN. You can also just specify the full ARN.
@@ -72,16 +72,28 @@ In turn, this generates:
     "secrets": [
       {
         "name": "NAME1",
-        "valueFrom": "arn:aws:ssm:us-west-2:536766270177:parameter/demo/development/foo"
+        "valueFrom": "arn:aws:ssm:us-west-2:111111111111:parameter/demo/development/foo"
       },
       {
         "name": "NAME2",
-        "valueFrom": "arn:aws:secretsmanager:us-west-2:536766270177:secret:/demo/development/my-secret-test-qRoJel"
+        "valueFrom": "arn:aws:secretsmanager:us-west-2:111111111111:secret:/demo/development/my-secret-test-qRoJel"
       }
     ]
   }]
 }
 ```
+
+## SSM Parameter Names with Leading Slash
+
+If your SSM parameter has a leading slash then do **not** include when using it in the .secrets file. Example:
+
+    aws ssm get-parameter --name /demo/development/foo
+
+So use:
+
+    FOO=SSM:demo/development/foo
+
+The extra slash seems to confuse ECS. For secretsmanager names, you do include the leading slash.
 
 ## Substitution
 
@@ -109,5 +121,15 @@ managed_iam_policy("SecretsManagerReadWrite")
 ```
 
 More info [ECS IAM Roles]({% link _docs/iam-roles.md %})
+
+## Debugging Tip
+
+Be sure that the secrets exist. If they do not you will see an error like this in the ecs-agent.log:
+
+/var/log/ecs/ecs-agent.log
+
+    level=info time=2020-06-26T00:59:46Z msg="Managed task [arn:aws:ecs:us-west-2:111111111111:task/development/91828be6a02b48f982cd9122db5e39b2]: error transitioning resource [ssmsecret] to [CREATED]: fetching secret data from SSM Parameter Store in us-west-2: invalid parameters: /my-parameter-name" module=task_manager.go
+
+Sometimes there is even no error message in the ecs-agent.log. As a debugging step, try removing all secrets and seeing if that the container will start up.
 
 {% include prev_next.md %}

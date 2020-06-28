@@ -2,7 +2,6 @@
   "family": "<%= @family %>",
   "requiresCompatibilities": ["FARGATE"],
   "networkMode": "awsvpc",
-  "executionRoleArn": "<%= @execution_role_arn || raise("@execution_role_arn needs to be set") %>",
   "cpu": "<%= @cpu %>",
   "memory": "<%= @memory %>",
   "containerDefinitions": [

@@ -56,6 +56,10 @@ class Ufo::Stack::Builder::Resources
       }
 
       props[:TaskDefinition] = @rollback_definition_arn ? @rollback_definition_arn : {Ref: "TaskDefinition"}
+      if @container[:fargate]
+        props[:LaunchType] = "FARGATE"
+        props[:NetworkConfiguration][:AwsvpcConfiguration][:AssignPublicIp] = "ENABLED" # Works with fargate but doesnt seem to work with non-fargate
+      end
 
       props
     end
