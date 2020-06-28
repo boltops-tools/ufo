@@ -33,21 +33,21 @@ class Ufo::Stack::Builder
       settings_key = "#{type}_security_groups".to_sym
       group_ids = Ufo::Setting::SecurityGroups.new(@service, settings_key).load
       # no security groups at all
-      return if !managed_security_groups_enabled? && group_ids.blank?
+      return if !managed_security_groups? && group_ids.blank?
 
       groups = []
       groups += group_ids
-      groups += [managed_security_group(type.to_s.camelize)] if managed_security_groups_enabled?
+      groups += [managed_security_group(type.to_s.camelize)] if managed_security_groups?
       groups
     end
 
     def managed_security_group(type)
-      logical_id = managed_security_groups_enabled? ? "#{type.camelize}SecurityGroup" : "AWS::NoValue"
+      logical_id = managed_security_groups? ? "#{type.camelize}SecurityGroup" : "AWS::NoValue"
       {Ref: logical_id}
     end
 
-    def managed_security_groups_enabled?
-      managed = settings[:managed_security_groups_enabled]
+    def managed_security_groups?
+      managed = settings[:managed_security_groups]
       managed.nil? ? true : managed
     end
   end

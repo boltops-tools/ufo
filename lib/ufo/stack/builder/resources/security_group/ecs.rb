@@ -1,7 +1,7 @@
 module Ufo::Stack::Builder::Resources::SecurityGroup
   class Ecs < Base
     def build
-      return unless managed_security_groups_enabled?
+      return unless managed_security_groups?
 
       {
         Type: "AWS::EC2::SecurityGroup",

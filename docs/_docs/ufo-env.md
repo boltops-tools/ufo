@@ -27,12 +27,10 @@ The most interesting way to set `UFO_ENV` is with the `aws_profiles` setting in 
 
 ```yaml
 development:
-  aws_profiles:
-    - my-dev-profile
+  aws_profile: my-dev-profile
 
 production:
-  aws_profiles:
-    - my-prod-profile
+  aws_profile: my-prod-profile
 ```
 
 In this case, when you set `AWS_PROFILE` to switch AWS profiles, ufo picks this up and maps the `AWS_PROFILE` value to the specified `UFO_ENV` using the `aws_profiles` lookup.  Example:

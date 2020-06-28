@@ -65,8 +65,6 @@ base:
   # clean_keep: 30 # cleans up docker images on your docker server.
   # ecr_keep: 30 # cleans up images on ECR and keeps this remaining amount. Defaults to keep all.
   # defaults when an new ECS service is created by ufo ship
-  network_profile: default # .ufo/settings/network/default.yml file
-  cfn_profile: default # .ufo/settings/cfn/default.yml file
 
 development:
   # cluster: dev # uncomment if you want the cluster name be other than the default
@@ -75,14 +73,10 @@ development:
   # When you have AWS_PROFILE set to one of these values, ufo will switch to the desired
   # environment. This prevents you from switching AWS_PROFILE, forgetting to
   # also switch UFO_ENV, and accidentally deploying to production vs development.
-  # aws_profiles:
-  #   - dev_profile1
-  #   - dev_profile2
+  # aws_profile: dev_profile1
 
 production:
   # cluster: prod
-  # aws_profiles:
-  #   - prod_profile
 ```
 
 The `image` value is the name that ufo will use as a base portion of the name to generate a Docker image name, it should not include the tag portion.

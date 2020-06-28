@@ -5,11 +5,11 @@ The properties in the file `.ufo/settings/cfn/default.yml` map directly to ufo's
 Let's customize the `AWS::ElasticLoadBalancingV2::TargetGroup` resource created by CloudFormation.  We'll adjust the `deregistration_delay.timeout_seconds` to `8`.  Here's the relevant section of the `.ufo/settings/cfn/default.yml`
 
 ```
-target_group:
+TargetGroup:
 ...
-  target_group_attributes:
-  - key: deregistration_delay.timeout_seconds
-    value: 8
+  TargetGroupAttributes:
+  - Key: deregistration_delay.timeout_seconds
+    Value: 8
 ```
 
 The value will be injected to the generated CloudFormation template under the corresponding "TargetGroup Properties".  The generated template looks something like this:
