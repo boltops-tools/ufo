@@ -107,20 +107,19 @@ If you would like to use a local template that is not on GitHub, then created a 
 ## Options
 
 ```
-[--force]                                  # Bypass overwrite are you sure prompt for existing files.
---image=IMAGE                              # Docker image name without the tag. Example: tongueroo/demo-ufo. Configures ufo/settings.yml
-[--app=APP]                                # App name. Preferably one word. Used in the generated ufo/task_definitions.rb.  If not specified then the app name is inferred as the folder name.
-[--launch-type=LAUNCH_TYPE]                # ec2 or fargate.
-                                           # Default: ec2
-[--execution-role-arn=EXECUTION_ROLE_ARN]  # execution role arn used by tasks, required for fargate.
-[--template=TEMPLATE]                      # Custom template to use.
-[--template-mode=TEMPLATE_MODE]            # Template mode: replace or additive.
-[--vpc-id=VPC_ID]                          # Vpc id. For settings/network/default.yml.
-[--ecs-subnets=one two three]              # Subnets for ECS tasks, defaults to --elb-subnets set to. For settings/network/default.yml
-[--elb-subnets=one two three]              # Subnets for ELB. For settings/network/default.yml
-[--verbose], [--no-verbose]                
-[--mute], [--no-mute]                      
-[--noop], [--no-noop]                      
-[--cluster=CLUSTER]                        # Cluster.  Overrides .ufo/settings.yml.
+[--force]                        # Bypass overwrite are you sure prompt for existing files.
+--image=IMAGE                    # Docker image name without the tag. Example: tongueroo/demo-ufo. Configures ufo/settings.yml
+[--app=APP]                      # App name. Preferably one word. Used in the generated ufo/task_definitions.rb.  If not specified then the app name is inferred as the folder name.
+[--launch-type=LAUNCH_TYPE]      # ec2 or fargate.
+                                 # Default: ec2
+[--template=TEMPLATE]            # Custom template to use.
+[--template-mode=TEMPLATE_MODE]  # Template mode: replace or additive.
+[--vpc-id=VPC_ID]                # Vpc id. For settings/network/default.yml.
+[--ecs-subnets=one two three]    # Subnets for ECS tasks, defaults to --elb-subnets set to. For settings/network/default.yml
+[--elb-subnets=one two three]    # Subnets for ELB. For settings/network/default.yml
+[--verbose], [--no-verbose]      
+[--mute], [--no-mute]            
+[--noop], [--no-noop]            
+[--cluster=CLUSTER]              # Cluster.  Overrides .ufo/settings.yml.
 ```
 
