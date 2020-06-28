@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [5.0.1]
+- #109 fix fargate
+- #110 adjust and document `managed_security_groups` setting
+
 ## [5.0.0]
 - #104 adjust logs default format to detailed
 - #105 major rework: build cfn template with Ruby instead of ERB for new features
