@@ -1,3 +1,5 @@
+require 'open3'
+
 =begin
 Normally, you must authorized to AWS ECR to push to their registry with:
 
@@ -27,19 +29,15 @@ module Ufo
       return unless ecr_image?
 
       auth_token = fetch_auth_token
-      if File.exist?(docker_config)
-        data = JSON.load(IO.read(docker_config))
-        data["auths"][@repo_domain] = {auth: auth_token}
-      else
-        data = {"auths" => {@repo_domain => {auth: auth_token}}}
+      username, password = Base64.decode64(auth_token).split(':')
+
+      command = "docker login -u #{username} --password-stdin #{@repo_domain}"
+      puts "=> #{command}".color(:green)
+      *, status = Open3.capture3(command, stdin_data: password)
+      unless status.success?
+        puts "ERROR: The docker failed to login.".color(:red)
+        exit 1
       end
-
-      # Handle legacy docker clients that still have old format with https://
-      legacy_entry = "https://#{@repo_domain}"
-      data["auths"][legacy_entry] = {auth: auth_token}
-
-      ensure_dotdocker_exists
-      IO.write(docker_config, JSON.pretty_generate(data))
     end
 
     def ecr_image?
@@ -48,15 +46,6 @@ module Ufo
 
     def fetch_auth_token
       ecr.get_authorization_token.authorization_data.first.authorization_token
-    end
-
-    def docker_config
-      "#{ENV['HOME']}/.docker/config.json"
-    end
-
-    def ensure_dotdocker_exists
-      dirname = File.dirname(docker_config)
-      FileUtils.mkdir_p(dirname) unless File.exist?(dirname)
     end
 
   end
