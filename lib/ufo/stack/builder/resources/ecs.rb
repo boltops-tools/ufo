@@ -21,12 +21,6 @@ class Ufo::Stack::Builder::Resources
             {Ref: "EcsDesiredCount"}
           ]
         },
-        NetworkConfiguration: {
-          AwsvpcConfiguration: {
-            Subnets: {Ref: "EcsSubnets"},
-            SecurityGroups: security_groups(:ecs)
-          }
-        },
         LoadBalancers: {
           "Fn::If": [
             "CreateTargetGroupIsTrue",
@@ -56,9 +50,19 @@ class Ufo::Stack::Builder::Resources
       }
 
       props[:TaskDefinition] = @rollback_definition_arn ? @rollback_definition_arn : {Ref: "TaskDefinition"}
-      if @container[:fargate]
-        props[:LaunchType] = "FARGATE"
-        props[:NetworkConfiguration][:AwsvpcConfiguration][:AssignPublicIp] = "ENABLED" # Works with fargate but doesnt seem to work with non-fargate
+
+      if @container[:network_mode].to_s == 'awsvpc'
+        props[:NetworkConfiguration] = {
+          AwsvpcConfiguration: {
+            Subnets: {Ref: "EcsSubnets"},
+            SecurityGroups: security_groups(:ecs)
+          }
+        }
+
+        if @container[:fargate]
+          props[:LaunchType] = "FARGATE"
+          props[:NetworkConfiguration][:AwsvpcConfiguration][:AssignPublicIp] = "ENABLED" # Works with fargate but doesnt seem to work with non-fargate
+        end
       end
 
       props
