@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [5.0.2]
+- #111 Add support of credsStore
+- #112 Add support for bridge network mode
+- #113 Allow custom container name when you try to attach an existing ELB to a service
+
 ## [5.0.1]
 - #109 fix fargate
 - #110 adjust and document `managed_security_groups` setting
