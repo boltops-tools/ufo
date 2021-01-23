@@ -12,6 +12,7 @@ class Ufo::Setting
         @profile, # user specified
         Ufo.env, # conventional based on env
         "default", # fallback to default
+        "base", # finally fallback to base
       ].compact.uniq
       paths = names.map { |name| "#{Ufo.root}/.ufo/settings/#{@type}/#{name}.yml" }
       found = paths.find { |p| File.exist?(p) }
