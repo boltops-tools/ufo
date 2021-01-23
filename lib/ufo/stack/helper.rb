@@ -28,10 +28,17 @@ class Ufo::Stack
       parts = case settings[:stack_naming]
       when "prepend_cluster" # ufo v4.3 and below
         [cluster, service, Ufo.env_extra] # legacy
-      when "append_env", "append_cluster" # ufo v4.5
+      when "append_cluster" # ufo v4.5
         # append_env will be removed in the next major version in favor of append_cluster to avoid confusion with
         # append_ufo_env
         [service, cluster, Ufo.env_extra]
+      when "append_env" # ufo v5.0.3 and below: append_env is a bug, it appends cluster name instead of env name
+        puts "WARN: Deprecation: The append_env is depreciated .ufo/settings.yaml".color(:yellow)
+        puts "It appends the cluster env instead of the UFO_ENV env. This is unexpected behavior. "
+        puts "To been fix this, please `stack_naming: append_ufo_env` instead. "
+        [service, cluster, Ufo.env_extra] # bug - kept for backward compatibility
+      when "append_ufo_env"  # v5.1.0 fixes bug where append_env would append cluster name instead
+        [service, Ufo.env, Ufo.env_extra]
       when "append_nothing", "prepend_nothing"
         [service, Ufo.env_extra]
       else # new default. ufo v4.5 and above

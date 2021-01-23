@@ -22,12 +22,12 @@ class Ufo::Setting
       end
 
       text = RenderMePretty.result(found)
-      specific_data = YAML.load(text).deep_symbolize_keys
+      specific_data = yaml_load(text)
 
       base = "#{Ufo.root}/.ufo/settings/#{@type}/base.yml"
       base_data = if File.exist?(base)
                     text = RenderMePretty.result(base)
-                    YAML.load(text).deep_symbolize_keys
+                    yaml_load(text)
                   else
                     {}
                   end
@@ -35,5 +35,10 @@ class Ufo::Setting
       base_data.deep_merge(specific_data)
     end
     memoize :data
+
+    def yaml_load(text)
+      result = YAML.load(text) # yaml file can contain nothing but comments
+      result.is_a?(Hash) ? result.deep_symbolize_keys : {}
+    end
   end
 end
