@@ -48,6 +48,6 @@ The settings in `development.yml` override the settings in `base.yml`. Here's an
 * .ufo/settings/network/base.yml
 * .ufo/settings/network/development.yml
 
-Note, this feature is available in v5.0.3+.
+Note, this feature is available in v5.0.4+.
 
 For the most up to date list check out the [cfn/stack.yml](https://github.com/tongueroo/ufo/blob/master/lib/cfn/stack.yml) source code directly.

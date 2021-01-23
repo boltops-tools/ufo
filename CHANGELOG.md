@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [5.0.4] - 2021-01-23
+- [#119](https://github.com/tongueroo/ufo/pull/119) layer base profiles with env-specific or default profile
+
 ## [5.0.3] - 2020-12-10
 - [#118](https://github.com/tongueroo/ufo/pull/118) update aws-mfa-secure with require singleton fix
 
