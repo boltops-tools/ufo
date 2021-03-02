@@ -10,6 +10,8 @@
 
 [![BoltOps Badge](https://img.boltops.com/boltops/badges/boltops-badge.png)](https://www.boltops.com)
 
+Please **watch/star** this repo to help grow and support the project.
+
 Ufo is a tool that builds Docker images and deploys them to [AWS ECS](https://aws.amazon.com/ecs/).  The main command is `ufo ship`.  Here's summary of what it does:
 
 1. Builds a docker image.
