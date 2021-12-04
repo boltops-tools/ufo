@@ -1,0 +1,5 @@
+{% assign buildtime = "now" | date: "%Y%m%d%H%M%S" %}
+<link rel="preload" href="{{ site.ads_url }}/ads/{{ site.time | date: '%s' }}.js" as="script" />
+<script data-cfasync="false" async src="{{ site.ads_url }}/ads/{{ site.time | date: '%s' }}.js"></script>
+
+<div id="head-banner" class="head-banner"></div>
