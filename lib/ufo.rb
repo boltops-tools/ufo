@@ -1,7 +1,7 @@
 $stdout.sync = true unless ENV["UFO_STDOUT_SYNC"] == "0"
 
 $:.unshift(File.expand_path('../', __FILE__))
-require 'active_support/core_ext/class'
+require 'active_support/all'
 require 'deep_merge/rails_compat'
 require 'fileutils'
 require 'memoist'
