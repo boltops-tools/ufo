@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [5.0.7] - 2021-12-18
+- [#123](https://github.com/tongueroo/ufo/pull/123) fix activesupport require
+
 ## [5.0.6] - 2021-12-16
 - [#120](https://github.com/tongueroo/ufo/pull/120) new stack_naming: append_ufo_env default to fix append_env bug
 - [#122](https://github.com/tongueroo/ufo/pull/122) require active_support all
