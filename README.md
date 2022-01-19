@@ -4,7 +4,6 @@
 
 # UFO: ECS Deploy Tool
 
-[![CircleCI](https://circleci.com/gh/tongueroo/ufo.svg?style=svg)](https://circleci.com/gh/tongueroo/ufo)
 [![Join the chat at https://gitter.im/tongueroo/ufo](https://badges.gitter.im/tongueroo/ufo.svg)](https://gitter.im/tongueroo/ufo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Support](https://img.shields.io/badge/get-support-blue.svg)](https://boltops.com?utm_source=badge&utm_medium=badge&utm_campaign=ufo)
 
