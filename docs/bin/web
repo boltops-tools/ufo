@@ -1,4 +1,0 @@
-#!/bin/bash -ex
-
-bundle exec jekyll clean
-exec bundle exec jekyll serve --trace --config _config.yml,_config-dev.yml "$@"

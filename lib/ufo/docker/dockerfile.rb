@@ -1,7 +1,9 @@
-module Ufo
-  class Docker::Dockerfile
-    def initialize(full_image_name, options={})
-      @full_image_name, @options = full_image_name, options
+module Ufo::Docker
+  class Dockerfile
+    include Ufo::Utils::Logging
+
+    def initialize(docker_image, options={})
+      @docker_image, @options = docker_image, options
     end
 
     def update
@@ -21,7 +23,7 @@ module Ufo
       # replace FROM line
       new_lines = lines.map do |line|
                     if line =~ /^FROM /
-                      "FROM #{@full_image_name}"
+                      "FROM #{@docker_image}"
                     else
                       line
                     end
@@ -31,10 +33,12 @@ module Ufo
 
     def write_new_dockerfile
       IO.write(dockerfile_path, new_dockerfile)
-      unless @options[:mute]
-        puts "The Dockerfile FROM statement has been updated with the latest base image:".color(:green)
-        puts "  #{@full_image_name}".color(:green)
-      end
+      logger.debug <<~EOL
+        The Dockerfile FROM statement has been updated with the latest base image:
+
+            #{@docker_image}
+
+      EOL
     end
   end
 end

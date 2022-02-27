@@ -11,12 +11,36 @@ class Thor
       end
     end
   end
+
+  module Util
+    # Hack to fix issue when -h produces extra ufo command in help.  IE:
+    #
+    # $ bundle exec ufo blueprint -h
+    # Commands:
+    #   ...
+    #   ufo ufo:blueprint:new BLUEPRINT_NAME  <= weird
+    #
+    # It looks like thor_classes_in is only used to generate the help menu.
+    #
+    def self.thor_classes_in(*)
+      []
+    end
+  end
 end
 
 module Ufo
   class Command < Thor
     class << self
+      include Ufo::Utils::Logging
+
       def dispatch(m, args, options, config)
+        # Old note: Configuring the DslEvalulator requires Ufo.root and Ufo.logger which
+        # loads Ufo.config and Ufo::Config#load_project_config
+        # This requires Ufo.role.
+        # So we set Ufo.role before triggering Ufo.config loading
+        configure_dsl_evaluator
+        check_project!(args)
+
         # Allow calling for help via:
         #   ufo command help
         #   ufo command -h
@@ -26,7 +50,6 @@ module Ufo
         # as well thor's normal way:
         #
         #   ufo help command
-        help_flags = Thor::HELP_MAPPINGS + ["help"]
         if args.length > 1 && !(args & help_flags).empty?
           args -= help_flags
           args.insert(-2, "help")
@@ -41,6 +64,38 @@ module Ufo
         end
 
         super
+      end
+
+      # Uses Ufo.logger and Ufo.root which loads Ufo.config.
+      # See comment where configure_dsl_evaluator is used about Ufo.role
+      def configure_dsl_evaluator
+        DslEvaluator.configure do |config|
+          config.backtrace.select_pattern = Ufo.root.to_s
+          config.logger = Ufo.logger
+          config.on_exception = :exit
+          config.root = Ufo.root
+        end
+      end
+
+      def help_flags
+        Thor::HELP_MAPPINGS + ["help"]
+      end
+      private :help_flags
+
+      def subcommand?
+        !!caller.detect { |l| l.include?('in subcommand') }
+      end
+
+      def check_project!(args)
+        command_name = args.first
+        return if subcommand?
+        return if command_name.nil?
+        return if help_flags.include?(args.last) # IE: -h help
+        return if %w[-h -v --version central init version].include?(command_name)
+        return if File.exist?("#{Ufo.root}/.ufo")
+
+        logger.error "ERROR: It doesnt look like this is a ufo project. Are you sure you are in a ufo project?".color(:red)
+        ENV['UFO_TEST'] ? raise : exit(1)
       end
 
       # Override command_help to include the description at the top of the

@@ -36,8 +36,8 @@ class Ufo::Upgrade
   private
     def update_task_definitions
       text = <<-EOL
-    # HINT: shows how Ufo.env_extra can to create different log groups
-    # awslogs_group: ["ecs/TASK_DEFINITION_NAME", Ufo.env_extra].compact.join('-'),
+    # HINT: shows how Ufo.extra can to create different log groups
+    # awslogs_group: ["ecs/TASK_DEFINITION_NAME", Ufo.extra].compact.join('-'),
 EOL
       insert_into_file ".ufo/task_definitions.rb", text, :before => /    awslogs_group:/
     end
@@ -112,7 +112,7 @@ EOL
     def upsert_gitignore
       text =<<-EOL
 .ufo/current
-.ufo/data
+.ufo/tmp/state
 .ufo/log
 .ufo/output
 EOL

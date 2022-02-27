@@ -13,7 +13,7 @@ module Ufo::Utils
       when Hash
         data.each_with_object({}) do |(k,v), squeezed|
           # only remove nil and empty Array values within Hash structures
-          squeezed[k] = squeeze(v) unless v.nil? || v.is_a?(Array) && v.empty?
+          squeezed[k] = squeeze(v) unless v.nil? # || v.is_a?(Array) && v.empty?
           squeezed
         end
       else

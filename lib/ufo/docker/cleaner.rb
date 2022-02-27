@@ -1,26 +1,28 @@
-module Ufo
-  class Docker::Cleaner
-    include Util
+module Ufo::Docker
+  class Cleaner
+    include Ufo::Utils::Execute
+    include Ufo::Utils::Logging
 
     def initialize(docker_image_name, options)
       # docker_image_name does not containg the tag
       # Example: 123456789.dkr.ecr.us-east-1.amazonaws.com/image
       @docker_image_name = docker_image_name
       @options = options
-      @keep = options[:keep] || settings[:clean_keep] || 3
+      @keep = Ufo.config.docker.clean_keep
       @tag_prefix = options[:tag_prefix] || "ufo"
     end
 
     def cleanup
+      return if @keep.nil?
       return if delete_list.empty?
       command = "docker rmi #{delete_list}"
-      say "Cleaning up docker images...".color(:green)
-      say "=> #{"docker rmi #{delete_list}"}".color(:green)
+      logger.info "Cleaning docker images"
       return if @options[:noop]
-      execute(command, use_system: false) # to use_system: false silence output
+      execute(command, quiet: true)
     end
 
     def delete_list
+      return if @keep.nil?
       return [] if ENV['TEST'] || @options[:noop]
       return @delete_list if @delete_list
 
@@ -43,11 +45,6 @@ module Ufo
       else
         @delete_list = delete_tags.map { |t| "#{@docker_image_name}:#{t}" }.join(' ')
       end
-    end
-
-    def say(msg)
-      msg = "NOOP #{msg}" if @options[:noop]
-      puts msg unless @options[:mute]
     end
   end
 end

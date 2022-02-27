@@ -4,65 +4,53 @@ require 'yaml'
 module Ufo
   module Core
     extend Memoist
-    include Ufo::Settings
 
-    def check_task_definition!(task_definition)
-      task_definition_path = "#{Ufo.root}/.ufo/output/#{task_definition}.json"
-      unless File.exist?(task_definition_path)
-        puts "ERROR: Unable to find the task definition at #{task_definition_path}.".color(:red)
-        puts "Are you sure you have defined it in .ufo/task_definitions.rb and it has been generated correctly in .ufo/output?".color(:red)
-        puts "If you are calling `ufo deploy` directly, you might want to generate the task definition first with `ufo tasks build`."
-        exit 1
-      end
+    def role
+      ENV['UFO_ROLE'] || 'web'
     end
+
+    def app
+      ENV['UFO_APP'] || config.app
+    end
+
+    # v5: development is default
+    # v6: dev is default
+    def env
+      ENV['UFO_ENV'] || 'dev'
+    end
+    memoize :env
+
+    def extra
+      extra = ENV['UFO_EXTRA'] if ENV['UFO_EXTRA'] # highest precedence
+      return if extra&.empty?
+      extra
+    end
+    memoize :extra
 
     def root
       path = ENV['UFO_ROOT'] || '.'
       Pathname.new(path)
     end
 
-    def env
-      # 2-way binding
-      ufo_env = env_from_profile || 'development'
-      ufo_env = ENV['UFO_ENV'] if ENV['UFO_ENV'] # highest precedence
-      ufo_env
-    end
-    memoize :env
-
-    def env_extra
-      env_extra = Current.env_extra
-      env_extra = ENV['UFO_ENV_EXTRA'] if ENV['UFO_ENV_EXTRA'] # highest precedence
-      return if env_extra&.empty?
-      env_extra
-    end
-    memoize :env_extra
-
-    # Overrides AWS_PROFILE based on the Ufo.env if set in .ufo/settings.yml
-    # 2-way binding.
-    def set_aws_profile!
-      return if ENV['TEST']
-      return unless File.exist?("#{Ufo.root}/.ufo/settings.yml") # for rake docs
-      return unless settings # Only load if within Ufo project and there's a settings.yml
-      data = settings || {}
-      if data[:aws_profile]
-        puts "Using AWS_PROFILE=#{data[:aws_profile]} from UFO_ENV=#{Ufo.env} in config/settings.yml"
-        ENV['AWS_PROFILE'] = data[:aws_profile]
-      end
+    def log_root
+      "#{root}/log"
     end
 
-    def check_ufo_project!
-      check_path = "#{Ufo.root}/.ufo/settings.yml"
-      unless File.exist?(check_path)
-        puts "ERROR: No settings file at #{check_path}.  Are you sure you are in a project with ufo setup?".color(:red)
-        puts "Current directory: #{Dir.pwd}"
-        puts "If you want to set up ufo for this prjoect, please create a settings file via: ufo init"
-        exit 1 unless ENV['TEST']
-      end
+    def configure(&block)
+      Config.instance.configure(&block)
     end
 
-  private
-    def env_from_profile
-      Ufo::Setting.new.ufo_env
+    # Generally, use the Lono.config instead of Config.instance.config since it guarantees the load_project_config call
+    def config
+      Config.instance.load_project_config
+      Config.instance.config
+    end
+    memoize :config
+
+    # allow different logger when running up all or rspec-lono
+    cattr_writer :logger
+    def logger
+      @@logger ||= config.logger
     end
   end
 end

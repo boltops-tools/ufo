@@ -433,7 +433,7 @@ This project *tries* to adhere to [Semantic Versioning](http://semver.org/), eve
 
 ## [0.1.1]
 
-- rename `ufo docker full_image_name` to `ufo docker image_name`
+- rename `ufo docker docker_image` to `ufo docker image_name`
 
 ## [0.1.0]
 

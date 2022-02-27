@@ -1,36 +1,29 @@
-require 'active_support/core_ext/module/delegation'
-
-class Ufo::Docker
+module Ufo::Docker
   class Pusher
-    include Ufo::Util
+    include Concerns
 
-    delegate :full_image_name, to: :builder
+    delegate :docker_image, to: :builder
     attr_reader :last_image_name
     def initialize(image, options)
       @options = options
-      # full_image_name ultimately uses @options, so @last_image_name assignment
+      # docker_image ultimately uses @options, so @last_image_name assignment
       # line must be defined after setting @options.
-      @last_image_name = image || full_image_name
+      @last_image_name = image || docker_image
     end
 
     def push
       update_auth_token
       start_time = Time.now
-      message = "Pushed #{last_image_name} docker image."
-      if @options[:noop]
-        message = "NOOP #{message}"
-      else
-        command = "docker push #{last_image_name}"
-        puts "=> #{command}".color(:green)
-        success = execute(command, use_system: true)
-        unless success
-          puts "ERROR: The docker image fail to push.".color(:red)
-          exit 1
-        end
+      logger.info "Pushing Docker Image"
+      command = "docker push #{last_image_name}"
+      log = ".ufo/log/docker.log" if @options[:quiet]
+      success = execute(command, log: log)
+      unless success
+        logger.info "ERROR: The docker image fail to push.".color(:red)
+        exit 1
       end
       took = Time.now - start_time
-      message << "\nDocker push took #{pretty_time(took)}.".color(:green)
-      puts message unless @options[:mute]
+      logger.info "Took #{pretty_time(took)}"
     end
 
     def builder
@@ -41,11 +34,6 @@ class Ufo::Docker
       auth = Ufo::Ecr::Auth.new(last_image_name)
       # wont update auth token unless the image being pushed in the ECR image format
       auth.update
-    end
-
-    # full_image - does not include the tag
-    def image_name
-      settings[:image]
     end
   end
 end
