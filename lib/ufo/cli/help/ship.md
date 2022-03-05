@@ -17,10 +17,10 @@ Confirm to ship:
 
     Will deploy stack demo-web-dev (y/N) y
     Building Docker Image
-    => docker build -t 536766270177.dkr.ecr.us-west-2.amazonaws.com/demo:ufo-2022-03-02T20-32-33-12dc6e0 -f Dockerfile .
-    Docker Image built: 536766270177.dkr.ecr.us-west-2.amazonaws.com/demo:ufo-2022-03-02T20-32-33-12dc6e0
+    => docker build -t 111111111111.dkr.ecr.us-west-2.amazonaws.com/demo:ufo-2022-03-02T20-32-33-12dc6e0 -f Dockerfile .
+    Docker Image built: 111111111111.dkr.ecr.us-west-2.amazonaws.com/demo:ufo-2022-03-02T20-32-33-12dc6e0
     Pushing Docker Image
-    => docker push 536766270177.dkr.ecr.us-west-2.amazonaws.com/demo:ufo-2022-03-02T20-32-33-12dc6e0
+    => docker push 111111111111.dkr.ecr.us-west-2.amazonaws.com/demo:ufo-2022-03-02T20-32-33-12dc6e0
     Task Definition built: .ufo/output/task_definition.json
     Parameters built:      .ufo/output/params.json
     Template built:        .ufo/output/template.yml

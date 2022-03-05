@@ -65,8 +65,8 @@ module Ufo::TaskDefinition::Helpers
       end
     end
 
-    # arn:aws:ssm:us-west-2:536766270177:parameter/demo/dev/DB-NAME
-    # arn:aws:ssm:us-west-2:536766270177:parameter/demo/dev/DB-NAME
+    # arn:aws:ssm:us-west-2:111111111111:parameter/demo/dev/DB-NAME
+    # arn:aws:ssm:us-west-2:111111111111:parameter/demo/dev/DB-NAME
     def expansion(arn)
       # performance improvement only run names.expansion on the name portion
       md = arn.match(/(.*:)(parameter\/|secret:)(.*)/)

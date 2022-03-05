@@ -16,7 +16,7 @@ class Ufo::CLI
 
     def find_log_group_name
       unless info.service
-        logger.info "Cannot find ECS service for #{@stack_name}"
+        logger.info "Cannot find stack: #{@stack_name}"
         exit 1
       end
       task_definition = info.service.task_definition
