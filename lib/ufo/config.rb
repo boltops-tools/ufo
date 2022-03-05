@@ -49,7 +49,10 @@ module Ufo
 
       config.ecs = ActiveSupport::OrderedOptions.new
       config.ecs.cluster = ":ENV" # => dev
+      config.ecs.deployment_configuration = nil # full control
       config.ecs.desired_count = nil # only respected when config.autoscaling.enabled = false
+      config.ecs.maximum_percent = 200 # nil
+      config.ecs.minimum_healthy_percent = 100 # nil
       config.ecs.scheduling_strategy = "REPLICA"
 
       config.elb = ActiveSupport::OrderedOptions.new
