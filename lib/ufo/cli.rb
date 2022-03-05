@@ -85,7 +85,8 @@ module Ufo
     long_desc Help.text(:ps)
     option :status, default: "all", desc: "Status filter: all, pending, stopped, running."
     # not setting format default so we can use Ufo.config.ps.format and dont want to trigger a config load this early
-    option :format, desc: "Output formats: #{CliFormat.formats.join(', ')}"
+    formats = CliFormat.formats + ["auto"]
+    option :format, desc: "Output formats: #{formats.sort.join(', ')}"
     def ps
       Ps.new(options).run
     end
