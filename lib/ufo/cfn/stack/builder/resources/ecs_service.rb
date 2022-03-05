@@ -14,6 +14,7 @@ class Ufo::Cfn::Stack::Builder::Resources
     def properties
       props = {
         Cluster: @cluster,
+        DeploymentConfiguration: deployment_configuration,
         DesiredCount: {
           "Fn::If": [
             "EcsDesiredCountIsBlank",
@@ -67,6 +68,18 @@ class Ufo::Cfn::Stack::Builder::Resources
       end
 
       props
+    end
+
+  private
+    def deployment_configuration
+      ecs = Ufo.config.ecs
+      return ecs.configuration if ecs.configuration # provide user full control
+
+      # default
+      {
+        MaximumPercent: ecs.maximum_percent,
+        MinimumHealthyPercent: ecs.minimum_healthy_percent,
+      }
     end
   end
 end
