@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [6.0.1] - 2022-03-05
+- [#126](https://github.com/tongueroo/ufo/pull/126) ecs deployment_configuration options
+- [#127](https://github.com/tongueroo/ufo/pull/127) improve ps errors reporting
+
 ## [6.0.0] - 2022-03-05
 - [#125](https://github.com/tongueroo/ufo/pull/125) v6: major ufo upgrades and new structure
 
