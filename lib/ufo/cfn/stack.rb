@@ -52,16 +52,7 @@ module Ufo::Cfn
 
     def perform(action)
       logger.info "#{action[0..-2].capitalize}ing stack #{@stack_name.color(:green)}"
-      # Example: cloudformation.send("update_stack", stack_options)
-
-      # o = stack_options.dup
-      # o[:template_body] = '...' if o[:template_body]
-      # puts "stack_options:"
-      # pp o
-      # puts "parameters:"
-      # pp o[:parameters]
-
-      cloudformation.send("#{action}_stack", stack_options)
+      cloudformation.send("#{action}_stack", stack_options) # Example: cloudformation.send("update_stack", stack_options)
     rescue Aws::CloudFormation::Errors::ValidationError => e
       handle_stack_error(e)
     end
@@ -117,7 +108,6 @@ module Ufo::Cfn
     memoize :rollback_task_definition
 
     def exit_with_message(stack)
-      region = `aws configure get region`.strip rescue "us-east-1"
       url = "https://console.aws.amazon.com/cloudformation/home?region=#{region}#/stacks"
       logger.info "The stack is not in an updateable state: #{stack.stack_status.color(:yellow)}."
       logger.info "Here's the CloudFormation url to check for more details #{url}"
@@ -134,7 +124,6 @@ module Ufo::Cfn
         if message.include?('UPDATE_ROLLBACK_FAILED')
           logger.info "You might be able to do a 'Continue Update Rollback' and skip some resources to get the stack back into a good state."
         end
-        region = `aws configure get region`.strip rescue 'us-east-1'
         url = "https://console.aws.amazon.com/cloudformation/home?region=#{region}"
         logger.info "Here's the CloudFormation console url: #{url}"
         exit 1
@@ -171,5 +160,11 @@ module Ufo::Cfn
         logger.info "The stack is not in a state to that is cancelable: #{stack.stack_status}"
       end
     end
+
+    delegate :region, to: :aws
+    def aws
+      AwsData.new
+    end
+    memoize :aws
   end
 end

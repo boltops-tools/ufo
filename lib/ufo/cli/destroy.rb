@@ -18,7 +18,7 @@ class Ufo::CLI
       end
 
       cloudformation.delete_stack(stack_name: @stack_name)
-      puts "Deleting stack with ECS resources: #{@stack_name}"
+      puts "Deleting stack #{@stack_name.color(:green)}"
 
       return unless @options[:wait]
       status.wait
