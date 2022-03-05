@@ -38,7 +38,7 @@ class Ufo::Upgrade
       lines.map! do |line|
         line.sub(/[\/]?ufo/, '.ufo')
       end
-      lines << [".ufo/data\n"] # new ignore rule
+      lines << [".ufo/tmp/state\n"] # new ignore rule
       text = lines.join
       IO.write(".gitignore", text)
     end

@@ -1,0 +1,29 @@
+---
+family: <%= @family %>
+# "bridge" is default because "awsvpc" requires specific instance types and
+# ECS tasks to run on private subnets.
+# Note: However, bridge mode requires user to open up EC2 instances ports: 49153-65535
+networkMode: bridge
+containerDefinitions:
+- name: <%= @name %>
+  image: <%= @image %>
+  cpu: <%= @cpu %>
+  memory: <%= @memory %>
+  memoryReservation: <%= @memory_reservation %>
+<% if @container_port -%>
+  portMappings:
+  - containerPort: <%= @container_port %>
+    protocol: tcp
+<% end -%>
+  command: <%= @command.to_json %>
+  environment: <%= @environment.to_json if @environment %>
+  secrets: <%= @secrets.to_json if @secrets %>
+<% if @awslogs_group -%>
+  logConfiguration:
+    logDriver: awslogs
+    options:
+      awslogs-group: "<%= @awslogs_group %>"
+      awslogs-region: "<%= @awslogs_region || 'us-east-1' %>"
+      awslogs-stream-prefix: "<%= @awslogs_stream_prefix %>"
+<% end -%>
+  essential: true

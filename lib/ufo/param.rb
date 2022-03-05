@@ -18,7 +18,8 @@ module Ufo
     memoize :data
 
     def template_scope
-      @template_scope ||= Ufo::TemplateScope.new(Ufo::DSL::Helper.new, nil)
+      self # TODO: add access to helpers like network
+      # @template_scope ||= Ufo::TemplateScope.new(Ufo::DSL::Helper.new, nil)
     end
   end
 end

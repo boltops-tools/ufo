@@ -1,5 +1,7 @@
 module Ufo
-  class Info < Base
+  class Info < Ufo::CLI::Base
+    include Ufo::AwsServices
+
     def run
       unless service
         puts no_service_message
@@ -7,10 +9,13 @@ module Ufo
       end
       puts "Resources:"
       stack_resources.each do |r|
-        # pp r
         puts "#{r.logical_resource_id} - #{r.resource_type}:".color(:green)
         puts "  #{r.physical_resource_id}"
       end
+    end
+
+    def no_service_message
+      "No stack #{@stack_name.color(:green)} found"
     end
 
     # Passing in service so method can be used else where.
@@ -33,24 +38,37 @@ module Ufo
       return unless stack
 
       service = stack_resources.find { |r| r.resource_type == "AWS::ECS::Service" }
+      return unless service # stack is still creating
       arn = service.physical_resource_id
       resp = ecs.describe_services(services: [arn], cluster: @cluster)
       resp.services.first
     end
     memoize :service
 
+    def service?
+      !!service
+    end
+
     def stack
       find_stack(@stack_name)
     end
     memoize :stack
 
-    def route53_dns
+    def url
       return unless stack
 
       output = stack.outputs.find do |o|
         o.output_key == "Route53Dns"
       end
-      output.output_value if output
+      dns_name = output.output_value if output
+      return unless dns_name
+
+      ssl = stack_resources.detect.find do |r|
+        r.logical_resource_id == "ListenerSsl"
+      end
+
+      protocol = ssl ? 'https' : 'http'
+      "#{protocol}://#{dns_name}"
     end
 
     def stack_resources

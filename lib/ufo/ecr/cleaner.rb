@@ -1,25 +1,23 @@
 require "json"
 
-# Can test:
-#
-#   ufo ship app-web --cluster prod --noop
 module Ufo
   class Ecr::Cleaner
-    include Util
-    include AwsService
+    include Ufo::AwsServices
+    include Ufo::Utils::Execute
+    include Ufo::Utils::Logging
 
     def initialize(docker_image_name, options={})
       # docker_image_name does not containg the tag
       # Example: 123456789.dkr.ecr.us-east-1.amazonaws.com/image
       @docker_image_name = docker_image_name
       @options = options
-      @keep = options[:ecr_keep] || settings[:ecr_keep]
+      @keep = options[:ecr_keep] || Ufo.config.docker.ecr_keep
       @tag_prefix = options[:tag_prefix] || "ufo"
     end
 
     def cleanup
-      return false unless ecr_image?
       return false unless @keep
+      return false unless ecr_image?
       update_auth_token
       image_tags = fetch_image_tags
       delete_tags = image_tags[@keep..-1] # ordered by most recent images first
@@ -36,16 +34,14 @@ module Ufo
 
     def delete_images(tags)
       return if tags.nil? || tags.empty?
-      unless @options[:mute]
-        puts "Keeping #{@keep} most recent ECR images."
-        puts "Deleting these ECR images:"
-        tag_list = tags.map { |t| "  #{repo_name}:#{t}" }
-        puts tag_list
-      end
+      logger.info "Keeping #{@keep} most recent ECR images."
+      logger.info "Deleting these ECR images:"
+      tag_list = tags.map { |t| "  #{repo_name}:#{t}" }
+      logger.info tag_list
       image_ids = tags.map { |tag| {image_tag: tag} }
       ecr.batch_delete_image(
         repository_name: repo_name,
-        image_ids: image_ids) unless @options[:noop]
+        image_ids: image_ids)
     end
 
     def update_auth_token

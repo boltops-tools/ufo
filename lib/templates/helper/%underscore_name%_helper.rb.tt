@@ -1,0 +1,6 @@
+module <%= class_name %>Helper
+  # Your code goes here
+  # def custom_method
+  # ...
+  # end
+end

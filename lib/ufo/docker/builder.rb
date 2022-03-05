@@ -1,12 +1,11 @@
-require 'active_support/core_ext/module/delegation'
-
-class Ufo::Docker
+module Ufo::Docker
   class Builder
-    include Ufo::Util
+    extend Memoist
+    include Concerns
 
     delegate :push, to: :pusher
-    def self.build(options)
-      builder = Builder.new(options) # outside if because it need builder.full_image_name
+    def self.build(options={})
+      builder = Builder.new(options) # outside if because it need builder.docker_image
       builder.build
       pusher = Pusher.new(nil, options)
       pusher.push
@@ -21,28 +20,27 @@ class Ufo::Docker
 
     def build
       start_time = Time.now
-      store_full_image_name
+      store_docker_image
 
-      command = "docker build #{build_options}-t #{full_image_name} -f #{@dockerfile} ."
-      say "Building docker image with:".color(:green)
-      say "  #{command}".color(:green)
+      logger.info "Building Docker Image"
       compile_dockerfile_erb
       check_dockerfile_exists
       update_auth_token
-      command = "cd #{Ufo.root} && #{command}"
-      success = execute(command, use_system: true)
+      command = "docker build #{build_options}-t #{docker_image} -f #{@dockerfile} ."
+      log = ".ufo/log/docker.log" if @options[:quiet]
+      success = execute(command, log: log)
       unless success
         docker_version_success = system("docker version > /dev/null 2>&1")
         unless docker_version_success
           docker_version_message = "  Are you sure the docker daemon is available?  Try running: docker version."
         end
-        puts "ERROR: The docker image fail to build.#{docker_version_message}".color(:red)
+        logger.info "ERROR: Fail to build Docker image.#{docker_version_message}".color(:red)
         exit 1
       end
 
       took = Time.now - start_time
-      say "Docker image #{full_image_name} built.  "
-      say "Docker build took #{pretty_time(took)}.".color(:green)
+      logger.info "Docker Image built: #{docker_image}"
+      logger.info "Took #{pretty_time(took)}"
     end
 
     def build_options
@@ -78,7 +76,7 @@ class Ufo::Docker
     end
 
     def pusher
-      @pusher ||= Pusher.new(full_image_name, @options)
+      @pusher ||= Pusher.new(docker_image, @options)
     end
 
     def compile_dockerfile_erb
@@ -91,32 +89,38 @@ class Ufo::Docker
       if File.exist?(erb_path)
         compile_dockerfile_erb
       else
-        puts "File #{erb_path.color(:green)} does not exist. Cannot compile it if it doesnt exist"
+        logger.info "File #{erb_path.color(:green)} does not exist. Cannot compile it if it doesnt exist"
       end
     end
 
     def check_dockerfile_exists
       unless File.exist?("#{Ufo.root}/#{@dockerfile}")
-        puts "#{@dockerfile} does not exist.  Are you sure it exists?"
+        logger.info "#{@dockerfile} does not exist.  Are you sure it exists?"
         exit 1
       end
     end
 
     # full_image - does not include the tag
     def image_name
-      settings[:image]
+      Ufo.config.docker.repo
     end
 
     # full_image - Includes the tag. Examples:
     #   123456789.dkr.ecr.us-west-2.amazonaws.com/myapp:ufo-2018-04-20T09-29-08-b7d51df
-    #   tongueroo/demo-ufo:ufo-2018-04-20T09-29-08-b7d51df
-    def full_image_name
+    #   org/repo:ufo-2018-04-20T09-29-08-b7d51df
+    def docker_image
       return generate_name if @options[:generate]
-      return "tongueroo/demo-ufo:ufo-12345678" if ENV['TEST']
 
       unless File.exist?(docker_name_path)
-        puts "Unable to find #{docker_name_path} which contains the last docker image name that was used as a part of `ufo docker build`.  Please run `ufo docker build` first."
-        exit 1
+        logger.info <<~EOL.color(:yellow)
+          WARN: Unable to find: #{pretty_path(docker_name_path)}
+          This contains the Docker image name that the build process uses.
+          Please first run:
+
+              ufo docker build
+
+        EOL
+        return "docker image not yet built"
       end
       IO.read(docker_name_path).strip
     end
@@ -125,44 +129,44 @@ class Ufo::Docker
     # and we want the image name to stay the same when the commands are run separate
     # in different processes.  So we store the state in a file.
     # Only when a new docker build command gets run will the image name state be updated.
-    def store_full_image_name
+    def store_docker_image
       dirname = File.dirname(docker_name_path)
       FileUtils.mkdir_p(dirname) unless File.exist?(dirname)
-      full_image_name = generate_name
-      IO.write(docker_name_path, full_image_name)
+      docker_image = generate_name
+      IO.write(docker_name_path, docker_image)
     end
 
     def generate_name
-      "#{image_name}:#{@image_namespace}-#{timestamp}-#{git_sha}"
+      ["#{image_name}:#{@image_namespace}-#{timestamp}", git_sha].compact.join('-') # compact in case git_sha is unavailable
     end
 
     def docker_name_path
       # output gets entirely wiped by tasks builder so dotn use that folder
-      "#{Ufo.root}/.ufo/data/docker_image_name_#{@image_namespace}.txt"
+      "#{Ufo.root}/.ufo/tmp/state/docker_image_name_#{@image_namespace}.txt"
     end
 
     def timestamp
-      @timestamp ||= Time.now.strftime('%Y-%m-%dT%H-%M-%S')
+      Time.now.strftime('%Y-%m-%dT%H-%M-%S')
     end
+    memoize :timestamp
 
     def git_sha
-      return @git_sha if @git_sha
-      # always call this and dont use the execute method because of the noop option
-      @git_sha = `cd #{Ufo.root} && git rev-parse --short HEAD`
-      @git_sha.strip!
+      sha = if File.exist?('.git')
+        `git rev-parse --short HEAD`
+      elsif ENV['CODEBUILD_RESOLVED_SOURCE_VERSION'] # AWS codebuild
+        ENV['CODEBUILD_RESOLVED_SOURCE_VERSION'][0..6] # first 7 chars
+      end
+      sha.strip if sha
     end
+    memoize :git_sha
 
     def update_dockerfile
       updater = if File.exist?("#{Ufo.root}/Dockerfile.erb") # dont use @dockerfile on purpose
-        Variables.new(full_image_name, @options)
+        State.new(docker_image, @options)
       else
-        Dockerfile.new(full_image_name, @options)
+        Dockerfile.new(docker_image, @options)
       end
       updater.update
-    end
-
-    def say(msg)
-      puts msg unless @options[:mute]
     end
   end
 end

@@ -1,7 +1,0 @@
-#!/bin/bash
-
-# Generated starter bin/deploy script example.
-# Meant to be overridden.
-
-# Only build one docker image and deploys it to multiple ECS services
-ufo ships <%= @app %>-{web,clock,worker}

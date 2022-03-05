@@ -17,11 +17,12 @@ This class manipulates the ~/.docker/config.json file which is an internal docke
 =end
 module Ufo
   class Ecr::Auth
-    include AwsService
+    include Ufo::AwsServices
+    include Ufo::Utils::Logging
 
-    def initialize(full_image_name)
-      @full_image_name = full_image_name
-      @repo_domain = "#{full_image_name.split('/').first}"
+    def initialize(docker_image)
+      @docker_image = docker_image
+      @repo_domain = "#{docker_image.split('/').first}"
     end
 
     def update
@@ -32,16 +33,16 @@ module Ufo
       username, password = Base64.decode64(auth_token).split(':')
 
       command = "docker login -u #{username} --password-stdin #{@repo_domain}"
-      puts "=> #{command}".color(:green)
+      logger.debug "=> #{command}".color(:green)
       *, status = Open3.capture3(command, stdin_data: password)
       unless status.success?
-        puts "ERROR: The docker failed to login.".color(:red)
+        logger.error "ERROR: The docker failed to login.".color(:red)
         exit 1
       end
     end
 
     def ecr_image?
-      !!(@full_image_name =~ /\.amazonaws\.com/)
+      !!(@docker_image =~ /\.amazonaws\.com/)
     end
 
     def fetch_auth_token
