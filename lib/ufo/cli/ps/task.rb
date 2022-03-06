@@ -53,6 +53,7 @@ class Ufo::CLI::Ps
     #  stopped_at=2018-07-05 22:03:45 -0700,
     def hide?
       stopped_at = time(@task["stopped_at"])
+      return false unless stopped_at # edge case when stopped_at not yet set but status is STOPPED for a brief period
       time = Time.now - 60 * Ufo.config.ps.hide_age
       status == "STOPPED" && stopped_at < time
     end
