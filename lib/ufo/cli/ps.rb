@@ -10,7 +10,7 @@ class Ufo::CLI
     def run
       unless service
         stack = find_stack(@stack_name)
-        if stack.stack_status == "CREATE_IN_PROGRESS"
+        if stack && stack.stack_status == "CREATE_IN_PROGRESS"
           logger.info "Stack is still creating. Try again after it completes."
         else
           logger.info info.no_service_message
