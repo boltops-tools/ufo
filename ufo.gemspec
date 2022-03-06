@@ -32,7 +32,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "cfn-status"
   spec.add_dependency "cli-format"
   spec.add_dependency "deep_merge"
-  spec.add_dependency "dsl_evaluator"
+  spec.add_dependency "dsl_evaluator", ">= 0.2.5" # for DslEvaluator.print_code
   spec.add_dependency "memoist"
   spec.add_dependency "plissken"
   spec.add_dependency "rainbow"

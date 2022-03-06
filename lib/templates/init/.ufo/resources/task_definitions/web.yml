@@ -16,6 +16,8 @@ containerDefinitions:
     protocol: tcp
 <% end -%>
   command: <%= @command.to_json %>
+  linuxParameters:
+    initProcessEnabled: true
   environment: <%= @environment.to_json if @environment %>
   secrets: <%= @secrets.to_json if @secrets %>
 <% if @awslogs_group -%>
