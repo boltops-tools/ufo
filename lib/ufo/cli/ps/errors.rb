@@ -1,5 +1,7 @@
 class Ufo::CLI::Ps
   class Errors < Ufo::CLI::Ps
+    extend Memoist
+
     def initialize(options={})
       super
       @tasks = options[:tasks]
@@ -87,21 +89,35 @@ class Ufo::CLI::Ps
     # Example:
     #     (service app1-web-dev-EcsService-8FMliG8m6M2p) was unable to stop or start tasks during a deployment because of the service deployment configuration. Update the minimumHealthyPercent or maximumPercent value and try again.
     def catchall
-      message = recent_message
-      words = %w[fail unable]
-      found = words.detect { |word| message.include?(word) }
-      return unless found
-      logger.error "ERROR: #{message}".color(:red)
-      logger.error <<~EOL
-        You might have to cancel the stack with:
+      words = %w[fail unable error]
+      recent_messages = recent_events.map(&:message)
+      message = recent_messages.find  do |message|
+        words.detect { |word| message.include?(word) }
+      end
 
-            ufo cancel
+      return unless message
+      logger.error "ERROR: #{message}".color(:red)
+
+      logger.error <<~EOL
+        You might have to #{cancel_actions[:cfn]} the stack with:
+
+            ufo #{cancel_actions[:ufo]}
 
         And try again after fixing the issue.
       EOL
     end
 
   private
+    def cancel_actions
+      stack = find_stack(@stack_name)
+      if stack && stack.stack_status == "CREATE_COMPLETE"
+        { cfn: "delete", ufo: "destroy" }
+      else
+        { cfn: "cancel", ufo: "cancel" }
+      end
+    end
+    memoize :cancel_actions
+
     # only check a few most recent
     def recent_events
       service["events"][0..4]
