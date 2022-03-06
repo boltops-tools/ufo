@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [6.0.2] - 2022-03-06
+- [#128](https://github.com/tongueroo/ufo/pull/128) cleanup region with aws_data
+- [#129](https://github.com/tongueroo/ufo/pull/129) Scale and Ps Edge Cases
+- [#130](https://github.com/tongueroo/ufo/pull/130) compiled yaml errors: print code with line number context
+- [#131](https://github.com/tongueroo/ufo/pull/131) ufo central update symlink creation
+- [#132](https://github.com/tongueroo/ufo/pull/132) ufo ps improvements better catchall error messages reporting
+
 ## [6.0.1] - 2022-03-05
 - [#126](https://github.com/tongueroo/ufo/pull/126) ecs deployment_configuration options
 - [#127](https://github.com/tongueroo/ufo/pull/127) improve ps errors reporting
