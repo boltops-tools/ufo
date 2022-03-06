@@ -21,6 +21,11 @@ class Ufo::TaskDefinition
     end
 
     def check_empty!(data)
+      if data.nil?
+        logger.error "ERROR: Unable to compile the YAML".color(:red) # invalid YAML will result in data == nil
+        exit 1
+      end
+
       return unless data == true || data == false || data.empty?
       logger.error "ERROR: Empty task definition results".color(:red)
       logger.error <<~EOL
