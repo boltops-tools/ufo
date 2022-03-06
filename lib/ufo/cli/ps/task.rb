@@ -1,11 +1,8 @@
 class Ufo::CLI::Ps
-  class Task
-    def self.header
-      %w[Task Name Release Started Status Notes]
-    end
-
-    def initialize(task)
-      @task = task
+  class Task < Ufo::CLI::Base
+    def initialize(options={})
+      super
+      @task = options[:task] # task response from ecs.list_tasks
     end
 
     def to_a
@@ -52,10 +49,11 @@ class Ufo::CLI::Ps
     #  stopping_at=2018-07-05 22:03:44 -0700,
     #  stopped_at=2018-07-05 22:03:45 -0700,
     def hide?
-      stopped_at = time(@task["stopped_at"])
-      return false unless stopped_at # edge case when stopped_at not yet set but status is STOPPED for a brief period
+      return false if @options[:status] == "stopped"
+      started_at = time(@task["started_at"])
+      return false unless started_at # edge case when started_at not yet set
       time = Time.now - 60 * Ufo.config.ps.hide_age
-      status == "STOPPED" && stopped_at < time
+      status == "STOPPED" && started_at < time
     end
 
     def status
@@ -91,6 +89,12 @@ class Ufo::CLI::Ps
           "#{(diff_seconds/(3600*24)).to_i} days ago"
         else
           start_time.strftime("%m/%d/%Y")
+      end
+    end
+
+    class << self
+      def header
+        %w[Task Name Release Started Status Notes]
       end
     end
   end

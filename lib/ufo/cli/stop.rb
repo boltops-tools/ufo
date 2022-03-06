@@ -29,7 +29,7 @@ class Ufo::CLI
     def show(tasks, preview: true)
       logger.info "Will stop the following tasks:" if preview
       ps = Ps.new(@options)
-      ps.display_tasks(tasks)
+      ps.show_tasks(tasks)
     end
 
     # latest deployment task definition arn
