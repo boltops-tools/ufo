@@ -9,7 +9,7 @@ class Ufo::TaskDefinition::Erb
         Rendered file contains invalid YAML. For debugging, files available at:
 
         source:   #{@task_definition.path}
-        rendered: #{@path}
+        compiled: #{@path}
 
       EOL
 
