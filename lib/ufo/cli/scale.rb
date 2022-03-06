@@ -68,7 +68,7 @@ class Ufo::CLI
 
         You can also turn off this warning with
 
-            config.scaling.warning = false
+            config.scale.warning = false
 
       EOL
     end
