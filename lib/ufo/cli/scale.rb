@@ -45,6 +45,11 @@ class Ufo::CLI
       scalable_target = stack_resources.find do |r|
         r.logical_resource_id == "ScalingTarget"
       end
+      register_scalable_target(scalable_target)
+      logger.info "Configured autoscaling to min: #{@min} max: #{@max}"
+    end
+
+    def register_scalable_target(scalable_target)
       # service/dev/app1-web-dev-EcsService-Q0XkN6VtxGWv|ecs:service:DesiredCount|ecs
       resource_id, scalable_dimension, service_namespace = scalable_target.physical_resource_id.split('|')
       applicationautoscaling.register_scalable_target(
@@ -54,7 +59,9 @@ class Ufo::CLI
         scalable_dimension: scalable_dimension,
         service_namespace: service_namespace,
       )
-      logger.info "Configured autoscaling to min: #{@min} max: #{@max}"
+    rescue Aws::ApplicationAutoScaling::Errors::ValidationException => e
+      logger.error "ERROR: #{e.class} #{e.message}".color(:red)
+      exit 1
     end
 
     def warning

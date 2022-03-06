@@ -40,6 +40,7 @@ module Ufo
       service = stack_resources.find { |r| r.resource_type == "AWS::ECS::Service" }
       return unless service # stack is still creating
       arn = service.physical_resource_id
+      return unless arn # can be nil for a few seconds while stack is still creating it
       resp = ecs.describe_services(services: [arn], cluster: @cluster)
       resp.services.first
     end
