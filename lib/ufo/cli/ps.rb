@@ -30,8 +30,7 @@ class Ufo::CLI
         resp["tasks"]
       end.flatten
 
-      tasks = convert_to_task_objects(all_task_arns)
-      show_tasks(tasks)
+      tasks = show_tasks(all_task_arns)
       show_errors(tasks)
     end
 
@@ -68,7 +67,14 @@ class Ufo::CLI
       resp.scalable_targets.first # scalable_target
     end
 
-    def show_tasks(tasks)
+    def convert_to_task_objects(task_arns)
+      task_arns.sort_by! { |t| t["task_arn"] }
+      task_arns.map { |t| Task.new(@options.merge(task: t)) } # will have Task objects after this point
+    end
+
+    # Note: ufo stop also uses Ps#show_tasks. Thats why convert_to_task_objects within the method
+    def show_tasks(tasks_arns)
+      tasks = convert_to_task_objects(tasks_arns)
       tasks = tasks.reject(&:hide?)
       show_notes = show_notes(tasks)
 
@@ -84,6 +90,7 @@ class Ufo::CLI
         presenter.rows << row
       end
       presenter.show
+      tasks
     end
 
     def show_errors(tasks)
@@ -132,11 +139,6 @@ class Ufo::CLI
       end
 
       status == "ALL" ? valid_statuses : [status]
-    end
-
-    def convert_to_task_objects(task_arns)
-      task_arns.sort_by! { |t| t["task_arn"] }
-      task_arns.map { |t| Task.new(t) } # will have Task objects after this point
     end
 
     def task_arns
