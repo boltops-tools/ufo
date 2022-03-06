@@ -9,13 +9,13 @@ class Ufo::CLI::Central
     end
 
     def run
-      action = File.exist?(".ufo") ? "update" : "create"
-      sure?("Will #{action} the .ufo folder.") # IE: Will create the .ufo folder.
       validate!
+      action = File.exist?(".ufo") ? "update" : "create"
+      sure?("Will #{action} the .ufo symlink") # IE: Will create the .ufo symlink
       logger.info "Updating .ufo with #{repo}"
       FileUtils.mkdir_p(tmp_area)
       pull
-      sync
+      symlink
       check_gitignore
     end
 
@@ -30,18 +30,25 @@ class Ufo::CLI::Central
       end
     end
 
-    def sync
-      FileUtils.mv(".ufo", ".ufo.bak") if File.exist?(".ufo")
+    # Always update the symlink in case use changes UFO_CENTRAL_REPO
+    def symlink
       src = "#{tmp_area}/#{repo_name}"
       src += "/#{folder}" if folder
-      FileUtils.cp_r(src, ".ufo")
+
+      FileUtils.mv(".ufo", ".ufo.bak") if File.exist?(".ufo") && File.directory?(".ufo")
+
+      # FileUtils.ln_s(target, link, options)
+      # ~/.ufo/central/repo -> .ufo
+      FileUtils.ln_s(src, ".ufo", verbose: true)
       FileUtils.rm_rf(".ufo.bak")
-      logger.info "The .ufo folder has been updated"
+
+      logger.info "The .ufo symlink has been updated"
     end
 
     def validate!
       return if repo
       logger.info "ERROR: Please set the env var: UFO_CENTRAL_REPO".color(:red)
+      logger.info "The ufo central update command requires it."
       exit 1
     end
 
@@ -58,11 +65,11 @@ class Ufo::CLI::Central
     end
 
     def tmp_area
-      "/tmp/ufo/central"
+      "#{ENV['HOME']}/.ufo/central"
     end
 
     def check_gitignore
-      ok = true
+      ok = false
       if File.exist?('.gitignore')
         lines = IO.readlines('.gitignore')
         ok = lines.detect do |line|
