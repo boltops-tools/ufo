@@ -32,8 +32,23 @@ class Ufo::Cfn::Stack::Builder::Resources
 
       props[:TargetType] = "ip" if vars[:container][:network_mode] == "awsvpc"
       props[:HealthCheckPort] = vars[:container][:port] if vars[:elb_type] == "network" && vars[:network_mode] == "awsvpc"
+      props[:HealthCheckPath] = health_check_path
+      props[:HealthCheckIntervalSeconds] = health_check_interval_seconds
+      props[:HealthyThresholdCount] = healthy_threshold_count
+      props[:UnhealthyThresholdCount] = unhealthy_threshold_count
 
       props
+    end
+
+    meths = %w[
+      health_check_interval_seconds
+      health_check_path
+      healthy_threshold_count
+      unhealthy_threshold_count
+    ]
+    delegate *meths, to: :elb
+    def elb
+      Ufo.config.elb
     end
   end
 end

@@ -130,6 +130,22 @@ module Ufo::Cfn
       when /No updates are to be performed/
         logger.info "There are no updates to be performed. Exiting.".color(:yellow)
         exit 1
+      when /YAML not well-formed/ # happens if a value is a serialize Ruby Object. See: https://gist.github.com/tongueroo/737531d0bc8c92d92b5cd00493e15d9e
+        # e.message: Template format error: YAML not well-formed. (line 207, column 9)
+        print_code(e)
+      else
+        raise
+      end
+    end
+
+    def print_code(exception)
+      path = ".ufo/output/template.yml"
+      md = exception.message.match(/line (\d+),/)
+      line_number = md[1]
+      logger.error "Template for debugging: #{path}"
+      if md
+        DslEvaluator.print_code(path, line_number)
+        exit 1
       else
         raise
       end

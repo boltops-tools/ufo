@@ -1,3 +1,4 @@
+require "aws-sdk-acm"
 require "aws-sdk-applicationautoscaling"
 require "aws-sdk-cloudformation"
 require "aws-sdk-cloudwatchlogs"
@@ -13,6 +14,11 @@ require "cfn_status"
 module Ufo
   module AwsServices
     extend Memoist
+
+    def acm
+      Aws::ACM::Client.new(aws_options)
+    end
+    memoize :acm
 
     def applicationautoscaling
       Aws::ApplicationAutoScaling::Client.new(aws_options)

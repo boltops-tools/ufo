@@ -4,6 +4,11 @@ module Ufo::Utils
       path.sub("#{Ufo.root}/",'').sub(/^\.\//,'')
     end
 
+    # Replace HOME with ~ - different from the main pretty_path
+    def pretty_home(path)
+      path.sub(ENV['HOME'], '~')
+    end
+
     # http://stackoverflow.com/questions/4175733/convert-duration-to-hoursminutesseconds-or-similar-in-rails-3-or-ruby
     def pretty_time(total_seconds)
       minutes = (total_seconds / 60) % 60

@@ -56,20 +56,26 @@ module Ufo
       config.ecs.scheduling_strategy = "REPLICA"
 
       config.elb = ActiveSupport::OrderedOptions.new
-      config.elb.subnet_mappings = nil # static IP addresses for network load balancer
-      config.elb.enabled = "auto" # "auto", true or false
-      config.elb.port = 80 # default listener port
-      config.elb.ssl = ActiveSupport::OrderedOptions.new
-      config.elb.ssl.certificates = nil
-      config.elb.ssl.enabled = false
-      config.elb.ssl.port = 443
-      config.elb.type = "application"
       config.elb.default_actions = nil # full override
+      config.elb.enabled = "auto" # "auto", true or false
+
+      config.elb.health_check_interval_seconds = 10
+      config.elb.health_check_path = nil # When nil its AWS default /
+      config.elb.healthy_threshold_count = 5
+      config.elb.unhealthy_threshold_count = 2
+
+      config.elb.port = 80 # default listener port
       config.elb.redirect = ActiveSupport::OrderedOptions.new
       config.elb.redirect.code = 302  # IE: 302 or 301
       config.elb.redirect.enabled = false
       config.elb.redirect.port = 443
       config.elb.redirect.protocol = "HTTPS"
+      config.elb.ssl = ActiveSupport::OrderedOptions.new
+      config.elb.ssl.certificates = nil
+      config.elb.ssl.enabled = false
+      config.elb.ssl.port = 443
+      config.elb.subnet_mappings = nil # static IP addresses for network load balancer
+      config.elb.type = "application"
 
       config.exec = ActiveSupport::OrderedOptions.new
       config.exec.command = "/bin/bash" # aws ecs execute-command cli

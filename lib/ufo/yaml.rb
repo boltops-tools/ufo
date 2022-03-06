@@ -8,6 +8,10 @@ module Ufo
         Validator.new(path).validate!
         Loader.new(text).load
       end
+
+      def validate!(path)
+        Validator.new(path).validate!
+      end
     end
   end
 end

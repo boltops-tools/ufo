@@ -1,5 +1,3 @@
-require "fileutils"
-
 class Ufo::CLI
   class Clean < Base
     def run
