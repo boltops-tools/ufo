@@ -50,10 +50,12 @@ class Ufo::CLI::Ps
     #  stopped_at=2018-07-05 22:03:45 -0700,
     def hide?
       return false if @options[:status] == "stopped"
-      started_at = time(@task["started_at"])
-      return false unless started_at # edge case when started_at not yet set
+      # Went back and forth with stopped_at vs started_at
+      # Seems like stopped_at is better as when ECS is trying to scale it leaves a lot of tasks
+      stopped_at = time(@task["stopped_at"])
+      return false unless stopped_at
       time = Time.now - 60 * Ufo.config.ps.hide_age
-      status == "STOPPED" && started_at < time
+      status == "STOPPED" && stopped_at < time
     end
 
     def status
