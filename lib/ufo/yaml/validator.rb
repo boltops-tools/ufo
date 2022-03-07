@@ -28,7 +28,7 @@ class Ufo::Yaml
       md = e.message.match(/at line (\d+) column (\d+)/)
       line = md[1].to_i
 
-      DslEvaluator.print_code(path, line_number)
+      DslEvaluator.print_code(path, line)
       exit 1
     end
   end
