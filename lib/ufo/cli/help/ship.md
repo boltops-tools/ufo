@@ -4,10 +4,6 @@ Here's an example:
 
     ufo ship
 
-Let's deploy
-
-    ufo ship
-
 You will be prompted to confirm before deployment.
 
     $ ufo ship
