@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [6.0.3] - 2022-03-07
+- [#133](https://github.com/tongueroo/ufo/pull/133) improve ufo central and add helpers
+
 ## [6.0.2] - 2022-03-06
 - [#128](https://github.com/tongueroo/ufo/pull/128) cleanup region with aws_data
 - [#129](https://github.com/tongueroo/ufo/pull/129) Scale and Ps Edge Cases
