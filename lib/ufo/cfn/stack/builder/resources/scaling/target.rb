@@ -21,12 +21,12 @@ module Ufo::Cfn::Stack::Builder::Resources::Scaling
 
   private
     def min_capacity
-      return autoscaling.min_capacity if vars[:new_stack] && !autoscaling.manual_changes.retain
+      return autoscaling.min_capacity if vars[:new_stack] || !autoscaling.manual_changes.retain
       scalable_target ? scalable_target.min_capacity : autoscaling.min_capacity
     end
 
     def max_capacity
-      return autoscaling.max_capacity if vars[:new_stack] && !autoscaling.manual_changes.retain
+      return autoscaling.max_capacity if vars[:new_stack] || !autoscaling.manual_changes.retain
       scalable_target ? scalable_target.max_capacity : autoscaling.max_capacity
     end
 
