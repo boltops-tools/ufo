@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [6.0.4] - 2022-03-07
+- ufo ps: use stopped at for old_age filter
+
 ## [6.0.3] - 2022-03-07
 - [#133](https://github.com/tongueroo/ufo/pull/133) improve ufo central and add helpers
 
