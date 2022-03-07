@@ -24,6 +24,9 @@ class Ufo::Cfn::Stack
       path = ".ufo/output/template.yml"
       IO.write("#{Ufo.root}/#{path}", text)
       logger.info "Template built:        #{path}"
+      # Only basic YAML validation. Doesnt check for everything CloudFormation checks.
+      # For CloudFormation checks handled with an exception handler in Cfn::Stack#print_code(exception)
+      Ufo::Yaml.validate!(path)
       text
     end
   end

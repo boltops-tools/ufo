@@ -8,5 +8,12 @@ class Ufo::CLI
     def update
       Update.new(options).run
     end
+
+    desc "clean", "remove ~/.ufo/central"
+    long_desc Help.text("central/clean")
+    opts.yes
+    def clean
+      Clean.new(options).run
+    end
   end
 end
