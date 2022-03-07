@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [6.0.5] - 2022-03-07
+- change default config.ship.docker.quiet = true
+
 ## [6.0.4] - 2022-03-07
 - ufo ps: use stopped at for old_age filter
 
