@@ -46,7 +46,10 @@ class Ufo::CLI
         r.logical_resource_id == "ScalingTarget"
       end
       register_scalable_target(scalable_target)
-      logger.info "Configured autoscaling to min: #{@min} max: #{@max}"
+      to = []
+      to << "min: #{@min}" if @min
+      to << "max: #{@max}" if @max
+      logger.info "Configured autoscaling to #{to.join(' ')}"
     end
 
     def register_scalable_target(scalable_target)
