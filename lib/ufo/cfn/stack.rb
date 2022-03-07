@@ -78,34 +78,18 @@ module Ufo::Cfn
     end
 
     def build
-      options_with_vars = @options.dup.merge(vars: vars.values)
+      vars = Vars.new(@options).values
+      options_with_vars = @options.dup.merge(vars: vars)
       params = Params.new(options_with_vars)
       @parameters = params.build
       template = Template.new(options_with_vars)
       @template_body = template.body
     end
 
-    def vars
-      o = @options.merge(
-        cluster: @cluster,
-        stack_name: @stack_name,
-        stack: @stack,
-      )
-      o[:rollback_task_definition] = rollback_task_definition if rollback_task_definition
-      Vars.new(o)
-    end
-    memoize :vars
-
     def scheduling_strategy
       scheduling_strategy = Ufo.config.ecs.scheduling_strategy
       scheduling_strategy.upcase if scheduling_strategy
     end
-
-    def rollback_task_definition
-      return unless @options[:rollback]
-      @options[:rollback_task_definition]
-    end
-    memoize :rollback_task_definition
 
     def exit_with_message(stack)
       url = "https://console.aws.amazon.com/cloudformation/home?region=#{region}#/stacks"

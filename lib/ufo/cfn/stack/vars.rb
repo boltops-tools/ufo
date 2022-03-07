@@ -1,31 +1,39 @@
 class Ufo::Cfn::Stack
   class Vars < Ufo::Cfn::Base
     attr_reader :stack_name
-    def initialize(options={})
-      super
-      @cluster = options[:cluster].dup # Thor options are frozen, we thaw it because CustomProperties#substitute_variables does a sub!
-      @stack_name = options[:stack_name] || [Ufo.app, @task_definition.role, Ufo.env].join('-')
-      @stack = options[:stack]
-      @new_stack = !@stack
-    end
 
     def values
+      # Not passing stack down to vars beause its easier to debug. Will require another lookup by thats ok
       {
         cluster: @cluster,
-        stack_name: @stack_name, # used in custom_properties
         container: container,
-        # to reconstruct TaskDefinition in the CloudFormation template
-        task_definition: @task_definition,
-        rollback_task_definition: @options[:rollback_task_definition],
-        # elb options remember that their 'state'
         create_elb: create_elb?, # helps set Ecs DependsOn
-        elb_type: elb_type,
+        create_listener_ssl: create_listener_ssl?,
         create_route53: create_elb? && dns_configured?,
-        default_target_group_protocol: default_target_group_protocol,
         default_listener_protocol: default_listener_protocol,
         default_listener_ssl_protocol: default_listener_ssl_protocol,
-        create_listener_ssl: create_listener_ssl?,
+        default_target_group_protocol: default_target_group_protocol,
+        elb_type: elb_type,
+        new_stack: new_stack,
+        rollback_task_definition: rollback_task_definition,
+        stack_name: @stack_name, # used in custom_properties
+        task_definition: @task_definition, # to reconstruct TaskDefinition for CloudFormation template
       }
+    end
+
+    def new_stack
+      !stack
+    end
+
+    # Find stack in vars to ensure both ufo build and ufo ship can tell if stack has already been built
+    def stack
+      find_stack(@stack_name)
+    end
+    memoize :stack
+
+    def rollback_task_definition
+      return unless @options[:rollback]
+      @options[:rollback_task_definition]
     end
 
     def dns_configured?

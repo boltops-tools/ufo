@@ -21,12 +21,16 @@ module Ufo
 
       config.autoscaling = ActiveSupport::OrderedOptions.new
       config.autoscaling.enabled = true
+      config.autoscaling.manual_changes = ActiveSupport::OrderedOptions.new
+      config.autoscaling.manual_changes.retain = false
+      config.autoscaling.manual_changes.warning = true
       config.autoscaling.max_capacity = 5 # dont use max thats an OrderedOptions method
       config.autoscaling.min_capacity = 1 # dont use min thats an OrderedOptions method
       config.autoscaling.predefined_metric_type = "ECSServiceAverageCPUUtilization"
       config.autoscaling.scale_in_cooldown = nil
       config.autoscaling.scale_out_cooldown = nil
       config.autoscaling.target_value = 75.0
+
 
       config.cfn = ActiveSupport::OrderedOptions.new
       config.cfn.disable_rollback = nil
@@ -104,9 +108,6 @@ module Ufo
       config.secrets.pattern.secretsmanager = ":APP-:ENV-:SECRET_NAME" # => demo-dev-DB_PASS
       config.secrets.pattern.ssm = ":APP/:ENV/:SECRET_NAME" # => demo/dev/DB_PASS
       config.secrets.provider = "ssm" # default provider for conventional expansion IE: ssm or secretsmanager
-
-      config.scale = ActiveSupport::OrderedOptions.new
-      config.scale.warning = true
 
       config.ship = ActiveSupport::OrderedOptions.new
       config.ship.docker = ActiveSupport::OrderedOptions.new

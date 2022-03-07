@@ -64,7 +64,7 @@ module Ufo
       dns_name = output.output_value if output
       return unless dns_name
 
-      ssl = stack_resources.detect.find do |r|
+      ssl = stack_resources.find do |r|
         r.logical_resource_id == "ListenerSsl"
       end
 

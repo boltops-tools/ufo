@@ -103,6 +103,13 @@ module Ufo
       end
     end
 
+    def stack_resources(stack_name)
+      resp = cloudformation.describe_stack_resources(stack_name: stack_name)
+      resp.stack_resources
+    rescue Aws::CloudFormation::Errors::ValidationError => e
+      e.message.include?("does not exist") ? return : raise
+    end
+
     def task_definition_arns(family, max_items=10)
       resp = ecs.list_task_definitions(
         family_prefix: family,
