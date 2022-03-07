@@ -65,18 +65,21 @@ class Ufo::CLI
     end
 
     def warning
-      return unless Ufo.config.scale.warning
+      autoscaling = Ufo.config.autoscaling
+      return if autoscaling.manual_changes.warning == false or autoscaling.manual_changes.retain
       logger.info <<~EOL
         Note: The settings are temporary.
         They can be overwritten in the next `ufo ship` deploy.
-        To make the settings permanent update your ufo config.
 
-        See: https://ufoships.com/docs/config/
+        You can turn off this warning with
 
-        You can also turn off this warning with
+            config.autoscaling.warning = false
 
-            config.scale.warning = false
+        Or you can use the
 
+            config.autoscaling.manual_changes.retain = true
+
+        For considerations, see: https://ufoships.com/docs/features/autoscaling/
       EOL
     end
   end

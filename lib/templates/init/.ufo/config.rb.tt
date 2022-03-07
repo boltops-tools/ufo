@@ -13,8 +13,9 @@ Ufo.configure do |config|
 
   # AutoScaling Docs: https://ufoships.com/docs/features/autoscaling/
   # config.autoscaling.enabled = true
-  # config.autoscaling.min_capacity = 2
+  # config.autoscaling.manual_changes.retain = false
   # config.autoscaling.max_capacity = 3
+  # config.autoscaling.min_capacity = 2
   # config.autoscaling.target_value = 50.0
 
   # Route DNS Docs: https://ufoships.com/docs/features/dns-route53-support/
@@ -23,7 +24,7 @@ Ufo.configure do |config|
   # Ufo exec Docs: https://ufoships.com/docs/intro/ufo-exec/
   # bash is default but may not be available your Docker image
   # Configure to /bin/sh if needed
-  # config.ecs.default_execute_command = "/bin/bash"
+  # config.exec.command = "/bin/bash"
 
   # Docs: https://ufoships.com/docs/config/reference/
   # config.ps.summary = false # false to turn off the summary at top of ufo ps output
