@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [6.0.6] - 2022-03-07
+- [#134](https://github.com/tongueroo/ufo/pull/134) config.autoscaling.manual_changes.retain support
+- change default `elb.healthy_threshold_count = 3`
+- change default `config.ship.docker.quiet = true`
+- config.autoscaling.manual_changes.retain support
+- fix yaml validator print code
+- ship cli help
+
 ## [6.0.5] - 2022-03-07
 - change default config.ship.docker.quiet = true
 
