@@ -111,7 +111,7 @@ module Ufo
 
       config.ship = ActiveSupport::OrderedOptions.new
       config.ship.docker = ActiveSupport::OrderedOptions.new
-      config.ship.docker.quiet = true # only affects ufo ship docker commands output
+      config.ship.docker.quiet = false # only affects ufo ship docker commands output
 
       config.state = ActiveSupport::OrderedOptions.new
       config.state.reminder = true
