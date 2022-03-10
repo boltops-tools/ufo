@@ -18,7 +18,7 @@ module Ufo
 
     def run_hook(env=nil)
       name = env ? "boot/#{env}" : "boot"
-      path = "#{Ufo.root}/.ufo/#{name}.rb" # IE: .ufo/boot/dev.rb
+      path = "#{Ufo.root}/.ufo/config/#{name}.rb" # IE: .ufo/boot/dev.rb
       require path if File.exist?(path)
     end
 
