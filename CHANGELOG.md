@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [6.0.9] - 2022-03-10
+- fix config.autoscaling.manual_changes.warning cli help hint
+
 ## [6.0.8] - 2022-03-10
 - [#135](https://github.com/tongueroo/ufo/pull/135) improve .ufo/config/boot.rb location
 - change default config.ship.docker.quiet to false
