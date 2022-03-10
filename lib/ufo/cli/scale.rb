@@ -76,7 +76,7 @@ class Ufo::CLI
 
         You can turn off this warning with
 
-            config.autoscaling.warning = false
+            config.autoscaling.manual_changes.warning = false
 
         Or you can use the
 
