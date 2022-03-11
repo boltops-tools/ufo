@@ -3,7 +3,7 @@ require "aws_data"
 module Ufo::TaskDefinition::Helpers
   class Vars
     extend Memoist
-    include AwsDataHelper
+    include AwsHelper
     include Ufo::Concerns::Names
     include Ufo::Utils::Pretty
 
