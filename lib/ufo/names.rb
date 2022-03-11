@@ -10,7 +10,11 @@ module Ufo
     end
 
     def cluster
-      expansion(Ufo.config.ecs.cluster) # IE: :ENV => dev
+      string = callable_option(
+        config_name: "ecs.cluster", # Ufo.ecs.cluster => :ENV => dev
+        passed_args: [self],
+      )
+      expansion(string) # IE: :ENV => dev
     end
     memoize :cluster
 
@@ -19,8 +23,7 @@ module Ufo
     # When UFO_EXTRA=1:       :APP-:ROLE-:ENV-:EXTRA => demo-web-dev-2
     def stack
       string = callable_option(
-        config_name: "config.names.stack",
-        config_value: Ufo.config.names.stack,
+        config_name: "names.stack", # Ufo.config.names.stack => :APP-:ROLE-:ENV => demo-web-dev
         passed_args: [self],
       )
       expansion(string) # IE: :APP-:ROLE-:ENV => demo-web-dev
@@ -32,8 +35,7 @@ module Ufo
     # When UFO_EXTRA=1:       :APP-:ROLE-:ENV-:EXTRA => demo-web-dev-2
     def task_definition
       string = callable_option(
-        config_name: "config.names.task_definition",
-        config_value: Ufo.config.names.task_definition,
+        config_name: "names.task_definition", # Ufo.config.names.task_definition => :APP-:ROLE-:ENV => demo-web-dev
         passed_args: [self],
       )
       expansion(string) # IE: :APP-:ROLE-:ENV => demo-web-dev

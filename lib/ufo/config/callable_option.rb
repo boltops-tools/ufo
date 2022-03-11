@@ -12,12 +12,18 @@ class Ufo::Config
     def initialize(options={})
       @options = options
       # Example:
-      # config_name:  config.names.stack
+      # config_name:  names.stack
       # config_value: Ufo.config.names.stack
       # args:         [self] # passed to object.call
       @config_name = options[:config_name]
-      @config_value = options[:config_value]
+      @config_value = options[:config_value] || inferred_config_value
+      @config_name = "config.#{@config_name}" unless @config_name.include?("config.")
       @passed_args = options[:passed_args]
+    end
+
+    def inferred_config_value
+      args = @options[:config_name].split('.').map(&:to_sym) # @options before @config_name is adjust to have full config name
+      Ufo.config.dig(*args)
     end
 
     # Returns either an Array or nil
