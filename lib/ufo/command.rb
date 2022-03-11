@@ -39,6 +39,7 @@ module Ufo
         # This requires Ufo.role.
         # So we set Ufo.role before triggering Ufo.config loading
         check_project!(args)
+        check_old_version_structure!(args)
         # Special case for `ufo central` commands.
         # Dont want to call configure_dsl_evaluator
         # and trigger loading of config => .ufo/config.rb
@@ -103,6 +104,22 @@ module Ufo
 
         logger.error "ERROR: It doesnt look like this is a ufo project. Are you sure you are in a ufo project?".color(:red)
         ENV['UFO_TEST'] ? raise : exit(1)
+      end
+
+      def check_old_version_structure!(args)
+        return unless File.exist?('.ufo/settings.yml')
+        puts "ERROR: Old .ufo configurations detected".color(:red)
+        puts <<~EOL
+          It looks like this project .ufo files for an older ufo version.
+          The old .ufo structure does not work with this version of ufo.
+
+          Current Installed UFO Version: 6.0.9
+
+          Please upgrade.
+
+          See: https://ufoships.com/docs/upgrading/upgrade6/
+        EOL
+        exit 1
       end
 
       # Override command_help to include the description at the top of the
