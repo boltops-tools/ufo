@@ -26,7 +26,7 @@ module Ufo
       config.autoscaling.manual_changes.warning = true
       config.autoscaling.max_capacity = 5 # dont use max thats an OrderedOptions method
       config.autoscaling.min_capacity = 1 # dont use min thats an OrderedOptions method
-      config.autoscaling.predefined_metric_type = "ECSServiceAverageCPUUtilization"
+      config.autoscaling.predefined_metric_type = "ECSServiceAverageMemoryUtilization"
       config.autoscaling.scale_in_cooldown = nil
       config.autoscaling.scale_out_cooldown = nil
       config.autoscaling.target_value = 75.0
