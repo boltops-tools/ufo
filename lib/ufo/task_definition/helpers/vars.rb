@@ -6,6 +6,7 @@ module Ufo::TaskDefinition::Helpers
     include AwsHelper
     include Ufo::Concerns::Names
     include Ufo::Utils::Pretty
+    include Ufo::Config::CallableOption::Concern
 
     def initialize(options={})
       # use either file or text. text takes higher precedence
@@ -89,7 +90,12 @@ module Ufo::TaskDefinition::Helpers
       secrets = Ufo.config.secrets
       provider = secrets.provider # ssm or secretsmanager
       namespace = provider == "ssm" ? "parameter/" : "secret:"
-      pattern = secrets.pattern[provider] # IE: Ufo.config.secrets.pattern.ssm => :APP/:ENV/:SECRET_NAME
+
+      config_name = "secrets.pattern.#{provider}"
+      pattern = callable_option(
+        config_name: config_name, # Ufo.config.names.stack => :APP-:ROLE-:ENV => demo-web-dev
+        passed_args: [self],
+      )
       # replace :SECRET_NAME since names expand doesnt know how to nor do we want to add logic there
       pattern = pattern.sub(':SECRET_NAME', name)
       "arn:aws:#{provider}:#{region}:#{account}:#{namespace}#{pattern}"
