@@ -38,8 +38,15 @@ module Ufo
         # loads Ufo.config and Ufo::Config#load_project_config
         # This requires Ufo.role.
         # So we set Ufo.role before triggering Ufo.config loading
-        configure_dsl_evaluator
         check_project!(args)
+        # Special case for `ufo central` commands.
+        # Dont want to call configure_dsl_evaluator
+        # and trigger loading of config => .ufo/config.rb
+        # Also, using ARGV instead of args because args is called by thor in multiple passes
+        # For `ufo central update`:
+        # * 1st pass: "central"
+        # * 2nd pass: "update"
+        configure_dsl_evaluator unless ARGV[0] == "central"
 
         # Allow calling for help via:
         #   ufo command help

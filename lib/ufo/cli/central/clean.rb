@@ -4,7 +4,7 @@ class Ufo::CLI::Central
       path = "#{ENV['HOME']}/.ufo/central"
       sure?("Will remove folder with repo caches: #{pretty_home(path)}")
       FileUtils.rm_rf(path)
-      logger.info "Removed: #{pretty_home(path)}"
+      log "Removed: #{pretty_home(path)}"
     end
   end
 end
