@@ -13,12 +13,17 @@ module Ufo
     end
     memoize :cluster
 
+    # Examples:
+    # When UFO_EXTRA not set: :APP-:ROLE-:ENV-:EXTRA => demo-web-dev
+    # When UFO_EXTRA=1:       :APP-:ROLE-:ENV-:EXTRA => demo-web-dev-2
     def stack
-      name = expansion(Ufo.config.names.stack) # IE: :APP-:ROLE-:ENV => demo-web-dev
-      [name, Ufo.extra].compact.join('-')
+      expansion(Ufo.config.names.stack) # IE: :APP-:ROLE-:ENV => demo-web-dev
     end
     memoize :stack
 
+    # Examples:
+    # When UFO_EXTRA not set: :APP-:ROLE-:ENV-:EXTRA => demo-web-dev
+    # When UFO_EXTRA=1:       :APP-:ROLE-:ENV-:EXTRA => demo-web-dev-2
     def task_definition
       expansion(Ufo.config.names.task_definition) # IE: :APP-:ROLE-:ENV => demo-web-dev
     end
@@ -28,7 +33,7 @@ module Ufo
       return string unless string.is_a?(String) # in case of nil
 
       string = string.dup
-      vars = string.scan(/:\w+/) # => [":APP", ":ROLE", :ENV"]
+      vars = string.scan(/:\w+/) # => [":APP", ":ROLE", :ENV", ":EXTRA"]
       vars.each do |var|
         string.gsub!(var, var_value(var))
       end
@@ -60,5 +65,9 @@ module Ufo
       Ufo.env
     end
     alias_method :ufo_env, :env
+
+    def extra
+      Ufo.extra
+    end
   end
 end

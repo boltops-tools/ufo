@@ -95,8 +95,8 @@ module Ufo
       config.logs.filter_pattern = nil
 
       config.names = ActiveSupport::OrderedOptions.new
-      config.names.stack = ":APP-:ROLE-:ENV" # => demo-web-dev
-      config.names.task_definition = ":APP-:ROLE-:ENV" # => demo-web-dev
+      config.names.stack = ":APP-:ROLE-:ENV-:EXTRA" # => demo-web-dev
+      config.names.task_definition = ":APP-:ROLE-:ENV-:EXTRA" # => demo-web-dev
 
       config.ps = ActiveSupport::OrderedOptions.new
       config.ps.format = "auto" # CliFormat.default_format

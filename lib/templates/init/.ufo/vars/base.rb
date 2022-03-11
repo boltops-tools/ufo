@@ -13,7 +13,7 @@
 @memory = 256
 @memory_reservation = 256
 
-@awslogs_group = ["ecs/#{Ufo.app}", Ufo.env, Ufo.extra].compact.join('-')
+@awslogs_group = expansion("ecs/:APP-:ENV-:EXTRA")
 @awslogs_stream_prefix = role
 @awslogs_region = aws_region
 
