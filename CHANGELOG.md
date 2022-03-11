@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [6.1.0] - 2022-03-11
+- [#136](https://github.com/tongueroo/ufo/pull/136) ufo central: dont load config
+- [#137](https://github.com/tongueroo/ufo/pull/137) ufo new boot_hook generator
+- [#138](https://github.com/tongueroo/ufo/pull/138) default config.autoscaling.predefined_metric_type = ECSServiceAverageMemoryUtilization
+- [#139](https://github.com/tongueroo/ufo/pull/139) ELB WAF Support
+- [#140](https://github.com/tongueroo/ufo/pull/140) warn user when ecr repo not found
+- [#141](https://github.com/tongueroo/ufo/pull/141) check old version and show upgrade message to user
+- [#142](https://github.com/tongueroo/ufo/pull/142) ufo exec: check stack exists
+- [#143](https://github.com/tongueroo/ufo/pull/143) Aws helper
+- [#144](https://github.com/tongueroo/ufo/pull/144) support :EXTRA in expansion and include as default for names
+- [#145](https://github.com/tongueroo/ufo/pull/145) Callable options: ecs.cluster, names.stack, names.task_definition, secrets.pattern.ssm
+- Ufo.app config loaded check to avoid accidental infinite loop
+
 ## [6.0.9] - 2022-03-10
 - fix config.autoscaling.manual_changes.warning cli help hint
 
