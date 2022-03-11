@@ -116,6 +116,9 @@ module Ufo
       config.state = ActiveSupport::OrderedOptions.new
       config.state.reminder = true
 
+      config.waf = ActiveSupport::OrderedOptions.new
+      config.waf.web_acl_arn = nil
+
       # When not set, the default vpc is used
       config.vpc = ActiveSupport::OrderedOptions.new
       config.vpc.id = nil

@@ -7,6 +7,7 @@ require "aws-sdk-ecr"
 require "aws-sdk-ecs"
 require "aws-sdk-elasticloadbalancingv2"
 require "aws-sdk-ssm"
+require "aws-sdk-wafv2"
 
 require "aws_mfa_secure/ext/aws" # add MFA support
 require "cfn_status"
@@ -55,10 +56,17 @@ module Ufo
     end
     memoize :elb
 
+    # ssm is a helper method
     def ssm_client
-      Aws::SSM::Client.new
+      Aws::SSM::Client.new(aws_options)
     end
     memoize :ssm_client
+
+    # waf is a helper method
+    def waf_client
+      Aws::WAFV2::Client.new(aws_options)
+    end
+    memoize :waf_client
 
     # Override the AWS retry settings with AWS clients.
     #
