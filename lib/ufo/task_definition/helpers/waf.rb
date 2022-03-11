@@ -1,5 +1,6 @@
 module Ufo::TaskDefinition::Helpers
   module Waf
+    include Ufo::Utils::CallLine
     include Ufo::Utils::Pretty
 
     # Waf names are uniq within their scope. Tested with AWS console
@@ -18,9 +19,9 @@ module Ufo::TaskDefinition::Helpers
         web_acl.arn
       else
         # Logger causes infinite loop when waf helper used in .ufo/
-        call_line = pretty_path(caller[0])
-        logger.info <<~EOL.color(:yellow)
-          WARN: Web ACL not found: #{name}
+        call_line = ufo_config_call_line
+        logger.warn "WARN: Web ACL not found: #{name}".color(:yellow)
+        logger.info <<~EOL
           Called from:
 
               #{call_line}
