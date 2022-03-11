@@ -24,6 +24,7 @@
 module Ufo::Cfn
   class Stack < Base
     extend Memoist
+    include Ufo::TaskDefinition::Helpers::AwsHelper
 
     def deploy
       build
@@ -160,11 +161,5 @@ module Ufo::Cfn
         logger.info "The stack is not in a state to that is cancelable: #{stack.stack_status}"
       end
     end
-
-    delegate :region, to: :aws
-    def aws
-      AwsData.new
-    end
-    memoize :aws
   end
 end

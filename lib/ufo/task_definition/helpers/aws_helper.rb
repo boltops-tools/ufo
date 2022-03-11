@@ -1,18 +1,18 @@
 module Ufo::TaskDefinition::Helpers
-  module AwsDataHelper
+  module AwsHelper
     extend Memoist
     extend ActiveSupport::Concern
 
     included do
-      delegate :account, :region, to: :aws_data
+      delegate :account, :region, to: :aws
       alias_method :aws_region, :region
       alias_method :current_region, :region
     end
 
     # Duplicated in vars.rb
-    def aws_data
+    def aws
       AwsData.new
     end
-    memoize :aws_data
+    memoize :aws
   end
 end

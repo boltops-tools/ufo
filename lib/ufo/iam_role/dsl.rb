@@ -1,6 +1,7 @@
 module Ufo::IamRole
   class DSL
     include DslEvaluator
+    include Ufo::TaskDefinition::Helpers::AwsHelper
 
     def initialize(path)
       @path = path # IE: .ufo/iam_roles/task_role.rb
@@ -18,10 +19,6 @@ module Ufo::IamRole
     def managed_iam_policy(*policies)
       role_type = File.basename(@path).sub('.rb','') # task_role or execution_role
       Registry.register_managed_policy(role_type, policies)
-    end
-
-    def aws
-      AwsData.new
     end
   end
 end

@@ -1,6 +1,7 @@
 module Ufo
   class Names
     extend Memoist
+    include Ufo::TaskDefinition::Helpers::AwsHelper
 
     attr_reader :role
     def initialize
@@ -59,11 +60,5 @@ module Ufo
       Ufo.env
     end
     alias_method :ufo_env, :env
-
-    delegate :region, to: :aws
-    def aws
-      AwsData.new
-    end
-    memoize :aws
   end
 end

@@ -28,7 +28,7 @@ class Ufo::CLI
 
       task_name = task.task_arn.split('/').last
       execute_command(
-        cluster: "#{@cluster}",
+        cluster: @cluster,
         task: task_name,
         container: container(task), # only required if multiple containers in a task
         interactive: true,
