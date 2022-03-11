@@ -4,7 +4,7 @@ class Ufo::CLI::Central
       validate!
       action = File.exist?(".ufo") ? "update" : "create"
       sure?("Will #{action} the .ufo symlink") # IE: Will create the .ufo symlink
-      logger.info "Updating .ufo with #{central_repo}"
+      log "Updating .ufo with #{central_repo}"
       FileUtils.mkdir_p(tmp_area)
       pull
       symlink
@@ -12,7 +12,6 @@ class Ufo::CLI::Central
     end
 
     def pull
-      logger.debug "Within #{tmp_area}"
       Dir.chdir(tmp_area) do
         if File.exist?(repo)
           execute "cd #{repo} && git pull"
@@ -36,8 +35,8 @@ class Ufo::CLI::Central
 
       report_broken_symlink
 
-      logger.info "The .ufo symlink has been updated"
-      logger.info "Symlink: .ufo -> #{pretty_home(src)}"
+      log "The .ufo symlink has been updated"
+      log "Symlink: .ufo -> #{pretty_home(src)}"
     end
 
     def report_broken_symlink
@@ -62,8 +61,8 @@ class Ufo::CLI::Central
 
     def validate!
       return if central_repo
-      logger.info "ERROR: Please set the env var: UFO_CENTRAL_REPO".color(:red)
-      logger.info "The ufo central update command requires it."
+      log "ERROR: Please set the env var: UFO_CENTRAL_REPO".color(:red)
+      log "The ufo central update command requires it."
       exit 1
     end
 
@@ -104,8 +103,8 @@ class Ufo::CLI::Central
         end
       end
       return if ok
-      logger.info "No .ufo found in your .gitignore file".color(:yellow)
-      logger.info <<~EOL
+      log "No .ufo found in your .gitignore file".color(:yellow)
+      log <<~EOL
         It's recommended to add .ufo to the .gitignore
         When using ufo in a central fashion
       EOL
