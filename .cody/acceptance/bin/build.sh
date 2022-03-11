@@ -69,7 +69,7 @@ TASK=$(ufo ps --format json | jq -r '.[0].Task')
 echo "TASK $TASK"
 
 # TODO: create fargate spot cluster
-CLUSTER=dev
+CLUSTER=qa
 # Just show for now. Might have to add wait logic to confirm new settings
 aws ecs describe-tasks --cluster $CLUSTER --tasks $TASK \
     | jq '.tasks[].containers[] | {cpu: .cpu, memory: .memory}'
