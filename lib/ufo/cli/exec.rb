@@ -2,8 +2,18 @@ class Ufo::CLI
   class Exec < Base
     def run
       check_install!
+      stack = info.stack
+      unless stack
+        logger.error "Stack not found: #{@stack_name}".color(:red)
+        exit 1
+      end
+
       service = info.service
-      return unless service # brand new deploy
+      unless service # brand new deploy
+        logger.error "ECS Service not yet available".color(:red)
+        logger.info "Try again in a little bit"
+        exit 1
+      end
 
       running = service_tasks.select do |task|
         task.last_status == "RUNNING"
