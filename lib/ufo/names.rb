@@ -2,6 +2,7 @@ module Ufo
   class Names
     extend Memoist
     include Ufo::TaskDefinition::Helpers::AwsHelper
+    include Ufo::Config::CallableOption::Concern
 
     attr_reader :role
     def initialize
@@ -9,7 +10,11 @@ module Ufo
     end
 
     def cluster
-      expansion(Ufo.config.ecs.cluster) # IE: :ENV => dev
+      string = callable_option(
+        config_name: "ecs.cluster", # Ufo.ecs.cluster => :ENV => dev
+        passed_args: [self],
+      )
+      expansion(string) # IE: :ENV => dev
     end
     memoize :cluster
 
@@ -17,7 +22,11 @@ module Ufo
     # When UFO_EXTRA not set: :APP-:ROLE-:ENV-:EXTRA => demo-web-dev
     # When UFO_EXTRA=1:       :APP-:ROLE-:ENV-:EXTRA => demo-web-dev-2
     def stack
-      expansion(Ufo.config.names.stack) # IE: :APP-:ROLE-:ENV => demo-web-dev
+      string = callable_option(
+        config_name: "names.stack", # Ufo.config.names.stack => :APP-:ROLE-:ENV => demo-web-dev
+        passed_args: [self],
+      )
+      expansion(string) # IE: :APP-:ROLE-:ENV => demo-web-dev
     end
     memoize :stack
 
@@ -25,7 +34,11 @@ module Ufo
     # When UFO_EXTRA not set: :APP-:ROLE-:ENV-:EXTRA => demo-web-dev
     # When UFO_EXTRA=1:       :APP-:ROLE-:ENV-:EXTRA => demo-web-dev-2
     def task_definition
-      expansion(Ufo.config.names.task_definition) # IE: :APP-:ROLE-:ENV => demo-web-dev
+      string = callable_option(
+        config_name: "names.task_definition", # Ufo.config.names.task_definition => :APP-:ROLE-:ENV => demo-web-dev
+        passed_args: [self],
+      )
+      expansion(string) # IE: :APP-:ROLE-:ENV => demo-web-dev
     end
     memoize :task_definition
 
