@@ -18,6 +18,8 @@ class Ufo::Cfn::Stack::Builder
         ScalingRole: Scaling::Role.build(@options),
         ScalingTarget: Scaling::Target.build(@options),
         ScalingPolicy: Scaling::Policy.build(@options),
+        # WAF Assocation
+        WafAssociation: WafAssociation.build(@options),
       }
     end
   end

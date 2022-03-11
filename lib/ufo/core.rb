@@ -41,16 +41,25 @@ module Ufo
     end
 
     # Generally, use the Lono.config instead of Config.instance.config since it guarantees the load_project_config call
+    cattr_accessor :config_loaded
     def config
       Config.instance.load_project_config
+      @@config_loaded = true
       Config.instance.config
     end
     memoize :config
 
-    # allow different logger when running up all or rspec-lono
+    # Allow different logger when running up all or rspec-lono
     cattr_writer :logger
     def logger
-      @@logger ||= config.logger
+      if @@config_loaded
+        @@logger = config.logger
+      else
+        # Hackery for case when .ufo/config.rb is not yet loaded. IE: a helper method like waf
+        # gets called in the .ufo/config.rb itself and uses the logger.
+        # This avoids an infinite loop
+        @@logger ||= Logger.new(ENV['UFO_LOG_PATH'] || $stderr)
+      end
     end
   end
 end
