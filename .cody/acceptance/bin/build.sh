@@ -39,6 +39,8 @@ cat .ufo/resources/task_definitions/web.yml
 cat .ufo/vars/base.rb
 cat .ufo/vars/dev.rb
 
+export UFO_ENV=qa
+
 # Deploy
 ufo ship -y
 # Check
@@ -53,6 +55,11 @@ cat << EOF > .ufo/vars/dev.rb
 EOF
 
 cat << EOF > .ufo/config/web/dev.rb
+Ufo.configure do |config|
+  config.autoscaling.max_capacity = 3
+end
+EOF
+cat << EOF > .ufo/config/web/qa.rb
 Ufo.configure do |config|
   config.autoscaling.max_capacity = 3
 end
