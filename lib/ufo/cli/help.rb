@@ -18,13 +18,10 @@ class Ufo::CLI
         list.sort! { |a, b| a[0] <=> b[0] }
         filter = Proc.new do |command, desc|
           command = command.sub(/ --.*/,'')
-          puts "command #{command.inspect}".color(:yellow)
           detected = main_commands.detect do |c|
             expr = "^ufo #{c}$"
-            puts "expr #{expr}"
             command =~ Regexp.new(expr)
           end
-          puts "detected #{detected.inspect}"
           detected
         end
         main = list.select(&filter)

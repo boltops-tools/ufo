@@ -4,13 +4,9 @@ class Ufo::Cfn::Stack
     include Ufo::TaskDefinition::Helpers
 
     def id
-      vpc.id ? vpc.id : default_vpc
+      vpc.id if vpc.id # nil means ECS Service uses default VPC
     end
     alias_method :vpc_id, :id
-
-    def vpc
-      Ufo.config.vpc
-    end
 
     def elb_subnets
       subnets(vpc.subnets.elb)
@@ -24,8 +20,13 @@ class Ufo::Cfn::Stack
       if subnets
         subnets.is_a?(String) ? subnets : subnets.join(',')
       else
-        subnets_for(vpc_id).join(',') # default vpc subnets or all subnets for the configured vpc
+        subnets_for(vpc_id).join(',') if id # nil means ECS Service uses default subnets
       end
+    end
+
+  private
+    def vpc
+      Ufo.config.vpc
     end
   end
 end
