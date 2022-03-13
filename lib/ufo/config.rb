@@ -187,14 +187,12 @@ module Ufo
       add_ext!(paths)
     end
 
-      def add_ext!(paths)
-      ext = "rb"
+    def add_ext!(paths)
       paths.map! do |path|
         path = path.sub(/\/$/,'') if path.ends_with?('/')
         "#{path}.rb"
       end
       paths
     end
-
-end
+  end
 end
