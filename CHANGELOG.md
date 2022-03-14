@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [6.1.2] - 2022-03-14
+- [#148](https://github.com/tongueroo/ufo/pull/148) Acm cert and user messaging improvements with config
+- acm_cert helper improvements: warn when not found and only create ssl listener if cert is found
+- improve squeezer: prevent infinite loop for edge case when data is [nil]
+- messaging improvements: provide exact line of context of the config with the issue
+- update dsl_evaluator dependency to at least 0.3.0
+
 ## [6.1.1] - 2022-03-14
 - [#146](https://github.com/tongueroo/ufo/pull/146) dont set default vpc explicitly, instead use implicit setting
 - [#147](https://github.com/tongueroo/ufo/pull/147) explicitly set default vpc when not set cloudformation resources expect it
