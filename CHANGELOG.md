@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [6.1.3] - 2022-03-14
+- [#149](https://github.com/tongueroo/ufo/pull/149) stack_output helper improve message when stack not found
+
 ## [6.1.2] - 2022-03-14
 - [#148](https://github.com/tongueroo/ufo/pull/148) Acm cert and user messaging improvements with config
 - acm_cert helper improvements: warn when not found and only create ssl listener if cert is found
