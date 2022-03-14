@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [6.1.1] - 2022-03-14
+- [#146](https://github.com/tongueroo/ufo/pull/146) dont set default vpc explicitly, instead use implicit setting
+- [#147](https://github.com/tongueroo/ufo/pull/147) explicitly set default vpc when not set cloudformation resources expect it
+- clean up debugging puts in cli help
+
 ## [6.1.0] - 2022-03-11
 - [#136](https://github.com/tongueroo/ufo/pull/136) ufo central: dont load config
 - [#137](https://github.com/tongueroo/ufo/pull/137) ufo new boot_hook generator
