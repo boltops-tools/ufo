@@ -3,8 +3,7 @@ module Ufo::Utils
     include Pretty
 
     def ufo_config_call_line
-      call_line = caller.find { |l| l.include?('.ufo/') }
-      pretty_path(call_line)
+      caller.find { |l| l.include?('.ufo/') }
     end
   end
 end

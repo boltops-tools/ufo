@@ -13,15 +13,9 @@ module Ufo::TaskDefinition::Helpers
         cert.certificate_arn
       else
         # Logger causes infinite loop when waf helper used in .ufo/
-        call_line = ufo_config_call_line
         logger.warn "WARN: ACM cert not found: #{domain}".color(:yellow)
-        logger.info <<~EOL
-          Called from:
-
-              #{call_line}
-
-          Are you sure it's exists?
-        EOL
+        call_line = ufo_config_call_line
+        DslEvaluator.print_code(call_line)
         nil
       end
     end
