@@ -11,14 +11,9 @@ module Ufo::TaskDefinition::Helpers
       resp = ecr.describe_repositories(repository_names: [name])
       resp.repositories.first
     rescue Aws::ECR::Errors::RepositoryNotFoundException => e
-      call_line = ufo_config_call_line
       logger.warn "WARN: #{e.class} #{e.message}".color(:yellow)
-      logger.warn <<~EOL
-        Called from
-
-            #{call_line}
-
-      EOL
+      call_line = ufo_config_call_line
+      DslEvaluator.print_code(call_line)
       nil
     end
   end

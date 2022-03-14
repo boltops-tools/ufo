@@ -16,7 +16,6 @@ module Ufo
       if @@config_loaded
         config.app
       else
-        call_line = caller.find {|l| l.include?('.ufo') }
         puts "ERROR: Using Ufo.app or :APP expansion very early in the UFO boot process".color(:red)
         puts <<~EOL.color(:red)
           The Ufo.app or :APP expansions are not yet available at this point
@@ -25,11 +24,9 @@ module Ufo
           1. Use the UFO_APP env var to set it, which allows it to be used.
           2. Hard code your actual app name.
 
-          Called from:
-
-              #{call_line}
-
         EOL
+        call_line = caller.find {|l| l.include?('.ufo') }
+        DslEvaluator.print_code(call_line)
         exit 1
       end
     end

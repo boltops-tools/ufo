@@ -9,7 +9,9 @@ module Ufo::Utils
 
       case data
       when Array
-        data.map! { |v| squeeze(v) }
+        # .compact prevents infinite loop when data = [nil] on accident
+        # IE: config.elb.ssl.certificates = acm_cert("domain.not.found")
+        data.compact.map! { |v| squeeze(v) }
       when Hash
         data.each_with_object({}) do |(k,v), squeezed|
           # only remove nil and empty Array values within Hash structures

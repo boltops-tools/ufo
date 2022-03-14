@@ -19,15 +19,9 @@ module Ufo::TaskDefinition::Helpers
         web_acl.arn
       else
         # Logger causes infinite loop when waf helper used in .ufo/
-        call_line = ufo_config_call_line
         logger.warn "WARN: Web ACL not found: #{name}".color(:yellow)
-        logger.info <<~EOL
-          Called from:
-
-              #{call_line}
-
-          Are you sure it's a regional WAF ACL?
-        EOL
+        call_line = ufo_config_call_line
+        DslEvaluator.print_code(call_line)
       end
     end
   end
