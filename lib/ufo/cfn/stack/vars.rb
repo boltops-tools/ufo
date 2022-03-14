@@ -59,7 +59,8 @@ class Ufo::Cfn::Stack
 
     # if the configuration is set to anything then enable it
     def create_listener_ssl?
-      Ufo.config.elb.ssl.enabled
+      elb = Ufo.config.elb
+      elb.ssl.enabled && elb.ssl.certificates
     end
 
     def create_elb?
