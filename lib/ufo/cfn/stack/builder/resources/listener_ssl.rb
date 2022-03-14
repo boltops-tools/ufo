@@ -27,11 +27,11 @@ class Ufo::Cfn::Stack::Builder::Resources
     # nil on purpose
     def certificates
       ssl = Ufo.config.elb.ssl
-      normalize(ssl.certificates)
+      normalize(ssl.certificates) if ssl.certificates
     end
 
     def normalize(*certs)
-      certs = certs.flatten
+      certs = certs.flatten.compact
       certs.map do |cert|
         if cert.is_a?(String)
           {CertificateArn: cert}
