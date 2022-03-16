@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [6.2.0] - 2022-03-16
+- [#152](https://github.com/tongueroo/ufo/pull/152) ufo docker base: s3 storage support
+
 ## [6.1.5] - 2022-03-16
 - [#151](https://github.com/tongueroo/ufo/pull/151) fix symlink when .git ext is in the repo
 
