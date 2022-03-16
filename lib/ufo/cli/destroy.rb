@@ -17,7 +17,7 @@ class Ufo::CLI
         return
       end
 
-      cloudformation.delete_stack(stack_name: @stack_name)
+      cfn.delete_stack(stack_name: @stack_name)
       puts "Deleting stack #{@stack_name.color(:green)}"
 
       return unless @options[:wait]

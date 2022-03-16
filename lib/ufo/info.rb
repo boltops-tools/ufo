@@ -73,7 +73,7 @@ module Ufo
     end
 
     def stack_resources
-      resp = cloudformation.describe_stack_resources(stack_name: @stack_name)
+      resp = cfn.describe_stack_resources(stack_name: @stack_name)
       resp.stack_resources
     end
     memoize :stack_resources

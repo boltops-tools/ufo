@@ -122,7 +122,7 @@ class Ufo::Cfn::Stack
 
     # refreshes the loaded events in memory
     def refresh_events
-      resp = cloudformation.describe_stack_events(stack_name: @stack_name)
+      resp = cfn.describe_stack_events(stack_name: @stack_name)
       @events = resp["stack_events"]
     rescue Aws::CloudFormation::Errors::ValidationError => e
       if e.message =~ /Stack .* does not exis/
