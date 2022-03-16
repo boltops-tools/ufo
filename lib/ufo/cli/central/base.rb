@@ -1,5 +1,6 @@
 class Ufo::CLI::Central
   class Base
+    include Ufo::Utils::Logging
     include Ufo::Utils::Pretty
     include Ufo::Utils::Sure
 
