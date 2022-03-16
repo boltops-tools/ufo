@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [6.1.4] - 2022-03-16
+- [#150](https://github.com/tongueroo/ufo/pull/150) ufo central: fix edge case when trying report broken symlink and logger not available
+
 ## [6.1.3] - 2022-03-14
 - [#149](https://github.com/tongueroo/ufo/pull/149) stack_output helper improve message when stack not found
 
