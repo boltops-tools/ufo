@@ -114,7 +114,10 @@ module Ufo
       config.ship.docker.quiet = false # only affects ufo ship docker commands output
 
       config.state = ActiveSupport::OrderedOptions.new
+      config.state.bucket = nil # Set to use existing bucket. When not set ufo creates a managed s3 bucket
+      config.state.managed = true # false will disable creation of managed bucket entirely
       config.state.reminder = true
+      config.state.storage = "s3" # s3 or file
 
       config.waf = ActiveSupport::OrderedOptions.new
       config.waf.web_acl_arn = nil

@@ -162,7 +162,7 @@ module Ufo::Docker
 
     def update_dockerfile
       updater = if File.exist?("#{Ufo.root}/Dockerfile.erb") # dont use @dockerfile on purpose
-        State.new(docker_image, @options)
+        State.new(@options.merge(base_image: docker_image))
       else
         Dockerfile.new(docker_image, @options)
       end

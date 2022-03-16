@@ -6,15 +6,16 @@ require "aws-sdk-ec2"
 require "aws-sdk-ecr"
 require "aws-sdk-ecs"
 require "aws-sdk-elasticloadbalancingv2"
+require "aws-sdk-s3"
 require "aws-sdk-ssm"
 require "aws-sdk-wafv2"
 
 require "aws_mfa_secure/ext/aws" # add MFA support
-require "cfn_status"
 
 module Ufo
   module AwsServices
     extend Memoist
+    include Concerns
 
     def acm
       Aws::ACM::Client.new(aws_options)
@@ -26,10 +27,10 @@ module Ufo
     end
     memoize :applicationautoscaling
 
-    def cloudformation
+    def cfn
       Aws::CloudFormation::Client.new(aws_options)
     end
-    memoize :cloudformation
+    memoize :cfn
 
     def cloudwatchlogs
       Aws::CloudWatchLogs::Client.new(aws_options)
@@ -55,6 +56,11 @@ module Ufo
       Aws::ElasticLoadBalancingV2::Client.new(aws_options)
     end
     memoize :elb
+
+    def s3
+      Aws::S3::Client.new(aws_options)
+    end
+    memoize :s3
 
     # ssm is a helper method
     def ssm_client
@@ -98,42 +104,5 @@ module Ufo
       ) if ENV['UFO_DEBUG_AWS_SDK']
       options
     end
-
-    def find_stack(stack_name)
-      resp = cloudformation.describe_stacks(stack_name: stack_name)
-      resp.stacks.first
-    rescue Aws::CloudFormation::Errors::ValidationError => e
-      # example: Stack with id demo-web does not exist
-      if e.message =~ /Stack with/ && e.message =~ /does not exist/
-        nil
-      else
-        raise
-      end
-    end
-
-    def stack_resources(stack_name)
-      resp = cloudformation.describe_stack_resources(stack_name: stack_name)
-      resp.stack_resources
-    rescue Aws::CloudFormation::Errors::ValidationError => e
-      e.message.include?("does not exist") ? return : raise
-    end
-
-    def task_definition_arns(family, max_items=10)
-      resp = ecs.list_task_definitions(
-        family_prefix: family,
-        sort: "DESC",
-      )
-      arns = resp.task_definition_arns
-      arns = arns.select do |arn|
-        task_definition = arn.split('/').last.split(':').first
-        task_definition == family
-      end
-      arns[0..max_items]
-    end
-
-    def status
-      CfnStatus.new(@stack_name) # NOTE: @stack_name must be set in the including Class
-    end
-    memoize :status
   end
 end

@@ -31,7 +31,7 @@ module Ufo::Cfn
       @stack = find_stack(@stack_name)
       if @stack && rollback_complete?(@stack)
         logger.info "Existing stack in ROLLBACK_COMPLETE state. Deleting stack before continuing."
-        cloudformation.delete_stack(stack_name: @stack_name)
+        cfn.delete_stack(stack_name: @stack_name)
         status.wait
         status.reset
         @stack = nil # at this point stack has been deleted
@@ -53,7 +53,7 @@ module Ufo::Cfn
 
     def perform(action)
       logger.info "#{action[0..-2].capitalize}ing stack #{@stack_name.color(:green)}"
-      cloudformation.send("#{action}_stack", stack_options) # Example: cloudformation.send("update_stack", stack_options)
+      cfn.send("#{action}_stack", stack_options) # Example: cfn.send("update_stack", stack_options)
     rescue Aws::CloudFormation::Errors::ValidationError => e
       handle_stack_error(e)
     end
@@ -152,10 +152,10 @@ module Ufo::Cfn
       end
 
       if stack.stack_status == "CREATE_IN_PROGRESS"
-        cloudformation.delete_stack(stack_name: @stack_name)
+        cfn.delete_stack(stack_name: @stack_name)
         logger.info "Canceling stack creation"
       elsif stack.stack_status == "UPDATE_IN_PROGRESS"
-        cloudformation.cancel_update_stack(stack_name: @stack_name)
+        cfn.cancel_update_stack(stack_name: @stack_name)
         logger.info "Canceling stack update"
       else
         logger.info "The stack is not in a state to that is cancelable: #{stack.stack_status}"

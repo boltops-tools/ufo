@@ -9,9 +9,9 @@ module Ufo::Docker
       return unless File.exist?(@erb_file)
 
       puts "Compiled #{File.basename(@erb_file).color(:green)} to #{File.basename(@dockerfile).color(:green)}"
-      path = "#{Ufo.root}/.ufo/state/data.yml"
-      vars = YAML.load_file(path)[Ufo.env] if File.exist?(path)
-      vars ||= {}
+
+      state = State.new
+      vars = state.read
       result = RenderMePretty.result(@erb_file, vars)
       comment =<<~EOL.chop # remove the trailing newline
         # IMPORTANT: This file was generated from #{File.basename(@erb_file)} as a part of running:

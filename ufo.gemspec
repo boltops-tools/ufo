@@ -28,6 +28,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "aws-sdk-ecr"
   spec.add_dependency "aws-sdk-ecs"
   spec.add_dependency "aws-sdk-elasticloadbalancingv2"
+  spec.add_dependency "aws-sdk-s3"
   spec.add_dependency "aws-sdk-ssm"
   spec.add_dependency "aws-sdk-wafv2"
   spec.add_dependency "aws_data"
