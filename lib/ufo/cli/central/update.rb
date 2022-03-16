@@ -30,6 +30,7 @@ class Ufo::CLI::Central
 
       # FileUtils.ln_s(target, link, options)
       # ~/.ufo/central/repo -> .ufo
+      src.sub!(/\.git$/,'')
       FileUtils.ln_sf(src, ".ufo", verbose: false) # force in case of existing broken symlink
       FileUtils.rm_rf(".ufo.bak")
 
