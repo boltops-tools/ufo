@@ -4,37 +4,22 @@
 # * dockerfile_port - Exposed port in the Dockerfile.  Only supports one exposed port, the first one that is encountered.
 #
 module Ufo::TaskDefinition::Helpers
-  module Core
-    extend Memoist
-
+  module Docker
     def dockerfile_port
-      dockerfile_path = "#{Ufo.root}/Dockerfile"
-      if File.exist?(dockerfile_path)
-        parse_for_dockerfile_port(dockerfile_path)
+      if File.exist?("Dockerfile")
+        port = parse_for_dockerfile_port("Dockerfile")
+        return port if port
+      end
+
+      # Also consider EXPOSE in Dockerfile.base
+      if File.exist?("Dockerfile.base")
+        parse_for_dockerfile_port("Dockerfile.base")
       end
     end
 
     def docker_image
       # Dont need to use @options here. Helps simplify the Helper initialization.
       Ufo::Docker::Builder.new({}).docker_image
-    end
-
-    def env(text)
-      Vars.new(text: text).env
-    end
-    alias_method :env_vars, :env
-    alias_method :environment, :env
-
-    def env_file(path)
-      Vars.new(file: path).env
-    end
-
-    def secrets(text)
-      Vars.new(text: text).secrets
-    end
-
-    def secrets_file(path)
-      Vars.new(file: path).secrets
     end
 
     def parse_for_dockerfile_port(dockerfile_path)
