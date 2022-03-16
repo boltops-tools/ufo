@@ -15,6 +15,7 @@ class Ufo::CLI::Ps
       scale
       target_group
       deployment_configuration
+      wrong_vpc
       catchall
     end
 
@@ -83,6 +84,45 @@ class Ufo::CLI::Ps
 
         See: https://ufoships.com/docs/debug/deployment-configuration/
 
+      EOL
+    end
+
+    # To reproduce #1
+    #
+    #   1. Deploy to with settings where ECS cluster is in custom VPC successfully
+    #   2. Deploy again. Accidentally with default VPC settings <= Reproduction
+    #
+    # This will produce a CloudFormation stack failure
+    #
+    # > All subnets must belong to the same VPC: 'vpc-11111111' (Service: AmazonElasticLoadBalancing; Status Code: 400; Error Code: InvalidConfigurationRequest; Request ID: b8c683ca-4c6d-4bf9-bf9b-3eb468fa9ea9; Proxy: null)
+    #
+    # So it's not actually an ECS failure and is caught early on. Notiing it for posterity.
+    #
+    # To reproduce #2
+    #
+    #   Deploy to default VPC. Even though ECS cluster is running on a custom VPC <= Reproduction
+    #
+    # This reproduces:
+    #
+    # > ERROR: (service demo-web-dev-EcsService-RkMBAhHBfx9A) failed to register targets in (target-group arn:aws:elasticloadbalancing:us-west-2:111111111111:targetgroup/demo-Targe-1HEN2QPS5LO9B/0c69c3eb5aa23bc9) with (error The following targets are not in the target group VPC 'vpc-11111111': 'i-11111111111111111')
+    #
+    # The first deploy suceeeds because CloudFormation doesn't check on the ECS service as much here.
+    # ECS does report the error though.
+    #
+    def wrong_vpc
+      error_event = recent_events.find do |e|
+        e.message =~ /targets are not in the target group VPC/ ||
+        e.message =~ /All subnets must belong to the same VPC/
+      end
+      return unless error_event
+
+      logger.info "ERROR: VPC Configuration error".color(:red)
+      logger.info error_event.message.color(:red)
+      logger.info <<~EOL
+        It seems like the ECS Service was deployed to an ECS Cluster running on
+        a different VPC than what's the ECS Service is configured with.
+
+        See: https://ufoships.com/docs/debug/vpc-subnets/
       EOL
     end
 
