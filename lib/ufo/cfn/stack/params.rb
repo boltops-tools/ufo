@@ -1,6 +1,7 @@
 class Ufo::Cfn::Stack
   class Params < Ufo::Cfn::Stack::Builder::Base
     def build
+      logger.info "Building params"
       params = {
         Vpc: vpc.id,
         ElbSubnets: vpc.elb_subnets,
@@ -40,7 +41,7 @@ class Ufo::Cfn::Stack
       path = "#{Ufo.root}/.ufo/output/params.json"
       FileUtils.mkdir_p(File.dirname(path))
       IO.write(path, JSON.pretty_generate(params))
-      logger.info "Parameters built:      #{pretty_path(path)}"
+      logger.info "    #{pretty_path(path)}"
     end
 
     def vpc

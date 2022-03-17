@@ -62,7 +62,6 @@ module Ufo::Layering
     end
 
     def add_ext!(paths)
-      ext = "rb"
       paths.map! do |path|
         path = path.sub(/\/$/,'') if path.ends_with?('/')
         "#{path}.rb"
@@ -81,15 +80,18 @@ module Ufo::Layering
       layers.map { |l| l.gsub('//','/') } # cleanup // if layer is ''
     end
 
-    @@shown_layers = false
+    @@shown = false
     def show_layers(paths)
-      return if @@shown_layers
-      logger.info "Vars Layers:" if ENV['UFO_SHOW_ALL_LAYERS']
+      return if @@shown
+      logger.debug "Layers:"
       paths.each do |path|
-        show_layer = File.exist?(path) && logger.level <= Logger::DEBUG
-        logger.info "    #{pretty_path(path)}" if show_layer || ENV['UFO_SHOW_ALL_LAYERS']
+        if ENV['UFO_SHOW_LAYERS_ALL']
+          logger.info "    #{pretty_path(path)}"
+        elsif Ufo.config.layering.show
+          logger.info "    #{pretty_path(path)}" if File.exist?(path)
+        end
       end
-      @@shown_layers = true
+      @@shown = true
     end
   end
 end
