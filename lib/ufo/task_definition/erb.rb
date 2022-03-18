@@ -10,14 +10,14 @@ class Ufo::TaskDefinition
     alias_method :family, :name
 
     def run
-      logger.debug "Building Task Definition"
+      logger.info "Building Task Definition"
       clean
       load_context
       data = evaluate_code
       check_empty!(data)
       data = squeeze(data)
       write(data)
-      logger.info "Task Definition built: #{output_path}"
+      logger.info "    #{output_path}"
     end
 
     def check_empty!(data)

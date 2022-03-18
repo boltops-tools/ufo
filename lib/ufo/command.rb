@@ -39,7 +39,7 @@ module Ufo
         # This requires Ufo.role.
         # So we set Ufo.role before triggering Ufo.config loading
         check_project!(args)
-        check_old_version_structure!(args)
+        check_version_structure!
         # Special case for `ufo central` commands.
         # Dont want to call configure_dsl_evaluator
         # and trigger loading of config => .ufo/config.rb
@@ -99,23 +99,33 @@ module Ufo
         return if subcommand?
         return if command_name.nil?
         return if help_flags.include?(args.last) # IE: -h help
-        return if %w[-h -v --version central init version].include?(command_name)
+        return if non_project_command?
         return if File.exist?("#{Ufo.root}/.ufo")
 
         logger.error "ERROR: It doesnt look like this is a ufo project. Are you sure you are in a ufo project?".color(:red)
         ENV['UFO_TEST'] ? raise : exit(1)
       end
 
-      def check_old_version_structure!(args)
-        return unless File.exist?('.ufo/settings.yml')
-        puts "ERROR: Old .ufo configurations detected".color(:red)
+      # Also, using ARGV instead of args because args is called by thor in multiple passes
+      # For `ufo central update`:
+      # * 1st pass: "central"
+      # * 2nd pass: "update"
+      def non_project_command?
+        commands = %w[-h -v --version completion completion_script help central init version]
+        commands.include?(ARGV[0])
+      end
+
+      def check_version_structure!
+        return if non_project_command?
+        return if File.exist?('.ufo/config.rb')
+        puts "ERROR: Latest ufo structure not detected".color(:red)
         puts <<~EOL
           It looks like this project .ufo files for an older ufo version.
           The old .ufo structure does not work with this version of ufo.
 
-          Current Installed UFO Version: 6.0.9
+          Current Installed UFO Version: #{Ufo::VERSION}
 
-          Please upgrade.
+          Please update the .ufo structure.
 
           See: https://ufoships.com/docs/upgrading/upgrade6/
         EOL
