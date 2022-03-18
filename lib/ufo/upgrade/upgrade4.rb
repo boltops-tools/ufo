@@ -24,7 +24,6 @@ class Ufo::Upgrade
       upsert_dockerignore
       upsert_gitignore
       update_params_yaml
-      update_task_definitions
       new_files
     end
 
@@ -34,14 +33,6 @@ class Ufo::Upgrade
     end
 
   private
-    def update_task_definitions
-      text = <<-EOL
-    # HINT: shows how Ufo.extra can to create different log groups
-    # awslogs_group: ["ecs/TASK_DEFINITION_NAME", Ufo.extra].compact.join('-'),
-EOL
-      insert_into_file ".ufo/task_definitions.rb", text, :before => /    awslogs_group:/
-    end
-
     def new_files
       configure_network_settings
       template(".ufo/settings/network/default.yml")
