@@ -170,7 +170,7 @@ module Ufo
       puts "Config Layers" if show
       layers.each do |layer|
         path = "#{Ufo.root}/#{layer}"
-        if ENV['UFO_SHOW_LAYERS_ALL']
+        if ENV['UFO_LAYERS_ALL']
           puts "    #{pretty_path(path)}"
         elsif show
           puts "    #{pretty_path(path)}" if File.exist?(path)
@@ -180,7 +180,7 @@ module Ufo
     end
 
     def show_layers?
-      ENV['UFO_SHOW_LAYERS'] || parse_for_layering_show
+      ENV['UFO_LAYERS'] || parse_for_layering_show
     end
     private :show_layers?
 
@@ -223,6 +223,7 @@ module Ufo
     #
     def layer_levels(prefix=nil)
       levels = ["", "base", Ufo.env]
+      levels << "#{Ufo.env}-#{Ufo.extra}" if Ufo.extra
       paths = levels.map do |i|
         # base layer has prefix of '', reject with blank so it doesnt produce '//'
         [prefix, i].join('/')
