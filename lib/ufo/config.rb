@@ -86,7 +86,8 @@ module Ufo
       config.exec.enabled = true        # EcsService EnableExecuteCommand
 
       config.layering = ActiveSupport::OrderedOptions.new
-      config.layering.show = show_layers?
+      config.layering.show = parsed_layering_show
+      config.layering.show_for_commands = parsed_layering_show_for
 
       config.log = ActiveSupport::OrderedOptions.new
       config.log.root = Ufo.log_root
@@ -165,7 +166,7 @@ module Ufo
       end
       # load_project_config gets called so early that logger is not yet configured.
       # Cannot use Ufo.config yet and cannot use logger which relies on Ufo.config
-      # Use puts and use show_layers? which parses for the config
+      # Use puts and use parsed_layering_show
       show = show_layers?
       puts "Config Layers" if show
       layers.each do |layer|
@@ -180,34 +181,25 @@ module Ufo
     end
 
     def show_layers?
-      ENV['UFO_LAYERS'] || parse_for_layering_show
+      show_for = parsed_layering_show_for
+      command = ARGV[0]
+      parsed_layering_show && show_for.include?(command)
     end
-    private :show_layers?
 
-    # Some limitations:
-    #
-    # * Only parsing one file: .ufo/config.rb
-    # * If user is using Ruby code that cannot be parse will fallback to default
-    #
-    # Think it's worth it so user only has to configure
-    #
-    #     config.layering.show = true
-    #
-    def parse_for_layering_show
-      lines = IO.readlines("#{Ufo.root}/.ufo/config.rb")
-      config_line = lines.find { |l| l =~ /config\.layering.show.*=/ && l !~ /^\s+#/ }
-      return false unless config_line # default is false
-      config_value = config_line.gsub(/.*=/,'').strip.gsub(/["']/,'')
-      config_value != "false" && config_value != "nil"
-    rescue Exception => e
-      if ENV['UFO_DEBUG']
-        puts "#{e.class} #{e.message}".color(:yellow)
-        puts "WARN: Unable to parse for config.layering.show".color(:yellow)
-        puts "Using default: config.layering.show = false"
-      end
-      false
+    def parsed_layering_show_for
+      parse.for("layering.show_for_commands", type: :array) || %w[build ship] # IE: ps exec logs are not shown
     end
-    memoize :parse_for_layering_show
+    memoize :parsed_layering_show_for
+
+    def parsed_layering_show
+      ENV['UFO_LAYERS'] || parse.for("layering.show", type: :boolean)
+    end
+    private :parsed_layering_show
+
+    def parse
+      Parse.new
+    end
+    memoize :parse
 
     # Works similiar to Layering::Layer. Consider combining the logic and usin Layering::Layer
     #
