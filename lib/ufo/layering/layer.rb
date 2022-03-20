@@ -75,7 +75,7 @@ module Ufo::Layering
       paths.each do |path|
         if ENV['UFO_LAYERS_ALL']
           logger.info "    #{pretty_path(path)}"
-        elsif Ufo.config.layering.show
+        elsif Ufo.config.show_layers?
           logger.info "    #{pretty_path(path)}" if File.exist?(path)
         end
       end
