@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [6.2.3] - 2022-03-20
+- [#157](https://github.com/tongueroo/ufo/pull/157) layering.show_for_commands option
+
 ## [6.2.2] - 2022-03-20
 - [#155](https://github.com/tongueroo/ufo/pull/155) layering.show option ability to show layers
 - [#156](https://github.com/tongueroo/ufo/pull/156) extra layering support
