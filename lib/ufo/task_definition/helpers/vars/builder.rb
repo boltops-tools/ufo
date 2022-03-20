@@ -5,8 +5,10 @@ module Ufo::TaskDefinition::Helpers::Vars
     extend Memoist
     include AwsHelper
     include Ufo::Concerns::Names
-    include Ufo::Utils::Pretty
     include Ufo::Config::CallableOption::Concern
+    include Ufo::Utils::CallLine
+    include Ufo::Utils::Logging
+    include Ufo::Utils::Pretty
 
     def initialize(options={})
       # use either file or text. text takes higher precedence
@@ -21,8 +23,16 @@ module Ufo::TaskDefinition::Helpers::Vars
     def read(path)
       full_path = "#{Ufo.root}/#{path}"
       unless File.exist?(full_path)
-        puts "The #{pretty_path(full_path)} env file could not be found.  Are you sure it exists?"
-        exit 1
+        logger.warn "WARN: The #{pretty_path(full_path)} env file could not be found.  Are you sure it exists?".color(:yellow)
+        logger.warn <<~EOL
+          You can disable this warning with: secrets.warning = false
+
+          See: https://ufoships.com/docs/helpers/builtin/secrets/
+
+        EOL
+        call_line = ufo_config_call_line
+        DslEvaluator.print_code(call_line)
+        return ''
       end
       IO.read(full_path)
     end
