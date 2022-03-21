@@ -30,7 +30,7 @@ module Ufo::TaskDefinition::Helpers::Vars
           See: https://ufoships.com/docs/helpers/builtin/secrets/
 
         EOL
-        call_line = ufo_config_call_line
+        call_line = ufo_call_line
         DslEvaluator.print_code(call_line)
         return ''
       end

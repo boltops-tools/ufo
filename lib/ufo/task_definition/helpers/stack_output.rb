@@ -9,7 +9,7 @@ module Ufo::TaskDefinition::Helpers
       stack = find_stack(stack_name)
       unless stack
         logger.error "ERROR: Stack not found: #{stack_name}".color(:red)
-        call_line = ufo_config_call_line
+        call_line = ufo_call_line
         DslEvaluator.print_code(call_line)
         return
       end

@@ -78,7 +78,7 @@ module Ufo
       # See comment where configure_dsl_evaluator is used about Ufo.role
       def configure_dsl_evaluator
         DslEvaluator.configure do |config|
-          config.backtrace.select_pattern = Ufo.root.to_s
+          config.backtrace.select_pattern = "#{Ufo.root}/.ufo"
           config.logger = Ufo.logger
           config.on_exception = :exit
           config.root = Ufo.root

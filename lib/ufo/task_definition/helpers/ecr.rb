@@ -12,7 +12,7 @@ module Ufo::TaskDefinition::Helpers
       resp.repositories.first
     rescue Aws::ECR::Errors::RepositoryNotFoundException => e
       logger.warn "WARN: #{e.class} #{e.message}".color(:yellow)
-      call_line = ufo_config_call_line
+      call_line = ufo_call_line
       DslEvaluator.print_code(call_line)
       nil
     end

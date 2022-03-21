@@ -28,6 +28,7 @@ module Ufo
       )
       target_group = resp.target_groups.first
       load_balancer_arn = target_group.load_balancer_arns.first # assume first only
+      return unless load_balancer_arn # can occur while stack is being deleted
 
       resp = elb.describe_load_balancers(load_balancer_arns: [load_balancer_arn])
       resp.load_balancers.first
