@@ -6,7 +6,7 @@ module Ufo::TaskDefinition::Helpers
     alias_method :env_vars, :env
     alias_method :environment, :env
 
-    def env_file(path)
+    def env_file(path=nil)
       Builder.new(file: path).env
     end
 
@@ -14,7 +14,7 @@ module Ufo::TaskDefinition::Helpers
       Builder.new(text: text).secrets
     end
 
-    def secrets_file(path)
+    def secrets_file(path=nil)
       Builder.new(file: path).secrets
     end
   end

@@ -17,14 +17,35 @@ module Ufo::TaskDefinition::Helpers::Vars
     end
 
     def content
-      @text || read(@file)
+      @text || read(find_file)
     end
 
-    def read(path)
-      full_path = "#{Ufo.root}/#{path}"
-      unless File.exist?(full_path)
-        logger.warn "WARN: The #{pretty_path(full_path)} env file could not be found.  Are you sure it exists?".color(:yellow)
+    # Not considering .env files in project root since this is more for deployment
+    # Also ufo supports a smarter format than the normal .env files
+    def find_file
+      return @file if @file
+      # Lookups not layering. Considers the most specific path first.
+      lookups = [
+        "#{Ufo.app}",
+        "#{Ufo.app}/base",
+        "#{Ufo.app}/#{Ufo.env}",
+        "#{Ufo.app}/#{Ufo.role}",
+        "#{Ufo.app}/#{Ufo.role}/base",
+        "#{Ufo.app}/#{Ufo.role}/#{Ufo.env}",
+      ]
+      lookups = lookups.map { |l| ".ufo/env_files/#{l}#{@ext}" }.reverse
+      found = lookups.find do |l|
+        File.exist?(l)
+      end
+      show_lookups(lookups, found)
+      unless found
+        lookups_text = lookups.map {|l| "    #{l}"}.join("\n")
+        logger.warn "WARN: The env file could not be found.  Are you sure it exists?".color(:yellow)
         logger.warn <<~EOL
+          Searched:
+
+          #{lookups_text}
+
           You can disable this warning with: secrets.warning = false
 
           See: https://ufoships.com/docs/helpers/builtin/secrets/
@@ -34,16 +55,37 @@ module Ufo::TaskDefinition::Helpers::Vars
         DslEvaluator.print_code(call_line)
         return ''
       end
+      found
+    end
+
+    def show_lookups(lookups, found)
+      label = @ext.sub('.','').capitalize
+      if ENV['UFO_LAYERS_ALL']
+        logger.info "    #{label}"
+        lookups.each do |file|
+        logger.info "        #{file}"
+        end
+      elsif Ufo.config.layering.show # know its not "layering" but using the same flag
+        logger.info "    #{label}: #{found}"
+      end
+    end
+
+    def read(path)
+      full_path = "#{Ufo.root}/#{path}"
       IO.read(full_path)
     end
 
-    def env
+    def env(ext='.env')
+      @ext = ext # assign instance variable so dont have to pass around
       lines = filtered_lines(content)
       lines.map do |line|
+        line = line.sub('export ', '') # allow user to use export. ufo ignores it
         key,*value = line.strip.split("=").map do |x|
           remove_surrounding_quotes(x.strip)
         end
         value = value.join('=')
+        # Note: env vars do NOT support valueFrom
+        # Docs: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html#container_definition_environment
         {
           name: key,
           value: value,
@@ -52,7 +94,7 @@ module Ufo::TaskDefinition::Helpers::Vars
     end
 
     def secrets
-      secrets = env
+      secrets = env('.secrets')
       secrets.map do |item|
         value = item.delete(:value)
         arn = normalize_to_arn(item[:name], value)
