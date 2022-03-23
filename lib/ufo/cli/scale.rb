@@ -54,6 +54,7 @@ class Ufo::CLI
 
     def register_scalable_target(scalable_target)
       # service/dev/app1-web-dev-EcsService-Q0XkN6VtxGWv|ecs:service:DesiredCount|ecs
+      return unless scalable_target && scalable_target.physical_resource_id # stack still creating
       resource_id, scalable_dimension, service_namespace = scalable_target.physical_resource_id.split('|')
       applicationautoscaling.register_scalable_target(
         max_capacity: @max,
