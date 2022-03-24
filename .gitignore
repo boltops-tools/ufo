@@ -19,3 +19,4 @@ tmp
 
 .ruby-version
 Gemfile.lock
+.cody/output

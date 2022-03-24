@@ -1,8 +1,8 @@
-github_url("https://github.com/boltops-tools/ufo")
-linux_image("aws/codebuild/amazonlinux2-x86_64-standard:3.0")
-environment_variables(
-  DOCKER_USER: "ssm:/codebuild/ufo/DOCKER_USER",
-  DOCKER_PASS: "ssm:/codebuild/ufo/DOCKER_PASS",
+github("boltops-tools/ufo")
+image("aws/codebuild/amazonlinux2-x86_64-standard:3.0")
+env_vars(
+  DOCKER_USER: "ssm:/#{Cody.env}/DOCKER_USER",
+  DOCKER_PASS: "ssm:/#{Cody.env}/DOCKER_PASS",
 )
 
 # triggers(
