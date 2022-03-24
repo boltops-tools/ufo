@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [6.2.5] - 2022-03-24
+- [#159](https://github.com/tongueroo/ufo/pull/159) improve ufo call line
+- [#160](https://github.com/tongueroo/ufo/pull/160) conventionally lookup up secrets and env file
+- [#161](https://github.com/tongueroo/ufo/pull/161) layering support for env files
+- improve acceptance pipeline
+
 ## [6.2.4] - 2022-03-20
 - [#158](https://github.com/tongueroo/ufo/pull/158) warn on missing env and secrets file instead of error
 
