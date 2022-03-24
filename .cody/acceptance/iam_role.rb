@@ -1,5 +1,6 @@
 iam_policy(
   "application-autoscaling",
+  "autoscaling",
   "cloudformation",
   "ec2",
   "ecr",
