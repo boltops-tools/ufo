@@ -17,15 +17,17 @@ module Ufo::TaskDefinition::Helpers::Vars
     end
 
     def content
-      @text || read(find_file)
+      @text if @text
+      read(*find_files)
     end
 
     # Not considering .env files in project root since this is more for deployment
     # Also ufo supports a smarter format than the normal .env files
-    def find_file
+    def find_files
       return @file if @file
-      # Lookups not layering. Considers the most specific path first.
-      lookups = [
+      layers = [
+        "base",
+        "#{Ufo.env}",
         "#{Ufo.app}",
         "#{Ufo.app}/base",
         "#{Ufo.app}/#{Ufo.env}",
@@ -33,46 +35,30 @@ module Ufo::TaskDefinition::Helpers::Vars
         "#{Ufo.app}/#{Ufo.role}/base",
         "#{Ufo.app}/#{Ufo.role}/#{Ufo.env}",
       ]
-      lookups = lookups.map { |l| ".ufo/env_files/#{l}#{@ext}" }.reverse
-      found = lookups.find do |l|
-        File.exist?(l)
-      end
-      show_lookups(lookups, found)
-      unless found
-        lookups_text = lookups.map {|l| "    #{l}"}.join("\n")
-        logger.warn "WARN: The env file could not be found.  Are you sure it exists?".color(:yellow)
-        logger.warn <<~EOL
-          Searched:
-
-          #{lookups_text}
-
-          You can disable this warning with: secrets.warning = false
-
-          See: https://ufoships.com/docs/helpers/builtin/secrets/
-
-        EOL
-        call_line = ufo_call_line
-        DslEvaluator.print_code(call_line)
-        return ''
-      end
-      found
+      layers.map! { |l| ".ufo/env_files/#{l}#{@ext}" }
+      show_layers(layers)
+      layers.select! { |l| File.exist?(l) }
+      layers
     end
 
-    def show_lookups(lookups, found)
+    def show_layers(paths)
       label = @ext.sub('.','').capitalize
-      if ENV['UFO_LAYERS_ALL']
-        logger.info "    #{label}"
-        lookups.each do |file|
-        logger.info "        #{file}"
+      paths.each do |path|
+        if ENV['UFO_LAYERS_ALL']
+          logger.info "    #{path}"
+        elsif Ufo.config.layering.show
+          logger.info "    #{path} "if File.exist?(path)
         end
-      elsif Ufo.config.layering.show # know its not "layering" but using the same flag
-        logger.info "    #{label}: #{found}"
       end
     end
 
-    def read(path)
-      full_path = "#{Ufo.root}/#{path}"
-      IO.read(full_path)
+    def read(*paths)
+      text= ""
+      paths.compact.each do |path|
+        text << IO.read("#{Ufo.root}/#{path}")
+        text << "\n"
+      end
+      text
     end
 
     def env(ext='.env')
@@ -121,11 +107,15 @@ module Ufo::TaskDefinition::Helpers::Vars
     # arn:aws:ssm:us-west-2:111111111111:parameter/demo/dev/DB-NAME
     # arn:aws:ssm:us-west-2:111111111111:parameter/demo/dev/DB-NAME
     def expansion(arn)
-      # performance improvement only run names.expansion on the name portion
       md = arn.match(/(.*:)(parameter\/|secret:)(.*)/)
-      prefix, type, name = md[1], md[2], md[3]
-      expanded_name = names.expansion(name, dasherize: false) # dasherize: false. dont turn SECRET_NAME => SECRET-NAME
-      "#{prefix}#{type}#{expanded_name}"
+      if md
+        prefix, type, name = md[1], md[2], md[3]
+        # performance improvement only run names.expansion on the name portion
+        expanded_name = names.expansion(name, dasherize: false) # dasherize: false. dont turn SECRET_NAME => SECRET-NAME
+        "#{prefix}#{type}#{expanded_name}"
+      else # not arn full value. In case user accidentally puts value in .secrets file KEY=value
+        names.expansion(arn, dasherize: false) # dasherize: false. dont turn SECRET_NAME => SECRET-NAME
+      end
     end
 
     # Examples with config.secrets.provider = "ssm"

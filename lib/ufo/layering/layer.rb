@@ -68,18 +68,15 @@ module Ufo::Layering
       paths
     end
 
-    @@shown = false
     def show_layers(paths)
-      return if @@shown
       logger.debug "Layers:"
       paths.each do |path|
         if ENV['UFO_LAYERS_ALL']
           logger.info "    #{pretty_path(path)}"
-        elsif Ufo.config.show_layers?
+        elsif Ufo.config.layering.show
           logger.info "    #{pretty_path(path)}" if File.exist?(path)
         end
       end
-      @@shown = true
     end
   end
 end
