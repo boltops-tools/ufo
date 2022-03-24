@@ -1,5 +1,8 @@
 #!/bin/bash
 
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source "$DIR/asg.sh"
+
 final_status=0
 function capture_status {
   if [ "$?" -ne "0" ] && [ $final_status -ne 1 ] ; then
@@ -40,6 +43,7 @@ cat .ufo/vars/base.rb
 cat .ufo/vars/dev.rb
 
 export UFO_ENV=qa
+scale_asg_to 1
 
 # Deploy
 ufo ship -y
@@ -95,3 +99,5 @@ ufo ps # see full output for debugging
 ufo ps 2>&1 | grep Stack | grep worker # should be success. IE: exit 0
 ufo destroy -y
 ufo ps 2>&1 | grep No | grep found # should be success. IE: exit 0
+
+scale_asg_to 0
