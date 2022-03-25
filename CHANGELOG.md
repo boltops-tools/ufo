@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [6.3.1] - 2022-03-25
+- ufo init: improve vars base.rb
+
 ## [6.3.0] - 2022-03-25
 - [#162](https://github.com/tongueroo/ufo/pull/162) hooks support
 
