@@ -2,6 +2,7 @@ module Ufo::Docker
   class Builder
     extend Memoist
     include Concerns
+    include Ufo::Hooks::Concern
 
     delegate :push, to: :pusher
     def self.build(options={})
@@ -28,7 +29,10 @@ module Ufo::Docker
       update_auth_token
       command = "docker build #{build_options}-t #{docker_image} -f #{@dockerfile} ."
       log = ".ufo/log/docker.log" if @options[:quiet]
-      success = execute(command, log: log)
+      success = nil
+      run_hooks(name: "build", file: "docker.rb") do
+        success = execute(command, log: log)
+      end
       unless success
         docker_version_success = system("docker version > /dev/null 2>&1")
         unless docker_version_success

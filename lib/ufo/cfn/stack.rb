@@ -25,6 +25,7 @@ module Ufo::Cfn
   class Stack < Base
     extend Memoist
     include Ufo::TaskDefinition::Helpers::AwsHelper
+    include Ufo::Hooks::Concern
 
     def deploy
       build
@@ -39,15 +40,14 @@ module Ufo::Cfn
 
       exit_with_message(@stack) if @stack && !updatable?(@stack)
 
-      @stack ? perform(:update) : perform(:create)
-
-      stop_old_tasks if @options[:stop_old_task]
-
-      return unless @options[:wait]
-      status.wait
+      run_hooks(name: "ship", file: "ufo.rb") do
+        @stack ? perform(:update) : perform(:create)
+        stop_old_tasks if @options[:stop_old_task]
+        return unless @options[:wait]
+        status.wait
+      end
 
       logger.info status.rollback_error_message if status.update_rollback?
-
       status.success?
     end
 
@@ -78,13 +78,17 @@ module Ufo::Cfn
       end
     end
 
+    # Run hooks here so both ufo docker and ufo ship runs it
+    #     ufo docker => CLI::Build#build => Cfn::Stack#build
     def build
-      vars = Vars.new(@options).values
-      options_with_vars = @options.dup.merge(vars: vars)
-      params = Params.new(options_with_vars)
-      @parameters = params.build
-      template = Template.new(options_with_vars)
-      @template_body = template.body
+      run_hooks(name: "build", file: "ufo.rb") do
+        vars = Vars.new(@options).values
+        options_with_vars = @options.dup.merge(vars: vars)
+        params = Params.new(options_with_vars)
+        @parameters = params.build
+        template = Template.new(options_with_vars)
+        @template_body = template.body
+      end
     end
 
     def scheduling_strategy

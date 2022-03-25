@@ -1,7 +1,7 @@
 module Ufo::Cfn::Stack::Builder::Resources::IamRoles
   class Base < Ufo::Cfn::Stack::Builder::Base
     def build
-      return unless self.class.build? # important because it runs DSL#evaluate
+      return unless self.class.build? # important because it runs Dsl#evaluate
       Ufo::IamRole::Builder.new(self.class.role_type).build
     end
 
@@ -13,7 +13,7 @@ module Ufo::Cfn::Stack::Builder::Resources::IamRoles
       def build?
         path = lookup_path
         return unless path.nil? || File.exist?(path)
-        Ufo::IamRole::DSL.new(path).evaluate # runs the role.rb and registers items
+        Ufo::IamRole::Dsl.new(path).evaluate # runs the role.rb and registers items
         Ufo::IamRole::Builder.new(role_type).build?
       end
 
