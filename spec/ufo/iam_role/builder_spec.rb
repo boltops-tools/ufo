@@ -12,7 +12,7 @@ describe Ufo::IamRole::Builder do
       {:Action=>["cloudwatch:PutMetricData"], :Effect=>"Allow", :Resource=>"*"}
     )
     # Called twice on purpose to show that duplicated items in the set wont create doubles.
-    # This allows the DSL evaluate to be ran multiple times.
+    # This allows the Dsl evaluate to be ran multiple times.
     Ufo::IamRole::Registry.register_policy("task_role",
       "CloudwatchWrite",
       {:Action=>["cloudwatch:PutMetricData"], :Effect=>"Allow", :Resource=>"*"}

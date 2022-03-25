@@ -1,5 +1,5 @@
 module Ufo::IamRole
-  class DSL
+  class Dsl
     include DslEvaluator
     include Ufo::TaskDefinition::Helpers::AwsHelper
 

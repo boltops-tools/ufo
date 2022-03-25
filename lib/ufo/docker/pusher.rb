@@ -1,6 +1,7 @@
 module Ufo::Docker
   class Pusher
     include Concerns
+    include Ufo::Hooks::Concern
 
     delegate :docker_image, to: :builder
     attr_reader :last_image_name
@@ -17,7 +18,10 @@ module Ufo::Docker
       logger.info "Pushing Docker Image"
       command = "docker push #{last_image_name}"
       log = ".ufo/log/docker.log" if @options[:quiet]
-      success = execute(command, log: log)
+      success = nil
+      run_hooks(name: "push", file: "docker.rb") do
+        success = execute(command, log: log)
+      end
       unless success
         logger.info "ERROR: The docker image fail to push.".color(:red)
         exit 1

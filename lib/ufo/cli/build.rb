@@ -7,11 +7,6 @@ class Ufo::CLI
     end
     alias_method :all, :build
 
-    def for_deploy
-      docker
-      task_definition
-    end
-
     def task_definition
       Ufo::TaskDefinition::Builder.new(@options).build
     end

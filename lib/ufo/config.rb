@@ -85,6 +85,9 @@ module Ufo
       config.exec.command = "/bin/bash" # aws ecs execute-command cli
       config.exec.enabled = true        # EcsService EnableExecuteCommand
 
+      config.hooks = ActiveSupport::OrderedOptions.new
+      config.hooks.show = true
+
       config.layering = ActiveSupport::OrderedOptions.new
       config.layering.show = parsed_layering_show
       config.layering.show_for_commands = parsed_layering_show_for
