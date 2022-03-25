@@ -9,10 +9,11 @@ class Ufo::Cfn::Stack
         container: container,
         create_elb: create_elb?, # helps set Ecs DependsOn
         create_listener_ssl: create_listener_ssl?,
-        create_route53: create_elb? && dns_configured?,
+        create_route53: create_route53?,
         default_listener_protocol: default_listener_protocol,
         default_listener_ssl_protocol: default_listener_ssl_protocol,
         default_target_group_protocol: default_target_group_protocol,
+        elb_target_group: elb_target_group,
         elb_type: elb_type,
         new_stack: new_stack,
         rollback_task_definition: rollback_task_definition,
@@ -63,13 +64,29 @@ class Ufo::Cfn::Stack
       elb.ssl.enabled && elb.ssl.certificates
     end
 
+    def create_route53?
+      return false unless dns_configured?
+      if create_elb?
+        true
+      else
+        !!(Ufo.config.elb.existing.target_group &&
+           Ufo.config.elb.existing.dns_name)
+      end
+    end
+
     def create_elb?
       elb = Ufo.config.elb
-      if elb.enabled.to_s == "auto"
+      if elb.existing.target_group
+        false
+      elsif elb.enabled.to_s == "auto"
         container[:name] == "web" # convention
       else
         elb.enabled # true or false
       end
+    end
+
+    def elb_target_group
+      Ufo.config.elb.existing.target_group
     end
 
     def container

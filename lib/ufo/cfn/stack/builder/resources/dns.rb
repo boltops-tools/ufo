@@ -8,7 +8,7 @@ class Ufo::Cfn::Stack::Builder::Resources
         Comment: dns.comment,
         Type: dns.type, # CNAME
         TTL: dns.ttl, # 60 ttl has special casing
-        ResourceRecords: [{"Fn::GetAtt": "Elb.DNSName"}]
+        ResourceRecords: [resource_record]
       }
       # HostedZoneName: yourdomain. # dont forget the trailing period
       props[:HostedZoneName] = hosted_zone_name if hosted_zone_name
@@ -21,6 +21,11 @@ class Ufo::Cfn::Stack::Builder::Resources
     end
 
   private
+    def resource_record
+      dns_name = Ufo.config.elb.existing.dns_name
+      dns_name ? dns_name : {"Fn::GetAtt": "Elb.DNSName"}
+    end
+
     def dns_name
       return unless dns.domain || dns.name
       name = dns.name # my.domain.com

@@ -37,8 +37,7 @@ module Ufo::TaskDefinition::Helpers::Vars
       ]
       layers.map! { |l| ".ufo/env_files/#{l}#{@ext}" }
       show_layers(layers)
-      layers.select! { |l| File.exist?(l) }
-      layers
+      layers.select { |l| File.exist?(l) }
     end
 
     def show_layers(paths)
@@ -63,7 +62,8 @@ module Ufo::TaskDefinition::Helpers::Vars
 
     def env(ext='.env')
       @ext = ext # assign instance variable so dont have to pass around
-      lines = filtered_lines(content)
+      result = render_erb(content) # tricky: use result instead of content for variable assignment or content method is not called
+      lines = filtered_lines(result)
       lines.map do |line|
         line = line.sub('export ', '') # allow user to use export. ufo ignores it
         key,*value = line.strip.split("=").map do |x|
@@ -161,6 +161,13 @@ module Ufo::TaskDefinition::Helpers::Vars
       lines = lines.reject { |l| l =~ /(^|\s)#/i }
       # filter out empty lines
       lines = lines.reject { |l| l.strip.empty? }
+    end
+
+    def render_erb(content)
+      path = ".ufo/output/params.erb"
+      FileUtils.mkdir_p(File.dirname(path))
+      IO.write(path, content)
+      RenderMePretty.result(path, context: self)
     end
   end
 end
