@@ -7,8 +7,8 @@
 @name = role     # IE: web worker clock
 @image = docker_image # includes the git sha org/repo:ufo-[sha].
 # Docs: https://ufoships.com/docs/helpers/builtin/secrets/
-# @environment = env_file(".env")
-# @secrets = secrets_file(".secrets")
+# @environment = env_file
+# @secrets = secrets_file
 @cpu = 256
 @memory = 256
 @memory_reservation = 256
