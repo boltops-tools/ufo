@@ -7,6 +7,13 @@ class Ufo::CLI
     end
     register(BootHook, "boot_hook", "boot_hook", "Generate boot_hook")
 
+    desc "env_file", "Generate env_file"
+    long_desc Help.text("new/env_file")
+    EnvFile.cli_options.each do |args|
+      option(*args)
+    end
+    register(EnvFile, "env_file", "env_file", "Generate env_file")
+
     desc "helper", "Generate helper"
     long_desc Help.text("new/helper")
     Helper.cli_options.each do |args|

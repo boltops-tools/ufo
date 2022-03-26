@@ -115,11 +115,9 @@ module Ufo
       config.ps.summary = true
 
       config.secrets = ActiveSupport::OrderedOptions.new
-      config.secrets.pattern = ActiveSupport::OrderedOptions.new
-      config.secrets.pattern.secretsmanager = ":APP-:ENV-:SECRET_NAME" # => demo-dev-DB_PASS
-      config.secrets.pattern.ssm = ":APP/:ENV/:SECRET_NAME" # => demo/dev/DB_PASS
+      config.secrets.manager_pattern = ":APP/:ENV/:SECRET_NAME" # => demo/dev/DB_PASS
+      config.secrets.ssm_pattern = ":APP/:ENV/:SECRET_NAME" # => demo/dev/DB_PASS
       config.secrets.provider = "ssm" # default provider for conventional expansion IE: ssm or secretsmanager
-      config.secrets.warning = true
 
       config.ship = ActiveSupport::OrderedOptions.new
       config.ship.docker = ActiveSupport::OrderedOptions.new
