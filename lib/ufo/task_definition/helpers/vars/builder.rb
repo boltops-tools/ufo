@@ -97,7 +97,7 @@ module Ufo::TaskDefinition::Helpers::Vars
         value.sub(/^ssm:/i, "arn:aws:ssm:#{region}:#{account}:parameter/")
       when /^secretsmanager:/i
         value.sub(/^secretsmanager:/i, "arn:aws:secretsmanager:#{region}:#{account}:secret:")
-      when '' # blank string will mean use convention
+      when '', *available_providers # blank string will mean use convention
         conventional_pattern(name, value)
       else
         value # assume full arn has been passed
@@ -129,11 +129,11 @@ module Ufo::TaskDefinition::Helpers::Vars
     #      DB_NAME=:APP/:ENV/:SECRET_NAME # expansion will use => demo/dev/DB_NAME
     #
     def conventional_pattern(name, value)
-      secrets = Ufo.config.secrets
-      provider = secrets.provider # ssm or secretsmanager
+      provider = get_provider(value)
       namespace = provider == "ssm" ? "parameter/" : "secret:"
 
-      config_name = "secrets.pattern.#{provider}"
+      field = provider == "secretsmanager" ? "manager_pattern" : "ssm_pattern"
+      config_name = "secrets.#{field}"
       pattern = callable_option(
         config_name: config_name, # Ufo.config.names.stack => :APP-:ROLE-:ENV => demo-web-dev
         passed_args: [self],
@@ -141,6 +141,22 @@ module Ufo::TaskDefinition::Helpers::Vars
       # replace :SECRET_NAME since names expand doesnt know how to nor do we want to add logic there
       pattern = pattern.sub(':SECRET_NAME', name)
       "arn:aws:#{provider}:#{region}:#{account}:#{namespace}#{pattern}"
+    end
+
+    # Allows user to override one-off value. IE: DB_PASS=secretsmanager
+    # Note there's no point in disabling this override ability since valueFrom examples a reference.
+    #
+    #     {
+    #       "name": "PASS",
+    #       "valueFrom": "arn:aws:ssm:us-west-2:1111111111111:parameter/demo/dev/PASS"
+    #     }
+    #
+    def get_provider(value)
+      available_providers.include?(value) ? value : Ufo.config.secrets.provider
+    end
+
+    def available_providers
+      %w[ssm secretsmanager]
     end
 
     def remove_surrounding_quotes(s)

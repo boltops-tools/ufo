@@ -1,6 +1,6 @@
 class Ufo::CLI::New
-  class Hook < Sequence
-    argument :type, default: "ufo", description: "IE: docker, ufo" # description doesnt really show up
+  class EnvFile < Sequence
+    argument :type, default: "env", description: "IE: env or secrets" # description doesnt really show up
 
     def self.cli_options
       [
@@ -11,8 +11,8 @@ class Ufo::CLI::New
 
   public
     def create_hook
-      set_template_source("hook")
-      template "#{type}.rb", ".ufo/config/hooks/#{type}.rb"
+      set_template_source("env_file")
+      template "file.#{type}", ".ufo/config/env_files/#{Ufo.env}.#{type}"
     end
   end
 end

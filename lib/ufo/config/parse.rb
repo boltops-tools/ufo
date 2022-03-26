@@ -19,10 +19,12 @@ class Ufo::Config
       return false unless config_line # default is false
       config_value = config_line.gsub(/.*=/,'').strip.gsub(/["']/,'')
       case type
-      when :boolean
-        config_value != "false" && config_value != "nil"
       when :array
         eval(config_value) # IE: '["a"]' => ["a"]
+      when :boolean
+        config_value != "false" && config_value != "nil"
+      when :string
+        config_value.sub(/\s+#.*/,'') # remove trailing comment
       else
         raise "Type #{type.inspect} not supported"
       end
