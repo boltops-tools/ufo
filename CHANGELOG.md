@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [6.3.2] - 2022-03-26
+- [#164](https://github.com/tongueroo/ufo/pull/164) existing elb target group support
+- [#165](https://github.com/tongueroo/ufo/pull/165) improve secrets support
+- [#166](https://github.com/tongueroo/ufo/pull/166) infer elb dns name from target group when possible
+
 ## [6.3.1] - 2022-03-25
 - ufo init: improve vars base.rb
 
