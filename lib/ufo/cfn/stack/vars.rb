@@ -69,8 +69,7 @@ class Ufo::Cfn::Stack
       if create_elb?
         true
       else
-        !!(Ufo.config.elb.existing.target_group &&
-           Ufo.config.elb.existing.dns_name)
+        Ufo.config.elb.existing.target_group
       end
     end
 

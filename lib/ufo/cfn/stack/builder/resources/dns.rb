@@ -22,8 +22,40 @@ class Ufo::Cfn::Stack::Builder::Resources
 
   private
     def resource_record
-      dns_name = Ufo.config.elb.existing.dns_name
-      dns_name ? dns_name : {"Fn::GetAtt": "Elb.DNSName"}
+      existing = Ufo.config.elb.existing
+      if existing.target_group
+        existing_dns_name
+      else
+        {"Fn::GetAtt": "Elb.DNSName"}
+      end
+    end
+
+    def existing_dns_name
+      existing = Ufo.config.elb.existing
+      resp = elb.describe_target_groups(target_group_arns: [existing.target_group])
+      target_group = resp.target_groups.first
+      load_balancer_arns = target_group.load_balancer_arns
+      if load_balancer_arns.size == 1
+        resp = elb.describe_load_balancers(load_balancer_arns: load_balancer_arns)
+        load_balancer = resp.load_balancers.first
+        load_balancer.dns_name
+      else
+        return existing.dns_name if existing.dns_name
+        logger.error "ERROR: config.existing.dns_name must to be set".color(:red)
+        logger.error <<~EOL
+          This target group is associated with multiple load balancers.
+          UFO cannot infer the dns name in this case. You must set:
+
+              config.existing.dns_name
+
+          Info:
+
+              target group: #{existing.target_group}
+              load balancers: #{load_balancer_arns}
+
+        EOL
+        exit 1
+      end
     end
 
     def dns_name
