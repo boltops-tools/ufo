@@ -55,8 +55,8 @@ class Ufo::Cfn::Stack::Builder::Resources
         TargetGroupArn: {
           "Fn::If": [
             "ElbTargetGroupIsBlank",
-            {Ref: "TargetGroup"},
-            {Ref: "ElbTargetGroup"}
+            {Ref: "TargetGroup"},   # UFO managed
+            {Ref: "ElbTargetGroup"} # Managed by user outside of UFO
           ]
         }
       }

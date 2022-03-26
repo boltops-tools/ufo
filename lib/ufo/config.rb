@@ -63,6 +63,10 @@ module Ufo
       config.elb.default_actions = nil # full override
       config.elb.enabled = "auto" # "auto", true or false
 
+      config.elb.existing = ActiveSupport::OrderedOptions.new
+      config.elb.existing.target_group = nil
+      config.elb.existing.dns_name = nil # for managed route53 records
+
       config.elb.health_check_interval_seconds = 10 # keep at 10 in case of network ELB, which is min 10
       config.elb.health_check_path = nil # When nil its AWS default /
       config.elb.healthy_threshold_count = 3 # The AWS usual default is 5

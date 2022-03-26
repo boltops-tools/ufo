@@ -35,6 +35,5 @@ Ufo.configure do |config|
   # config.logs.filter_pattern = '- "HealthChecker"'
 
   # Docs: https://ufoships.com/docs/config/reference/
-  # You may want to set to false if your docker build and push process takes a while
-  # config.ship.docker.quiet = false # default is true.
+  # config.ship.docker.quiet = true # default is false
 end
