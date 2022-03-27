@@ -1,4 +1,4 @@
-module Ufo::TaskDefinition::Helpers::Vars
+module Ufo::TaskDefinition::Helpers
   # Named AwsHelper to avoid possible conflict with Aws elsewhere
   module AwsHelper
     extend Memoist

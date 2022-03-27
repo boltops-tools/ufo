@@ -17,10 +17,21 @@ class Module
     parent_dir = File.dirname(calling_file)
 
     full_dir = "#{parent_dir}/#{dir}"
-    paths = Dir.glob("#{full_dir}/**/*.rb")
+    # Tricky: Only include top-level dir. Do not include subdirs.
+    # Fixes ruby 2.7 issue where just calling constantize on Vars::Builder
+    # triggers Ufo::Config::CallableOption::Concern to load and causes
+    # And causes some helper methods to be missing. Error looks like this:
+    #
+    #    undefined method `stack_output' for #<Ufo::Config:0x0000000006585268>
+    #
+    # This is because stack_output is loaded after afterwards.
+    #
+    paths = Dir.glob("#{full_dir}/*.rb")
     if paths.empty?
       raise "Empty include_modules full_dir: #{full_dir}"
     end
+
+    paths.sort_by! { |p| p.size }
     paths.each do |path|
       regexp = Regexp.new(".*/lib/")
       mod = path.sub(regexp, '').sub('.rb','').camelize
