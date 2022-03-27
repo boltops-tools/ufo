@@ -3,9 +3,9 @@ require "aws_data"
 module Ufo::TaskDefinition::Helpers::Vars
   class Builder
     extend Memoist
-    include AwsHelper
     include Ufo::Concerns::Names
     include Ufo::Config::CallableOption::Concern
+    include Ufo::TaskDefinition::Helpers::AwsHelper
     include Ufo::Utils::CallLine
     include Ufo::Utils::Logging
     include Ufo::Utils::Pretty
