@@ -39,15 +39,6 @@ class Ufo::CLI::New
       end
     end
 
-    def update_dockerignore
-      text = ".ufo\n"
-      if File.exist?(".dockerignore")
-        append_to_file ".dockerignore", text
-      else
-        create_file ".dockerignore", text
-      end
-    end
-
     def create_dockefile
       return if File.exist?("Dockerfile")
       set_template_source("docker")
