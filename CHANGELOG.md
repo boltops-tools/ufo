@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [6.3.3] - 2022-03-27
+- [#167](https://github.com/tongueroo/ufo/pull/167) fix edge case include_dir for ruby 2.7
+- remove update_dockerignore
+
 ## [6.3.2] - 2022-03-26
 - [#164](https://github.com/tongueroo/ufo/pull/164) existing elb target group support
 - [#165](https://github.com/tongueroo/ufo/pull/165) improve secrets support
