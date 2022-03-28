@@ -17,10 +17,19 @@ class Ufo::CLI::Ps
     def name
       container_overrides = @task.dig("overrides", "container_overrides")
       overrides = container_overrides.first # assume first is one we want
-      overrides["name"] if overrides # PENDING wont yet have info
+      if overrides.empty? # PENDING wont yet have info
+        overrides.map { |i| i["name"]  }.join(',')
+      else
+        container_names
+      end
     rescue NoMethodError
-      container = @task["containers"].first
-      container["name"] if container # PENDING wont yet have info
+      container_names
+    end
+
+    def container_names
+      # PENDING wont yet have any containers yet
+      containers = @task["containers"]
+      containers.map { |i| i["name"] }.join(',')
     end
 
     def container_instance_arn
