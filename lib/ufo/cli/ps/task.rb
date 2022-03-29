@@ -26,11 +26,24 @@ class Ufo::CLI::Ps
       container_names
     end
 
+    # PENDING wont yet have any containers yet but since using task definition we're ok
     def container_names
-      # PENDING wont yet have any containers yet
-      containers = @task["containers"]
-      containers.map { |i| i["name"] }.join(',')
+      task_definition = task_definition(@task.task_definition_arn)
+      names = task_definition.container_definitions.map do |container_definition|
+        container_definition.name
+      end
+      names.join(',')
     end
+
+    # ECS inconsistently returns the container names in random order
+    # Look up the names from the task definition to ensure right order
+    def task_definition(task_definition_arn)
+      resp = ecs.describe_task_definition(
+        task_definition: task_definition_arn,
+      )
+      resp.task_definition
+    end
+    memoize :task_definition
 
     def container_instance_arn
       @task['container_instance_arn'].split('/').last

@@ -45,7 +45,7 @@ class Ufo::CLI
 
       log_conf = definition.log_configuration
       unless log_conf
-        logger.error "ERROR: Unable to find a log_configuration for container"
+        logger.error "ERROR: Unable to find a log_configuration for container: #{definition.name}".color(:red)
         logger.error "You specified --container #{@options[:container]}" if @options[:container]
         exit 1
       end
