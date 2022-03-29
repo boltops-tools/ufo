@@ -64,6 +64,7 @@ module Ufo
     option :since, desc: "From what time to begin displaying logs.  By default, logs will be displayed starting from 1 minutes in the past. The value provided can be an ISO 8601 timestamp or a relative time."
     option :format, default: "short", desc: "The format to display the logs. IE: detailed or short.  With detailed, the log stream name is also shown."
     option :filter_pattern, desc: "The filter pattern to use. If not provided, all the events are matched"
+    option :container, aliases: :c, desc: "Container name to show logs for. Only needed when ECS task multiple containers"
     def logs
       Logs.new(options).run
     end
