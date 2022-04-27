@@ -1,7 +1,7 @@
 module Ufo::Cfn::Stack::Builder::Resources::SecurityGroup
   class Elb < Base
     def build
-      return unless managed_security_groups?
+      # Always create elb security group it seems like its required
       return unless vars[:elb_type] == "application"
 
       {

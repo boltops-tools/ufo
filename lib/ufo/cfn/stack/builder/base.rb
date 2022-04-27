@@ -18,22 +18,23 @@ class Ufo::Cfn::Stack::Builder
     def security_groups(type)
       group_ids = Ufo.config.vpc.security_groups[type] || []
       # no security groups at all
-      return if !managed_security_groups? && group_ids.blank?
+      return if type == :ecs && !manage_ecs_security_group? && group_ids.blank?
 
       groups = []
       groups += group_ids
-      groups += [managed_security_group(type.to_s.camelize)] if managed_security_groups?
+      groups += [managed_security_group(type)] if manage_ecs_security_group? || type == :elb
       groups
     end
 
     def managed_security_group(type)
-      logical_id = managed_security_groups? ? "#{type.camelize}SecurityGroup" : "AWS::NoValue"
+      logical_id = type == :elb || manage_ecs_security_group? ? "#{type.to_s.camelize}SecurityGroup" : "AWS::NoValue"
       {Ref: logical_id}
     end
 
-    def managed_security_groups?
-      managed = Ufo.config.vpc.security_groups.managed
-      managed.nil? ? true : managed
+    # With network mode is awsvpc always create UFO managed ECS security group
+    # With bridge mode, never create as there's no point.
+    def manage_ecs_security_group?
+      vars[:container][:network_mode].to_s == 'awsvpc'
     end
 
     def self.build(options={})

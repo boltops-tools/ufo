@@ -1,7 +1,8 @@
 module Ufo::Cfn::Stack::Builder::Resources::SecurityGroup
   class Ecs < Base
     def build
-      return unless managed_security_groups?
+      return unless manage_ecs_security_group?
+      return unless vars[:container][:network_mode].to_s == 'awsvpc'
 
       {
         Type: "AWS::EC2::SecurityGroup",
