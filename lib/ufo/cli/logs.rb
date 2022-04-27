@@ -6,11 +6,11 @@ class Ufo::CLI
 
     def run
       log = find_log_group_name
-      puts "Showing logs for stack: #{@stack_name} log group: #{log["awslogs-group"]} and stream prefix: #{log["awslogs-stream-prefix"]}"
+      logger.info "Showing logs for stack: #{@stack_name} log group: #{log["awslogs-group"]} and stream prefix: #{log["awslogs-stream-prefix"]}"
       if log
         cloudwatch_tail(log)
       else
-        puts "Unable to find log group for service: #{service.service_name}"
+        logger.info "Unable to find log group for service: #{service.service_name}"
       end
     end
 
@@ -24,22 +24,40 @@ class Ufo::CLI
 
       container_definitions = resp.task_definition.container_definitions
 
-      unless container_definitions.size == 1
-        puts "ERROR: ufo logs command only supports 1 container definition in the ECS task definition".color(:red)
-        return
+      if container_definitions.size > 1 && !@options[:container]
+        logger.info "Multiple containers found. ufo logs will use the first container."
+        logger.info "You can also use the --container option to set the container to use."
       end
 
-      definition = container_definitions.first
-      log_conf = definition.log_configuration
+      definition = if @options[:container]
+                     container_definitions.find do |c|
+                       c.name == @options[:container]
+                     end
+                   else
+                     container_definitions.first
+                   end
 
-      if log_conf && log_conf.log_driver == "awslogs"
+      unless definition
+        logger.error "ERROR: unable to find a container".color(:red)
+        logger.error "You specified --container #{@options[:container]}" if @options[:container]
+        exit
+      end
+
+      log_conf = definition.log_configuration
+      unless log_conf
+        logger.error "ERROR: Unable to find a log_configuration for container: #{definition.name}".color(:red)
+        logger.error "You specified --container #{@options[:container]}" if @options[:container]
+        exit 1
+      end
+
+      if log_conf.log_driver == "awslogs"
         # options["awslogs-group"]
         # options["awslogs-region"]
         # options["awslogs-stream-prefix"]
         log_conf.options
       else
-        puts "Only supports awslogs driver. Detected log_driver: #{log_conf.log_driver}"
-        return
+        logger.error "ERROR: Only supports awslogs driver. Detected log_driver: #{log_conf.log_driver}".color(:red)
+        exit 1 unless ENV['UFO_TEST']
       end
     end
 

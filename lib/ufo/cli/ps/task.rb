@@ -16,8 +16,8 @@ class Ufo::CLI::Ps
 
     def name
       container_overrides = @task.dig("overrides", "container_overrides")
-      overrides = container_overrides.first # assume first is one we want
-      if overrides.empty? # PENDING wont yet have info
+      overrides = container_overrides # assume first is one we want
+      if !overrides.empty? # PENDING wont yet have info
         overrides.map { |i| i["name"]  }.join(',')
       else
         container_names
@@ -26,11 +26,26 @@ class Ufo::CLI::Ps
       container_names
     end
 
+    # PENDING wont yet have any containers yet but since using task definition we're ok
     def container_names
-      # PENDING wont yet have any containers yet
-      containers = @task["containers"]
-      containers.map { |i| i["name"] }.join(',')
+      task_definition = task_definition(@task.task_definition_arn)
+      names = task_definition.container_definitions.map do |container_definition|
+        container_definition.name
+      end
+      names.join(',')
     end
+
+    # ECS inconsistently returns the container names in random order
+    # Look up the names from the task definition to try and get right order
+    # This still seems to return inconsistently.
+    # IE: Not the order that was defined in the task definition originally
+    def task_definition(task_definition_arn)
+      resp = ecs.describe_task_definition(
+        task_definition: task_definition_arn,
+      )
+      resp.task_definition
+    end
+    memoize :task_definition
 
     def container_instance_arn
       @task['container_instance_arn'].split('/').last
