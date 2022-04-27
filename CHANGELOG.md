@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [6.3.4] - 2022-04-27
+- [#168](https://github.com/tongueroo/ufo/pull/168) ufo ps: show multiple container names
+- [#169](https://github.com/tongueroo/ufo/pull/169) ufo logs improvements
+- [#170](https://github.com/tongueroo/ufo/pull/170) infer ecs managed sg based on awsvpc network mode
+
 ## [6.3.3] - 2022-03-27
 - [#167](https://github.com/tongueroo/ufo/pull/167) fix edge case include_dir for ruby 2.7
 - remove update_dockerignore
