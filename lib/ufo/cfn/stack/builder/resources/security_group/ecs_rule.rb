@@ -1,8 +1,7 @@
 module Ufo::Cfn::Stack::Builder::Resources::SecurityGroup
   class EcsRule < Base
     def build
-      return unless managed_security_groups?
-      return unless vars[:elb_type] == "application"
+      return unless manage_ecs_security_group?
 
       {
         Type: "AWS::EC2::SecurityGroupIngress",

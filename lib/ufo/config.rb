@@ -138,7 +138,6 @@ module Ufo
       config.vpc.security_groups = ActiveSupport::OrderedOptions.new
       config.vpc.security_groups.ecs = nil
       config.vpc.security_groups.elb = nil
-      config.vpc.security_groups.managed = true
       config.vpc.subnets = ActiveSupport::OrderedOptions.new
       config.vpc.subnets.ecs = nil
       config.vpc.subnets.elb = nil

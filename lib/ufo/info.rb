@@ -23,9 +23,18 @@ module Ufo
       load_balancer = service.load_balancers.first
       return unless load_balancer
 
-      resp = elb.describe_target_groups(
-        target_group_arns: [load_balancer.target_group_arn]
-      )
+      begin
+        resp = elb.describe_target_groups(
+          target_group_arns: [load_balancer.target_group_arn]
+        )
+      rescue Aws::ElasticLoadBalancingV2::Errors::TargetGroupNotFound
+        # Super edge case when:
+        # 1. deploy with ELB
+        # 2. deploy again without ELB
+        # 3. ECS service sometimes still thinks there's an ELB
+        # Error: https://gist.github.com/tongueroo/dc41f408e65414ab5ee864d0d738d81a
+        return
+      end
       target_group = resp.target_groups.first
       load_balancer_arn = target_group.load_balancer_arns.first # assume first only
       return unless load_balancer_arn # can occur while stack is being deleted
