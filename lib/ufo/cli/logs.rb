@@ -57,7 +57,7 @@ class Ufo::CLI
         log_conf.options
       else
         logger.error "ERROR: Only supports awslogs driver. Detected log_driver: #{log_conf.log_driver}".color(:red)
-        exit 1
+        exit 1 unless ENV['UFO_TEST']
       end
     end
 
