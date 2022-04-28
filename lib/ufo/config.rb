@@ -70,7 +70,7 @@ module Ufo
       config.elb.health_check_interval_seconds = 10 # keep at 10 in case of network ELB, which is min 10
       config.elb.health_check_path = nil # When nil its AWS default /
       config.elb.healthy_threshold_count = 3 # The AWS usual default is 5
-      config.elb.unhealthy_threshold_count = 2
+      config.elb.unhealthy_threshold_count = 3
 
       config.elb.port = 80 # default listener port
       config.elb.redirect = ActiveSupport::OrderedOptions.new
