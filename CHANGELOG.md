@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [6.3.5] - 2022-04-28
+- [#171](https://github.com/tongueroo/ufo/pull/171) default unhealthy_threshold_count = 3
+
 ## [6.3.4] - 2022-04-27
 - [#168](https://github.com/tongueroo/ufo/pull/168) ufo ps: show multiple container names
 - [#169](https://github.com/tongueroo/ufo/pull/169) ufo logs improvements
