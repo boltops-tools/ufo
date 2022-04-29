@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [6.3.7] - 2022-04-29
+- [#173](https://github.com/tongueroo/ufo/pull/173) fix when ssl certs not used
+
 ## [6.3.6] - 2022-04-29
 - [#172](https://github.com/tongueroo/ufo/pull/172) support multiple ssl certs
 
