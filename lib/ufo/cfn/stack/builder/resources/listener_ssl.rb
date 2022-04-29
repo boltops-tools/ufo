@@ -7,7 +7,10 @@ class Ufo::Cfn::Stack::Builder::Resources
 
     def properties
       props = super
-      props[:Certificates] = certificates
+      # CloudFormation has weird interface
+      # Only one cert allowed at the AWS::ElasticLoadBalancingV2::Listener
+      # https://stackoverflow.com/questions/54447250/how-to-set-multiple-certificates-for-awselasticloadbalancingv2listener
+      props[:Certificates] = [certificates.first] # first one only
       props
     end
 

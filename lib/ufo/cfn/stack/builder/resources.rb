@@ -10,6 +10,7 @@ class Ufo::Cfn::Stack::Builder
         ElbSecurityGroup: SecurityGroup::Elb.build(@options),
         ExecutionRole: IamRoles::ExecutionRole.build(@options),
         Listener: Listener.build(@options),
+        ListenerCertificate: ListenerCertificate.build(@options),
         ListenerSsl: ListenerSsl.build(@options),
         TargetGroup: TargetGroup.build(@options),
         TaskDefinition: TaskDefinition.build(@options),
