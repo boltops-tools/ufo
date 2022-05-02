@@ -110,7 +110,7 @@ module Ufo::Cfn
       when /state and can not be updated/
         logger.info "The #{@stack_name} stack is in a state that cannot be updated. Deleted the stack and try again."
         logger.info "ERROR: #{e.message}"
-        if message.include?('UPDATE_ROLLBACK_FAILED')
+        if e.message.include?('UPDATE_ROLLBACK_FAILED')
           logger.info "You might be able to do a 'Continue Update Rollback' and skip some resources to get the stack back into a good state."
         end
         url = "https://console.aws.amazon.com/cloudformation/home?region=#{region}"
