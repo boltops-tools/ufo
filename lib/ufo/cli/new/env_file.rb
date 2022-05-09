@@ -12,7 +12,7 @@ class Ufo::CLI::New
   public
     def create_hook
       set_template_source("env_file")
-      template "file.#{type}", ".ufo/config/env_files/#{Ufo.env}.#{type}"
+      template "file.#{type}", ".ufo/env_files/#{Ufo.env}.#{type}"
     end
   end
 end

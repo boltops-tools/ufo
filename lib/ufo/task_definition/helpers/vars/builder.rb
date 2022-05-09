@@ -41,7 +41,6 @@ module Ufo::TaskDefinition::Helpers::Vars
     end
 
     def show_layers(paths)
-      label = @ext.sub('.','').capitalize
       paths.each do |path|
         if ENV['UFO_LAYERS_ALL']
           logger.info "    #{path}"
@@ -85,10 +84,18 @@ module Ufo::TaskDefinition::Helpers::Vars
         value = item.delete(:value)
         arn = normalize_to_arn(item[:name], value)
         value = expansion(arn)
-        value = value.sub('parameter//','parameter/') # auto fix accidental leading slash for user
+        value = autofix(value)
         item[:valueFrom] = value
       end
       secrets
+    end
+
+    def autofix(value)
+      value = value.sub('parameter//','parameter/') # auto fix accidental leading slash for user
+      if value.include?(':secret:') && value.count(':') == 7 # missing trailing ::
+        value += "::"
+      end
+      value
     end
 
     def normalize_to_arn(name, value)
