@@ -97,6 +97,7 @@ module Ufo
     option :desired, type: :numeric, desc: "Desired count"
     option :min, type: :numeric, desc: "Minimum capacity"
     option :max, type: :numeric, desc: "Maximum capacity"
+    option :all, type: :numeric, desc: "Shorthand to set all capacity options. Explicit options take higher precedence. IE: --desired wins over --all"
     def scale
       Scale.new(options).update
     end

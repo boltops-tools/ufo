@@ -4,9 +4,9 @@ class Ufo::CLI
 
     def initialize(options={})
       super
-      @desired = options[:desired]
-      @min = options[:min]
-      @max = options[:max]
+      @desired = options[:desired] || options[:all]
+      @min = options[:min] || options[:all]
+      @max = options[:max] || options[:all]
     end
 
     def update
