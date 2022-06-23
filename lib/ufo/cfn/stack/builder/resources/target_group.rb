@@ -18,7 +18,6 @@ class Ufo::Cfn::Stack::Builder::Resources
           }
         ],
         Protocol: vars[:default_target_group_protocol],
-        Port: 80,
         HealthCheckIntervalSeconds: 10,
         HealthyThresholdCount: 2,
         UnhealthyThresholdCount: 2,
@@ -36,6 +35,9 @@ class Ufo::Cfn::Stack::Builder::Resources
       props[:HealthCheckIntervalSeconds] = health_check_interval_seconds
       props[:HealthyThresholdCount] = healthy_threshold_count
       props[:UnhealthyThresholdCount] = unhealthy_threshold_count
+      props[:Matcher] = matcher
+      props[:ProtocolVersion] = protocol_version
+      props[:Port] = port
 
       props
     end
@@ -45,6 +47,9 @@ class Ufo::Cfn::Stack::Builder::Resources
       health_check_path
       healthy_threshold_count
       unhealthy_threshold_count
+      matcher
+      protocol_version
+      port
     ]
     delegate *meths, to: :elb
     def elb

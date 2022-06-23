@@ -2,7 +2,11 @@ class Ufo::Cfn::Stack::Builder::Resources
   class ListenerSsl < Listener
     def build
       return unless vars[:create_listener_ssl]
-      super
+      {
+        Type: "AWS::ElasticLoadBalancingV2::Listener",
+        Condition: "CreateElbIsTrue",
+        Properties: properties,
+      }
     end
 
     def properties

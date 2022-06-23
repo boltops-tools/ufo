@@ -1,6 +1,7 @@
 class Ufo::Cfn::Stack::Builder::Resources
   class Listener < Base
     def build
+      return unless vars[:create_listener]
       {
         Type: "AWS::ElasticLoadBalancingV2::Listener",
         Condition: "CreateElbIsTrue",
@@ -18,11 +19,11 @@ class Ufo::Cfn::Stack::Builder::Resources
     end
 
     def protocol
-      vars[:default_listener_protocol]
+      Ufo.config.elb.protocol || vars[:default_listener_protocol]
     end
 
     def port
-      80
+      Ufo.config.elb.port
     end
 
     def default_actions
