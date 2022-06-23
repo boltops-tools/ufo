@@ -72,12 +72,18 @@ module Ufo
       config.elb.healthy_threshold_count = 3 # The AWS usual default is 5
       config.elb.unhealthy_threshold_count = 3
 
+      config.elb.listener = ActiveSupport::OrderedOptions.new
+      config.elb.listener.enabled = true
+      config.elb.matcher = nil
       config.elb.port = 80 # default listener port
+      config.elb.protocol = nil
+      config.elb.protocol_version = nil
       config.elb.redirect = ActiveSupport::OrderedOptions.new
       config.elb.redirect.code = 302  # IE: 302 or 301
       config.elb.redirect.enabled = false
       config.elb.redirect.port = 443
       config.elb.redirect.protocol = "HTTPS"
+      config.elb.scheme = "internet-facing"
       config.elb.ssl = ActiveSupport::OrderedOptions.new
       config.elb.ssl.certificates = nil
       config.elb.ssl.enabled = false

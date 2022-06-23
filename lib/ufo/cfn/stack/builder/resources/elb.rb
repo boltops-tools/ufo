@@ -14,7 +14,7 @@ class Ufo::Cfn::Stack::Builder::Resources
         Tags: [
           {Key: "Name", Value: @stack_name}
         ],
-        Scheme: "internet-facing"
+        Scheme: Ufo.config.elb.scheme
       }
 
       props[:SecurityGroups] = security_groups(:elb) if vars[:elb_type] == "application"

@@ -8,6 +8,7 @@ class Ufo::Cfn::Stack
         cluster: @cluster,
         container: container,
         create_elb: create_elb?, # helps set Ecs DependsOn
+        create_listener: create_listener?,
         create_listener_ssl: create_listener_ssl?,
         create_route53: create_route53?,
         default_listener_protocol: default_listener_protocol,
@@ -56,6 +57,10 @@ class Ufo::Cfn::Stack
 
     def default_target_group_protocol
       elb_type == 'network' ? 'TCP' : 'HTTP'
+    end
+
+    def create_listener?
+      Ufo.config.elb.listener.enabled
     end
 
     # if the configuration is set to anything then enable it

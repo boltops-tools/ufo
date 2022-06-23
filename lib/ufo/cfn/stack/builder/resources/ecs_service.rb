@@ -6,9 +6,14 @@ class Ufo::Cfn::Stack::Builder::Resources
         Properties: properties
       }
 
-      attrs[:DependsOn] = "Listener" if vars[:create_elb]
+      attrs[:DependsOn] = depends_on
 
       attrs
+    end
+
+    def depends_on
+      return unless vars[:create_elb]
+      vars[:create_listener] ? "Listener" : "ListenerSsl"
     end
 
     def properties
