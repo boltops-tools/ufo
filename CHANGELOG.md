@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [6.3.10] - 2022-06-23
+- [#177](https://github.com/tongueroo/ufo/pull/177) Enabled support for gRPC
+
 ## [6.3.9] - 2022-05-09
 - [#175](https://github.com/tongueroo/ufo/pull/175) Secrets autofix and add missing trailing ::
 - new env_file
