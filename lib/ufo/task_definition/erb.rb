@@ -41,7 +41,7 @@ class Ufo::TaskDefinition
     def evaluate_code
       path = @task_definition.path
       text = RenderMePretty.result(path, context: self)
-      rendered_path = "/tmp/ufo/task_definition#{File.extname(path)}"
+      rendered_path = "#{Ufo.root}/.ufo/tmp/task_definition#{File.extname(path)}"
       FileUtils.mkdir_p(File.dirname(rendered_path))
       IO.write(rendered_path, text)
 
