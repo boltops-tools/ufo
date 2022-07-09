@@ -2,7 +2,7 @@ module Ufo
   class Yaml
     class << self
       def load(text)
-        path = "/tmp/ufo/temp.yml"
+        path = "#{Ufo.root}/.ufo/tmp/temp.yml"
         FileUtils.mkdir_p(File.dirname(path))
         IO.write(path, text)
         Validator.new(path).validate!
