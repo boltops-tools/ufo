@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [6.3.11] - 2022-07-09
+- [#178](https://github.com/tongueroo/ufo/pull/178) use .ufo/tmp folder instead of /tmp/ufo
+
 ## [6.3.10] - 2022-06-23
 - [#177](https://github.com/tongueroo/ufo/pull/177) Enabled support for gRPC
 
