@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [6.3.12] - 2022-07-11
+- [#179](https://github.com/tongueroo/ufo/pull/179) auto continue_update_rollback and retry once
+
 ## [6.3.11] - 2022-07-09
 - [#178](https://github.com/tongueroo/ufo/pull/178) use .ufo/tmp folder instead of /tmp/ufo
 
