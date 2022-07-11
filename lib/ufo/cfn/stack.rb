@@ -55,7 +55,30 @@ module Ufo::Cfn
       logger.info "#{action[0..-2].capitalize}ing stack #{@stack_name.color(:green)}"
       cfn.send("#{action}_stack", stack_options) # Example: cfn.send("update_stack", stack_options)
     rescue Aws::CloudFormation::Errors::ValidationError => e
+      try_continue_update_rollback = continue_update_rollback(e)
+      try_continue_update_rollback && retry
       handle_stack_error(e)
+    end
+
+    # Super edge case where stack is in UPDATE_ROLLBACK_FAILED. Can reproduce by:
+    #
+    #   1. spinning ECS cluster down to 0 and deploying with ufo ship
+    #   2. after 3h will timeout and fail and goes into UPDATE_ROLLBACK_FAILED
+    #
+    # Screenshot: https://capture.dropbox.com/Pdr8gijnaQvoMp2y
+    #
+    # Will auto-retry once
+    #
+    def continue_update_rollback(e)
+      if e.message.include?('UPDATE_ROLLBACK_FAILED') && !@continue_update_rollback_tried
+        logger.info "Stack in UPDATE_ROLLBACK_FAILED"
+        logger.info "Trying a continue_update_rollback and will retry again once"
+        cfn.continue_update_rollback(stack_name: @stack_name)
+        status.wait
+        @continue_update_rollback_tried ||= true
+      else
+        false
+      end
     end
 
     def stack_options
