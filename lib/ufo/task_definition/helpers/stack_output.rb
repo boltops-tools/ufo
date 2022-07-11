@@ -2,6 +2,7 @@ module Ufo::TaskDefinition::Helpers
   module StackOutput
     include Ufo::AwsServices
     include Ufo::Concerns::Names
+    include Ufo::Utils::Logging
 
     def stack_output(name)
       stack_name, output_key = name.split(".")
