@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [6.3.13] - 2022-08-31
+- [#180](https://github.com/tongueroo/ufo/pull/180) add ufo role and dev to image name tag
+
 ## [6.3.12] - 2022-07-11
 - [#179](https://github.com/tongueroo/ufo/pull/179) auto continue_update_rollback and retry once
 
