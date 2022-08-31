@@ -141,7 +141,7 @@ module Ufo::Docker
     end
 
     def generate_name
-      ["#{image_name}:#{@image_namespace}-#{timestamp}", git_sha].compact.join('-') # compact in case git_sha is unavailable
+      ["#{image_name}:#{@image_namespace}", Ufo.role, Ufo.env, timestamp, git_sha].compact.join('-') # compact in case git_sha is unavailable
     end
 
     def docker_name_path
