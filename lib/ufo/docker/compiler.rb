@@ -20,7 +20,7 @@ module Ufo::Docker
         #
         # To update the FROM statement with the latest base docker image use:
         #
-        #    ufo docker base
+        #     ufo docker base
         #
       EOL
       result = "#{comment}\n#{result}"

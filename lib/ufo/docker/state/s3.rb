@@ -46,7 +46,6 @@ class Ufo::Docker::State
 
     # ufo docker base is called before Ufo.config is loaded. This ensures it is loaded
     def app
-      Ufo.config
       Ufo.app
     end
 
